@@ -1,0 +1,80 @@
+<main>
+    <div class="login">
+        <div class="wrapper wrapper-login wrapper-login-full vh-100 p-0">
+            <div class="login-aside w-50 d-flex flex-column align-items-center justify-content-center text-center"
+                style="background-color: #282928">
+                <!--Logo PC-->
+                <img class="d-none d-md-block img-fluid" src="assets/loginimg.png" />
+                <!--Logo Mobile-->
+                <img class="d-block d-md-none img-fluid" src="assets/loginimg_mobile.png" />
+            </div>
+            <div class="login-aside w-50 d-flex align-items-center justify-content-center">
+                <div class="container container-login container-transparent animated fadeIn">
+                    <div class="card shadow-lg">
+                        <div class="card-header bg-transparent">
+                            <div class="card-title">Login</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="login-form">
+                                <form id="loginForm" method="POST" action="home.html">
+                                    <input type="hidden" name="_token" autocomplete="off" />
+
+                                    <div class="form-group">
+                                        <label for="email"><b>E-mail</b></label>
+                                        <input id="login" type="text" name="login" class="form-control shadow-sm"
+                                            placeholder="E-mail ou Usuario" autofocus />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="password"><b>Senha</b></label>
+                                        <a href="/recuperar" class="link float-end">Esqueceu a
+                                            Senha?</a>
+                                        <div class="position-relative">
+                                            <input id="password" type="password" class="form-control shadow-sm pr-5"
+                                                name="Senha" autocomplete="current-password" placeholder="Senha" />
+                                            <button type="button"
+                                                class="btn position-absolute end-0 top-50 translate-middle-y me-2"
+                                                onclick="togglePassword()">
+                                                <i id="eyeIcon" class="fa-solid fa-eye-slash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group form-action-d-flex mb-3">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="remember"
+                                                name="remember" />
+                                            <label class="custom-control-label m-0" for="remember">Manter-me
+                                                logado</label>
+                                        </div>
+                                        <a href="/home" type="submit"
+                                            class="btn btn-secondary fw-bold shadow-lg">Acessar</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        // Função para mostrar/ocultar a senha
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                eyeIcon.classList.remove("fa-eye-slash");
+                eyeIcon.classList.add("fa-eye");
+            } else {
+                passwordInput.type = "password";
+                eyeIcon.classList.remove("fa-eye");
+                eyeIcon.classList.add("fa-eye-slash");
+            }
+        }
+    </script>
+</main>

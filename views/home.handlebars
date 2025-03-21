@@ -1,0 +1,511 @@
+<main>
+
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>Ecotech</title>
+        <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
+        <link rel="icon" href="#" type="image/x-icon" />
+
+        <!-- Fonts and icons -->
+        <script src="assets/js/plugin/webfont/webfont.min.js"></script>
+
+        <!-- CSS Files -->
+        <link rel="stylesheet" href="/public/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="/assets/css/plugins.min.css" />
+        <link rel="stylesheet" href="/assets/css/kaiadmin.min.css" />
+
+        <!-- CSS Just for demo purpose, don't include it in your project -->
+        <link rel="stylesheet" href="/assets/css/demo.css" />
+    </head>
+
+    <body>
+        <div class="wrapper">
+            <!-- Sidebar -->
+            <div class="sidebar" data-background-color="dark">
+                <div class="sidebar-logo">
+                    <!-- Logo Header -->
+                    <div class="logo-header" data-background-color="dark">
+                        <a href="Home.html" class="logo">
+                            <img src="assets/img/kaiadmin/ecotech_logo.png" alt="navbar brand" class="navbar-brand"
+                                height="30" />
+                        </a>
+                        <div class="nav-toggle">
+                            <button class="btn btn-toggle toggle-sidebar">
+                                <i class="gg-menu-right"></i>
+                            </button>
+                            <button class="btn btn-toggle sidenav-toggler">
+                                <i class="gg-menu-left"></i>
+                            </button>
+                        </div>
+                        <button class="topbar-toggler more">
+                            <i class="gg-more-vertical-alt"></i>
+                        </button>
+                    </div>
+                    <!-- End Logo Header -->
+                </div>
+                <div class="sidebar-wrapper scrollbar scrollbar-inner">
+                    <div class="sidebar-content">
+                        <ul class="nav nav-secondary">
+                            <li class="nav-item active">
+                                <a href="home.html" class="collapsed" aria-expanded="false">
+                                    <i class="fas fa-home"></i>
+                                    <p>Home</p>
+                                </a>
+                            </li>
+                            <li class="nav-section">
+                                <span class="sidebar-mini-icon">
+                                    <i class="fa fa-ellipsis-h"></i>
+                                </span>
+                                <h4 class="text-section">Funções Do Sistema</h4>
+                            </li>
+                            <li class="nav-item">
+                                <a data-bs-toggle="collapse" href="#cadastro">
+                                    <i class="fas fa-user"></i>
+                                    <p>Cadastros</p>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="cadastro">
+                                    <ul class="nav nav-collapse">
+                                        <li>
+                                            <a href="Cadastro_Buscar.html">
+                                                <span class="sub-item">Buscar</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="Cadastro_Novo_Pessoa.html">
+                                                <span class="sub-item">Nova Pessoa</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="Cadastro_Novo_Usuario.html">
+                                                <span class="sub-item">Novo Funcionário</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="Cadastro_Novo_Fornecedor.html">
+                                                <span class="sub-item">Novo Fornecedor</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="Estoque_Novo.html">
+                                                <span class="sub-item">Novo Estoque</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="Cadastro_Novo_Planta.html">
+                                                <span class="sub-item">Nova Planta</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a data-bs-toggle="collapse" href="#estoque">
+                                    <i class="fas fa-th-list"></i>
+                                    <p>Estoque</p>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="estoque">
+                                    <ul class="nav nav-collapse">
+                                        <li>
+                                            <a href="estoque.html">
+                                                <span class="sub-item">Buscar Material</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="Estoque_Movimento.html">
+                                                <span class="sub-item">Entrada/Saída de Material</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="Estoque_Auditoria.html">
+                                                <span class="sub-item">Auditoria</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a data-bs-toggle="collapse" href="#coleta">
+                                    <i class="fa fa-map-marker-alt"></i>
+                                    <p>Gestão de Coleta</p>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="coleta">
+                                    <ul class="nav nav-collapse">
+                                        <li>
+                                            <a href="Coleta_Cadastro.html">
+                                                <span class="sub-item">Cadastrar Pedido de Coleta</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="Coleta_Inicio.html">
+                                                <span class="sub-item">Visualizar Rotas</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="Coleta_Gerenciar.html">
+                                                <span class="sub-item">Buscar Coletas</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="Coleta_Atualizar.html">
+                                                <span class="sub-item">Atualizar Status de Coleta</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a href="gerenciamento.html">
+                                    <i class="fas fa-table"></i>
+                                    <p>Relatórios</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- End Sidebar -->
+            <!--Start MenuBar-->
+            <div class="main-panel">
+                <div class="main-header">
+                    <div class="main-header-logo">
+                        <!-- Logo Header -->
+                        <div class="logo-header" data-background-color="dark">
+                            <a href="index.html" class="logo">
+                                <img src="assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand"
+                                    height="20" />
+                            </a>
+                            <div class="nav-toggle">
+                                <button class="btn btn-toggle toggle-sidebar">
+                                    <i class="gg-menu-right"></i>
+                                </button>
+                                <button class="btn btn-toggle sidenav-toggler">
+                                    <i class="gg-menu-left"></i>
+                                </button>
+                            </div>
+                            <button class="topbar-toggler more">
+                                <i class="gg-more-vertical-alt"></i>
+                            </button>
+                        </div>
+                        <!-- End Logo Header -->
+                    </div>
+                    <!-- Navbar Header -->
+                    <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+                        <div class="container-fluid">
+                            <nav
+                                class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="submit" class="btn btn-search pe-1">
+                                            <i class="fa fa-search search-icon"></i>
+                                        </button>
+                                    </div>
+                                    <input type="text" placeholder="Buscar ..." class="form-control" />
+                                </div>
+                            </nav>
+
+                            <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+                                <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                                        aria-expanded="false" aria-haspopup="true">
+                                        <i class="fa fa-search"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-search animated fadeIn">
+                                        <form class="navbar-left navbar-form nav-search">
+                                            <div class="input-group">
+                                                <input type="text" placeholder="Search ..." class="form-control" />
+                                            </div>
+                                        </form>
+                                    </ul>
+                                </li>
+                                <li class="nav-item topbar-icon dropdown hidden-caret">
+                                    <a class="nav-link dropdown-toggle" href="#" id="messageDropdown" role="button"
+                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-envelope"></i>
+                                    </a>
+                                    <ul class="dropdown-menu messages-notif-box animated fadeIn"
+                                        aria-labelledby="messageDropdown">
+                                        <li>
+                                            <div
+                                                class="dropdown-title d-flex justify-content-between align-items-center">
+                                                Comunicação
+                                                <a href="#" class="small">Marcar como lidas</a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="message-notif-scroll scrollbar-outer">
+                                                <div class="notif-center">
+                                                    <a href="#">
+                                                        <div class="notif-img">
+                                                            <img src="assets/img/jm_denis.jpg" alt="Img Profile" />
+                                                        </div>
+                                                        <div class="notif-content">
+                                                            <span class="subject">Guilherme Mendes</span>
+                                                            <span class="block"> Cade a carga ? </span>
+                                                            <span class="time">5 min atrás</span>
+                                                        </div>
+                                                    </a>
+                                                    <a href="#">
+                                                        <div class="notif-img">
+                                                            <img src="assets/img/chadengle.jpg" alt="Img Profile" />
+                                                        </div>
+                                                        <div class="notif-content">
+                                                            <span class="subject">Alceu</span>
+                                                            <span class="block"> Ok, obrigado </span>
+                                                            <span class="time">12 min atrás</span>
+                                                        </div>
+                                                    </a>
+                                                    <a href="#">
+                                                        <div class="notif-img">
+                                                            <img src="assets/img/mlane.jpg" alt="Img Profile" />
+                                                        </div>
+                                                        <div class="notif-content">
+                                                            <span class="subject">Nicolas Paulista</span>
+                                                            <span class="block">
+                                                                Faltou Nº de série no lote...
+                                                            </span>
+                                                            <span class="time">12 min atrás</span>
+                                                        </div>
+                                                    </a>
+                                                    <a href="#">
+                                                        <div class="notif-img">
+                                                            <img src="assets/img/talha.jpg" alt="Img Profile" />
+                                                        </div>
+                                                        <div class="notif-content">
+                                                            <span class="subject">Nauhany</span>
+                                                            <span class="block"> Qual Lote? </span>
+                                                            <span class="time">17 min atrás</span>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a class="see-all" href="javascript:void(0);">
+                                                Ver tudo<i class="fa fa-angle-right"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item topbar-icon dropdown hidden-caret">
+                                    <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button"
+                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-bell"></i>
+                                        <span class="notification">4</span>
+                                    </a>
+                                    <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
+                                        <li>
+                                            <div class="dropdown-title">
+                                                Você tem 4 notificações
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="notif-scroll scrollbar-outer">
+                                                <div class="notif-center">
+                                                    <a href="#">
+                                                        <div class="notif-icon notif-primary">
+                                                            <i class="fa fa-user-plus"></i>
+                                                        </div>
+                                                        <div class="notif-content">
+                                                            <span class="block"> Novo usuário registrado </span>
+                                                            <span class="time">5 minutos atrás</span>
+                                                        </div>
+                                                    </a>
+                                                    <a href="#">
+                                                        <div class="notif-icon notif-success">
+                                                            <i class="fa fa-comment"></i>
+                                                        </div>
+                                                        <div class="notif-content">
+                                                            <span class="block">
+                                                                Menssagem de Alceu
+                                                            </span>
+                                                            <span class="time">12 minutos atrás</span>
+                                                        </div>
+                                                    </a>
+                                                    <a href="#">
+                                                        <div class="notif-icon notif-danger">
+                                                            <i class="fa fa-rocket"></i>
+                                                        </div>
+                                                        <div class="notif-content">
+                                                            <span class="block">Lote 142349 Recebido</span>
+                                                            <span class="time">17 min atrás</span>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a class="see-all" href="javascript:void(0);">
+                                                Ver Tudo<i class="fa fa-angle-right"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item topbar-user dropdown hidden-caret">
+                                    <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
+                                        aria-expanded="false">
+                                        <div class="avatar-sm">
+                                            <img src="assets/img/profile.jpg" alt="..."
+                                                class="avatar-img rounded-circle" />
+                                        </div>
+                                        <span class="profile-username">
+                                            <span class="op-7">Olá,</span>
+                                            <span class="fw-bold">Henrique</span>
+                                        </span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user animated fadeIn">
+                                        <div class="dropdown-user-scroll scrollbar-outer">
+                                            <li>
+                                                <div class="user-box">
+                                                    <div class="avatar-lg">
+                                                        <img src="assets/img/profile.jpg" alt="image profile"
+                                                            class="avatar-img rounded" />
+                                                    </div>
+                                                    <div class="u-text">
+                                                        <h4>Henrique</h4>
+                                                        <p class="text-muted">henrique@gmail.com</p>
+                                                        <a href="profile.html" class="btn btn-xs btn-secondary btn-sm">
+                                                            Ver
+                                                            Perfil
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="#">Minha conta</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="#">Configurações</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="login.html">Sair</a>
+                                            </li>
+                                        </div>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                    <!-- End Navbar -->
+                </div>
+                <!--End MenuBar-->
+                <div class="container">
+                    <iframe class="w-100" height="800"
+                        src="https://lookerstudio.google.com/embed/reporting/47430565-a7d0-4bed-bbca-0665059cd7e1/page/XPMCE"
+                        frameborder="0" style="border:0" allowfullscreen
+                        sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+                    <div class="page-inner">
+                        <!--<div class="row mt--2">
+            <div class="col-md-4">
+                <div class="card" style="background-color: #75edff; ">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h5><b>Capacidade de Armazenamento</b></h5>
+                            </div>
+                            <h3 class=" fw-bold text-white">300</h3>
+                        </div>
+                        <div class="progress progress-sm">
+                            <div class="progress-bar bg-info w-50" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <div class="d-flex justify-content-between mt-2">
+                            <p class="text-muted mb-0">Capacidade Total</p>
+                            <p class="text-muted mb-0">50%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card" style="background-color: #72fc7f; ">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h5><b>Capacidade de Processamento</b></h5>
+                            </div>
+                            <h3 class=" fw-bold text-white">500</h3>
+                        </div>
+                        <div class="progress progress-sm">
+                            <div class="progress-bar bg-success w-75" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <div class="d-flex justify-content-between mt-2">
+                            <p class="text-muted mb-0">Capacidade Total</p>
+                            <p class="text-muted mb-0">75%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card" style="background-color: #a272fc;">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h5><b>Número de Funcionários</b></h5>
+                            </div>
+                            <h3 class=" fw-bold text-white">150</h3>
+                        </div>
+                        <div class="progress progress-sm">
+                            <div class="progress-bar bg-secondary w-25" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+                    </div>
+                </div>
+
+                <footer class="footer">
+                    <div class="container-fluid d-flex justify-content-between">
+                        <nav class="pull-left">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#"> Ajuda </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#"> Licenças </a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <div class="copyright">
+                            2024 - Autores: Equipe 7
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <!--   Core JS Files   -->
+        <script src="/public/js/core/jquery-3.7.1.min.js"></script>
+        <script src="/public/js/core/popper.min.js"></script>
+        <script src="/js/core/bootstrap.min.js"></script>
+
+        <!-- jQuery Scrollbar -->
+        <script src="/public/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+
+        <!-- Chart JS -->
+        <script src="/public/js/plugin/chart.js/chart.min.js"></script>
+
+        <!-- jQuery Sparkline -->
+
+        <!-- Chart Circle -->
+        <script src="/public/js/plugin/chart-circle/circles.min.js"></script>
+
+        <!-- Datatables -->
+        <script src="/public/js/plugin/datatables/datatables.min.js"></script>
+
+        <!-- jQuery Vector Maps -->
+        <script src="/public/js/plugin/jsvectormap/jsvectormap.min.js"></script>
+        <script src="/public/js/plugin/jsvectormap/world.js"></script>
+
+        <!-- Sweet Alert -->
+        <script src="/public/js/plugin/sweetalert/sweetalert.min.js"></script>
+
+        <!-- Kaiadmin JS -->
+        <script src="/public/js/kaiadmin.min.js"></script>
+
+        <!-- Kaiadmin DEMO methods, don't include it in your project! -->
+        <script src="/public/js/setting-demo.js"></script>
+        <script src="/public/js/demo.js"></script>
+    </body>
+
+</main>

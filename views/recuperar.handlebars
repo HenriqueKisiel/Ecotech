@@ -1,0 +1,42 @@
+<main>
+
+    <div class="login">
+        <div class="wrapper wrapper-login wrapper-login-full vh-100 p-0">
+            <div class="login-aside w-50 d-flex flex-column align-items-center justify-content-center text-center"
+                style="background-color: #282928">
+                <!--Logo PC-->
+                <img class="d-none d-md-block img-fluid" src="assets/loginimg.png" />
+                <!--Logo Mobile-->
+                <img class="d-block d-md-none img-fluid" src="assets/loginimg_mobile.png" />
+            </div>
+            <div class="login-aside w-50 d-flex align-items-center justify-content-center">
+                <div class="container container-login container-transparent animated fadeIn">
+                    <div class="card shadow-lg">
+                        <div class="card-header bg-transparent">
+                            <div class="card-title">Recuperar Senha</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="login-form">
+                                <form id="loginForm" method="POST" action="home.html">
+                                    <input type="hidden" name="_token" autocomplete="off" />
+                                    <div class="form-group">
+                                        <label for="email"><b>E-mail</b></label>
+                                        <input id="login" type="text" name="login" class="form-control shadow-sm"
+                                            required autocomplete="login" placeholder="E-mail" autofocus />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="card-footer p-3">
+                            <div class="d-flex justify-content-between">
+                                <a href="login2.html" class="btn btn-secondary shadow-lg fw-bold">Voltar</a>
+                                <button type="submit" class="btn btn-primary shadow-lg fw-bold">Enviar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
