@@ -23,6 +23,7 @@ conexao.connect(function (erro) {
     console.log('Conexão efetuada com sucesso!');
 });
 
+//configurado para servir arquivos estaticos
 app.use(express.static('public'));
 
 //chamando bootstrap
@@ -40,7 +41,12 @@ app.get('/', function (req, res) {
     res.render('formulario');
 });
 
-// Rota principal
+// Rota que usa um layout diferente
+app.get('/admin', (req, res) => {
+    res.render('dashboard', { layout: 'admin' }); // Usa o layout "admin.handlebars"
+});
+
+// Rota home
 app.get('/', function (req, res) {
     res.render('home');
 });
@@ -63,8 +69,7 @@ app.get('/home', (req, res) => {
 
 
 // Servidor
-app.listen(8080, () => {
-    console.log('Servidor rodando na porta 8080');
-});
+app.listen(8080);
 
-//Atualização Alceu - correção do erro
+
+// Teste alceu - 23:20
