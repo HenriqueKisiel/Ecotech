@@ -23,6 +23,7 @@ conexao.connect(function (erro) {
     console.log('Conexão efetuada com sucesso!');
 });
 
+//configurado para servir arquivos estaticos
 app.use(express.static('public'));
 
 //chamando bootstrap
@@ -40,7 +41,12 @@ app.get('/', function (req, res) {
     res.render('formulario');
 });
 
-// Rota principal
+// Rota que usa um layout diferente
+app.get('/admin', (req, res) => {
+    res.render('dashboard', { layout: 'admin' }); // Usa o layout "admin.handlebars"
+});
+
+// Rota home
 app.get('/', function (req, res) {
     res.render('home');
 });
