@@ -11,8 +11,8 @@ app.use(express.urlencoded({ extended: false }));
 const conexao = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '1234@',
-    database: 'projeto'
+    password: '12345678',
+    database: 'ecotech'
 });
 
 conexao.connect(function (erro) {
@@ -66,3 +66,5 @@ app.get('/home', (req, res) => {
 app.listen(8080, () => {
     console.log('Servidor rodando na porta 8080');
 });
+
+//Atualização Alceu - correção do erro
