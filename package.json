@@ -15,10 +15,15 @@
   "author": "Henrique",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.20.3",
     "bootstrap": "^5.3.3",
+    "ejs": "^3.1.10",
     "express": "^4.21.2",
     "express-handlebars": "^8.0.1",
+    "express-session": "^1.18.1",
+    "mysql": "^2.18.1",
     "mysql2": "^3.14.0",
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "save": "^2.9.0"
   }
 }

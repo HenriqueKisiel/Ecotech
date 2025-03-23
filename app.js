@@ -1,27 +1,51 @@
+/*comandos npm
+npm instal nodemon -g 
+npm install -- save express
+npm install express-session
+npm install --save body-parser
+npm install --save mysql
+npm install ejs -save
+*/
+
 const express = require('express');
 const { engine } = require('express-handlebars');
-const mysql = require('mysql2');
+const session = require("express-session");
+const path = require('path');
 
 const app = express();
+
+//criando a sessão
+app.use(session({secret: "ssshhhhh"}));
+
+//require do bodyparser responsável por capturar valores do form
+const bodyParser = require("body-parser");
+
+//Require do Mysql
+const mysql = require('mysql');
+const { resolveSoa } = require('dns');
 
 // Manipulação de dados via rotas
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-const conexao = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '12345678',
-    database: 'ecotech'
-});
+//Conexão com o banco
+function conectiondb(){
+    const conexao = mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: '12345678',
+        database: 'ecotech'
+    });
 
-conexao.connect(function (erro) {
-    if (erro) {
-        console.error('Erro ao conectar ao banco de dados:', erro);
-        return;
-    }
-    console.log('Conexão efetuada com sucesso!');
-});
+    conexao.connect(function (erro) {
+        if (erro) {
+            console.error('Erro ao conectar ao banco de dados:', erro);
+            return;
+        }
+        console.log('Conexão efetuada com sucesso!');
+    });
+    return conexao
+}
 
 //configurado para servir arquivos estaticos
 app.use(express.static('public'));
@@ -34,27 +58,44 @@ app.use('/js', express.static('./js'));
 // Configuração do express handlebars
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
-app.set('views', './views');
+app.set('views', path.join(__dirname, './views'));
 
-// Rota principal
-app.get('/', function (req, res) {
-    res.render('formulario');
+//config bodyparser para leitura de post
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
+
+//rota padrao
+app.get('/', (req, res) => {
+    var message = ' ';
+    res.render('formulario', { message: message });
+});
+//rota para login
+app.get("formulario", function(req, res){
+    var message = ' ';
+    res.render('formulario', {message:message});
 });
 
-// Rota que usa um layout diferente
-app.get('/admin', (req, res) => {
-    res.render('dashboard', { layout: 'admin' }); // Usa o layout "admin.handlebars"
-});
-
-// Rota home
-app.get('/', function (req, res) {
-    res.render('home');
-});
-
-// Rota login
-app.post('/login', function (req, res) {
-    console.log(req.body);
-    res.status(200).send('Login recebido');
+//método post do login
+app.post('/log', function (req, res){
+    //pega os valores digitados pelo usuário
+    var login = req.body.login;
+    var Senha = req.body.Senha;
+    //conexão com banco de dados
+    var conexao = conectiondb();
+    //query de execução
+    var query = 'SELECT * FROM usuario WHERE senha = ? AND login like ?';
+    
+    //execução da query
+    conexao.query(query, [Senha, login], function (err, results){
+        if (results.length > 0){
+            req.session.user = login; //seção de identificação            
+            console.log("Login feito com sucesso!");
+            res.render('home', {message:results});
+        }else{
+            var message = 'Login incorreto!';
+            res.render('formulario', { message: message });
+        }
+    });
 });
 
 // Rota para a página recuperar senha
@@ -72,5 +113,3 @@ app.get('/home', (req, res) => {
 app.listen(8080, () => {
     console.log('Servidor rodando na porta 8080');
 });
-
-// alteração 15:13

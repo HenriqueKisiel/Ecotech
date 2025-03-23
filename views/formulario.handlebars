@@ -16,7 +16,7 @@
                         </div>
                         <div class="card-body">
                             <div class="login-form">
-                                <form id="loginForm" method="POST" action="home.html">
+                                <form id="loginForm" method="POST" action="/log">
                                     <input type="hidden" name="_token" autocomplete="off" />
 
                                     <div class="form-group">
@@ -47,9 +47,14 @@
                                             <label class="custom-control-label m-0" for="remember">Manter-me
                                                 logado</label>
                                         </div>
-                                        <a href="/home" type="submit"
-                                            class="btn btn-secondary fw-bold shadow-lg">Acessar</a>
+                                        <button type="submit"
+                                            class="btn btn-secondary fw-bold shadow-lg">Acessar</button>
                                     </div>
+                                    <% if (message.length > 0) { %>
+                                         <div class="text-center">
+                                            <label style="font-weight:bold; color: red;"><%= message %></label>
+                                        </div>
+                                    <%}%>
                                 </form>
                             </div>
                         </div>
