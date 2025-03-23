@@ -50,11 +50,13 @@
                                         <button type="submit"
                                             class="btn btn-secondary fw-bold shadow-lg">Acessar</button>
                                     </div>
-                                    <% if (message.length > 0) { %>
-                                         <div class="text-center">
-                                            <label style="font-weight:bold; color: red;"><%= message %></label>
+                                    <% if (message.length> 0) { %>
+                                        <div class="text-center">
+                                            <label style="font-weight:bold; color: red;">
+                                                <%= message %>
+                                            </label>
                                         </div>
-                                    <%}%>
+                                        <%}%>
                                 </form>
                             </div>
                         </div>

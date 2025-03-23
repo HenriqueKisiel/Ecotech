@@ -15,7 +15,7 @@ const path = require('path');
 const app = express();
 
 //criando a sessão
-app.use(session({secret: "ssshhhhh"}));
+app.use(session({ secret: "ssshhhhh" }));
 
 //require do bodyparser responsável por capturar valores do form
 const bodyParser = require("body-parser");
@@ -29,12 +29,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 //Conexão com o banco
-function conectiondb(){
+function conectiondb() {
     const conexao = mysql.createConnection({
         host: 'localhost',
         user: 'root',
-        password: '12345678', // senha do banco Henrique: 1234@
-        database: 'ecotech'   // nome do banco Henrique: projeto
+        password: '1234@', // senha do banco Henrique: 1234@
+        database: 'projeto'   // nome do banco Henrique: projeto
     });
 
     conexao.connect(function (erro) {
@@ -61,7 +61,7 @@ app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, './views'));
 
 //config bodyparser para leitura de post
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 //rota padrao
@@ -70,13 +70,13 @@ app.get('/', (req, res) => {
     res.render('formulario', { message: message });
 });
 //rota para login
-app.get("formulario", function(req, res){
+app.get("formulario", function (req, res) {
     var message = ' ';
-    res.render('formulario', {message:message});
+    res.render('formulario', { message: message });
 });
 
 //método post do login
-app.post('/log', function (req, res){
+app.post('/log', function (req, res) {
     //pega os valores digitados pelo usuário
     var login = req.body.login;
     var Senha = req.body.Senha;
@@ -84,14 +84,14 @@ app.post('/log', function (req, res){
     var conexao = conectiondb();
     //query de execução
     var query = 'SELECT * FROM usuario WHERE senha = ? AND login like ?';
-    
+
     //execução da query
-    conexao.query(query, [Senha, login], function (err, results){
-        if (results.length > 0){
+    conexao.query(query, [Senha, login], function (err, results) {
+        if (results.length > 0) {
             req.session.user = login; //seção de identificação            
             console.log("Login feito com sucesso!");
-            res.render('home', {message:results});
-        }else{
+            res.render('home', { message: results });
+        } else {
             var message = 'Login incorreto!';
             res.render('formulario', { message: message });
         }
