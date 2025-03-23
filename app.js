@@ -28,14 +28,12 @@ const { resolveSoa } = require('dns');
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-//Conexão com o banco
-function conectiondb(){
-    const conexao = mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: '12345678',
-        database: 'ecotech'
-    });
+const conexao = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '12345678',
+    database: 'ecotech'
+});
 
     conexao.connect(function (erro) {
         if (erro) {
@@ -58,7 +56,7 @@ app.use('/js', express.static('./js'));
 // Configuração do express handlebars
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
-app.set('views', path.join(__dirname, './views'));
+app.set('views', './views');
 
 //config bodyparser para leitura de post
 app.use(bodyParser.urlencoded({extended: false}));
@@ -69,33 +67,21 @@ app.get('/', (req, res) => {
     var message = ' ';
     res.render('formulario', { message: message });
 });
-//rota para login
-app.get("formulario", function(req, res){
-    var message = ' ';
-    res.render('formulario', {message:message});
+
+// Rota que usa um layout diferente
+app.get('/admin', (req, res) => {
+    res.render('dashboard', { layout: 'admin' }); // Usa o layout "admin.handlebars"
 });
 
-//método post do login
-app.post('/log', function (req, res){
-    //pega os valores digitados pelo usuário
-    var login = req.body.login;
-    var Senha = req.body.Senha;
-    //conexão com banco de dados
-    var conexao = conectiondb();
-    //query de execução
-    var query = 'SELECT * FROM usuario WHERE senha = ? AND login like ?';
-    
-    //execução da query
-    conexao.query(query, [Senha, login], function (err, results){
-        if (results.length > 0){
-            req.session.user = login; //seção de identificação            
-            console.log("Login feito com sucesso!");
-            res.render('home', {message:results});
-        }else{
-            var message = 'Login incorreto!';
-            res.render('formulario', { message: message });
-        }
-    });
+// Rota home
+app.get('/', function (req, res) {
+    res.render('home');
+});
+
+// Rota login
+app.post('/login', function (req, res) {
+    console.log(req.body);
+    res.status(200).send('Login recebido');
 });
 
 // Rota para a página recuperar senha
@@ -108,8 +94,41 @@ app.get('/home', (req, res) => {
     res.render('home');
 });
 
+// Rota para a página cadastro de pessoa
+app.get('/pessoa', (req, res) => {
+    res.render('pessoa');
+});
+
+// Rota para a página cadastro de pessoa juridica/fornecedor
+app.get('/juridica', (req, res) => {
+    res.render('juridica');
+});
+
+// Rota para a página cadastro de usuario
+app.get('/usuario', (req, res) => {
+    res.render('usuario');
+});
+
+// Rota para a página cadastro de planta
+app.get('/planta', (req, res) => {
+    res.render('planta');
+});
+
+// Rota para a página buscar cadastros
+app.get('/cadastros', (req, res) => {
+    res.render('cadastros');
+});
+
+// Rota para a página cadastro de material
+app.get('/material', (req, res) => {
+    res.render('material');
+});
+
+//==================== END ROTAS ====================
 
 // Servidor
 app.listen(8080, () => {
     console.log('Servidor rodando na porta 8080');
 });
+
+// alteração 15:13

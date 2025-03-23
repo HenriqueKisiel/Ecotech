@@ -7,7 +7,7 @@
                 <div class="sidebar-logo">
                     <!-- Logo Header -->
                     <div class="logo-header" data-background-color="dark">
-                        <a href="/home" class="logo">
+                        <a href="Home.html" class="logo">
                             <img src="assets/Eco.png" alt="navbar brand" class="navbar-brand" height="30" />
                         </a>
                         <div class="nav-toggle">
@@ -48,7 +48,7 @@
                                 <div class="collapse" id="cadastro">
                                     <ul class="nav nav-collapse">
                                         <li>
-                                            <a href="/cadastros">
+                                            <a href="/cad_buscar">
                                                 <span class="sub-item">Buscar</span>
                                             </a>
                                         </li>
@@ -58,18 +58,18 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/usuario">
+                                            <a href="/cad_usuario">
                                                 <span class="sub-item">Novo Usuario</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/planta">
-                                                <span class="sub-item">Nova Planta</span>
+                                            <a href="/cad_fornecedor">
+                                                <span class="sub-item">Novo Fornecedor</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/material">
-                                                <span class="sub-item">Novo Material</span>
+                                            <a href="/cad_planta">
+                                                <span class="sub-item">Nova Planta</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -223,10 +223,93 @@
                 <!--End MenuBar-->
                 <!--Start conteudo indiviudual da pagina-->
                 <div class="container">
-                    <iframe class="w-100" height="800"
-                        src="https://lookerstudio.google.com/embed/reporting/47430565-a7d0-4bed-bbca-0665059cd7e1/page/XPMCE"
-                        frameborder="0" style="border:0" allowfullscreen
-                        sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+                    <div class="page-inner">
+                        <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
+                            <div class="mb-3 d-flex flex-column">
+                                <span class="fs-2 fw-bold">
+                                    Cadastro de Planta de Reciclagem
+                                </span>
+                                <small class="text-muted">
+                                    Preencha os dados de cadastro e clique em salvar.
+                                </small>
+                            </div>
+                        </div>
+                        <div class="card shadow-lg">
+                            <div class="card-header d-none">
+                                <div class="card-title">
+                                    <span class="fs-2 fw-bold"></span>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Nome da Planta</label>
+                                            <input type="text" class="form-control" placeholder="Insira o nome">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Codigo da Planta</label>
+                                            <input type="text" class="form-control" placeholder="____" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Área total em m²</label>
+                                            <input type="text" class="form-control" placeholder="Nr de m²">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Capacidade Total (Kg)</label>
+                                            <input type="number" class="form-control"
+                                                placeholder="Capacidade Total (Kg)">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Capacidade Atual (Kg)</label>
+                                            <input type="number" class="form-control"
+                                                placeholder="Capacidade Atual (Kg)">
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Endereço</label>
+                                            <input type="text" class="form-control" placeholder="Preencha o endereço">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="fw-bold">CEP</label>
+                                            <input type="text" class="form-control" placeholder="Preencha o CEP">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Cidade</label>
+                                            <input type="text" class="form-control" placeholder="Informe a cidade">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Bairro</label>
+                                            <input type="text" class="form-control" placeholder="Informe o bairro">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end mt-3">
+                                    <button type="button" class="btn btn-success" id="alert_demo_4">
+                                        Salvar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!--end conteudo indiviudual da pagina-->
                 <footer class="footer">
@@ -249,5 +332,4 @@
             </div>
         </div>
     </body>
-
 </main>
