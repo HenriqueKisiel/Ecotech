@@ -7,7 +7,7 @@
                 <div class="sidebar-logo">
                     <!-- Logo Header -->
                     <div class="logo-header" data-background-color="dark">
-                        <a href="/home" class="logo">
+                        <a href="Home.html" class="logo">
                             <img src="assets/Eco.png" alt="navbar brand" class="navbar-brand" height="30" />
                         </a>
                         <div class="nav-toggle">
@@ -48,7 +48,7 @@
                                 <div class="collapse" id="cadastro">
                                     <ul class="nav nav-collapse">
                                         <li>
-                                            <a href="/cadastros">
+                                            <a href="/cad_buscar">
                                                 <span class="sub-item">Buscar</span>
                                             </a>
                                         </li>
@@ -58,18 +58,18 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/usuario">
+                                            <a href="/cad_usuario">
                                                 <span class="sub-item">Novo Usuario</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/planta">
-                                                <span class="sub-item">Nova Planta</span>
+                                            <a href="/cad_fornecedor">
+                                                <span class="sub-item">Novo Fornecedor</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/material">
-                                                <span class="sub-item">Novo Material</span>
+                                            <a href="/cad_planta">
+                                                <span class="sub-item">Nova Planta</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -223,10 +223,169 @@
                 <!--End MenuBar-->
                 <!--Start conteudo indiviudual da pagina-->
                 <div class="container">
-                    <iframe class="w-100" height="800"
-                        src="https://lookerstudio.google.com/embed/reporting/47430565-a7d0-4bed-bbca-0665059cd7e1/page/XPMCE"
-                        frameborder="0" style="border:0" allowfullscreen
-                        sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+                    <div class="page-inner">
+                        <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
+                            <div class="mb-3 d-flex flex-column">
+                                <span class="fs-2 fw-bold">
+                                    Cadastro de Material
+                                </span>
+                                <small class="text-muted">
+                                    Preencha os dados de cadastro e clique em salvar.
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card shadow-lg">
+                                    <div class="card-header d-none">
+                                        <div class="card-title">
+                                            <span class="fs-2 fw-bold"></span>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Codigo do Material</label>
+                                                    <input type="text" class="form-control"
+                                                        placeholder="informe o codigo">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Descrição do Material</label>
+                                                    <input type="text" class="form-control"
+                                                        placeholder="Informe a descrição">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Valor por Kg</label>
+                                                    <input type="text" class="form-control" placeholder="R$">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Peso (Kg)</label>
+                                                    <input type="text" class="form-control" placeholder="R$">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-end mt-3">
+                                            <button type="button" class="btn btn-success" id="alert_demo_4">
+                                                Salvar
+                                            </button>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card shadow-lg">
+                                    <div class="card-header d-none">
+                                        <h4 class="card-title">Nav Pills With Icon (Vertical Tabs)</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-5 col-md-4">
+                                                <div class="nav flex-column nav-black nav-pills nav-pills-no-bd nav-pills-icons"
+                                                    id="v-pills-tab-with-icon" role="tablist"
+                                                    aria-orientation="vertical">
+                                                    <a class="nav-link active text-primary" id="v-pills-home-tab-icons"
+                                                        data-bs-toggle="pill" href="#v-pills-home-icons" role="tab"
+                                                        aria-controls="v-pills-home-icons" aria-selected="true">
+                                                        <i class="fas fa-trash text-primary"></i>
+                                                        Linha Azul
+                                                    </a>
+                                                    <a class="nav-link text-success" id="v-pills-profile-tab-icons"
+                                                        data-bs-toggle="pill" href="#v-pills-profile-icons" role="tab"
+                                                        aria-controls="v-pills-profile-icons" aria-selected="false"
+                                                        tabindex="-1">
+                                                        <i class="fas fa-trash text-success"></i>
+                                                        Linha Verde
+                                                    </a>
+                                                    <a class="nav-link text-warning" id="v-pills-profile-tab-icons2"
+                                                        data-bs-toggle="pill" href="#v-pills-profile-icons2" role="tab"
+                                                        aria-controls="v-pills-profile-icons2" aria-selected="false"
+                                                        tabindex="-1">
+                                                        <i class="fas fa-trash text-warning"></i>
+                                                        Linha Laranja
+                                                    </a>
+                                                    <a class="nav-link text-danger" id="v-pills-profile-tab-icons3"
+                                                        data-bs-toggle="pill" href="#v-pills-profile-icons3" role="tab"
+                                                        aria-controls="v-pills-profile-icons3" aria-selected="false"
+                                                        tabindex="-1">
+                                                        <i class="fas fa-trash text-danger"></i>
+                                                        Linha Vermelha
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="col-7 col-md-8">
+                                                <div class="tab-content" id="v-pills-with-icon-tabContent">
+                                                    <div class="tab-pane card-primary fade show active rounded"
+                                                        id="v-pills-home-icons" role="tabpanel"
+                                                        aria-labelledby="v-pills-home-tab-icons">
+                                                        <div class="d-flex flex-column p-4">
+                                                            <span class="fs-4">- Batedeiras</span>
+                                                            <span class="fs-4">- Centrifugas</span>
+                                                            <span class="fs-4">- Torradeiras</span>
+                                                            <span class="fs-4">- Secadores de Cabelo</span>
+                                                            <span class="fs-4">- Maquina de Costura</span>
+                                                            <span class="fs-4">- Ferramentas</span>
+                                                            <span class="fs-4">- Liquidificadores</span>
+                                                            <span class="fs-4">- Maquina de Escrever</span>
+                                                            <span class="fs-4">- Brinquedos</span>
+                                                            <span class="fs-4">- Entre Outros</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tab-pane fade card-success rounded p-4"
+                                                        id="v-pills-profile-icons" role="tabpanel"
+                                                        aria-labelledby="v-pills-profile-tab-icons">
+                                                        <div class="d-flex flex-column">
+                                                            <span class="fs-4">- Computadores desktops</span>
+                                                            <span class="fs-4">- Notebooks</span>
+                                                            <span class="fs-4">- Fax</span>
+                                                            <span class="fs-4">- Tablets</span>
+                                                            <span class="fs-4">- Impressoras</span>
+                                                            <span class="fs-4">- IPods</span>
+                                                            <span class="fs-4">- Celulares</span>
+                                                            <span class="fs-4">- Copiadoras</span>
+                                                            <span class="fs-4">- Entre Outros</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tab-pane fade card-warning rounded p-4"
+                                                        id="v-pills-profile-icons2" role="tabpanel"
+                                                        aria-labelledby="v-pills-profile-tab-icons2">
+                                                        <div class="d-flex flex-column">
+                                                            <span class="fs-4">- Componentes de Audio</span>
+                                                            <span class="fs-4">- Aparelhos de Som</span>
+                                                            <span class="fs-4">- Projetores</span>
+                                                            <span class="fs-4">- Home Theaters</span>
+                                                            <span class="fs-4">- Filmadoras</span>
+                                                            <span class="fs-4">- Entre Outros</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tab-pane fade card-danger rounded p-4"
+                                                        id="v-pills-profile-icons3" role="tabpanel"
+                                                        aria-labelledby="v-pills-profile-tab-icons3">
+                                                        <div class="d-flex flex-column">
+                                                            <span class="fs-4">- Geladeira</span>
+                                                            <span class="fs-4">- Freezer</span>
+                                                            <span class="fs-4">- Maquina de Lavar</span>
+                                                            <span class="fs-4">- Micro-ondas</span>
+                                                            <span class="fs-4">- Entre Outros</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!--end conteudo indiviudual da pagina-->
                 <footer class="footer">
@@ -249,5 +408,4 @@
             </div>
         </div>
     </body>
-
 </main>

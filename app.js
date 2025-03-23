@@ -11,8 +11,8 @@ app.use(express.urlencoded({ extended: false }));
 const conexao = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '12345678',
-    database: 'ecotech'
+    password: '1234@',
+    database: 'projeto'
 });
 
 conexao.connect(function (erro) {
@@ -36,25 +36,16 @@ app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 app.set('views', './views');
 
+//==================== START ROTAS ====================
+
 // Rota principal
 app.get('/', function (req, res) {
     res.render('formulario');
 });
 
-// Rota que usa um layout diferente
-app.get('/admin', (req, res) => {
-    res.render('dashboard', { layout: 'admin' }); // Usa o layout "admin.handlebars"
-});
-
-// Rota home
-app.get('/', function (req, res) {
-    res.render('home');
-});
-
-// Rota login
-app.post('/login', function (req, res) {
-    console.log(req.body);
-    res.status(200).send('Login recebido');
+// Rota Login (Da recuperar senha pra login e sair do perfil)
+app.get('/formulario', (req, res) => {
+    res.render('formulario');
 });
 
 // Rota para a página recuperar senha
@@ -67,10 +58,41 @@ app.get('/home', (req, res) => {
     res.render('home');
 });
 
+// Rota para a página cadastro de pessoa
+app.get('/pessoa', (req, res) => {
+    res.render('pessoa');
+});
+
+// Rota para a página cadastro de pessoa juridica/fornecedor
+app.get('/juridica', (req, res) => {
+    res.render('juridica');
+});
+
+// Rota para a página cadastro de usuario
+app.get('/usuario', (req, res) => {
+    res.render('usuario');
+});
+
+// Rota para a página cadastro de planta
+app.get('/planta', (req, res) => {
+    res.render('planta');
+});
+
+// Rota para a página buscar cadastros
+app.get('/cadastros', (req, res) => {
+    res.render('cadastros');
+});
+
+// Rota para a página cadastro de material
+app.get('/material', (req, res) => {
+    res.render('material');
+});
+
+//==================== END ROTAS ====================
 
 // Servidor
 app.listen(8080, () => {
     console.log('Servidor rodando na porta 8080');
 });
 
-// alteração 15:13
+// Henrique 22/03/2025 e 23/03/2025
