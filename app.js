@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: false }));
 const conexao = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '1234@',
+    password: '12345678',
     database: 'projeto'
 });
 
