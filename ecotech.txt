@@ -1,0 +1,237 @@
+CREATE TABLE `cidade` (
+  `cd_cidade` INT PRIMARY KEY AUTO_INCREMENT,
+  `nm_cidade` VARCHAR(100) NOT NULL,
+  `sg_estado` CHAR(2) NOT NULL
+);
+
+CREATE TABLE `bairro` (
+  `cd_bairro` INT PRIMARY KEY AUTO_INCREMENT,
+  `nm_bairro` VARCHAR(100) NOT NULL,
+  `cd_cidade` INT NOT NULL
+);
+
+CREATE TABLE `pessoa_fisica` (
+  `cd_pessoa_fisica` INT PRIMARY KEY AUTO_INCREMENT,
+  `nm_pessoa_fisica` VARCHAR(60) NOT NULL,
+  `dt_nascimento` DATE,
+  `ie_sexo` CHAR(1),
+  `nr_cpf` VARCHAR(11) UNIQUE,
+  `nr_telefone_celular` VARCHAR(20),
+  `ds_email` VARCHAR(255) UNIQUE,
+  `ds_endereco` VARCHAR(255),
+  `cd_bairro` INT NOT NULL,
+  `cd_cidade` INT NOT NULL,
+  `nr_cep` VARCHAR(8),
+  `dt_atualizacao` TIMESTAMP DEFAULT (CURRENT_TIMESTAMP)
+);
+
+CREATE TABLE `pessoa_juridica` (
+  `cd_pessoa_juridica` INT PRIMARY KEY AUTO_INCREMENT,
+  `nm_fantasia` VARCHAR(80) NOT NULL,
+  `nm_razao_social` VARCHAR(100) NOT NULL,
+  `nr_cnpj` VARCHAR(14) UNIQUE NOT NULL,
+  `ds_tipo_fornecedor` VARCHAR(100),
+  `ds_endereco` VARCHAR(255),
+  `cd_bairro` INT NOT NULL,
+  `cd_cidade` INT NOT NULL,
+  `nr_cep` VARCHAR(8),
+  `nr_telefone` VARCHAR(20),
+  `ds_email` VARCHAR(255) UNIQUE,
+  `dt_atualizacao` TIMESTAMP DEFAULT (CURRENT_TIMESTAMP)
+);
+
+CREATE TABLE `usuario` (
+  `cd_usuario` INT PRIMARY KEY AUTO_INCREMENT,
+  `nm_usuario` VARCHAR(50) UNIQUE NOT NULL,
+  `ds_senha` VARCHAR(255) NOT NULL,
+  `ie_situacao` CHAR(1) NOT NULL DEFAULT 'A',
+  `cd_pessoa_fisica` INT UNIQUE NOT NULL,
+  `dt_atualizacao` TIMESTAMP DEFAULT (CURRENT_TIMESTAMP)
+);
+
+CREATE TABLE `planta` (
+  `cd_planta` INT PRIMARY KEY AUTO_INCREMENT,
+  `nm_planta` VARCHAR(100) NOT NULL,
+  `qt_area_total_m2` DECIMAL(10,2) NOT NULL,
+  `qt_capacidade_total_kg` DECIMAL(15,2) NOT NULL,
+  `qt_capacidade_atual_kg` DECIMAL(15,2),
+  `ds_endereco` VARCHAR(255) NOT NULL,
+  `cd_bairro` INT NOT NULL,
+  `cd_cidade` INT NOT NULL,
+  `nr_cep` VARCHAR(8) NOT NULL,
+  `dt_criacao` TIMESTAMP DEFAULT (CURRENT_TIMESTAMP)
+);
+
+CREATE TABLE `rota_coleta` (
+  `cd_rota` INT PRIMARY KEY AUTO_INCREMENT,
+  `nm_rota` VARCHAR(100) NOT NULL,
+  `dt_agendada` DATE NOT NULL,
+  `nr_distancia_km` DECIMAL(10,2),
+  `qt_peso_total_kg` DECIMAL(10,2),
+  `qt_volume_total_m3` DECIMAL(10,2)
+);
+
+CREATE TABLE `pontos_coleta` (
+  `cd_ponto_coleta` INT PRIMARY KEY AUTO_INCREMENT,
+  `ie_rota` INT NOT NULL,
+  `nm_ponto` VARCHAR(100) NOT NULL,
+  `ds_endereco` VARCHAR(255) NOT NULL,
+  `cd_bairro` INT NOT NULL,
+  `cd_cidade` INT NOT NULL,
+  `nr_cep` VARCHAR(8) NOT NULL,
+  `cd_planta` INT
+);
+
+CREATE TABLE `itens_de_linha` (
+  `cd_item` INT PRIMARY KEY AUTO_INCREMENT,
+  `ds_item` VARCHAR(500) NOT NULL
+);
+
+CREATE TABLE `linha` (
+  `cd_linha` INT PRIMARY KEY AUTO_INCREMENT,
+  `nm_linha` VARCHAR(50) UNIQUE NOT NULL,
+  `ie_itens_linha` INT
+);
+
+CREATE TABLE `materiais` (
+  `cd_material` INT PRIMARY KEY AUTO_INCREMENT,
+  `ds_material` VARCHAR(100) NOT NULL,
+  `vl_valor_por_kg` DECIMAL(10,2) NOT NULL,
+  `qt_peso_kg` DECIMAL(10,2),
+  `ie_linha` INT,
+  `dt_cadastramento` TIMESTAMP DEFAULT (CURRENT_TIMESTAMP)
+);
+
+CREATE TABLE `agendamento` (
+  `cd_agendamento` INT PRIMARY KEY AUTO_INCREMENT,
+  `dt_solicitada` DATE NOT NULL,
+  `cd_pessoa_fisica` INT,
+  `cd_pessoa_juridica` INT,
+  `ds_endereco` VARCHAR(255) NOT NULL,
+  `cd_bairro` INT NOT NULL,
+  `cd_cidade` INT NOT NULL,
+  `nr_cep` VARCHAR(8) NOT NULL,
+  `cd_material` INT NOT NULL,
+  `qt_quantidade_prevista_kg` DECIMAL(10,2) NOT NULL,
+  `vlr_previsto_reais` DECIMAL(10,2) NOT NULL,
+  `ie_status` CHAR(1) NOT NULL DEFAULT 'P'
+);
+
+CREATE TABLE `materiais_agenda` (
+  `cd_mat_agenda` INT PRIMARY KEY AUTO_INCREMENT,
+  `ie_agenda` INT NOT NULL,
+  `ds_mat_agenda` VARCHAR(100) NOT NULL,
+  `ie_classe_material` INT NOT NULL,
+  `qt_peso_material_total_kg` DECIMAL(10,2),
+  `qt_volume_material_total_m3` DECIMAL(10,2)
+);
+
+CREATE TABLE `Motivos_mov` (
+  `cd_motivo` INT PRIMARY KEY AUTO_INCREMENT,
+  `ds_motivo` VARCHAR(500) NOT NULL
+);
+
+CREATE TABLE `estoque` (
+  `cd_estoque` INT PRIMARY KEY AUTO_INCREMENT,
+  `cd_material` INT NOT NULL,
+  `cd_linha` INT NOT NULL,
+  `cd_planta` INT NOT NULL,
+  `qt_disponivel` INT NOT NULL DEFAULT 0,
+  `qt_capacidade_maxima` INT NOT NULL,
+  `dt_atualizacao` TIMESTAMP DEFAULT (CURRENT_TIMESTAMP)
+);
+
+CREATE TABLE `movimentacoes` (
+  `cd_movimentacao` INT PRIMARY KEY AUTO_INCREMENT,
+  `ie_estoque` INT NOT NULL,
+  `ie_material` INT NOT NULL,
+  `tipo_movimentacao` VARCHAR(10) NOT NULL,
+  `quantidade` INT NOT NULL,
+  `data_movimentacao` TIMESTAMP DEFAULT (CURRENT_TIMESTAMP),
+  `motivo_mov` INT NOT NULL
+);
+
+CREATE TABLE `Etapas` (
+  `cd_etapa` INT PRIMARY KEY AUTO_INCREMENT,
+  `ds_etapa` VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE `etapas_processamento` (
+  `cd_etapa_processamento` INT PRIMARY KEY AUTO_INCREMENT,
+  `cd_material` INT NOT NULL,
+  `cd_etapa` INT NOT NULL,
+  `ds_etapa_processamento` VARCHAR(100) NOT NULL,
+  `dt_inicio` TIMESTAMP,
+  `dt_fim` TIMESTAMP,
+  `Peso` DECIMAL(10,2),
+  `ie_status` CHAR(1) NOT NULL DEFAULT 'P',
+  `ds_observacao` VARCHAR(255)
+);
+
+CREATE TABLE `feedback` (
+  `cd_feedback` INT PRIMARY KEY AUTO_INCREMENT,
+  `cd_agendamento` INT NOT NULL,
+  `ds_feedback` VARCHAR(255),
+  `nr_nota` INT NOT NULL,
+  `dt_feedback` TIMESTAMP DEFAULT (CURRENT_TIMESTAMP)
+);
+
+ALTER TABLE `bairro` ADD FOREIGN KEY (`cd_cidade`) REFERENCES `cidade` (`cd_cidade`) ON DELETE CASCADE;
+
+ALTER TABLE `pessoa_fisica` ADD FOREIGN KEY (`cd_bairro`) REFERENCES `bairro` (`cd_bairro`) ON DELETE RESTRICT;
+
+ALTER TABLE `pessoa_fisica` ADD FOREIGN KEY (`cd_cidade`) REFERENCES `cidade` (`cd_cidade`) ON DELETE RESTRICT;
+
+ALTER TABLE `pessoa_juridica` ADD FOREIGN KEY (`cd_bairro`) REFERENCES `bairro` (`cd_bairro`) ON DELETE RESTRICT;
+
+ALTER TABLE `pessoa_juridica` ADD FOREIGN KEY (`cd_cidade`) REFERENCES `cidade` (`cd_cidade`) ON DELETE RESTRICT;
+
+ALTER TABLE `usuario` ADD FOREIGN KEY (`cd_pessoa_fisica`) REFERENCES `pessoa_fisica` (`cd_pessoa_fisica`) ON DELETE CASCADE;
+
+ALTER TABLE `planta` ADD FOREIGN KEY (`cd_bairro`) REFERENCES `bairro` (`cd_bairro`) ON DELETE RESTRICT;
+
+ALTER TABLE `planta` ADD FOREIGN KEY (`cd_cidade`) REFERENCES `cidade` (`cd_cidade`) ON DELETE RESTRICT;
+
+ALTER TABLE `pontos_coleta` ADD FOREIGN KEY (`cd_bairro`) REFERENCES `bairro` (`cd_bairro`) ON DELETE RESTRICT;
+
+ALTER TABLE `pontos_coleta` ADD FOREIGN KEY (`cd_cidade`) REFERENCES `cidade` (`cd_cidade`) ON DELETE RESTRICT;
+
+ALTER TABLE `pontos_coleta` ADD FOREIGN KEY (`cd_planta`) REFERENCES `planta` (`cd_planta`) ON DELETE SET NULL;
+
+ALTER TABLE `pontos_coleta` ADD FOREIGN KEY (`ie_rota`) REFERENCES `rota_coleta` (`cd_rota`) ON DELETE CASCADE;
+
+ALTER TABLE `linha` ADD FOREIGN KEY (`ie_itens_linha`) REFERENCES `itens_de_linha` (`cd_item`) ON DELETE SET NULL;
+
+ALTER TABLE `materiais` ADD FOREIGN KEY (`ie_linha`) REFERENCES `linha` (`cd_linha`) ON DELETE SET NULL;
+
+ALTER TABLE `agendamento` ADD FOREIGN KEY (`cd_pessoa_fisica`) REFERENCES `pessoa_fisica` (`cd_pessoa_fisica`) ON DELETE SET NULL;
+
+ALTER TABLE `agendamento` ADD FOREIGN KEY (`cd_pessoa_juridica`) REFERENCES `pessoa_juridica` (`cd_pessoa_juridica`) ON DELETE SET NULL;
+
+ALTER TABLE `agendamento` ADD FOREIGN KEY (`cd_bairro`) REFERENCES `bairro` (`cd_bairro`) ON DELETE RESTRICT;
+
+ALTER TABLE `agendamento` ADD FOREIGN KEY (`cd_cidade`) REFERENCES `cidade` (`cd_cidade`) ON DELETE RESTRICT;
+
+ALTER TABLE `agendamento` ADD FOREIGN KEY (`cd_material`) REFERENCES `materiais` (`cd_material`) ON DELETE RESTRICT;
+
+ALTER TABLE `materiais_agenda` ADD FOREIGN KEY (`ie_agenda`) REFERENCES `agendamento` (`cd_agendamento`) ON DELETE CASCADE;
+
+ALTER TABLE `materiais_agenda` ADD FOREIGN KEY (`ie_classe_material`) REFERENCES `materiais` (`cd_material`) ON DELETE CASCADE;
+
+ALTER TABLE `estoque` ADD FOREIGN KEY (`cd_material`) REFERENCES `materiais` (`cd_material`) ON DELETE CASCADE;
+
+ALTER TABLE `estoque` ADD FOREIGN KEY (`cd_linha`) REFERENCES `linha` (`cd_linha`) ON DELETE RESTRICT;
+
+ALTER TABLE `estoque` ADD FOREIGN KEY (`cd_planta`) REFERENCES `planta` (`cd_planta`) ON DELETE CASCADE;
+
+ALTER TABLE `movimentacoes` ADD FOREIGN KEY (`ie_estoque`) REFERENCES `estoque` (`cd_estoque`) ON DELETE CASCADE;
+
+ALTER TABLE `movimentacoes` ADD FOREIGN KEY (`ie_material`) REFERENCES `materiais` (`cd_material`) ON DELETE CASCADE;
+
+ALTER TABLE `movimentacoes` ADD FOREIGN KEY (`motivo_mov`) REFERENCES `Motivos_mov` (`cd_motivo`) ON DELETE RESTRICT;
+
+ALTER TABLE `etapas_processamento` ADD FOREIGN KEY (`cd_material`) REFERENCES `materiais` (`cd_material`) ON DELETE CASCADE;
+
+ALTER TABLE `etapas_processamento` ADD FOREIGN KEY (`cd_etapa`) REFERENCES `Etapas` (`cd_etapa`) ON DELETE RESTRICT;
+
+ALTER TABLE `feedback` ADD FOREIGN KEY (`cd_agendamento`) REFERENCES `agendamento` (`cd_agendamento`) ON DELETE CASCADE;
