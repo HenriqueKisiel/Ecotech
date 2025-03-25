@@ -175,9 +175,19 @@ app.get('/attStatus', (req, res) => {
     res.render('attStatus');
 });
 
-// Rota para a página de atualizar status das rotas
+// Rota para a página de relatorios
 app.get('/relatorios', (req, res) => {
     res.render('relatorios');
+});
+
+// Rota para a página de cadastrar relatorios
+app.get('/relatoriosNovo', (req, res) => {
+    res.render('relatoriosNovo');
+});
+
+// Rota para a página de cadastrar estoque
+app.get('/estoqueNovo', (req, res) => {
+    res.render('estoqueNovo');
 });
 
 //==================== END ROTAS ====================
