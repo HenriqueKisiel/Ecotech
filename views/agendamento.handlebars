@@ -227,24 +227,62 @@
                         <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
                             <div class="mb-3 d-flex flex-column">
                                 <span class="fs-2 fw-bold">
-                                    Cadastro de Material
+                                    Agendamento de Coleta
                                 </span>
                                 <small class="text-muted">
-                                    Preencha os dados de cadastro e clique em salvar.
+                                    Realize o agendamento programado da coleta.
                                 </small>
                             </div>
                         </div>
-
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="card shadow-lg">
-                                    <div class="card-header d-none">
+                                    <div class="card-header">
                                         <div class="card-title">
-                                            <span class="fs-2 fw-bold"></span>
+                                            <span class="fs-4 fw-bold">Material a ser coletado:</span>
                                         </div>
                                     </div>
                                     <div class="card-body">
                                         <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold form-label">
+                                                        Selecione a Linha do
+                                                        material
+                                                    </label>
+                                                    <div class="row gutters-xs d-flex justify-content-start">
+                                                        <div class="col-auto">
+                                                            <label class="colorinput">
+                                                                <input name="color" type="checkbox" value="primary"
+                                                                    class="colorinput-input">
+                                                                <span class="colorinput-color bg-primary"></span>
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <label class="colorinput">
+                                                                <input name="color" type="checkbox" value="success"
+                                                                    class="colorinput-input">
+                                                                <span class="colorinput-color bg-success"></span>
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <label class="colorinput">
+                                                                <input name="color" type="checkbox" value="danger"
+                                                                    class="colorinput-input">
+                                                                <span class="colorinput-color bg-danger"></span>
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <label class="colorinput">
+                                                                <input name="color" type="checkbox" value="warning"
+                                                                    class="colorinput-input">
+                                                                <span class="colorinput-color bg-warning"></span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6"></div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="fw-bold">Codigo do Material</label>
@@ -272,114 +310,50 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="d-flex justify-content-end mt-3">
-                                            <button type="button" class="btn btn-success" id="alert_demo_4">
-                                                Salvar
-                                            </button>
-                                        </div>
                                     </div>
-
-
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="card shadow-lg">
-                                    <div class="card-header d-none">
-                                        <h4 class="card-title">Nav Pills With Icon (Vertical Tabs)</h4>
+                                    <div class="card-header">
+                                        <div class="card-title">
+                                            <span class="fs-4 fw-bold">Dados da coleta:</span>
+                                        </div>
                                     </div>
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-5 col-md-4">
-                                                <div class="nav flex-column nav-black nav-pills nav-pills-no-bd nav-pills-icons"
-                                                    id="v-pills-tab-with-icon" role="tablist"
-                                                    aria-orientation="vertical">
-                                                    <a class="nav-link active text-primary" id="v-pills-home-tab-icons"
-                                                        data-bs-toggle="pill" href="#v-pills-home-icons" role="tab"
-                                                        aria-controls="v-pills-home-icons" aria-selected="true">
-                                                        <i class="fas fa-trash text-primary"></i>
-                                                        Linha Azul
-                                                    </a>
-                                                    <a class="nav-link text-success" id="v-pills-profile-tab-icons"
-                                                        data-bs-toggle="pill" href="#v-pills-profile-icons" role="tab"
-                                                        aria-controls="v-pills-profile-icons" aria-selected="false"
-                                                        tabindex="-1">
-                                                        <i class="fas fa-trash text-success"></i>
-                                                        Linha Verde
-                                                    </a>
-                                                    <a class="nav-link text-warning" id="v-pills-profile-tab-icons2"
-                                                        data-bs-toggle="pill" href="#v-pills-profile-icons2" role="tab"
-                                                        aria-controls="v-pills-profile-icons2" aria-selected="false"
-                                                        tabindex="-1">
-                                                        <i class="fas fa-trash text-warning"></i>
-                                                        Linha Laranja
-                                                    </a>
-                                                    <a class="nav-link text-danger" id="v-pills-profile-tab-icons3"
-                                                        data-bs-toggle="pill" href="#v-pills-profile-icons3" role="tab"
-                                                        aria-controls="v-pills-profile-icons3" aria-selected="false"
-                                                        tabindex="-1">
-                                                        <i class="fas fa-trash text-danger"></i>
-                                                        Linha Vermelha
-                                                    </a>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">CEP da Coleta</label>
+                                                    <input type="text" class="form-control" placeholder="informe o CEP">
                                                 </div>
                                             </div>
-                                            <div class="col-7 col-md-8">
-                                                <div class="tab-content" id="v-pills-with-icon-tabContent">
-                                                    <div class="tab-pane card-primary fade show active rounded"
-                                                        id="v-pills-home-icons" role="tabpanel"
-                                                        aria-labelledby="v-pills-home-tab-icons">
-                                                        <div class="d-flex flex-column p-4">
-                                                            <span class="fs-4">- Batedeiras</span>
-                                                            <span class="fs-4">- Centrifugas</span>
-                                                            <span class="fs-4">- Torradeiras</span>
-                                                            <span class="fs-4">- Secadores de Cabelo</span>
-                                                            <span class="fs-4">- Maquina de Costura</span>
-                                                            <span class="fs-4">- Ferramentas</span>
-                                                            <span class="fs-4">- Liquidificadores</span>
-                                                            <span class="fs-4">- Maquina de Escrever</span>
-                                                            <span class="fs-4">- Brinquedos</span>
-                                                            <span class="fs-4">- Entre Outros</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="tab-pane fade card-success rounded p-4"
-                                                        id="v-pills-profile-icons" role="tabpanel"
-                                                        aria-labelledby="v-pills-profile-tab-icons">
-                                                        <div class="d-flex flex-column">
-                                                            <span class="fs-4">- Computadores desktops</span>
-                                                            <span class="fs-4">- Notebooks</span>
-                                                            <span class="fs-4">- Fax</span>
-                                                            <span class="fs-4">- Tablets</span>
-                                                            <span class="fs-4">- Impressoras</span>
-                                                            <span class="fs-4">- IPods</span>
-                                                            <span class="fs-4">- Celulares</span>
-                                                            <span class="fs-4">- Copiadoras</span>
-                                                            <span class="fs-4">- Entre Outros</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="tab-pane fade card-warning rounded p-4"
-                                                        id="v-pills-profile-icons2" role="tabpanel"
-                                                        aria-labelledby="v-pills-profile-tab-icons2">
-                                                        <div class="d-flex flex-column">
-                                                            <span class="fs-4">- Componentes de Audio</span>
-                                                            <span class="fs-4">- Aparelhos de Som</span>
-                                                            <span class="fs-4">- Projetores</span>
-                                                            <span class="fs-4">- Home Theaters</span>
-                                                            <span class="fs-4">- Filmadoras</span>
-                                                            <span class="fs-4">- Entre Outros</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="tab-pane fade card-danger rounded p-4"
-                                                        id="v-pills-profile-icons3" role="tabpanel"
-                                                        aria-labelledby="v-pills-profile-tab-icons3">
-                                                        <div class="d-flex flex-column">
-                                                            <span class="fs-4">- Geladeira</span>
-                                                            <span class="fs-4">- Freezer</span>
-                                                            <span class="fs-4">- Maquina de Lavar</span>
-                                                            <span class="fs-4">- Micro-ondas</span>
-                                                            <span class="fs-4">- Entre Outros</span>
-                                                        </div>
-                                                    </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Endereço da Coleta</label>
+                                                    <input type="text" class="form-control"
+                                                        placeholder="informe o endereço">
                                                 </div>
                                             </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Cidade</label>
+                                                    <input type="text" class="form-control"
+                                                        placeholder="informe a cidade">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Bairro</label>
+                                                    <input type="text" class="form-control"
+                                                        placeholder="informe o bairro">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-end mt-3">
+                                            <button type="button" class="btn btn-success" id="alert_demo_4">
+                                                Salvar
+                                            </button>
                                         </div>
                                     </div>
                                 </div>

@@ -32,9 +32,9 @@ app.use(express.urlencoded({ extended: false }));
 function conectiondb() {
     const conexao = mysql.createConnection({
         host: 'localhost',
-        user: 'root',
-        password: '1234@', // senha do banco Henrique: 1234@
-        database: 'projeto'   // nome do banco Henrique: projeto
+        user: 'administrador', // user do henrique : administrador -  Nico: admin
+        password: '123456789', // senha do banco Henrique: 123456789
+        database: 'ecotech'   // nome do banco Henrique: projeto - 
     });
 
     conexao.connect(function (erro) {
@@ -87,6 +87,11 @@ app.post('/log', function (req, res) {
 
     //execução da query
     conexao.query(query, [Senha, login], function (err, results) {
+        if (err) {
+            console.error('Erro ao executar a query:', err);
+            res.status(500).send('Erro ao executar a query');
+            return;
+        }
         if (results.length > 0) {
             req.session.user = login; //seção de identificação            
             console.log("Login feito com sucesso!");
@@ -97,6 +102,8 @@ app.post('/log', function (req, res) {
         }
     });
 });
+
+//==================== START ROTAS ====================
 
 // Rota para a página recuperar senha
 app.get('/recuperar', (req, res) => {
@@ -136,6 +143,41 @@ app.get('/cadastros', (req, res) => {
 // Rota para a página cadastro de material
 app.get('/material', (req, res) => {
     res.render('material');
+});
+
+// Rota para a página de buscar material no estoque
+app.get('/estoqueBuscar', (req, res) => {
+    res.render('estoqueBuscar');
+});
+
+// Rota para a página de entrada de material
+app.get('/estoqueEntrada', (req, res) => {
+    res.render('estoqueEntrada');
+});
+
+// Rota para a página de saida de material
+app.get('/estoqueSaida', (req, res) => {
+    res.render('estoqueSaida');
+});
+
+// Rota para a página de agendamento de coleta
+app.get('/agendamento', (req, res) => {
+    res.render('agendamento');
+});
+
+// Rota para a página de rotas programadas
+app.get('/rotas', (req, res) => {
+    res.render('rotas');
+});
+
+// Rota para a página de atualizar status das rotas
+app.get('/attStatus', (req, res) => {
+    res.render('attStatus');
+});
+
+// Rota para a página de atualizar status das rotas
+app.get('/relatorios', (req, res) => {
+    res.render('relatorios');
 });
 
 //==================== END ROTAS ====================
