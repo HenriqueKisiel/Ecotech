@@ -7,7 +7,7 @@
                 <div class="sidebar-logo">
                     <!-- Logo Header -->
                     <div class="logo-header" data-background-color="dark">
-                        <a href="Home.html" class="logo">
+                        <a href="/home" class="logo">
                             <img src="assets/Eco.png" alt="navbar brand" class="navbar-brand" height="30" />
                         </a>
                         <div class="nav-toggle">
@@ -27,8 +27,8 @@
                 <div class="sidebar-wrapper scrollbar scrollbar-inner">
                     <div class="sidebar-content">
                         <ul class="nav nav-secondary">
-                            <li class="nav-item active">
-                                <a href="home.html" class="collapsed" aria-expanded="false">
+                            <li class="nav-item">
+                                <a href="/home" class="collapsed" aria-expanded="false">
                                     <i class="fas fa-home"></i>
                                     <p>Home</p>
                                 </a>
@@ -48,7 +48,7 @@
                                 <div class="collapse" id="cadastro">
                                     <ul class="nav nav-collapse">
                                         <li>
-                                            <a href="/cad_buscar">
+                                            <a href="/cadastros">
                                                 <span class="sub-item">Buscar</span>
                                             </a>
                                         </li>
@@ -58,18 +58,23 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/cad_usuario">
+                                            <a href="/usuario">
                                                 <span class="sub-item">Novo Usuario</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/cad_fornecedor">
-                                                <span class="sub-item">Novo Fornecedor</span>
+                                            <a href="/planta">
+                                                <span class="sub-item">Nova Planta</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/cad_planta">
-                                                <span class="sub-item">Nova Planta</span>
+                                            <a href="/material">
+                                                <span class="sub-item">Novo Material</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/estoqueNovo">
+                                                <span class="sub-item">Novo Estoque</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -84,24 +89,24 @@
                                 <div class="collapse" id="estoque">
                                     <ul class="nav nav-collapse">
                                         <li>
-                                            <a href="estoque.html">
+                                            <a href="/estoqueBuscar">
                                                 <span class="sub-item">Buscar Material</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="Estoque_Movimento.html">
-                                                <span class="sub-item">Entrada/Saída de Material</span>
+                                            <a href="/estoqueEntrada">
+                                                <span class="sub-item">Entrada de Material</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="Estoque_Auditoria.html">
-                                                <span class="sub-item">Auditoria</span>
+                                            <a href="/estoqueSaida">
+                                                <span class="sub-item">Saída de Material</span>
                                             </a>
                                         </li>
                                     </ul>
                                 </div>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item active">
                                 <a data-bs-toggle="collapse" href="#coleta">
                                     <i class="fa fa-map-marker-alt"></i>
                                     <p>Gestão de Coleta</p>
@@ -110,32 +115,33 @@
                                 <div class="collapse" id="coleta">
                                     <ul class="nav nav-collapse">
                                         <li>
-                                            <a href="Coleta_Cadastro.html">
-                                                <span class="sub-item">Cadastrar Pedido de Coleta</span>
+                                            <a href="/agendamento">
+                                                <span class="sub-item">Agendamento</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="Coleta_Inicio.html">
-                                                <span class="sub-item">Visualizar Rotas</span>
+                                            <a href="/rotas">
+                                                <span class="sub-item">Rotas Programadas</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="Coleta_Gerenciar.html">
-                                                <span class="sub-item">Buscar Coletas</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="Coleta_Atualizar.html">
-                                                <span class="sub-item">Atualizar Status de Coleta</span>
+                                            <a href="/attStatus">
+                                                <span class="sub-item">Atualizar Status da Coleta</span>
                                             </a>
                                         </li>
                                     </ul>
                                 </div>
                             </li>
                             <li class="nav-item">
-                                <a href="gerenciamento.html">
+                                <a href="/relatorios">
                                     <i class="fas fa-table"></i>
                                     <p>Relatórios</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/processamento">
+                                    <i class="fas fa-thumbtack"></i>
+                                    <p>Processamento</p>
                                 </a>
                             </li>
                         </ul>
@@ -233,6 +239,9 @@
                                     Visualize todas as rotas de coleta programadas.
                                 </small>
                             </div>
+                            <div>
+                                <a class="btn btn-primary shadow-lg" href="/rotaCadastro">Nova Rota</a>
+                            </div>
                         </div>
                         <div class="card shadow-lg">
                             <div class="card-header">
@@ -241,38 +250,146 @@
                                 </div>
                             </div>
                             <div class="card-body p-0">
-                                <table class="table table-head-bg-primary mt-4">
+                                <table class="table table-striped table-head-bg-primary mt-4">
                                     <thead>
                                         <tr>
                                             <th scope="col">Codigo da Coleta</th>
                                             <th scope="col">Data Agendada</th>
+                                            <th scope="col">Endereço</th>
                                             <th scope="col">Peso Total (kg)</th>
-                                            <th scope="col">Qtsd</th>
+                                            <th scope="col">Distância (Km)</th>
+                                            <th scope="col"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
+                                        <tr class="fs-6">
+                                            <td>946725</td>
+                                            <td>29/03/2025 - 14:32</td>
+                                            <td>Rua Omar Raymundo Picheth, 753</td>
+                                            <td>456</td>
+                                            <td>9</td>
+                                            <td>
+                                                <a href="/RotaCadastro" class="btn btn-icon btn-round btn-warning me-3">
+                                                    <i class="fa fa-edit text-white"></i>
+                                                </a>
+                                                <a class="btn btn-icon btn-round btn-danger me-3" data-bs-toggle="modal"
+                                                    data-bs-target="#excluir">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                                <a class="btn btn-info shadow-lg" href="/attStatus">Atualizar</a>
+                                            </td>
                                         </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Jacob</td>
-                                            <td>Thornton</td>
-                                            <td>@fat</td>
+                                        <tr class="fs-6">
+                                            <td>946726</td>
+                                            <td>30/03/2025 - 10:15</td>
+                                            <td>Avenida Brasil, 1200</td>
+                                            <td>678</td>
+                                            <td>15</td>
+                                            <td>
+                                                <a href="/RotaCadastro" class="btn btn-icon btn-round btn-warning me-3">
+                                                    <i class="fa fa-edit text-white"></i>
+                                                </a>
+                                                <a class="btn btn-icon btn-round btn-danger me-3" data-bs-toggle="modal"
+                                                    data-bs-target="#excluir">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                                <a class="btn btn-info shadow-lg" href="/attStatus">Atualizar</a>
+                                            </td>
                                         </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td colspan="2">Larry the Bird</td>
-                                            <td>@twitter</td>
+                                        <tr class="fs-6">
+                                            <td>946727</td>
+                                            <td>31/03/2025 - 09:45</td>
+                                            <td>Rua das Palmeiras, 58</td>
+                                            <td>320</td>
+                                            <td>7</td>
+                                            <td>
+                                                <a href="/RotaCadastro" class="btn btn-icon btn-round btn-warning me-3">
+                                                    <i class="fa fa-edit text-white"></i>
+                                                </a>
+                                                <a class="btn btn-icon btn-round btn-danger me-3" data-bs-toggle="modal"
+                                                    data-bs-target="#excluir">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                                <a class="btn btn-info shadow-lg" href="/attStatus">Atualizar</a>
+                                            </td>
                                         </tr>
+                                        <tr class="fs-6">
+                                            <td>946728</td>
+                                            <td>01/04/2025 - 16:20</td>
+                                            <td>Avenida João Pessoa, 999</td>
+                                            <td>890</td>
+                                            <td>21</td>
+                                            <td>
+                                                <a href="/RotaCadastro" class="btn btn-icon btn-round btn-warning me-3">
+                                                    <i class="fa fa-edit text-white"></i>
+                                                </a>
+                                                <a class="btn btn-icon btn-round btn-danger me-3" data-bs-toggle="modal"
+                                                    data-bs-target="#excluir">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                                <a class="btn btn-info shadow-lg" href="/attStatus">Atualizar</a>
+                                            </td>
+                                        </tr>
+                                        <tr class="fs-6">
+                                            <td>946729</td>
+                                            <td>02/04/2025 - 11:00</td>
+                                            <td>Rua Sete de Setembro, 45</td>
+                                            <td>500</td>
+                                            <td>13</td>
+                                            <td>
+                                                <a href="/RotaCadastro" class="btn btn-icon btn-round btn-warning me-3">
+                                                    <i class="fa fa-edit text-white"></i>
+                                                </a>
+                                                <a class="btn btn-icon btn-round btn-danger me-3" data-bs-toggle="modal"
+                                                    data-bs-target="#excluir">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                                <a class="btn btn-info shadow-lg" href="/attStatus">Atualizar</a>
+                                            </td>
+                                        </tr>
+                                        <tr class="fs-6">
+                                            <td>946730</td>
+                                            <td>03/04/2025 - 08:40</td>
+                                            <td>Avenida Independência, 255</td>
+                                            <td>620</td>
+                                            <td>18</td>
+                                            <td>
+                                                <a href="/RotaCadastro" class="btn btn-icon btn-round btn-warning me-3">
+                                                    <i class="fa fa-edit text-white"></i>
+                                                </a>
+                                                <a class="btn btn-icon btn-round btn-danger me-3" data-bs-toggle="modal"
+                                                    data-bs-target="#excluir">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                                <a class="btn btn-info shadow-lg" href="/attStatus">Atualizar</a>
+                                            </td>
+                                        </tr>
+
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
+                    <!--start modal-->
+                    <div class="modal fade" id="excluir" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered p-5">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <div class="d-flex justify-content-center text-center flex-column mb-3">
+                                        <i class="fa fa-exclamation-triangle text-danger fs-2"></i>
+                                        <span class="fw-bold fs-4">Tem certeza que deseja excluir a rota?</span>
+                                    </div>
+                                    <div class="modal-footer d-flex justify-content-center">
+                                        <button type="button" class="btn btn-danger"
+                                            data-bs-dismiss="modal">Cancelar</button>
+                                        <button type="button" class="btn btn-primary">Confirmar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end modal-->
                 </div>
                 <!--end conteudo indiviudual da pagina-->
                 <footer class="footer">

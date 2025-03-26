@@ -39,7 +39,7 @@
                                 </span>
                                 <h4 class="text-section">Funções Do Sistema</h4>
                             </li>
-                            <li class="nav-item active">
+                            <li class="nav-item">
                                 <a data-bs-toggle="collapse" href="#cadastro">
                                     <i class="fas fa-user"></i>
                                     <p>Cadastros</p>
@@ -132,7 +132,7 @@
                                     </ul>
                                 </div>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item active">
                                 <a href="/relatorios">
                                     <i class="fas fa-table"></i>
                                     <p>Relatórios</p>
@@ -233,85 +233,158 @@
                         <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
                             <div class="mb-3 d-flex flex-column">
                                 <span class="fs-2 fw-bold">
-                                    Cadastro de Planta de Reciclagem
+                                    Relatórios
                                 </span>
                                 <small class="text-muted">
-                                    Preencha os dados de cadastro e clique em salvar.
+                                    Espaço para gerar relatórios funcionais do sistema.
                                 </small>
                             </div>
                         </div>
                         <div class="card shadow-lg">
                             <div class="card-header d-none">
                                 <div class="card-title">
-                                    <span class="fs-2 fw-bold"></span>
+                                    <span class="fs-2 fw-bold">Filtro</span>
                                 </div>
                             </div>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="fw-bold">Nome da Planta</label>
-                                            <input type="text" class="form-control" placeholder="Insira o nome">
+                                            <label for="disableinput">Código</label>
+                                            <input type="text" class="form-control" placeholder="Insira o código">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="fw-bold">Codigo da Planta</label>
-                                            <input type="text" class="form-control" placeholder="____" disabled>
+                                            <label for="disableinput">Descrição</label>
+                                            <textarea class="form-control" id="comment"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="fw-bold">Área total em m²</label>
-                                            <input type="text" class="form-control" placeholder="Nr de m²">
+                                            <label for="exampleFormControlSelect1">Tipo</label>
+                                            <select class="form-select" id="exampleFormControlSelect1">
+                                                <option>Excel</option>
+                                                <option>PDF</option>
+                                                <option>Dashboard</option>
+                                                <option>Word</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="fw-bold">Capacidade Total (Kg)</label>
-                                            <input type="number" class="form-control"
-                                                placeholder="Capacidade Total (Kg)">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Capacidade Atual (Kg)</label>
-                                            <input type="number" class="form-control"
-                                                placeholder="Capacidade Atual (Kg)">
+                                            <label for="exampleFormControlSelect1">Formato da Página</label>
+                                            <select class="form-select" id="exampleFormControlSelect1">
+                                                <option>Paisagem</option>
+                                                <option>Retrato</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Endereço</label>
-                                            <input type="text" class="form-control" placeholder="Preencha o endereço">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="fw-bold">CEP</label>
-                                            <input type="text" class="form-control" placeholder="Preencha o CEP">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Cidade</label>
-                                            <input type="text" class="form-control" placeholder="Informe a cidade">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Bairro</label>
-                                            <input type="text" class="form-control" placeholder="Informe o bairro">
-                                        </div>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="comment">Insira o comando SQL para filtrar seu relatório:</label>
+                                    <textarea class="form-control" id="comment" rows="5">  SELECT 
+    a.nr_atendimento as Atendimento,
+    obter_nome_pf(a.cd_pessoa_fisica) Paciente,
+    b.DS_SETOR_INTERNACAO as Setor,
+    obter_nome_pf(a.cd_medico) Usuario,
+    a.dt_liberacao as Liberacao,
+    substr(Aval(nr_sequencia,23290),1,2000) Pronado,
+    substr(Aval(nr_sequencia,23291),1,2000) ECMO,
+    substr(Aval(nr_sequencia,7641),1,2000) PAV,
+    CASE
+        WHEN substr(Aval(nr_sequencia,7664),1,2000) = 'S' THEN 'SIM'
+        WHEN substr(Aval(nr_sequencia,7672),1,2000) = 'S' THEN 'NAO'
+        ELSE 'Nao se aplica'
+    END as Cabeceira_elevada,
+    
+    CASE 
+        WHEN substr(Aval(nr_sequencia,7665),1,2000) = 'S' THEN 'SIM'
+        ELSE 'NAO'
+    END as Ausencia_condensado,
+
+    CASE 
+        WHEN substr(Aval(nr_sequencia,7663),1,2000) = 'S' THEN 'SIM'
+        ELSE 'NAO'
+    END as higiene_oral,
+    
+    CASE 
+        WHEN  substr(Aval(nr_sequencia,12101),1,2000) = 'S' THEN 'SIM'
+        ELSE 'NAO'
+    END as Pressao_cuff ,
+    
+    substr(Aval(nr_sequencia,7675),1,2000) CVC_PICC,
+    
+    CASE
+        WHEN substr(Aval(nr_sequencia,7691),1,2000) = 'S' THEN 'SIM'
+        WHEN substr(Aval(nr_sequencia,7682),1,2000) = 'S' THEN 'NAO'
+        ELSE 'Nao se aplica'
+    END as Checklist_Preenchido,
+    
+    CASE
+        WHEN substr(Aval(nr_sequencia,7690),1,2000) = 'S' THEN 'SIM'
+        WHEN substr(Aval(nr_sequencia,7685),1,2000) = 'S' THEN 'NAO'
+        ELSE 'Nao se aplica'
+    END as Higiene_mãos,
+    
+    CASE
+        WHEN substr(Aval(nr_sequencia,7681),1,2000) = 'S' THEN 'SIM'
+        WHEN substr(Aval(nr_sequencia,7684),1,2000) = 'S' THEN 'NAO'
+        ELSE 'Nao se aplica'
+    END as Desinfeccao_conexoes,
+
+    CASE
+        WHEN substr(Aval(nr_sequencia,7692),1,2000) = 'S' THEN 'SIM'
+        WHEN substr(Aval(nr_sequencia,7689),1,2000) = 'S' THEN 'NAO'
+        ELSE 'Nao se aplica'
+    END as Protecao_banho,
+    
+    CASE
+        WHEN substr(Aval(nr_sequencia,7727),1,2000) = 'S' THEN 'SIM'
+        WHEN substr(Aval(nr_sequencia,7728),1,2000) = 'S' THEN 'NAO'
+        ELSE 'Nao se aplica'
+    END as Curativo_clorexidine,
+    
+      CASE
+        WHEN  substr(Aval(nr_sequencia,7732),1,2000) = 'S' THEN 'SIM'
+        ELSE 'NAO'
+    END as Curativo_Limpo,
+    
+    substr(Aval(nr_sequencia,7693),1,2000) SVD,
+    
+    CASE
+        WHEN substr(Aval(nr_sequencia,7710),1,2000) = 'S' THEN 'SIM'
+        WHEN substr(Aval(nr_sequencia,7703),1,2000) = 'S' THEN 'NAO'
+        ELSE 'Nao se aplica'
+    END as CheckList_SVD,
+
+    CASE
+        WHEN substr(Aval(nr_sequencia,7709),1,2000) = 'S' THEN 'SIM'
+        ELSE 'NAO'
+    END as Fixacao_Adequada,
+
+    CASE
+        WHEN substr(Aval(nr_sequencia,7708),1,2000) = 'S' THEN 'SIM'
+        ELSE 'NAO'
+    END as Bolsa_coletora,
+    
+    CASE
+        WHEN substr(Aval(nr_sequencia,7707),1,2000) = 'S' THEN 'SIM'
+        ELSE 'NAO'
+    END as Bolsa_coletora
+    
+FROM MED_AVALIACAO_PACIENTE a,
+    atendimento_paciente_v b
+WHERE a.nr_seq_tipo_avaliacao = 950
+    AND a.nr_atendimento = b.nr_atendimento
+    AND a.nr_atendimento = 2983739
+    AND a.dt_liberacao IS NOT NULL
+    AND a.dt_atualizacao BETWEEN :dt_inicial AND fim_dia(:dt_final)
+    
+   -- AND b.CD_ESTABELECIMENTO = OBTER_ESTABELECIMENTO_ATIVO()                        </textarea>
                                 </div>
-                                <div class="d-flex justify-content-end mt-3">
-                                    <button type="button" class="btn btn-success" id="alert_demo_4">
-                                        Salvar
-                                    </button>
+                                <div class="d-flex justify-content-end">
+                                    <a href="/relatorios" class="btn btn-success">Salvar</a>
                                 </div>
                             </div>
                         </div>

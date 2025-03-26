@@ -7,7 +7,7 @@
                 <div class="sidebar-logo">
                     <!-- Logo Header -->
                     <div class="logo-header" data-background-color="dark">
-                        <a href="Home.html" class="logo">
+                        <a href="/home" class="logo">
                             <img src="assets/Eco.png" alt="navbar brand" class="navbar-brand" height="30" />
                         </a>
                         <div class="nav-toggle">
@@ -27,8 +27,8 @@
                 <div class="sidebar-wrapper scrollbar scrollbar-inner">
                     <div class="sidebar-content">
                         <ul class="nav nav-secondary">
-                            <li class="nav-item active">
-                                <a href="home.html" class="collapsed" aria-expanded="false">
+                            <li class="nav-item">
+                                <a href="/home" class="collapsed" aria-expanded="false">
                                     <i class="fas fa-home"></i>
                                     <p>Home</p>
                                 </a>
@@ -48,7 +48,7 @@
                                 <div class="collapse" id="cadastro">
                                     <ul class="nav nav-collapse">
                                         <li>
-                                            <a href="/cad_buscar">
+                                            <a href="/cadastros">
                                                 <span class="sub-item">Buscar</span>
                                             </a>
                                         </li>
@@ -58,24 +58,29 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/cad_usuario">
+                                            <a href="/usuario">
                                                 <span class="sub-item">Novo Usuario</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/cad_fornecedor">
-                                                <span class="sub-item">Novo Fornecedor</span>
+                                            <a href="/planta">
+                                                <span class="sub-item">Nova Planta</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/cad_planta">
-                                                <span class="sub-item">Nova Planta</span>
+                                            <a href="/material">
+                                                <span class="sub-item">Novo Material</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/estoqueNovo">
+                                                <span class="sub-item">Novo Estoque</span>
                                             </a>
                                         </li>
                                     </ul>
                                 </div>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item active">
                                 <a data-bs-toggle="collapse" href="#estoque">
                                     <i class="fas fa-th-list"></i>
                                     <p>Estoque</p>
@@ -84,18 +89,18 @@
                                 <div class="collapse" id="estoque">
                                     <ul class="nav nav-collapse">
                                         <li>
-                                            <a href="estoque.html">
+                                            <a href="/estoqueBuscar">
                                                 <span class="sub-item">Buscar Material</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="Estoque_Movimento.html">
-                                                <span class="sub-item">Entrada/Saída de Material</span>
+                                            <a href="/estoqueEntrada">
+                                                <span class="sub-item">Entrada de Material</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="Estoque_Auditoria.html">
-                                                <span class="sub-item">Auditoria</span>
+                                            <a href="/estoqueSaida">
+                                                <span class="sub-item">Saída de Material</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -110,32 +115,33 @@
                                 <div class="collapse" id="coleta">
                                     <ul class="nav nav-collapse">
                                         <li>
-                                            <a href="Coleta_Cadastro.html">
-                                                <span class="sub-item">Cadastrar Pedido de Coleta</span>
+                                            <a href="/agendamento">
+                                                <span class="sub-item">Agendamento</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="Coleta_Inicio.html">
-                                                <span class="sub-item">Visualizar Rotas</span>
+                                            <a href="/rotas">
+                                                <span class="sub-item">Rotas Programadas</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="Coleta_Gerenciar.html">
-                                                <span class="sub-item">Buscar Coletas</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="Coleta_Atualizar.html">
-                                                <span class="sub-item">Atualizar Status de Coleta</span>
+                                            <a href="/attStatus">
+                                                <span class="sub-item">Atualizar Status da Coleta</span>
                                             </a>
                                         </li>
                                     </ul>
                                 </div>
                             </li>
                             <li class="nav-item">
-                                <a href="gerenciamento.html">
+                                <a href="/relatorios">
                                     <i class="fas fa-table"></i>
                                     <p>Relatórios</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/processamento">
+                                    <i class="fas fa-thumbtack"></i>
+                                    <p>Processamento</p>
                                 </a>
                             </li>
                         </ul>
@@ -534,7 +540,7 @@
                                                 <td>13213193</td>
                                                 <td>240</td>
                                                 <td>16/06/2024</td>
-                                                <td>19/08/2024</td>
+                                                <td>--</td>
                                                 <td>Em Estoque</td>
                                             </tr>
                                             <tr>
@@ -543,7 +549,7 @@
                                                 <td>13213193</td>
                                                 <td>1150</td>
                                                 <td>16/06/2024</td>
-                                                <td>-</td>
+                                                <td>16/06/2024</td>
                                                 <td>Descartado</td>
                                             </tr>
                                         </tbody>
