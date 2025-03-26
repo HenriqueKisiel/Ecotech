@@ -39,7 +39,7 @@
                                 </span>
                                 <h4 class="text-section">Funções Do Sistema</h4>
                             </li>
-                            <li class="nav-item active">
+                            <li class="nav-item">
                                 <a data-bs-toggle="collapse" href="#cadastro">
                                     <i class="fas fa-user"></i>
                                     <p>Cadastros</p>
@@ -106,7 +106,7 @@
                                     </ul>
                                 </div>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item active">
                                 <a data-bs-toggle="collapse" href="#coleta">
                                     <i class="fa fa-map-marker-alt"></i>
                                     <p>Gestão de Coleta</p>
@@ -233,14 +233,17 @@
                         <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
                             <div class="mb-3 d-flex flex-column">
                                 <span class="fs-2 fw-bold">
-                                    Cadastro de Planta de Reciclagem
+                                    Cadastro de Rota
                                 </span>
                                 <small class="text-muted">
                                     Preencha os dados de cadastro e clique em salvar.
                                 </small>
                             </div>
+                            <div>
+                                <a class="btn btn-secondary shadow-lg" href="/rotas">Voltar</a>
+                            </div>
                         </div>
-                        <div class="card shadow-lg">
+                        <div class="card shadow-lg mb-3">
                             <div class="card-header d-none">
                                 <div class="card-title">
                                     <span class="fs-2 fw-bold"></span>
@@ -250,69 +253,124 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="fw-bold">Nome da Planta</label>
-                                            <input type="text" class="form-control" placeholder="Insira o nome">
+                                            <label class="fw-bold">Nome da Rota</label>
+                                            <input type="text" class="form-control" placeholder="Insira o nome ">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="fw-bold">Codigo da Planta</label>
-                                            <input type="text" class="form-control" placeholder="____" disabled>
+                                            <label class="fw-bold">Data Agendada</label>
+                                            <input type="date" class="form-control">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="fw-bold">Área total em m²</label>
-                                            <input type="text" class="form-control" placeholder="Nr de m²">
+                                            <label class="fw-bold">Peso total (Kg)</label>
+                                            <input type="text" class="form-control" placeholder="Kg">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="fw-bold">Capacidade Total (Kg)</label>
-                                            <input type="number" class="form-control"
-                                                placeholder="Capacidade Total (Kg)">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Capacidade Atual (Kg)</label>
-                                            <input type="number" class="form-control"
-                                                placeholder="Capacidade Atual (Kg)">
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Endereço</label>
-                                            <input type="text" class="form-control" placeholder="Preencha o endereço">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="fw-bold">CEP</label>
-                                            <input type="text" class="form-control" placeholder="Preencha o CEP">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Cidade</label>
-                                            <input type="text" class="form-control" placeholder="Informe a cidade">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Bairro</label>
-                                            <input type="text" class="form-control" placeholder="Informe o bairro">
+                                            <label class="fw-bold">Volume total (m³)</label>
+                                            <input type="text" class="form-control" placeholder="m³">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-end mt-3">
-                                    <button type="button" class="btn btn-success" id="alert_demo_4">
+                                    <button type="button" class="btn btn-success fw-bold shadow-lg fs-5"
+                                        id="alert_demo_4">
                                         Salvar
                                     </button>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="card shadow-lg mb-3">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <span class="fs-4 fw-bold">Selecione o agendamento para essa rota:</span>
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <table class="table table-head-bg-success">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col"></th>
+                                            <th scope="col">Linha</th>
+                                            <th scope="col">Cod. do Material</th>
+                                            <th scope="col">Descrição</th>
+                                            <th scope="col">Endereço</th>
+                                            <th scope="col">Cidade/Bairro</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div>
+                                                    <input class="form-check-input" type="checkbox" id="checkboxNoLabel"
+                                                        value="" aria-label="..." checked>
+                                                </div>
+                                            </td>
+                                            <td><span class="badge badge-success fs-6">Verde</span></td>
+                                            <td>8533</td>
+                                            <td>Placas Marrom</td>
+                                            <td>Rua da Mangas, 764</td>
+                                            <td>Curitiba, Boqueirão</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div>
+                                                    <input class="form-check-input" type="checkbox" value=""
+                                                        aria-label="...">
+                                                </div>
+                                            </td>
+                                            <td><span class="badge badge-danger fs-6">Vermelha</span></td>
+                                            <td>1025</td>
+                                            <td>Tubos de Aço</td>
+                                            <td>Avenida Central, 1220</td>
+                                            <td>São Paulo, Vila Mariana</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div>
+                                                    <input class="form-check-input" type="checkbox" value=""
+                                                        aria-label="...">
+                                                </div>
+                                            </td>
+                                            <td><span class="badge badge-primary fs-6">Azul</span></td>
+                                            <td>6758</td>
+                                            <td>Fios Elétricos</td>
+                                            <td>Rua das Palmeiras, 45</td>
+                                            <td>Rio de Janeiro, Copacabana</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div>
+                                                    <input class="form-check-input" type="checkbox" value=""
+                                                        aria-label="...">
+                                                </div>
+                                            </td>
+                                            <td><span class="badge badge-warning fs-6">Laranja</span></td>
+                                            <td>3987</td>
+                                            <td>Chapas de Alumínio</td>
+                                            <td>Praça da Liberdade, 10</td>
+                                            <td>Belo Horizonte, Savassi</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div>
+                                                    <input class="form-check-input" type="checkbox" value=""
+                                                        aria-label="...">
+                                                </div>
+                                            </td>
+                                            <td><span class="badge badge-primary fs-6">Azul</span></td>
+                                            <td>7771</td>
+                                            <td>Parafusos de Inox</td>
+                                            <td>Rua das Rosas, 238</td>
+                                            <td>Porto Alegre, Centro</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
                             </div>
                         </div>
                     </div>
@@ -339,3 +397,6 @@
         </div>
     </body>
 </main>
+Cadastro de coleta crud
+Tela de processo
+agendamento finalizado e etapas da tabela

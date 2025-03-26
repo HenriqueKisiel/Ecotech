@@ -138,6 +138,12 @@
                                     <p>Relatórios</p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="/processamento">
+                                    <i class="fas fa-thumbtack"></i>
+                                    <p>Processamento</p>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -233,6 +239,9 @@
                                     Visualize todas as rotas de coleta programadas.
                                 </small>
                             </div>
+                            <div>
+                                <a class="btn btn-primary shadow-lg" href="/rotaCadastro">Nova Rota</a>
+                            </div>
                         </div>
                         <div class="card shadow-lg">
                             <div class="card-header">
@@ -260,6 +269,13 @@
                                             <td>456</td>
                                             <td>9</td>
                                             <td>
+                                                <a href="/RotaCadastro" class="btn btn-icon btn-round btn-warning me-3">
+                                                    <i class="fa fa-edit text-white"></i>
+                                                </a>
+                                                <a class="btn btn-icon btn-round btn-danger me-3" data-bs-toggle="modal"
+                                                    data-bs-target="#excluir">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
                                                 <a class="btn btn-info shadow-lg" href="/attStatus">Atualizar</a>
                                             </td>
                                         </tr>
@@ -270,6 +286,13 @@
                                             <td>678</td>
                                             <td>15</td>
                                             <td>
+                                                <a href="/RotaCadastro" class="btn btn-icon btn-round btn-warning me-3">
+                                                    <i class="fa fa-edit text-white"></i>
+                                                </a>
+                                                <a class="btn btn-icon btn-round btn-danger me-3" data-bs-toggle="modal"
+                                                    data-bs-target="#excluir">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
                                                 <a class="btn btn-info shadow-lg" href="/attStatus">Atualizar</a>
                                             </td>
                                         </tr>
@@ -280,6 +303,13 @@
                                             <td>320</td>
                                             <td>7</td>
                                             <td>
+                                                <a href="/RotaCadastro" class="btn btn-icon btn-round btn-warning me-3">
+                                                    <i class="fa fa-edit text-white"></i>
+                                                </a>
+                                                <a class="btn btn-icon btn-round btn-danger me-3" data-bs-toggle="modal"
+                                                    data-bs-target="#excluir">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
                                                 <a class="btn btn-info shadow-lg" href="/attStatus">Atualizar</a>
                                             </td>
                                         </tr>
@@ -290,6 +320,13 @@
                                             <td>890</td>
                                             <td>21</td>
                                             <td>
+                                                <a href="/RotaCadastro" class="btn btn-icon btn-round btn-warning me-3">
+                                                    <i class="fa fa-edit text-white"></i>
+                                                </a>
+                                                <a class="btn btn-icon btn-round btn-danger me-3" data-bs-toggle="modal"
+                                                    data-bs-target="#excluir">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
                                                 <a class="btn btn-info shadow-lg" href="/attStatus">Atualizar</a>
                                             </td>
                                         </tr>
@@ -300,6 +337,13 @@
                                             <td>500</td>
                                             <td>13</td>
                                             <td>
+                                                <a href="/RotaCadastro" class="btn btn-icon btn-round btn-warning me-3">
+                                                    <i class="fa fa-edit text-white"></i>
+                                                </a>
+                                                <a class="btn btn-icon btn-round btn-danger me-3" data-bs-toggle="modal"
+                                                    data-bs-target="#excluir">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
                                                 <a class="btn btn-info shadow-lg" href="/attStatus">Atualizar</a>
                                             </td>
                                         </tr>
@@ -310,6 +354,13 @@
                                             <td>620</td>
                                             <td>18</td>
                                             <td>
+                                                <a href="/RotaCadastro" class="btn btn-icon btn-round btn-warning me-3">
+                                                    <i class="fa fa-edit text-white"></i>
+                                                </a>
+                                                <a class="btn btn-icon btn-round btn-danger me-3" data-bs-toggle="modal"
+                                                    data-bs-target="#excluir">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
                                                 <a class="btn btn-info shadow-lg" href="/attStatus">Atualizar</a>
                                             </td>
                                         </tr>
@@ -319,6 +370,26 @@
                             </div>
                         </div>
                     </div>
+                    <!--start modal-->
+                    <div class="modal fade" id="excluir" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered p-5">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <div class="d-flex justify-content-center text-center flex-column mb-3">
+                                        <i class="fa fa-exclamation-triangle text-danger fs-2"></i>
+                                        <span class="fw-bold fs-4">Tem certeza que deseja excluir a rota?</span>
+                                    </div>
+                                    <div class="modal-footer d-flex justify-content-center">
+                                        <button type="button" class="btn btn-danger"
+                                            data-bs-dismiss="modal">Cancelar</button>
+                                        <button type="button" class="btn btn-primary">Confirmar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end modal-->
                 </div>
                 <!--end conteudo indiviudual da pagina-->
                 <footer class="footer">

@@ -190,6 +190,16 @@ app.get('/estoqueNovo', (req, res) => {
     res.render('estoqueNovo');
 });
 
+// Rota para a página de cadastrar rota
+app.get('/rotaCadastro', (req, res) => {
+    res.render('rotaCadastro');
+});
+
+// Rota para a página de processamento
+app.get('/processamento', (req, res) => {
+    res.render('processamento');
+});
+
 //==================== END ROTAS ====================
 
 // Servidor
