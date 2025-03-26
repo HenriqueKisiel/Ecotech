@@ -5,13 +5,24 @@ npm install express-session
 npm install --save body-parser
 npm install --save mysql
 npm install ejs -save
+
+npm install nodemailer
+npm install dotenv
+
 */
 
 const express = require('express');
 const { engine } = require('express-handlebars');
 const session = require("express-session");
 const path = require('path');
+const nodemailer = require('nodemailer');
 
+require('dotenv').config();
+
+console.log('EMAIL_GMAIL:', process.env.EMAIL_GMAIL);
+console.log('EMAIL_PASSWORD:', process.env.EMAIL_PASSWORD);
+
+//criando a aplicação
 const app = express();
 
 //criando a sessão
@@ -32,8 +43,8 @@ app.use(express.urlencoded({ extended: false }));
 function conectiondb() {
     const conexao = mysql.createConnection({
         host: 'localhost',
-        user: 'administrador', // user do henrique : administrador -  Nico: admin
-        password: '123456789', // senha do banco Henrique: 123456789
+        user: 'root', // user do henrique : administrador -  Nico: admin
+        password: '12345678', // senha do banco Henrique: 123456789
         database: 'ecotech'   // nome do banco Henrique: projeto - 
     });
 
@@ -102,6 +113,55 @@ app.post('/log', function (req, res) {
         }
     });
 });
+
+
+// Rota para recuperação de senha
+app.post('/recuperar-senha', (req, res) => {
+    const email = req.body.email;
+    const conexao = conectiondb();
+
+    // Buscar senha no banco
+    conexao.query('SELECT senha FROM usuario WHERE email = ?', [email], (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar a senha:', err);
+            return res.render('recuperar', { message: 'Erro ao recuperar senha.' });
+        }
+
+        if (results.length === 0) {
+            return res.render('recuperar', { message: 'E-mail não encontrado!' });
+        }
+
+        const Senha = results[0].senha;
+
+        // Configuração do transporte de e-mail
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.EMAIL_GMAIL,  // Obtém do .env
+                pass: process.env.EMAIL_PASSWORD  // Obtém do .env
+            }
+        });
+
+        const mailOptions = {
+            from: process.env.EMAIL_GMAIL,
+            to: email,
+            subject: 'Recuperação de Senha',
+            text: `Sua senha é: ${Senha}`
+        };
+
+        // Enviar e-mail
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error('Erro ao enviar o e-mail:', error);
+                return res.render('recuperar', { message: 'Erro ao enviar e-mail.' });
+            } else {
+                console.log('E-mail enviado: ' + info.response);
+                return res.render('formulario', { message: 'E-mail enviado com sucesso!' });
+            }
+        });
+    });
+}); 
+
 
 //==================== START ROTAS ====================
 
