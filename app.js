@@ -48,7 +48,7 @@ function conectiondb() {
 }
 
 //configurado para servir arquivos estaticos
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 //chamando bootstrap
 app.use('/bootstrap', express.static('./node_modules/bootstrap/dist'));
@@ -201,6 +201,7 @@ app.get('/processamento', (req, res) => {
 });
 
 //==================== END ROTAS ====================
+
 
 // Servidor
 app.listen(8080, () => {
