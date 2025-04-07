@@ -1,0 +1,31 @@
+.introjs-button {
+    background-color: #4f46e5 !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 8px 16px !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    transition: background 0.3s ease !important;
+    text-shadow: none !important;
+}
+
+.introjs-nextbutton {
+    background-color: #3b82f6 !important;
+    color: white !important;
+}
+
+.introjs-prevbutton {
+    background-color: #9ca3af !important;
+    color: black !important;
+}
+
+.introjs-donebutton {
+    background-color: #10b981 !important;
+    color: white !important;
+}
+
+.introjs-skipbutton {
+    background-color: transparent !important;
+    color: #6b7280 !important;
+}

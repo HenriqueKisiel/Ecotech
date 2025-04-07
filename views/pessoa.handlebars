@@ -1,14 +1,160 @@
 <main>
-
-    <body>
-        <div class="wrapper">
-            <!-- Sidebar -->
-            <div class="sidebar" data-background-color="dark">
-                <div class="sidebar-logo">
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <div class="sidebar" data-background-color="dark">
+            <div class="sidebar-logo">
+                <!-- Logo Header -->
+                <div class="logo-header" data-background-color="dark">
+                    <a href="/home" class="logo">
+                        <img src="assets/Eco.png" alt="navbar brand" class="navbar-brand" height="30" />
+                    </a>
+                    <div class="nav-toggle">
+                        <button class="btn btn-toggle toggle-sidebar">
+                            <i class="gg-menu-right"></i>
+                        </button>
+                        <button class="btn btn-toggle sidenav-toggler">
+                            <i class="gg-menu-left"></i>
+                        </button>
+                    </div>
+                    <button class="topbar-toggler more">
+                        <i class="gg-more-vertical-alt"></i>
+                    </button>
+                </div>
+                <!-- End Logo Header -->
+            </div>
+            <div class="sidebar-wrapper scrollbar scrollbar-inner">
+                <div class="sidebar-content">
+                    <ul class="nav nav-secondary">
+                        <li class="nav-item">
+                            <a href="/home" class="collapsed" aria-expanded="false">
+                                <i class="fas fa-home"></i>
+                                <p>Home</p>
+                            </a>
+                        </li>
+                        <li class="nav-section">
+                            <span class="sidebar-mini-icon">
+                                <i class="fa fa-ellipsis-h"></i>
+                            </span>
+                            <h4 class="text-section">Funções Do Sistema</h4>
+                        </li>
+                        <li class="nav-item active">
+                            <a data-bs-toggle="collapse" href="#cadastro">
+                                <i class="fas fa-user"></i>
+                                <p>Cadastros</p>
+                                <span class="caret"></span>
+                            </a>
+                            <div class="collapse" id="cadastro">
+                                <ul class="nav nav-collapse">
+                                    <li>
+                                        <a href="/cadastros">
+                                            <span class="sub-item">Buscar</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/pessoa">
+                                            <span class="sub-item">Nova Pessoa</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/usuario">
+                                            <span class="sub-item">Novo Usuario</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/planta">
+                                            <span class="sub-item">Nova Planta</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/material">
+                                            <span class="sub-item">Novo Material</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/estoqueNovo">
+                                            <span class="sub-item">Novo Estoque</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a data-bs-toggle="collapse" href="#estoque">
+                                <i class="fas fa-th-list"></i>
+                                <p>Estoque</p>
+                                <span class="caret"></span>
+                            </a>
+                            <div class="collapse" id="estoque">
+                                <ul class="nav nav-collapse">
+                                    <li>
+                                        <a href="/estoqueBuscar">
+                                            <span class="sub-item">Buscar Material</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/estoqueEntrada">
+                                            <span class="sub-item">Entrada de Material</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/estoqueSaida">
+                                            <span class="sub-item">Saída de Material</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a data-bs-toggle="collapse" href="#coleta">
+                                <i class="fa fa-map-marker-alt"></i>
+                                <p>Gestão de Coleta</p>
+                                <span class="caret"></span>
+                            </a>
+                            <div class="collapse" id="coleta">
+                                <ul class="nav nav-collapse">
+                                    <li>
+                                        <a href="/agendamento">
+                                            <span class="sub-item">Agendamento</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/rotas">
+                                            <span class="sub-item">Rotas Programadas</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/attStatus">
+                                            <span class="sub-item">Atualizar Status da Coleta</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/relatorios">
+                                <i class="fas fa-table"></i>
+                                <p>Relatórios</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/processamento">
+                                <i class="fas fa-thumbtack"></i>
+                                <p>Processamento</p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- End Sidebar -->
+        <!--Start MenuBar-->
+        <div class="main-panel">
+            <div class="main-header">
+                <div class="main-header-logo">
                     <!-- Logo Header -->
                     <div class="logo-header" data-background-color="dark">
-                        <a href="/home" class="logo">
-                            <img src="assets/Eco.png" alt="navbar brand" class="navbar-brand" height="30" />
+                        <a href="#" class="logo">
+                            <img src="assets/Eco.png" alt="navbar brand" class="navbar-brand" height="20" />
                         </a>
                         <div class="nav-toggle">
                             <button class="btn btn-toggle toggle-sidebar">
@@ -24,382 +170,241 @@
                     </div>
                     <!-- End Logo Header -->
                 </div>
-                <div class="sidebar-wrapper scrollbar scrollbar-inner">
-                    <div class="sidebar-content">
-                        <ul class="nav nav-secondary">
-                            <li class="nav-item">
-                                <a href="/home" class="collapsed" aria-expanded="false">
-                                    <i class="fas fa-home"></i>
-                                    <p>Home</p>
+                <!-- Navbar Header -->
+                <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+                    <div class="container-fluid">
+                        <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+                            <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                                    aria-expanded="false" aria-haspopup="true">
+                                    <i class="fa fa-search"></i>
                                 </a>
+                                <ul class="dropdown-menu dropdown-search animated fadeIn">
+                                    <form class="navbar-left navbar-form nav-search">
+                                        <div class="input-group">
+                                            <input type="text" placeholder="Search ..." class="form-control" />
+                                        </div>
+                                    </form>
+                                </ul>
                             </li>
-                            <li class="nav-section">
-                                <span class="sidebar-mini-icon">
-                                    <i class="fa fa-ellipsis-h"></i>
-                                </span>
-                                <h4 class="text-section">Funções Do Sistema</h4>
-                            </li>
-                            <li class="nav-item active">
-                                <a data-bs-toggle="collapse" href="#cadastro">
-                                    <i class="fas fa-user"></i>
-                                    <p>Cadastros</p>
-                                    <span class="caret"></span>
+                            <li class="nav-item topbar-user dropdown hidden-caret">
+                                <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
+                                    aria-expanded="false">
+                                    <span class="profile-username">
+                                        <i class="fas fa-user-circle fa-2x"></i>
+                                    </span>
                                 </a>
-                                <div class="collapse" id="cadastro">
-                                    <ul class="nav nav-collapse">
+                                <ul class="dropdown-menu dropdown-user animated fadeIn">
+                                    <div class="dropdown-user-scroll scrollbar-outer">
                                         <li>
-                                            <a href="/cadastros">
-                                                <span class="sub-item">Buscar</span>
-                                            </a>
+                                            <div class="user-box">
+                                                <div class="u-text">
+                                                    <h4>Henrique</h4>
+                                                    <p class="text-muted">henrique@gmail.com</p>
+                                                    <a href="#" class="btn btn-xs btn-secondary btn-sm">
+                                                        Ver
+                                                        Perfil
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </li>
                                         <li>
-                                            <a href="/pessoa">
-                                                <span class="sub-item">Nova Pessoa</span>
-                                            </a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">Minha conta</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">Configurações</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="/login">Sair</a>
                                         </li>
-                                        <li>
-                                            <a href="/usuario">
-                                                <span class="sub-item">Novo Usuario</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/planta">
-                                                <span class="sub-item">Nova Planta</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/material">
-                                                <span class="sub-item">Novo Material</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/estoqueNovo">
-                                                <span class="sub-item">Novo Estoque</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li class="nav-item">
-                                <a data-bs-toggle="collapse" href="#estoque">
-                                    <i class="fas fa-th-list"></i>
-                                    <p>Estoque</p>
-                                    <span class="caret"></span>
-                                </a>
-                                <div class="collapse" id="estoque">
-                                    <ul class="nav nav-collapse">
-                                        <li>
-                                            <a href="/estoqueBuscar">
-                                                <span class="sub-item">Buscar Material</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/estoqueEntrada">
-                                                <span class="sub-item">Entrada de Material</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/estoqueSaida">
-                                                <span class="sub-item">Saída de Material</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li class="nav-item">
-                                <a data-bs-toggle="collapse" href="#coleta">
-                                    <i class="fa fa-map-marker-alt"></i>
-                                    <p>Gestão de Coleta</p>
-                                    <span class="caret"></span>
-                                </a>
-                                <div class="collapse" id="coleta">
-                                    <ul class="nav nav-collapse">
-                                        <li>
-                                            <a href="/agendamento">
-                                                <span class="sub-item">Agendamento</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/rotas">
-                                                <span class="sub-item">Rotas Programadas</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/attStatus">
-                                                <span class="sub-item">Atualizar Status da Coleta</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/relatorios">
-                                    <i class="fas fa-table"></i>
-                                    <p>Relatórios</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/processamento">
-                                    <i class="fas fa-thumbtack"></i>
-                                    <p>Processamento</p>
-                                </a>
+                                    </div>
+                                </ul>
                             </li>
                         </ul>
                     </div>
-                </div>
+                </nav>
+                <!-- End Navbar -->
             </div>
-            <!-- End Sidebar -->
-            <!--Start MenuBar-->
-            <div class="main-panel">
-                <div class="main-header">
-                    <div class="main-header-logo">
-                        <!-- Logo Header -->
-                        <div class="logo-header" data-background-color="dark">
-                            <a href="#" class="logo">
-                                <img src="assets/Eco.png" alt="navbar brand" class="navbar-brand" height="20" />
-                            </a>
-                            <div class="nav-toggle">
-                                <button class="btn btn-toggle toggle-sidebar">
-                                    <i class="gg-menu-right"></i>
-                                </button>
-                                <button class="btn btn-toggle sidenav-toggler">
-                                    <i class="gg-menu-left"></i>
-                                </button>
-                            </div>
-                            <button class="topbar-toggler more">
-                                <i class="gg-more-vertical-alt"></i>
-                            </button>
+            <!--End MenuBar-->
+            <!--Start conteudo indiviudual da pagina-->
+            <div class="container">
+                <div class="page-inner">
+                    <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
+                        <div class="mb-3 d-flex flex-column">
+                            <span class="fs-2 fw-bold">
+                                Cadastro de Pessoa Física
+                            </span>
+                            <small class="text-muted">
+                                Preencha os dados de cadastro e clique em salvar.
+                            </small>
                         </div>
-                        <!-- End Logo Header -->
+                        <div>
+                            <a href="/juridica" class="btn btn-primary fw-bold shadow-lg me-3 mt-2"> Sou Pessoa
+                                Jurídica
+                                ou
+                                Fornecedor</a>
+                            <a href="/usuario" class="btn btn-warning text-white fw-bold shadow-lg mt-2"
+                                data-bs-toggle="modal" data-bs-target="#aviso">Sou Usuário
+                                do Sistema</a>
+                        </div>
                     </div>
-                    <!-- Navbar Header -->
-                    <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
-                        <div class="container-fluid">
-                            <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
-                                <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
-                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-                                        aria-expanded="false" aria-haspopup="true">
-                                        <i class="fa fa-search"></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-search animated fadeIn">
-                                        <form class="navbar-left navbar-form nav-search">
-                                            <div class="input-group">
-                                                <input type="text" placeholder="Search ..." class="form-control" />
-                                            </div>
-                                        </form>
-                                    </ul>
-                                </li>
-                                <li class="nav-item topbar-user dropdown hidden-caret">
-                                    <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
-                                        aria-expanded="false">
-                                        <span class="profile-username">
-                                            <i class="fas fa-user-circle fa-2x"></i>
-                                        </span>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-user animated fadeIn">
-                                        <div class="dropdown-user-scroll scrollbar-outer">
-                                            <li>
-                                                <div class="user-box">
-                                                    <div class="u-text">
-                                                        <h4>Henrique</h4>
-                                                        <p class="text-muted">henrique@gmail.com</p>
-                                                        <a href="#" class="btn btn-xs btn-secondary btn-sm">
-                                                            Ver
-                                                            Perfil
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#">Minha conta</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#">Configurações</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="/login">Sair</a>
-                                            </li>
-                                        </div>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
-                    <!-- End Navbar -->
-                </div>
-                <!--End MenuBar-->
-                <!--Start conteudo indiviudual da pagina-->
-                <div class="container">
-                    <div class="page-inner">
-                        <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
-                            <div class="mb-3 d-flex flex-column">
-                                <span class="fs-2 fw-bold">
-                                    Cadastro de Pessoa Física
-                                </span>
-                                <small class="text-muted">
-                                    Preencha os dados de cadastro e clique em salvar.
-                                </small>
-                            </div>
-                            <div>
-                                <a href="/juridica" class="btn btn-primary fw-bold shadow-lg me-3 mt-2"> Sou Pessoa
-                                    Jurídica
-                                    ou
-                                    Fornecedor</a>
-                                <a href="/usuario" class="btn btn-warning text-white fw-bold shadow-lg mt-2"
-                                    data-bs-toggle="modal" data-bs-target="#aviso">Sou Usuário
-                                    do Sistema</a>
-                            </div>
-                        </div>
 
-                        <div class="card shadow-lg">
-                            <div class="card-header d-none">
-                                <div class="card-title">
-                                    <span class="fs-2 fw-bold"></span>
+                    <div class="card shadow-lg">
+                        <div class="card-header d-none">
+                            <div class="card-title">
+                                <span class="fs-2 fw-bold"></span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="fw-bold">Nome Completo</label>
+                                        <input maxlength="50" type="text" id="nomeFisico" class="form-control"
+                                            placeholder="Insira o nome completo">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="fw-bold">Nome Social</label>
+                                        <input maxlength="50" type="text" id="nomeSocial" class="form-control"
+                                            placeholder="Insira o nome social">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="fw-bold">E-mail</label>
+                                        <input maxlength="50" type="text" id="email" class="form-control"
+                                            placeholder="Insira o E-mail">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="fw-bold">CPF</label>
+                                        <input maxlength="14" id="cpf" class="form-control" placeholder="Insira o CPF">
+                                        <small id="emailHelp2" class="form-text text-muted">
+                                            Em caso de pessoa física.
+                                        </small>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Nome Completo</label>
-                                            <input type="text" class="form-control"
-                                                placeholder="Insira o nome completo">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Nome Social</label>
-                                            <input type="text" class="form-control" placeholder="Insira o nome social">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">E-mail</label>
-                                            <input type="text" class="form-control" placeholder="Insira o E-mail">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">CPF</label>
-                                            <input type="number" class="form-control" placeholder="Insira o CPF">
-                                            <small id="emailHelp2" class="form-text text-muted">
-                                                Em caso de pessoa física.
-                                            </small>
-                                        </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="fw-bold">Endereço</label>
+                                        <input maxlength="50" type="text" id="endereco" class="form-control"
+                                            placeholder="Preencha o endereço">
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Endereço</label>
-                                            <input type="text" class="form-control" placeholder="Preencha o endereço">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="fw-bold">CEP</label>
-                                            <input type="text" class="form-control" placeholder="Preencha o CEP">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Nº</label>
-                                            <input type="text" class="form-control" placeholder="____">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Cidade</label>
-                                            <input type="text" class="form-control" placeholder="Informe a cidade">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Bairro</label>
-                                            <input type="text" class="form-control" placeholder="Informe o bairro">
-                                        </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="fw-bold">CEP</label>
+                                        <input maxlength="9" type="text" id="cep" class="form-control"
+                                            placeholder="Preencha o CEP">
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="disableinput">Data de Nascimento</label>
-                                            <input type="date" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Sexo</label><br>
-                                            <select class="form-select form-control" id="defaultSelect">
-                                                <option value="2" selected>Masculino</option>
-                                                <option value="3">Feminino</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Naturalidade</label>
-                                            <input type="text" class="form-control"
-                                                placeholder="Informe sua naturalidade">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Telefone</label>
-                                            <input type="number" class="form-control" placeholder="Nr de telefone">
-                                        </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="fw-bold">Nº</label>
+                                        <input maxlength="10" type="text" id="numero" class="form-control"
+                                            placeholder="____">
                                     </div>
                                 </div>
-                                <div class="d-flex justify-content-end mt-3">
-                                    <button type="button" class="btn btn-success" id="alert_demo_4">
-                                        Salvar
-                                    </button>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="fw-bold">Cidade</label>
+                                        <input maxlength="50" type="text" id="cidade" class="form-control"
+                                            placeholder="Informe a cidade">
+                                    </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="fw-bold">Bairro</label>
+                                        <input maxlength="50" type="text" id="bairro" class="form-control"
+                                            placeholder="Informe o bairro">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="disableinput">Data de Nascimento</label>
+                                        <input type="date" id="dataNasc" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="fw-bold">Sexo</label><br>
+                                        <select class="form-select form-control" id="defaultSelect">
+                                            <option value="1" selected>Masculino</option>
+                                            <option value="2">Feminino</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="fw-bold">Naturalidade</label>
+                                        <input maxlength="50" type="text" id="naturalidade" class="form-control"
+                                            placeholder="Informe sua naturalidade">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="fw-bold">Telefone</label>
+                                        <input maxlength="18" id="telefone" class="form-control"
+                                            placeholder="Nr de telefone">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end mt-3">
+                                <button type="button" class="btn btn-success">
+                                    Salvar
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!--end conteudo indiviudual da pagina-->
-                <footer class="footer">
-                    <div class="container-fluid d-flex justify-content-between">
-                        <nav class="pull-left">
-                            <ul class="nav">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">footer#1</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">footer#2</a>
-                                </li>
-                            </ul>
-                        </nav>
-                        <div class="copyright">
-                            2025 - Autores: Equipe 7
-                        </div>
-                    </div>
-                </footer>
             </div>
+            <!--end conteudo indiviudual da pagina-->
+            <footer class="footer">
+                <div class="container-fluid d-flex justify-content-between">
+                    <nav class="pull-left">
+                        <ul class="nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">footer#1</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">footer#2</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div class="copyright">
+                        2025 - Autores: Equipe 7
+                    </div>
+                </div>
+            </footer>
         </div>
-        <!-- Start Modal -->
-        <div class="modal fade" id="aviso" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title fs-4 fw-bold"> <i
-                                class="fas fa-info-circle fa-1x text-primary pe-3"></i>Aviso
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <span class="fs-5 fw-normal">Antes de se cadastrar como usuário, você deve realizar o cadastro
-                            como pessoa física.</span>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Voltar</button>
-                        <a href="/usuario" class="btn btn-primary">Já possuo cadastro como pessoa física</a>
-                    </div>
+    </div>
+    <!-- Start Modal -->
+    <div class="modal fade" id="aviso" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fs-4 fw-bold"> <i
+                            class="fas fa-info-circle fa-1x text-primary pe-3"></i>Aviso
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <span class="fs-5 fw-normal">Antes de se cadastrar como usuário, você deve realizar o cadastro
+                        como pessoa física.</span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Voltar</button>
+                    <a href="/usuario" class="btn btn-primary">Já possuo cadastro como pessoa física</a>
                 </div>
             </div>
         </div>
-        <!-- End Modal -->
-    </body>
+    </div>
+    <!-- End Modal -->
 </main>

@@ -3,7 +3,9 @@
     <body>
         <div class="wrapper">
             <!-- Sidebar -->
-            <div class="sidebar" data-background-color="dark">
+            <div class="sidebar" data-background-color="dark"
+                data-intro="Bem vindo! Este é o menu de navegação. Aqui poderemos navegar por todas funcionalidades do sistema."
+                data-step="1">
                 <div class="sidebar-logo">
                     <!-- Logo Header -->
                     <div class="logo-header" data-background-color="dark">
@@ -39,7 +41,9 @@
                                 </span>
                                 <h4 class="text-section">Funções Do Sistema</h4>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item"
+                                data-intro="O espaço de cadastros possibilita cadastrar novos usuários, plantas, materiais e estoques. Também é possível buscar por pessoas já cadastradas."
+                                data-step="2">
                                 <a data-bs-toggle="collapse" href="#cadastro">
                                     <i class="fas fa-user"></i>
                                     <p>Cadastros</p>
@@ -80,7 +84,9 @@
                                     </ul>
                                 </div>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item"
+                                data-intro="O espaço de estoque possibilita gerenciar o estoque de materiais, permitindo entradas e saídas de materiais. Também é possível buscar por materiais já cadastrados."
+                                data-step="3">
                                 <a data-bs-toggle="collapse" href="#estoque">
                                     <i class="fas fa-th-list"></i>
                                     <p>Estoque</p>
@@ -106,7 +112,9 @@
                                     </ul>
                                 </div>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item"
+                                data-intro="O espaço de gestão de coleta possibilita gerenciar as coletas de materiais, permitindo agendamentos, rotas programadas e atualizações de status das coletas."
+                                data-step="4">
                                 <a data-bs-toggle="collapse" href="#coleta">
                                     <i class="fa fa-map-marker-alt"></i>
                                     <p>Gestão de Coleta</p>
@@ -132,13 +140,17 @@
                                     </ul>
                                 </div>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item"
+                                data-intro="Aqui faremos o suporte a gestão do sistema, pemitindo acesso aos relatórios."
+                                data-step="5">
                                 <a href="/relatorios">
                                     <i class="fas fa-table"></i>
                                     <p>Relatórios</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item"
+                                data-intro="Por fim, aqui você poderá acompanhar o ciclo de vida dos materiais, desde a coleta até o processamento."
+                                data-step="6">
                                 <a href="/processamento">
                                     <i class="fas fa-thumbtack"></i>
                                     <p>Processamento</p>
