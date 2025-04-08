@@ -5,9 +5,9 @@ const { resolveSoa } = require('dns');
 //Conexão com o banco
 function conectiondb() {
     const conexao = mysql.createConnection({
-        host: 'localhost',
-        user: 'administrador', // user do henrique : administrador -  Nico: admin
-        password: '123456789', // senha do banco Henrique: 123456789
+        host: 'mysql.ecotech.kinghost.net',
+        user: 'ecotech_add1', // user do henrique : administrador -  Nico: admin
+        password: 'ecotech2025', // senha do banco Henrique: 123456789
         database: 'ecotech'   // nome do banco Henrique: projeto - 
     });
 

@@ -11,22 +11,22 @@ function exibirPadrao(req, res) {
 //função para exibir o login
 function fazerLogin(req, res) {
      //pega os valores digitados pelo usuário
-     var login = req.body.login;
+     var usuario = req.body.login;
      var Senha = req.body.Senha;
      //conexão com banco de dados
      var conexao = conectiondb();
      //query de execução
-     var query = 'SELECT * FROM usuario WHERE senha = ? AND login like ?';
+     var query = 'SELECT * FROM usuario WHERE ds_senha = ? AND nm_usuario like ?';
  
      //execução da query
-     conexao.query(query, [Senha, login], function (err, results) {
+     conexao.query(query, [Senha, usuario], function (err, results) {
          if (err) {
              console.error('Erro ao executar a query:', err);
              res.status(500).send('Erro ao executar a query');
              return;
          }
          if (results.length > 0) {
-             req.session.user = login; //seção de identificação            
+             req.session.user = usuario; //seção de identificação            
              console.log("Login feito com sucesso!");
              res.render('home', { message: results });
          } else {
