@@ -4,7 +4,10 @@
   "description": "projeto node.js e mysql",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon app.js",
+    "clean": "rimraf dist",
+    "build": "npm run clean && copyfiles \"bd/**/*\" \"rotas/**/*\" \"servico/**/*\" \"views/**/*\" \"public/**/*\" app.js dist",
+    "start": "node dist/app.js"
   },
   "keywords": [
     "express",
@@ -25,7 +28,11 @@
     "mysql": "^2.18.1",
     "mysql2": "^3.14.0",
     "nodemailer": "^6.10.0",
-    "nodemon": "^3.1.9",
     "save": "^2.9.0"
+  },
+  "devDependencies": {
+    "copyfiles": "^2.4.1",
+    "nodemon": "^3.1.9",
+    "rimraf": "^6.0.1"
   }
 }
