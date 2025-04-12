@@ -112,6 +112,12 @@ router.get('/agendamento', (req, res) => {
     servico10.exibirAgendamento(req, res);
 });
 
+// Rota de registro de coleta
+router.get('/agendamento', (req, res) => {
+    servico10.registrarAgendamento(req, res);
+});
+
+
 //---------------------- Servico11 -------------------//
 // Rota para a página de rotas programadas
 router.get('/rotas', (req, res) => {
