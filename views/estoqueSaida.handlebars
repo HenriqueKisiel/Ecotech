@@ -247,7 +247,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    {{!-- <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold form-label d-flex justify-content-center">
                                                 Selecione a Linha do
@@ -284,14 +284,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Descrição do Material</label>
-                                            <input type="text" class="form-control form-control" id="defaultInput"
-                                                placeholder="Insira o nome">
-                                        </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Codigo do Material</label>
@@ -308,91 +301,86 @@
                                 </div>
                             </div>
                             <div class="card-footer d-flex justify-content-end">
-                                <a class="btn btn-info me-3">Limpar Filtros</a>
                                 <a class="btn btn-primary">Buscar</a>
                             </div>
                         </div>
-
-                    </div>
-                    <div class="card">
-                        <div class="card-header d-none">
-                            <div class="card-title"></div>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive rounded">
-                                <table class="table table-bordered table-head-bg-success">
-                                    <thead>
-                                        <tr>
-                                            <th>Linha</th>
-                                            <th>Descrição</th>
-                                            <th>Codigo</th>
-                                            <th>Qtd.(Kg)</th>
-                                            <th>Data Entrada</th>
-                                            <th>Quantidade Retirada</th>
-                                            <th>Status</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Linha Verde</td>
-                                            <td>Placa Verde</td>
-                                            <td>13213193</td>
-                                            <td>870</td>
-                                            <td>16/06/2024</td>
-                                            <td> <input type="text" class="form-control form-control" id="defaultInput"
-                                                    placeholder="_____"></td>
-                                            <td>
-                                                <select class="form-select form-control" id="defaultSelect">
-                                                    <option>Vendido</option>
-                                                    <option>Descartado</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <a class="btn btn-warning text-white">Registrar Saída</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Linha Vermelha</td>
-                                            <td>Geladeira</td>
-                                            <td>13213193</td>
-                                            <td>240</td>
-                                            <td>16/06/2024</td>
-                                            <td> <input type="text" class="form-control form-control" id="defaultInput"
-                                                    placeholder="_____"></td>
-                                            <td>
-                                                <select class="form-select form-control" id="defaultSelect">
-                                                    <option>Vendido</option>
-                                                    <option>Descartado</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <a class="btn btn-warning text-white">Registrar Saída</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Linha Azul</td>
-                                            <td>Materiais Diversos</td>
-                                            <td>13213193</td>
-                                            <td>1150</td>
-                                            <td>16/06/2024</td>
-                                            <td> <input type="text" class="form-control form-control" id="defaultInput"
-                                                    placeholder="_____"></td>
-                                            <td>
-                                                <select class="form-select form-control" id="defaultSelect">
-                                                    <option>Vendido</option>
-                                                    <option>Descartado</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <a class="btn btn-warning text-white">Registrar Saída</a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                        <div class="card">
+                            <div class="card-header d-none">
+                                <div class="card-title"></div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive rounded">
+                                    <table class="table table-bordered table-head-bg-success">
+                                        <thead>
+                                            <tr>
+                                                <th>Linha</th>
+                                                <th>Codigo</th>
+                                                <th>Qtd.(Kg)</th>
+                                                <th>Data Entrada</th>
+                                                <th>Quantidade Retirada</th>
+                                                <th>Status</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Linha Verde</td>
+                                                <td>13213193</td>
+                                                <td>870</td>
+                                                <td>16/06/2024</td>
+                                                <td> <input type="text" class="form-control form-control"
+                                                        id="defaultInput" placeholder="_____"></td>
+                                                <td>
+                                                    <select class="form-select form-control" id="defaultSelect">
+                                                        <option>Vendido</option>
+                                                        <option>Descartado</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-warning text-white">Registrar Saída</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Linha Vermelha</td>
+                                                <td>13213193</td>
+                                                <td>240</td>
+                                                <td>16/06/2024</td>
+                                                <td> <input type="text" class="form-control form-control"
+                                                        id="defaultInput" placeholder="_____"></td>
+                                                <td>
+                                                    <select class="form-select form-control" id="defaultSelect">
+                                                        <option>Vendido</option>
+                                                        <option>Descartado</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-warning text-white">Registrar Saída</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Linha Azul</td>
+                                                <td>13213193</td>
+                                                <td>1150</td>
+                                                <td>16/06/2024</td>
+                                                <td> <input type="text" class="form-control form-control"
+                                                        id="defaultInput" placeholder="_____"></td>
+                                                <td>
+                                                    <select class="form-select form-control" id="defaultSelect">
+                                                        <option>Vendido</option>
+                                                        <option>Descartado</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-warning text-white">Registrar Saída</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
             <!--end conteudo indiviudual da pagina-->
