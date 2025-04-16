@@ -249,11 +249,7 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Descrição do Material</label>
-                                            <input type="text" class="form-control form-control" id="defaultInput"
-                                                placeholder="Nome">
-                                        </div>
+                                        {{!--
                                         <div class="form-group">
                                             <label class="fw-bold form-label">
                                                 Selecione a Linha do
@@ -289,7 +285,7 @@
                                                     </label>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <div class="form-group">
                                             <label class="fw-bold">Quantidade(Kg)</label>
                                             <input type="text" class="form-control form-control" id="defaultInput"
@@ -300,9 +296,16 @@
                                             <input type="date" class="form-control form-control" id="defaultInput"
                                                 placeholder="dd/mm/aaaa">
                                         </div>
+                                        <div class="form-group">
+                                            <label class="fw-bold">Motivo da Entrada</label>
+                                            <input type="text" class="form-control form-control" id="defaultInput">
+                                        </div>
                                     </div>
                                     <div class="card-footer d-flex justify-content-end">
-                                        <button type="button" class="btn btn-success" id="alert_demo_4">
+                                        <a href="/home" class="btn btn-secondary me-3">
+                                            Voltar
+                                        </a>
+                                        <button type="button" class="btn btn-success">
                                             Registrar Entrada
                                         </button>
                                     </div>
