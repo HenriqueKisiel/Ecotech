@@ -228,164 +228,144 @@
                 </div>
                 <!--End MenuBar-->
                 <!--Start conteudo indiviudual da pagina-->
-                <div class="container">
-                    <div class="page-inner">
-                        <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
-                            <div class="mb-3 d-flex flex-column">
-                                <span class="fs-2 fw-bold">
-                                    Agendamento de Coleta
-                                </span>
-                                <small class="text-muted">
-                                    Realize o agendamento programado da coleta.
-                                </small>
+                <form action="/agendamento" method="POST">
+                    <div class="">
+                        <div class="page-inner">
+                            <div
+                                class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
+                                <div class="mb-3 d-flex flex-column">
+                                    <span class="fs-2 fw-bold">Agendamento de Coleta</span>
+                                    <small class="text-muted">Realize o agendamento programado da coleta.</small>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="card shadow-lg">
-                                    <div class="card-header">
-                                        <div class="card-title">
-                                            <span class="fs-4 fw-bold">Material a ser coletado:</span>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card shadow-lg">
+                                        <div class="card-header">
+                                            <div class="card-title">
+                                                <span class="fs-4 fw-bold">Material a ser coletado:</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="fw-bold form-label">
-                                                        Selecione a Linha do
-                                                        material
-                                                    </label>
-                                                    <div class="row gutters-xs d-flex justify-content-start">
-                                                        <div class="col-auto">
-                                                            <label class="colorinput">
-                                                                <input name="color" type="checkbox" value="primary"
-                                                                    class="colorinput-input">
-                                                                <span class="colorinput-color bg-primary"></span>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-auto">
-                                                            <label class="colorinput">
-                                                                <input name="color" type="checkbox" value="success"
-                                                                    class="colorinput-input">
-                                                                <span class="colorinput-color bg-success"></span>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-auto">
-                                                            <label class="colorinput">
-                                                                <input name="color" type="checkbox" value="danger"
-                                                                    class="colorinput-input">
-                                                                <span class="colorinput-color bg-danger"></span>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-auto">
-                                                            <label class="colorinput">
-                                                                <input name="color" type="checkbox" value="warning"
-                                                                    class="colorinput-input">
-                                                                <span class="colorinput-color bg-warning"></span>
-                                                            </label>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="fw-bold form-label">Selecione a Linha do
+                                                            material</label>
+                                                        <div class="row gutters-xs d-flex justify-content-start">
+                                                            <div class="col-auto">
+                                                                <label class="colorinput">
+                                                                    <input name="linha_material" type="checkbox"
+                                                                        value="primary" class="colorinput-input">
+                                                                    <span class="colorinput-color bg-primary"></span>
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-auto">
+                                                                <label class="colorinput">
+                                                                    <input name="linha_material" type="checkbox"
+                                                                        value="success" class="colorinput-input">
+                                                                    <span class="colorinput-color bg-success"></span>
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-auto">
+                                                                <label class="colorinput">
+                                                                    <input name="linha_material" type="checkbox"
+                                                                        value="danger" class="colorinput-input">
+                                                                    <span class="colorinput-color bg-danger"></span>
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-auto">
+                                                                <label class="colorinput">
+                                                                    <input name="linha_material" type="checkbox"
+                                                                        value="warning" class="colorinput-input">
+                                                                    <span class="colorinput-color bg-warning"></span>
+                                                                </label>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-6"></div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="fw-bold">Codigo do Material</label>
-                                                    <input type="text" class="form-control"
-                                                        placeholder="informe o codigo">
+                                                <div class="col-md-6"></div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Código do Material</label>
+                                                        <input type="text" name="codigo_material" class="form-control"
+                                                            placeholder="informe o codigo">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="fw-bold">Descrição do Material</label>
-                                                    <input type="text" class="form-control"
-                                                        placeholder="Informe a descrição">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Descrição do Material</label>
+                                                        <input type="text" name="descricao_material"
+                                                            class="form-control" placeholder="Informe a descrição">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="fw-bold">Valor por Kg</label>
-                                                    <input type="text" class="form-control" placeholder="R$">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Valor por Kg</label>
+                                                        <input type="text" name="valor_kg" class="form-control"
+                                                            placeholder="R$">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="fw-bold">Peso (Kg)</label>
-                                                    <input type="text" class="form-control" placeholder="Kg">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Peso (Kg)</label>
+                                                        <input type="text" name="peso" class="form-control"
+                                                            placeholder="Kg">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card shadow-lg">
-                                    <div class="card-header">
-                                        <div class="card-title">
-                                            <span class="fs-4 fw-bold">Dados da coleta:</span>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="fw-bold">CEP da Coleta</label>
-                                                    <input type="text" class="form-control" placeholder="informe o CEP">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="fw-bold">Endereço da Coleta</label>
-                                                    <input type="text" class="form-control"
-                                                        placeholder="informe o endereço">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="fw-bold">Cidade</label>
-                                                    <input type="text" class="form-control"
-                                                        placeholder="informe a cidade">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="fw-bold">Bairro</label>
-                                                    <input type="text" class="form-control"
-                                                        placeholder="informe o bairro">
-                                                </div>
+                                <div class="col-md-6">
+                                    <div class="card shadow-lg">
+                                        <div class="card-header">
+                                            <div class="card-title">
+                                                <span class="fs-4 fw-bold">Dados da coleta:</span>
                                             </div>
                                         </div>
-                                        <div class="d-flex justify-content-end mt-3">
-                                            <button type="button" class="btn btn-success" id="alert_demo_4">
-                                                Salvar
-                                            </button>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">CEP da Coleta</label>
+                                                        <input type="text" name="cep" class="form-control"
+                                                            placeholder="informe o CEP">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Endereço da Coleta</label>
+                                                        <input type="text" name="endereco" class="form-control"
+                                                            placeholder="informe o endereço">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Cidade</label>
+                                                        <input type="text" name="cidade" class="form-control"
+                                                            placeholder="informe a cidade">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Bairro</label>
+                                                        <input type="text" name="bairro" class="form-control"
+                                                            placeholder="informe o bairro">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-end mt-3">
+                                                <button type="submit" class="btn btn-success">Salvar</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!--end conteudo indiviudual da pagina-->
-                <footer class="footer">
-                    <div class="container-fluid d-flex justify-content-between">
-                        <nav class="pull-left">
-                            <ul class="nav">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">footer#1</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">footer#2</a>
-                                </li>
-                            </ul>
-                        </nav>
-                        <div class="copyright">
-                            2025 - Autores: Equipe 7
-                        </div>
-                    </div>
-                </footer>
+                </form>
+                <!--End conteudo indiviudual da pagina-->
             </div>
         </div>
     </body>
-</main>

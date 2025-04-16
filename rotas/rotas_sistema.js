@@ -111,9 +111,8 @@ router.get('/estoqueSaida', (req, res) => {
 router.get('/agendamento', (req, res) => {
     servico10.exibirAgendamento(req, res);
 });
-
 // Rota de registro de coleta
-router.get('/agendamento', (req, res) => {
+router.post('/agendamento', (req, res) => {
     servico10.registrarAgendamento(req, res);
 });
 
