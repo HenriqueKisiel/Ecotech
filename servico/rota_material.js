@@ -1,54 +1,48 @@
+// Importa a conexão com o banco de dados
 const conectiondb = require('../bd/conexao_mysql.js');
 
-// Função para exibir e cadastrar material
+// Função para exibir a página de cadastro de material
 function exibirMaterial(req, res) {
-    // Cria a conexão com o banco de dados
+    res.render('material'); // Renderiza a view "material.hbs"
+}
+
+// Função para cadastrar o material no banco de dados
+function cadastrarMaterial(req, res) {
+    const { descricao, valor_kg, peso, linha } = req.body;
+
+    // Verifica se todos os campos obrigatórios foram preenchidos
+    if (!descricao || !valor_kg || !peso || !linha) {
+        return res.status(400).send('Preencha todos os campos obrigatórios!');
+    }
+
     const conexao = conectiondb();
 
-    // Verifica o método HTTP da requisição (GET ou POST)
-    if (req.method === 'GET') {
-        // Se for GET, renderiza a página 'material' com uma mensagem vazia
-        return res.render('material', { message: '' });
-    }
-
-    // Extrai os dados enviados no corpo da requisição (do formulário)
-    const {
-        codigo_material,
-        descricao_material,
-        valor_kg,
-        peso
-    } = req.body;
-
-    // Valida se todos os campos obrigatórios foram preenchidos
-    if (!codigo_material || !descricao_material || !valor_kg || !peso) {
-        // Se algum campo não for preenchido, exibe uma mensagem de erro pedindo para preencher todos os campos
-        return res.render('material', { message: 'Por favor, preencha todos os campos!' });
-    }
-
-    // Define a consulta SQL para inserir os dados na tabela 'materiais'
     const query = `
-        INSERT INTO materiais (codigo_material, descricao_material, valor_kg, peso)
-        VALUES (?, ?, ?, ?)
+    INSERT INTO materiais (ds_material, vl_valor_por_kg, qt_peso_kg, ie_linha)
+    VALUES (?, ?, ?, ?)
     `;
 
-    // Organiza os valores que serão inseridos na consulta SQL
-    const valores = [codigo_material, descricao_material, valor_kg, peso];
-
-    // Executa a consulta no banco de dados
-    conexao.query(query, valores, (err, result) => {
+    conexao.query(query, [descricao, valor_kg, peso, linha], (err, resultado) => {
         if (err) {
-            // Se ocorrer um erro durante a execução da consulta, exibe uma mensagem de erro
             console.error('Erro ao cadastrar material:', err);
-            return res.render('material', { message: 'Erro ao cadastrar o material.' });
+            return res.status(500).send('Erro no servidor ao cadastrar o material.');
         }
 
-        // Se o cadastro for realizado com sucesso, exibe uma mensagem de sucesso
+        // Log para confirmar o sucesso e mostrar os dados
         console.log('Material cadastrado com sucesso!');
-        return res.render('material', { message: 'Material cadastrado com sucesso!' });
+        console.log('Dados registrados:', {
+            descricao,
+            valor_kg,
+            peso,
+            linha
+        });
+
+        // Redireciona para a página de cadastro de material
+        res.redirect('/material');
     });
 }
 
-// Exporta a função para ser utilizada em outros arquivos
 module.exports = {
-    exibirMaterial
+    exibirMaterial,
+    cadastrarMaterial
 };

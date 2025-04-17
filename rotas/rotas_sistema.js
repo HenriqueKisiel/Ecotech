@@ -83,9 +83,14 @@ router.get('/RotaCadastro', (req, res) => {
 });
 
 //---------------------- Servico8 -------------------//
-// Rota para a página cadastro de material
+// Mostra a página do formulário
 router.get('/material', (req, res) => {
     servico8.exibirMaterial(req, res);
+});
+
+// Recebe o formulário e cadastra o material
+router.post('/material', (req, res) => {
+    servico8.cadastrarMaterial(req, res);
 });
 
 //---------------------- Servico9 -------------------//
