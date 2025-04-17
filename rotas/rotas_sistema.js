@@ -69,6 +69,10 @@ router.get('/usuario', (req, res) => {
     servico5.exibirUsuario(req, res);
 });
 
+router.get('/remover/:nm_usuario', (req, res) => {
+    servico5.removerUsuario(req, res);
+});
+
 //--------------------- Servico6 -------------------//
 // Rota para a página cadastro de planta
 router.get('/planta', (req, res) => {

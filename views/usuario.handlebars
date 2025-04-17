@@ -242,33 +242,56 @@
                             <a href="/pessoa" class="btn btn-secondary fw-bold shadow-lg me-3 mt-2">
                                 Voltar</a>
                         </div>
-
-                        <div class="card shadow-lg">
-                            <div class="card-header d-none">
-                                <div class="card-title">
-                                    <span class="fs-2 fw-bold"></span>
+                        <form id="formCadastroUsuario" method="POST" action="/Usuario">
+                            <div class="card shadow-lg">
+                                <div class="card-header d-none">
+                                    <div class="card-title">
+                                        <span class="fs-2 fw-bold"></span>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Nome do Usuário</label>
+                                                <input type="text" name="usuario" class="form-control" placeholder="Insira o nome ">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Senha</label>
+                                                <input type="password" name="senha" class="form-control" placeholder="Informe a senha">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-end mt-3">
+                                        <button type="button" class="btn btn-success">
+                                            Salvar
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Nome do Usuário</label>
-                                            <input type="text" class="form-control" placeholder="Insira o nome ">
+                        </form>
+                        <!-- Listagem de Usuários -->
+                        <div class="card-body">
+                            <div class="row">
+                               {{#each usuarios}}
+                                     <div class="col-12">
+                                    <div class="card">
+                                        <div>
+                                            <p>{{nm_usuario}}</p>
+                                            <p>{{nm_pessoa_fisica}}</p>
+                                            <p>{{ds_email}}</p>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Senha</label>
-                                            <input type="password" class="form-control" placeholder="Informe a senha">
-                                        </div>
+                                        <a href="#" class="btn btn-icon btn-round btn-warning me-3">
+                                            <i class="fa fa-edit text-white"></i>
+                                        </a>
+                                        <a href="/remover/{{nm_usuario}}" class="btn btn-icon btn-round btn-danger" >
+                                            <i class="fa fa-trash"></i>
+                                        </a>
                                     </div>
                                 </div>
-                                <div class="d-flex justify-content-end mt-3">
-                                    <button type="button" class="btn btn-success">
-                                        Salvar
-                                    </button>
-                                </div>
+                               {{/each}}
                             </div>
                         </div>
                     </div>
