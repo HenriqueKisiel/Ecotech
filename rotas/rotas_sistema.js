@@ -73,6 +73,11 @@ router.get('/planta', (req, res) => {
     servico6.exibirPlanta(req, res);
 });
 
+// Rota para cadastrar nova planta
+router.post('/planta', (req, res) => {
+    servico6.cadastrarPlanta(req, res);
+});
+
 //---------------------- Servico7 -------------------//
 // Rota para a página buscar cadastros
 router.get('/cadastros', (req, res) => {
