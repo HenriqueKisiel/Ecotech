@@ -1,160 +1,14 @@
 <main>
-    <div class="wrapper">
-        <!-- Sidebar -->
-        <div class="sidebar" data-background-color="dark">
-            <div class="sidebar-logo">
-                <!-- Logo Header -->
-                <div class="logo-header" data-background-color="dark">
-                    <a href="/home" class="logo">
-                        <img src="assets/Eco.png" alt="navbar brand" class="navbar-brand" height="30" />
-                    </a>
-                    <div class="nav-toggle">
-                        <button class="btn btn-toggle toggle-sidebar">
-                            <i class="gg-menu-right"></i>
-                        </button>
-                        <button class="btn btn-toggle sidenav-toggler">
-                            <i class="gg-menu-left"></i>
-                        </button>
-                    </div>
-                    <button class="topbar-toggler more">
-                        <i class="gg-more-vertical-alt"></i>
-                    </button>
-                </div>
-                <!-- End Logo Header -->
-            </div>
-            <div class="sidebar-wrapper scrollbar scrollbar-inner">
-                <div class="sidebar-content">
-                    <ul class="nav nav-secondary">
-                        <li class="nav-item">
-                            <a href="/home" class="collapsed" aria-expanded="false">
-                                <i class="fas fa-home"></i>
-                                <p>Home</p>
-                            </a>
-                        </li>
-                        <li class="nav-section">
-                            <span class="sidebar-mini-icon">
-                                <i class="fa fa-ellipsis-h"></i>
-                            </span>
-                            <h4 class="text-section">Funções Do Sistema</h4>
-                        </li>
-                        <li class="nav-item">
-                            <a data-bs-toggle="collapse" href="#cadastro">
-                                <i class="fas fa-user"></i>
-                                <p>Cadastros</p>
-                                <span class="caret"></span>
-                            </a>
-                            <div class="collapse" id="cadastro">
-                                <ul class="nav nav-collapse">
-                                    <li>
-                                        <a href="/cadastros">
-                                            <span class="sub-item">Buscar</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/pessoa">
-                                            <span class="sub-item">Nova Pessoa</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/usuario">
-                                            <span class="sub-item">Novo Usuario</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/planta">
-                                            <span class="sub-item">Nova Planta</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/material">
-                                            <span class="sub-item">Novo Material</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/estoqueNovo">
-                                            <span class="sub-item">Novo Estoque</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            <a data-bs-toggle="collapse" href="#estoque">
-                                <i class="fas fa-th-list"></i>
-                                <p>Estoque</p>
-                                <span class="caret"></span>
-                            </a>
-                            <div class="collapse" id="estoque">
-                                <ul class="nav nav-collapse">
-                                    <li>
-                                        <a href="/estoqueBuscar">
-                                            <span class="sub-item">Buscar Material</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/estoqueEntrada">
-                                            <span class="sub-item">Entrada de Material</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/estoqueSaida">
-                                            <span class="sub-item">Saída de Material</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="nav-item active">
-                            <a data-bs-toggle="collapse" href="#coleta">
-                                <i class="fa fa-map-marker-alt"></i>
-                                <p>Gestão de Coleta</p>
-                                <span class="caret"></span>
-                            </a>
-                            <div class="collapse" id="coleta">
-                                <ul class="nav nav-collapse">
-                                    <li>
-                                        <a href="/agendamento">
-                                            <span class="sub-item">Agendamento</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/rotas">
-                                            <span class="sub-item">Rotas Programadas</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/attStatus">
-                                            <span class="sub-item">Atualizar Status da Coleta</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/relatorios">
-                                <i class="fas fa-table"></i>
-                                <p>Relatórios</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/processamento">
-                                <i class="fas fa-thumbtack"></i>
-                                <p>Processamento</p>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <!-- End Sidebar -->
-        <!--Start MenuBar-->
-        <div class="main-panel">
-            <div class="main-header">
-                <div class="main-header-logo">
+
+    <body>
+        <div class="wrapper">
+            <!-- Sidebar -->
+            <div class="sidebar" data-background-color="dark">
+                <div class="sidebar-logo">
                     <!-- Logo Header -->
                     <div class="logo-header" data-background-color="dark">
-                        <a href="#" class="logo">
-                            <img src="public/assets/Eco.png" alt="navbar brand" class="navbar-brand" height="20" />
+                        <a href="/home" class="logo">
+                            <img src="assets/Eco.png" alt="navbar brand" class="navbar-brand" height="30" />
                         </a>
                         <div class="nav-toggle">
                             <button class="btn btn-toggle toggle-sidebar">
@@ -170,223 +24,374 @@
                     </div>
                     <!-- End Logo Header -->
                 </div>
-                <!-- Navbar Header -->
-                <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
-                    <div class="container-fluid">
-                        <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
-                            <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
-                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-                                    aria-expanded="false" aria-haspopup="true">
-                                    <i class="fa fa-search"></i>
+                <div class="sidebar-wrapper scrollbar scrollbar-inner">
+                    <div class="sidebar-content">
+                        <ul class="nav nav-secondary">
+                            <li class="nav-item">
+                                <a href="/home" class="collapsed" aria-expanded="false">
+                                    <i class="fas fa-home"></i>
+                                    <p>Home</p>
                                 </a>
-                                <ul class="dropdown-menu dropdown-search animated fadeIn">
-                                    <form class="navbar-left navbar-form nav-search">
-                                        <div class="input-group">
-                                            <input type="text" placeholder="Search ..." class="form-control" />
-                                        </div>
-                                    </form>
-                                </ul>
                             </li>
-                            <li class="nav-item topbar-user dropdown hidden-caret">
-                                <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
-                                    aria-expanded="false">
-                                    <span class="profile-username">
-                                        <i class="fas fa-user-circle fa-2x"></i>
-                                    </span>
+                            <li class="nav-section">
+                                <span class="sidebar-mini-icon">
+                                    <i class="fa fa-ellipsis-h"></i>
+                                </span>
+                                <h4 class="text-section">Funções Do Sistema</h4>
+                            </li>
+                            <li class="nav-item">
+                                <a data-bs-toggle="collapse" href="#cadastro">
+                                    <i class="fas fa-user"></i>
+                                    <p>Cadastros</p>
+                                    <span class="caret"></span>
                                 </a>
-                                <ul class="dropdown-menu dropdown-user animated fadeIn">
-                                    <div class="dropdown-user-scroll scrollbar-outer">
+                                <div class="collapse" id="cadastro">
+                                    <ul class="nav nav-collapse">
                                         <li>
-                                            <div class="user-box">
-                                                <div class="u-text">
-                                                    <h4>Henrique</h4>
-                                                    <p class="text-muted">henrique@gmail.com</p>
-                                                    <a href="#" class="btn btn-xs btn-secondary btn-sm">
-                                                        Ver
-                                                        Perfil
-                                                    </a>
-                                                </div>
+                                            <a href="/cadastros">
+                                                <span class="sub-item">Buscar</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/pessoa">
+                                                <span class="sub-item">Nova Pessoa</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/usuario">
+                                                <span class="sub-item">Novo Usuario</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/planta">
+                                                <span class="sub-item">Nova Planta</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/material">
+                                                <span class="sub-item">Novo Material</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/estoqueNovo">
+                                                <span class="sub-item">Novo Estoque</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a data-bs-toggle="collapse" href="#estoque">
+                                    <i class="fas fa-th-list"></i>
+                                    <p>Estoque</p>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="estoque">
+                                    <ul class="nav nav-collapse">
+                                        <li>
+                                            <a href="/estoqueBuscar">
+                                                <span class="sub-item">Buscar Material</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/estoqueEntrada">
+                                                <span class="sub-item">Entrada de Material</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/estoqueSaida">
+                                                <span class="sub-item">Saída de Material</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item active">
+                                <a data-bs-toggle="collapse" href="#coleta">
+                                    <i class="fa fa-map-marker-alt"></i>
+                                    <p>Gestão de Coleta</p>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="coleta">
+                                    <ul class="nav nav-collapse">
+                                        <li>
+                                            <a href="/agendamento">
+                                                <span class="sub-item">Agendamento</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/rotas">
+                                                <span class="sub-item">Rotas Programadas</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/attStatus">
+                                                <span class="sub-item">Atualizar Status da Coleta</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/relatorios">
+                                    <i class="fas fa-table"></i>
+                                    <p>Relatórios</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/processamento">
+                                    <i class="fas fa-thumbtack"></i>
+                                    <p>Processamento</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- End Sidebar -->
+            <!--Start MenuBar-->
+            <div class="main-panel">
+                <div class="main-header">
+                    <div class="main-header-logo">
+                        <!-- Logo Header -->
+                        <div class="logo-header" data-background-color="dark">
+                            <a href="#" class="logo">
+                                <img src="public/assets/Eco.png" alt="navbar brand" class="navbar-brand" height="20" />
+                            </a>
+                            <div class="nav-toggle">
+                                <button class="btn btn-toggle toggle-sidebar">
+                                    <i class="gg-menu-right"></i>
+                                </button>
+                                <button class="btn btn-toggle sidenav-toggler">
+                                    <i class="gg-menu-left"></i>
+                                </button>
+                            </div>
+                            <button class="topbar-toggler more">
+                                <i class="gg-more-vertical-alt"></i>
+                            </button>
+                        </div>
+                        <!-- End Logo Header -->
+                    </div>
+                    <!-- Navbar Header -->
+                    <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+                        <div class="container-fluid">
+                            <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+                                <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                                        aria-expanded="false" aria-haspopup="true">
+                                        <i class="fa fa-search"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-search animated fadeIn">
+                                        <form class="navbar-left navbar-form nav-search">
+                                            <div class="input-group">
+                                                <input type="text" placeholder="Search ..." class="form-control" />
                                             </div>
-                                        </li>
-                                        <li>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Minha conta</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Configurações</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="/login">Sair</a>
-                                        </li>
-                                    </div>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-                <!-- End Navbar -->
-            </div>
-            <!--End MenuBar-->
-            <!--Start conteudo indiviudual da pagina-->
-            <div class="container">
-                <div class="page-inner">
-                    <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
-                        <div class="mb-3 d-flex flex-column">
-                            <span class="fs-2 fw-bold">
-                                Atualizar Status da Coleta
-                            </span>
-                            <small class="text-muted">
-                                Realize a atualização do status da coleta.
-                            </small>
+                                        </form>
+                                    </ul>
+                                </li>
+                                <li class="nav-item topbar-user dropdown hidden-caret">
+                                    <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
+                                        aria-expanded="false">
+                                        <span class="profile-username">
+                                            <i class="fas fa-user-circle fa-2x"></i>
+                                        </span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user animated fadeIn">
+                                        <div class="dropdown-user-scroll scrollbar-outer">
+                                            <li>
+                                                <div class="user-box">
+                                                    <div class="u-text">
+                                                        <h4>Henrique</h4>
+                                                        <p class="text-muted">henrique@gmail.com</p>
+                                                        <a href="#" class="btn btn-xs btn-secondary btn-sm">
+                                                            Ver
+                                                            Perfil
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="#">Minha conta</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="#">Configurações</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="/login">Sair</a>
+                                            </li>
+                                        </div>
+                                    </ul>
+                                </li>
+                            </ul>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="card card-flush shadow-lg">
-                                <div class="card-header d-none">
-                                    <card class="card-title">#101</card>
-                                </div>
-                                <div class="card-body">
-                                    <div class="mb-3">
-                                        <div class="fs-3 fw-bold" title="Código de Coleta">#101</div>
-                                    </div>
-                                    <div class="d-flex flex-column mb-3">
-                                        <span class="fs-6 pb-2"><strong>Fornecedor:</strong><span class="ps-2">Cleiton
-                                                Junior</span></span>
-                                        <span class="fs-6 pb-2"><strong>Telefone:</strong><span class="ps-2">41
-                                                98087797</span></span>
-                                        <span class="fs-6 pb-2"><strong>Endereço:</strong><span class="ps-2">Rua das
-                                                Flores 654, Batel, Curitiba-PR</span></span>
-                                        <span class="fs-6 pb-2"><strong>Material:</strong><span class="ps-2">Linha
-                                                Verde</span></span>
-                                        <span class="fs-6 pb-2"><strong>Status:</strong><span class="ps-2">Em
-                                                Andamento</span></span>
-                                    </div>
-                                    <div class="d-flex justify-content-center">
-                                        <button type="button" class="btn btn-success me-3" id="alert_demo_8">
-                                            Finalizar
-                                        </button>
-                                        <button type="button" class="btn btn-danger" id="alert_demo_7">
-                                            Cancelar
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card card-flush shadow-lg">
-                                <div class="card-header d-none">
-                                    <card class="card-title">#102</card>
-                                </div>
-                                <div class="card-body">
-                                    <div class="mb-3">
-                                        <div class="fs-3 fw-bold" title="Código de Coleta">#102</div>
-                                    </div>
-                                    <div class="d-flex flex-column mb-3">
-                                        <span class="fs-6 pb-2"><strong>Fornecedor:</strong><span class="ps-2">Maria
-                                                Oliveira</span></span>
-                                        <span class="fs-6 pb-2"><strong>Telefone:</strong><span class="ps-2">41
-                                                998765432</span></span>
-                                        <span class="fs-6 pb-2"><strong>Endereço:</strong><span class="ps-2">Av.
-                                                República Argentina, 1234, Portão, Curitiba-PR</span></span>
-                                        <span class="fs-6 pb-2"><strong>Material:</strong><span class="ps-2">Linha
-                                                Azul</span></span>
-                                        <span class="fs-6 pb-2"><strong>Status:</strong><span
-                                                class="ps-2">Pendente</span></span>
-                                    </div>
-                                    <div class="d-flex justify-content-center">
-                                        <button type="button" class="btn btn-primary" id="alert_demo_9">
-                                            Iniciar
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card card-flush shadow-lg">
-                                <div class="card-header d-none">
-                                    <card class="card-title">#103</card>
-                                </div>
-                                <div class="card-body">
-                                    <div class="mb-3">
-                                        <div class="fs-3 fw-bold" title="Código de Coleta">#103</div>
-                                    </div>
-                                    <div class="d-flex flex-column mb-3">
-                                        <span class="fs-6 pb-2"><strong>Fornecedor:</strong><span class="ps-2">Carlos
-                                                Souza</span></span>
-                                        <span class="fs-6 pb-2"><strong>Telefone:</strong><span class="ps-2">41
-                                                997654321</span></span>
-                                        <span class="fs-6 pb-2"><strong>Endereço:</strong><span class="ps-2">Rua XV
-                                                de Novembro, 987, Centro, Curitiba-PR</span></span>
-                                        <span class="fs-6 pb-2"><strong>Material:</strong><span
-                                                class="ps-2">Vidro</span></span>
-                                        <span class="fs-6 pb-2"><strong>Status:</strong><span
-                                                class="ps-2">Finalizado</span></span>
-                                    </div>
-                                    <div class="d-flex justify-content-center">
-                                        <button type="button" class="btn btn-success me-3" id="alert_demo_8">
-                                            Finalizar
-                                        </button>
-                                        <button type="button" class="btn btn-danger" id="alert_demo_7">
-                                            Cancelar
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card card-flush shadow-lg">
-                                <div class="card-header d-none">
-                                    <card class="card-title">#104</card>
-                                </div>
-                                <div class="card-body">
-                                    <div class="mb-3">
-                                        <div class="fs-3 fw-bold" title="Código de Coleta">#104</div>
-                                    </div>
-                                    <div class="d-flex flex-column mb-3">
-                                        <span class="fs-6 pb-2"><strong>Fornecedor:</strong><span class="ps-2">Ana
-                                                Pereira</span></span>
-                                        <span class="fs-6 pb-2"><strong>Telefone:</strong><span class="ps-2">41
-                                                996543210</span></span>
-                                        <span class="fs-6 pb-2"><strong>Endereço:</strong><span class="ps-2">Rua
-                                                Santa Efigenia, 456, Xaxim, Curitiba-PR</span></span>
-                                        <span class="fs-6 pb-2"><strong>Material:</strong><span
-                                                class="ps-2">Metal</span></span>
-                                        <span class="fs-6 pb-2"><strong>Status:</strong><span class="ps-2">Em
-                                                Andamento</span></span>
-                                    </div>
-                                    <div class="d-flex justify-content-center">
-                                        <button type="button" class="btn btn-success me-3" id="alert_demo_8">
-                                            Finalizar
-                                        </button>
-                                        <button type="button" class="btn btn-danger" id="alert_demo_7">
-                                            Cancelar
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--end conteudo indiviudual da pagina-->
-            <footer class="footer">
-                <div class="container-fluid d-flex justify-content-between">
-                    <nav class="pull-left">
-                        <ul class="nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">footer#1</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">footer#2</a>
-                            </li>
-                        </ul>
                     </nav>
-                    <div class="copyright">
-                        2025 - Autores: Equipe 7
+                    <!-- End Navbar -->
+                </div>
+                <!--End MenuBar-->
+                <!--Start conteudo indiviudual da pagina-->
+                <div class="container">
+                    <div class="page-inner">
+                        <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
+                            <div class="mb-3 d-flex flex-column">
+                                <span class="fs-2 fw-bold">
+                                    Atualizar Status da Coleta
+                                </span>
+                                <small class="text-muted">
+                                    Realize a atualização do status da coleta.
+                                </small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card card-flush shadow-lg">
+                                    <div class="card-header d-none">
+                                        <card class="card-title">#101</card>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <div class="fs-3 fw-bold" title="Código de Coleta">#101</div>
+                                        </div>
+                                        <div class="d-flex flex-column mb-3">
+                                            <span class="fs-6 pb-2"><strong>Fornecedor:</strong><span
+                                                    class="ps-2">Cleiton
+                                                    Junior</span></span>
+                                            <span class="fs-6 pb-2"><strong>Telefone:</strong><span class="ps-2">41
+                                                    98087797</span></span>
+                                            <span class="fs-6 pb-2"><strong>Endereço:</strong><span class="ps-2">Rua das
+                                                    Flores 654, Batel, Curitiba-PR</span></span>
+                                            <span class="fs-6 pb-2"><strong>Material:</strong><span class="ps-2">Linha
+                                                    Verde</span></span>
+                                            <span class="fs-6 pb-2"><strong>Status:</strong><span class="ps-2">Em
+                                                    Andamento</span></span>
+                                        </div>
+                                        <div class="d-flex justify-content-center">
+                                            <button type="button" class="btn btn-success me-3" id="alert_demo_8">
+                                                Finalizar
+                                            </button>
+                                            <button type="button" class="btn btn-danger" id="alert_demo_7">
+                                                Cancelar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card card-flush shadow-lg">
+                                    <div class="card-header d-none">
+                                        <card class="card-title">#102</card>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <div class="fs-3 fw-bold" title="Código de Coleta">#102</div>
+                                        </div>
+                                        <div class="d-flex flex-column mb-3">
+                                            <span class="fs-6 pb-2"><strong>Fornecedor:</strong><span class="ps-2">Maria
+                                                    Oliveira</span></span>
+                                            <span class="fs-6 pb-2"><strong>Telefone:</strong><span class="ps-2">41
+                                                    998765432</span></span>
+                                            <span class="fs-6 pb-2"><strong>Endereço:</strong><span class="ps-2">Av.
+                                                    República Argentina, 1234, Portão, Curitiba-PR</span></span>
+                                            <span class="fs-6 pb-2"><strong>Material:</strong><span class="ps-2">Linha
+                                                    Azul</span></span>
+                                            <span class="fs-6 pb-2"><strong>Status:</strong><span
+                                                    class="ps-2">Pendente</span></span>
+                                        </div>
+                                        <div class="d-flex justify-content-center">
+                                            <button type="button" class="btn btn-primary" id="alert_demo_9">
+                                                Iniciar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card card-flush shadow-lg">
+                                    <div class="card-header d-none">
+                                        <card class="card-title">#103</card>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <div class="fs-3 fw-bold" title="Código de Coleta">#103</div>
+                                        </div>
+                                        <div class="d-flex flex-column mb-3">
+                                            <span class="fs-6 pb-2"><strong>Fornecedor:</strong><span
+                                                    class="ps-2">Carlos
+                                                    Souza</span></span>
+                                            <span class="fs-6 pb-2"><strong>Telefone:</strong><span class="ps-2">41
+                                                    997654321</span></span>
+                                            <span class="fs-6 pb-2"><strong>Endereço:</strong><span class="ps-2">Rua XV
+                                                    de Novembro, 987, Centro, Curitiba-PR</span></span>
+                                            <span class="fs-6 pb-2"><strong>Material:</strong><span
+                                                    class="ps-2">Vidro</span></span>
+                                            <span class="fs-6 pb-2"><strong>Status:</strong><span
+                                                    class="ps-2">Finalizado</span></span>
+                                        </div>
+                                        <div class="d-flex justify-content-center">
+                                            <button type="button" class="btn btn-success me-3" id="alert_demo_8">
+                                                Finalizar
+                                            </button>
+                                            <button type="button" class="btn btn-danger" id="alert_demo_7">
+                                                Cancelar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card card-flush shadow-lg">
+                                    <div class="card-header d-none">
+                                        <card class="card-title">#104</card>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <div class="fs-3 fw-bold" title="Código de Coleta">#104</div>
+                                        </div>
+                                        <div class="d-flex flex-column mb-3">
+                                            <span class="fs-6 pb-2"><strong>Fornecedor:</strong><span class="ps-2">Ana
+                                                    Pereira</span></span>
+                                            <span class="fs-6 pb-2"><strong>Telefone:</strong><span class="ps-2">41
+                                                    996543210</span></span>
+                                            <span class="fs-6 pb-2"><strong>Endereço:</strong><span class="ps-2">Rua
+                                                    Santa Efigenia, 456, Xaxim, Curitiba-PR</span></span>
+                                            <span class="fs-6 pb-2"><strong>Material:</strong><span
+                                                    class="ps-2">Metal</span></span>
+                                            <span class="fs-6 pb-2"><strong>Status:</strong><span class="ps-2">Em
+                                                    Andamento</span></span>
+                                        </div>
+                                        <div class="d-flex justify-content-center">
+                                            <button type="button" class="btn btn-success me-3" id="alert_demo_8">
+                                                Finalizar
+                                            </button>
+                                            <button type="button" class="btn btn-danger" id="alert_demo_7">
+                                                Cancelar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </footer>
+                <!--end conteudo indiviudual da pagina-->
+                <footer class="footer">
+                    <div class="container-fluid d-flex justify-content-between">
+                        <nav class="pull-left">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">footer#1</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">footer#2</a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <div class="copyright">
+                            2025 - Autores: Equipe 7
+                        </div>
+                    </div>
+                </footer>
+            </div>
         </div>
-    </div>
+    </body>
 </main>

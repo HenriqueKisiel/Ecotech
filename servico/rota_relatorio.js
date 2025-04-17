@@ -7,7 +7,7 @@ function exibirRelatorios(req, res) {
 
 //Função para pagina cadastrar relatorios
 function exibirCadastrarRelatorios(req, res) {
-    res.render('relatoriosCadastrar');
+    res.render('relatoriosNovo');
 };
 
 //exportando a função 

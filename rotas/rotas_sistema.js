@@ -7,7 +7,7 @@ const router = express.Router();
 //importar a conexão com o banco de dados
 const servico = require('../servico/rota_login.js');
 const servico2 = require('../servico/rota_home.js');
-const servico3 = require('../servico/rota_pessoa.js'); 
+const servico3 = require('../servico/rota_pessoa.js');
 const servico4 = require('../servico/rota_juridica.js');
 const servico5 = require('../servico/rota_usuario.js');
 const servico6 = require('../servico/rota_planta.js');
@@ -18,6 +18,8 @@ const servico10 = require('../servico/rota_agendamento.js');
 const servico11 = require('../servico/rota_rotas.js');
 const servico12 = require('../servico/rota_relatorio.js');
 const servico13 = require('../servico/rota_processamento.js');
+const servico14 = require('../servico/rota_attStatus.js');
+const servico15 = require('../servico/rota_cadastros.js');
 
 
 //==================== START ROTAS ====================
@@ -41,7 +43,7 @@ router.get('/recuperar', (req, res) => {
 // Rota para recuperação de senha
 router.post('/recuperar-senha', (req, res) => {
     servico.recuperarSenha(req, res);
-}); 
+});
 
 //-------------------- Servico2 -------------------//
 // Rota para a página home
@@ -79,9 +81,10 @@ router.post('/planta', (req, res) => {
 });
 
 //---------------------- Servico7 -------------------//
-// Rota para a página buscar cadastros
-router.get('/cadastros', (req, res) => {
-    servico7.exibirCadastros(req, res);
+
+// Rota para a página de cadastrar rota
+router.get('/RotaCadastro', (req, res) => {
+    servico7.exibirRotaCadastro(req, res);
 });
 
 //---------------------- Servico8 -------------------//
@@ -108,7 +111,7 @@ router.get('/estoqueBuscar', (req, res) => {
 
 // Rota para a página de entrada de material
 router.get('/estoqueEntrada', (req, res) => {
-   servico9.exibirEstoqueEntrada(req, res);
+    servico9.exibirEstoqueEntrada(req, res);
 });
 
 // Rota para a página de saida de material
@@ -133,20 +136,10 @@ router.get('/rotas', (req, res) => {
     servico11.exibirRotas(req, res);
 });
 
-// Rota para a página de cadastrar rota
-router.get('/rotaCadastro', (req, res) => {
-    servico11.exibirRotaCadastro(req, res);
-});
-
-// Rota para a página de atualizar status das rotas
-router.get('/attStatus', (req, res) => {
-    servico11.exibirAtualizarRotas(req, res);
-});
-
 //----------------------- Servico12 -------------------//
 // Rota para a página de relatorios
 router.get('/relatorios', (req, res) => {
-   servico12.exibirRelatorios(req, res);
+    servico12.exibirRelatorios(req, res);
 });
 
 // Rota para a página de cadastrar relatorios
@@ -155,9 +148,24 @@ router.get('/relatoriosNovo', (req, res) => {
 });
 
 //------------------------ Servico13 -------------------//
+
 // Rota para a página de processamento
 router.get('/processamento', (req, res) => {
     servico13.exibirProcessamento(req, res);
+});
+
+//------------------------ Servico14 -------------------//
+
+// Rota para a página de atualizar status das rotas
+router.get('/attStatus', (req, res) => {
+    servico14.exibirAtualizarRotas(req, res);
+});
+
+//------------------------ Servico15 -------------------//
+
+// Rota para a página buscar cadastros
+router.get('/cadastros', (req, res) => {
+    servico15.exibirCadastros(req, res);
 });
 
 //==================== END ROTAS ====================
