@@ -3,7 +3,7 @@ const conectiondb = require('../bd/conexao_mysql.js');
 //Função para pagina usuario
 function exibirUsuario(req, res) {
     
-    let sql = 'SELECT a.nm_usuario, b.nm_pessoa_fisica, b.ds_email FROM usuario a, pessoa_fisica b WHERE a.cd_pessoa_fisica = b.cd_pessoa_fisica';
+    let sql = 'SELECT cd_pessoa_fisica, nm_usuario, nm_pessoa_fisica, ds_email, ie_situacao FROM Pessoa_Usuario';
 
     //Executando a consulta no banco de dados
     conectiondb().query(sql, function (erro, retorno) {
@@ -19,10 +19,10 @@ function AlterarUsuario(req, res) {
 
 //rota remover usuario
 function removerUsuario(req, res) {
-    let sql = 'DELETE FROM usuario WHERE nm_usuario = ?';
+    let sql = 'UPDATE Pessoa_Usuario SET ie_situacao = ? WHERE nm_usuario = ? AND cd_pessoa_fisica IS NOT NULL';
 
     // Executando a consulta no banco de dados
-    conectiondb().query(sql, [req.params.nm_usuario], function (erro, retorno) {
+    conectiondb().query(sql, ['i', req.params.nm_usuario], function (erro, retorno) {
         if (erro) {
             console.error('Erro ao remover usuário:', erro);
             return res.status(500).send('Erro ao remover usuário.');
