@@ -69,10 +69,24 @@ router.get('/usuario', (req, res) => {
     servico5.exibirUsuario(req, res);
 });
 
+//Rota para editar usuario
+router.get('/alterarUsuario/:nm_usuario', (req, res) => {
+    servico5.AlterarUsuario(req, res);
+});
+
+router.get('/removerUsuario/:nm_usuario', (req, res) => {
+    servico5.removerUsuario(req, res);
+});
+
 //--------------------- Servico6 -------------------//
 // Rota para a página cadastro de planta
 router.get('/planta', (req, res) => {
     servico6.exibirPlanta(req, res);
+});
+
+// Rota para cadastrar nova planta
+router.post('/planta', (req, res) => {
+    servico6.cadastrarPlanta(req, res);
 });
 
 //---------------------- Servico7 -------------------//
