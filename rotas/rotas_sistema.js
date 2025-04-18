@@ -69,7 +69,12 @@ router.get('/usuario', (req, res) => {
     servico5.exibirUsuario(req, res);
 });
 
-router.get('/remover/:nm_usuario', (req, res) => {
+//Rota para editar usuario
+router.get('/alterarUsuario/:nm_usuario', (req, res) => {
+    servico5.AlterarUsuario(req, res);
+});
+
+router.get('/removerUsuario/:nm_usuario', (req, res) => {
     servico5.removerUsuario(req, res);
 });
 
