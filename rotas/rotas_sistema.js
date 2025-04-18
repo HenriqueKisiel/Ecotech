@@ -74,8 +74,8 @@ router.get('/alterarUsuario/:nm_usuario', (req, res) => {
     servico5.AlterarUsuario(req, res);
 });
 
-router.get('/removerUsuario/:nm_usuario', (req, res) => {
-    servico5.removerUsuario(req, res);
+router.get('/inativarUsuario/:nm_usuario', (req, res) => {
+    servico5.inativarUsuario(req, res);
 });
 
 //--------------------- Servico6 -------------------//
