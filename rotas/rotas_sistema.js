@@ -57,10 +57,18 @@ router.get('/pessoa', (req, res) => {
     servico3.exibirPessoa(req, res);
 });
 
+router.post('/pessoa', (req, res) => {
+    servico3.insertPessoa(req, res);
+});
+
 //--------------------- Servico4 -------------------//
 // Rota para a página cadastro de pessoa juridica/fornecedor
 router.get('/juridica', (req, res) => {
     servico4.exibirFornecedor(req, res);
+});
+
+router.post('/juridica', (req, res) => {
+    servico4.insertPessoaJuridica(req, res);
 });
 
 //--------------------- Servico5 -------------------//
@@ -178,7 +186,5 @@ router.get('/cadastros', (req, res) => {
 });
 
 //==================== END ROTAS ====================
-
-
 
 module.exports = router;

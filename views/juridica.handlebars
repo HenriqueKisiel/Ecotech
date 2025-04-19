@@ -250,66 +250,78 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Razão Social</label>
-                                            <input type="text" class="form-control" placeholder="Insira o nome/razão">
+                                <form id="formPessoaJuridica" action="/juridica" method="POST">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Razão Social</label>
+                                                <input type="text" name="razaoSocial" class="form-control"
+                                                    placeholder="Insira o nome/razão">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">E-mail</label>
+                                                <input type="email" name="email" class="form-control"
+                                                    placeholder="Insira o E-mail">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">CNPJ</label>
+                                                <input maxlength="18" type="text" name="cnpj" class="form-control"
+                                                    placeholder="Insira o CNPJ">
+                                                <small class="form-text text-muted">Em caso de pessoa jurídica.</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Telefone</label>
+                                                <input maxlength="18" type="text" name="telefone" class="form-control"
+                                                    placeholder="Nr de telefone">
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">E-mail</label>
-                                            <input type="text" class="form-control" placeholder="Insira o E-mail">
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Endereço</label>
+                                                <input maxlength="50" type="text" name="endereco" class="form-control"
+                                                    placeholder="Preencha o endereço">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="fw-bold">CEP</label>
+                                                <input maxlength="9" type="text" name="cep" class="form-control"
+                                                    placeholder="Preencha o CEP">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Cidade</label><br>
+                                                <select class="form-select form-control" name="cidade">
+                                                    <option value="1">Curitiba</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Bairro</label><br>
+                                                <select class="form-select form-control" name="bairro">
+                                                    <option value="1">Xaxim</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">CNPJ</label>
-                                            <input type="number" class="form-control" placeholder="Insira o CNPJ">
-                                            <small id="emailHelp2" class="form-text text-muted">
-                                                Em caso de pessoa jurídica.
-                                            </small>
-                                        </div>
+
+                                    <div class="d-flex justify-content-end mt-3">
+                                        <a href="/home" class="btn btn-secondary me-3">Voltar</a>
+                                        <button type="submit" class="btn btn-success">Salvar</button>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Telefone</label>
-                                            <input type="number" class="form-control" placeholder="Nr de telefone">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Endereço</label>
-                                            <input type="text" class="form-control" placeholder="Preencha o endereço">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="fw-bold">CEP</label>
-                                            <input type="text" class="form-control" placeholder="Preencha o CEP">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Cidade</label>
-                                            <input type="text" class="form-control" placeholder="Informe a cidade">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Bairro</label>
-                                            <input type="text" class="form-control" placeholder="Informe o bairro">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-end mt-3">
-                                    <button type="button" class="btn btn-success">
-                                        Salvar
-                                    </button>
-                                </div>
+                                </form>
+
                             </div>
                         </div>
                     </div>
