@@ -62,10 +62,18 @@ router.get('/pessoa', (req, res) => {
     servico3.exibirPessoa(req, res);
 });
 
+router.post('/pessoa', (req, res) => {
+    servico3.insertPessoa(req, res);
+});
+
 //--------------------- Servico4 -------------------//
 // Rota para a página cadastro de pessoa juridica/fornecedor
 router.get('/juridica', (req, res) => {
     servico4.exibirFornecedor(req, res);
+});
+
+router.post('/juridica', (req, res) => {
+    servico4.insertPessoaJuridica(req, res);
 });
 
 //--------------------- Servico5 -------------------//
@@ -74,10 +82,28 @@ router.get('/usuario', (req, res) => {
     servico5.exibirUsuario(req, res);
 });
 
+//Rota para editar usuario
+router.get('/usuarioEditar/:cd_usuario', (req, res) => {
+    servico5.AlterarUsuario(req, res);
+});
+
+router.post('/usuarioEditar', (req, res) => {
+    servico5.editarUsuario(req, res);
+});
+
+router.get('/inativarUsuario/:cd_usuario&:nm_usuario', (req, res) => {
+    servico5.inativarUsuario(req, res);
+});
+
 //--------------------- Servico6 -------------------//
 // Rota para a página cadastro de planta
 router.get('/planta', (req, res) => {
     servico6.exibirPlanta(req, res);
+});
+
+// Rota para cadastrar nova planta
+router.post('/planta', (req, res) => {
+    servico6.cadastrarPlanta(req, res);
 });
 
 //---------------------- Servico7 -------------------//
@@ -180,7 +206,5 @@ router.get('/estoqueSaida', (req, res) => {
 
 
 //==================== END ROTAS ====================
-
-
 
 module.exports = router;

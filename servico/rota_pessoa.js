@@ -1,42 +1,87 @@
 const conectiondb = require('../bd/conexao_mysql.js');
 
-//Função para pagina pessoa
+// Exibe a página de cadastro
 function exibirPessoa(req, res) {
     res.render('pessoa');
-};
-
-//exportando a função 
-module.exports = {
-    exibirPessoa
 }
 
-//Faltou implementar a acomunicação com o banco para os ID corresponderem com os atriobutos. - Henrique
+// Função para cadastrar pessoa física
+function insertPessoa(req, res) {
+    const {
+        nomeFisico,
+        dataNasc,
+        sexo,
+        cpf,
+        telefone,
+        email,
+        endereco,
+        bairro, // futuramente excluir a tabela e fazer tipo
+        cidade, // já é o ID
+        cep
+    } = req.body;
 
-//Função para cadastrar pessoa - INSERT
-function Insert(req, res) {
-    //pega os valores digitados pelo usuário
-    var nomeFisico = req.body.nomeFisico;
-    var nomeSocial = req.body.nomeSocial;
-    var email = req.body.email;
-    var cpf = req.body.cpf;
-    var endereco = req.body.endereco;
-    var cep = req.body.cep;
-    var numero = req.body.numero;
-    var cidade = req.body.cidade;
-    var bairro = req.body.bairro;
-    var dataNasc = req.body.dataNasc;
-    //var sexo
-    var naturalidade = req.body.naturalidade;
-    var telefone = req.body.telefone;
+    const sql = `
+        INSERT INTO pessoa_fisica 
+        (nm_pessoa_fisica, dt_nascimento, ie_sexo, nr_cpf, nr_telefone_celular, ds_email, ds_endereco, cd_bairro, cd_cidade, nr_cep, dt_atualizacao) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+    `;
 
-    const sql = 'INSERT INTO pessoa (nome, idade, cidade) VALUES (?, ?, ?)'; //colocar colocar variaveis do banco e ajustar o sql
-    conectiondb.query(sql, [/*colocar variaveis do banco*/], (error, results) => {
+    const values = [
+        nomeFisico,
+        dataNasc,
+        sexo,
+        cpf,
+        telefone,
+        email,
+        endereco,
+        bairro,
+        cidade,
+        cep
+    ];
+
+    conectiondb().query(sql, values, (error, results) => {
         if (error) {
             console.error('Erro ao cadastrar pessoa:', error);
-            res.status(500).send('Erro ao cadastrar pessoa');
+            res.render('pessoa', {
+                script: ` <script>
+          swal("Erro ao cadastrar!", "Verifique os dados e tente novamente.", {
+            icon: "error",
+            buttons: {
+              confirm: {
+                text: "OK",
+                className: "btn btn-danger",
+              },
+            },
+          });
+        </script>`
+            });
         } else {
-            res.redirect('/pessoa'); // Redireciona para a página de pessoas após o cadastro
+            res.render('pessoa', {
+                script: `  <script>
+          swal({
+            title: "Cadastro realizado!",
+            text: "Pessoa cadastrada com sucesso!",
+            icon: "success",
+            buttons: {
+              confirm: {
+                text: "OK",
+                value: true,
+                visible: true,
+                className: "btn btn-success",
+                closeModal: true,
+              },
+            },
+          });
+        </script>`
+            });
         }
     });
 }
 
+
+
+// Exportando as funções
+module.exports = {
+    exibirPessoa,
+    insertPessoa
+};

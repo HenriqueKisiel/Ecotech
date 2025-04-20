@@ -16,6 +16,12 @@ const { engine } = require('express-handlebars');
 const session = require("express-session");
 const path = require('path');
 
+const handlebars = require('handlebars');
+
+handlebars.registerHelper('eq', function (a, b) {
+    return a === b;
+});
+
 //importar módulo de rotas 
 const rotas = require('./rotas/rotas_sistema.js');
 

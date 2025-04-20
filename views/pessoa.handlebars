@@ -247,7 +247,6 @@
                                 do Sistema</a>
                         </div>
                     </div>
-
                     <div class="card shadow-lg">
                         <div class="card-header d-none">
                             <div class="card-title">
@@ -255,94 +254,95 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="fw-bold">Nome Completo</label>
-                                        <input maxlength="50" type="text" id="nomeFisico" class="form-control"
-                                            placeholder="Insira o nome completo">
+                            <form id="formPessoaFisica" action="/pessoa" method="POST">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Nome Completo</label>
+                                            <input maxlength="50" type="text" name="nomeFisico" class="form-control"
+                                                placeholder="Insira o nome completo">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="fw-bold">E-mail</label>
-                                        <input maxlength="50" type="text" id="email" class="form-control"
-                                            placeholder="Insira o E-mail">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">E-mail</label>
+                                            <input maxlength="50" type="email" name="email" class="form-control"
+                                                placeholder="Insira o E-mail">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="fw-bold">CPF</label>
-                                        <input maxlength="14" id="cpf" class="form-control" placeholder="Insira o CPF">
-                                        <small id="emailHelp2" class="form-text text-muted">
-                                            Em caso de pessoa física.
-                                        </small>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">CPF</label>
+                                            <input maxlength="14" id="cpf" name="cpf" class="form-control"
+                                                placeholder="Insira o CPF">
+                                            <small class="form-text text-muted">Em caso de pessoa física.</small>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="fw-bold">Telefone</label>
-                                        <input maxlength="18" id="telefone" class="form-control"
-                                            placeholder="Nr de telefone">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="fw-bold">Endereço</label>
-                                        <input maxlength="50" type="text" id="endereco" class="form-control"
-                                            placeholder="Preencha o endereço">
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label class="fw-bold">CEP</label>
-                                        <input maxlength="9" type="text" id="cep" class="form-control"
-                                            placeholder="Preencha o CEP">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="fw-bold">Cidade</label>
-                                        <input maxlength="50" type="text" id="cidade" class="form-control"
-                                            placeholder="Informe a cidade">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="fw-bold">Bairro</label>
-                                        <input maxlength="50" type="text" id="bairro" class="form-control"
-                                            placeholder="Informe o bairro">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="disableinput">Data de Nascimento</label>
-                                        <input type="date" id="dataNasc" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="fw-bold">Sexo</label><br>
-                                        <select class="form-select form-control" id="defaultSelect">
-                                            <option value="1" selected>Masculino</option>
-                                            <option value="2">Feminino</option>
-                                        </select>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Telefone</label>
+                                            <input maxlength="18" id="telefone" name="telefone" class="form-control"
+                                                placeholder="Nr de telefone">
+                                        </div>
                                     </div>
                                 </div>
 
-                            </div>
-                            <div class="d-flex justify-content-end mt-3">
-                                <a href="/home" class="btn btn-secondary me-3">
-                                    Voltar
-                                </a>
-                                <button type="button" class="btn btn-success">
-                                    Salvar
-                                </button>
-                            </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Endereço</label>
+                                            <input maxlength="50" type="text" name="endereco" class="form-control"
+                                                placeholder="Preencha o endereço">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="fw-bold">CEP</label>
+                                            <input maxlength="9" id="cep" type="text" name="cep" class="form-control"
+                                                placeholder="Preencha o CEP">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Cidade</label><br>
+                                            <select class="form-select form-control" name="cidade">
+                                                <option value="1">Curitiba</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Bairro</label><br>
+                                            <select class="form-select form-control" name="bairro">
+                                                <option value="1">Xaxim</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Data de Nascimento</label>
+                                            <input type="date" name="dataNasc" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Sexo</label><br>
+                                            <select class="form-select form-control" name="sexo">
+                                                <option value="m" selected>Masculino</option>
+                                                <option value="f">Feminino</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-end mt-3">
+                                    <a href="/home" class="btn btn-secondary me-3">Voltar</a>
+                                    <button type="submit" class="btn btn-success">Salvar</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -390,4 +390,5 @@
         </div>
     </div>
     <!-- End Modal -->
+    {{{script}}}
 </main>
