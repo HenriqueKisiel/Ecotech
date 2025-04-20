@@ -13,13 +13,18 @@ const servico5 = require('../servico/rota_usuario.js');
 const servico6 = require('../servico/rota_planta.js');
 const servico7 = require('../servico/rota_cadastro.js');
 const servico8 = require('../servico/rota_material.js');
-const servico9 = require('../servico/rota_estoque.js');
+const servico9 = require('../servico/rota_estoqueNovo.js');
 const servico10 = require('../servico/rota_agendamento.js');
 const servico11 = require('../servico/rota_rotas.js');
 const servico12 = require('../servico/rota_relatorio.js');
 const servico13 = require('../servico/rota_processamento.js');
 const servico14 = require('../servico/rota_attStatus.js');
 const servico15 = require('../servico/rota_cadastros.js');
+const servico16 = require('../servico/rota_estoqueBuscar.js');
+const servico17 = require('../servico/rota_estoqueEntrada.js');
+const servico18 = require('../servico/rota_estoqueSaida.js');
+
+
 
 
 //==================== START ROTAS ====================
@@ -96,22 +101,7 @@ router.post('/material', (req, res) => {
 //---------------------- Servico9 -------------------//
 // Rota para a página de cadastrar estoque
 router.get('/estoqueNovo', (req, res) => {
-    servico9.exibirEstoqueNovo(req, res);
-});
-
-// Rota para a página de buscar material no estoque
-router.get('/estoqueBuscar', (req, res) => {
-    servico9.exibirEstoqueBuscar(req, res);
-});
-
-// Rota para a página de entrada de material
-router.get('/estoqueEntrada', (req, res) => {
-    servico9.exibirEstoqueEntrada(req, res);
-});
-
-// Rota para a página de saida de material
-router.get('/estoqueSaida', (req, res) => {
-    servico9.exibirEstoqueSaida(req, res);
+    servico9.exibirestoqueNovo(req, res);
 });
 
 //----------------------- Servico10 -------------------//
@@ -162,6 +152,32 @@ router.get('/attStatus', (req, res) => {
 router.get('/cadastros', (req, res) => {
     servico15.exibirCadastros(req, res);
 });
+
+
+//------------------------ Servico16 -------------------//
+// Rota para exibir a página de buscar material no estoque
+router.get('/estoqueBuscar', (req, res) => {
+    servico16.exibirestoqueBuscar(req, res);
+});
+
+// Rota POST para realizar a busca no estoque
+router.post('/estoqueBuscar', (req, res) => {
+    servico16.localizarestoqueBuscar(req, res);
+});
+
+//------------------------ Servico17 -------------------//
+// Rota para a página de entrada de material
+router.get('/estoqueEntrada', (req, res) => {
+    servico17.exibirestoqueEntrada(req, res);
+});
+
+
+//------------------------ Servico18 -------------------//
+// Rota para a página de saida de material
+router.get('/estoqueSaida', (req, res) => {
+    servico18.exibirestoqueSaida(req, res);
+});
+
 
 //==================== END ROTAS ====================
 
