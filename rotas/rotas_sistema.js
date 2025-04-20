@@ -78,11 +78,15 @@ router.get('/usuario', (req, res) => {
 });
 
 //Rota para editar usuario
-router.get('/alterarUsuario/:nm_usuario', (req, res) => {
+router.get('/usuarioEditar/:cd_usuario', (req, res) => {
     servico5.AlterarUsuario(req, res);
 });
 
-router.get('/inativarUsuario/:nm_usuario', (req, res) => {
+router.post('/usuarioEditar', (req, res) => {
+    servico5.editarUsuario(req, res);
+});
+
+router.get('/inativarUsuario/:cd_usuario&:nm_usuario', (req, res) => {
     servico5.inativarUsuario(req, res);
 });
 
