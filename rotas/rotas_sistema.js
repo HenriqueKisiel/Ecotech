@@ -23,6 +23,8 @@ const servico15 = require('../servico/rota_cadastros.js');
 const servico16 = require('../servico/rota_estoqueBuscar.js');
 const servico17 = require('../servico/rota_estoqueEntrada.js');
 const servico18 = require('../servico/rota_estoqueSaida.js');
+const servico19 = require('../servico/rota_agendamentoAdd.js');
+const servico20 = require('../servico/rota_agendamentoEditar.js');
 
 
 
@@ -139,8 +141,6 @@ router.get('/agendamento', (req, res) => {
 router.post('/agendamento', (req, res) => {
     servico10.registrarAgendamento(req, res);
 });
-
-
 //---------------------- Servico11 -------------------//
 // Rota para a página de rotas programadas
 router.get('/rotas', (req, res) => {
@@ -211,6 +211,17 @@ router.get('/estoqueSaida', (req, res) => {
     servico18.exibirestoqueSaida(req, res);
 });
 
+//----------------------- Servico19 -------------------//
+//página para adicionar agendamento
+router.get('/agendamentoAdd', (req, res) => {
+    servico19.exibirNovoAgendamento(req, res);
+});
+
+//----------------------- Servico20 -------------------//
+//página para editar agendamento
+router.get('/agendamentoEditar', (req, res) => {
+    servico20.exibirEditarAgendamento(req, res);
+});
 
 //==================== END ROTAS ====================
 
