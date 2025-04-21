@@ -51,7 +51,27 @@ function editarUsuario(req, res) {
     conectiondb().query(sqlPessoaFisica, [nm_pessoa_fisica, ds_email, nr_telefone_celular, cd_usuario], function (erroPessoaFisica) {
         if (erroPessoaFisica) {
             console.error('Erro ao atualizar Pessoa_Fisica:', erroPessoaFisica);
-            return res.status(500).send('Erro ao atualizar Pessoa_Fisica.');
+            return res.render('usuarioEditar', {
+                usuario: {
+                    nm_pessoa_fisica,
+                    ds_email,
+                    nr_telefone_celular,
+                    nm_usuario,
+                    ds_senha,
+                    ie_situacao
+                },
+                script: ` <script>
+          swal("Erro ao editar!", "Verifique os dados e tente novamente.", {
+            icon: "error",
+            buttons: {
+              confirm: {
+                text: "OK",
+                className: "btn btn-danger",
+              },
+            },
+          });
+        </script>`
+            });
         }
 
         // Atualizar a tabela Usuario
@@ -64,11 +84,56 @@ function editarUsuario(req, res) {
         conectiondb().query(sqlUsuario, [nm_usuario, ds_senha, ie_situacao, cd_usuario], function (erroUsuario) {
             if (erroUsuario) {
                 console.error('Erro ao atualizar Usuario:', erroUsuario);
-                return res.status(500).send('Erro ao atualizar Usuario.');
+                return res.render('usuarioEditar', {
+                    usuario: {
+                        nm_pessoa_fisica,
+                        ds_email,
+                        nr_telefone_celular,
+                        nm_usuario,
+                        ds_senha,
+                        ie_situacao
+                    },
+                    script: ` <script>
+              swal("Erro ao editar!", "Verifique os dados e tente novamente.", {
+                icon: "error",
+                buttons: {
+                  confirm: {
+                    text: "OK",
+                    className: "btn btn-danger",
+                  },
+                },
+              });
+            </script>`
+                });
             }
 
-            console.log('Usuário ',nm_usuario,' atualizado com sucesso!');
-            res.redirect('/usuario');
+            console.log('Usuário atualizado com sucesso!');
+            return res.render('usuarioEditar', {
+                usuario: {
+                    nm_pessoa_fisica,
+                    ds_email,
+                    nr_telefone_celular,
+                    nm_usuario,
+                    ds_senha,
+                    ie_situacao
+                },
+                script: `  <script>
+              swal({
+                title: "Realizado Edição!",
+                text: "Usuário '${nm_usuario}' editado com sucesso!",
+                icon: "success",
+                buttons: {
+                  confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "btn btn-success",
+                    closeModal: true,
+                  },
+                },
+              });
+            </script>`
+            });
         });
     });
 }
@@ -77,22 +142,80 @@ function editarUsuario(req, res) {
 function inativarUsuario(req, res) {
     let sql = 'UPDATE Pessoa_Usuario SET ie_situacao = ? WHERE cd_usuario = ? AND cd_pessoa_fisica IS NOT NULL';
 
-    // Executando a consulta no banco de dados
-    conectiondb().query(sql, ['i', req.params.cd_usuario, req.params.nm_usuario], function (erro, retorno) {
+    // Executando a consulta no banco de dados para inativar o usuário
+    conectiondb().query(sql, ['i', req.params.cd_usuario], function (erro, retorno) {
         if (erro) {
-            console.error('Erro ao remover usuário:', erro);
-            return res.status(500).send('Erro ao remover usuário.');
+            console.error('Erro ao inativar usuário:', erro);
+            return res.render('usuario', {
+                usuarios: [],
+                script: ` <script>
+              swal("Erro ao inativar!", "Não foi possível inativar o usuário. Tente novamente.", {
+                icon: "error",
+                buttons: {
+                  confirm: {
+                    text: "OK",
+                    className: "btn btn-danger",
+                  },
+                },
+              });
+            </script>`
+            });
         }
 
-        // Verifica se o usuário foi removido com sucesso
+        // Verifica se o usuário foi inativado com sucesso
         if (retorno.affectedRows > 0) {
-            console.log('Usuário', req.params.nm_usuario, 'inativado com sucesso!');
+            console.log('Usuário inativado com sucesso!');
+
+            // Buscar os usuários atualizados para exibir na view 'usuario'
+            const sqlUsuarios = `
+                SELECT cd_usuario, nm_usuario, nm_pessoa_fisica, ds_email, Obter_Situacao(ie_situacao) as ie_situacao 
+                FROM Pessoa_Usuario
+            `;
+
+            conectiondb().query(sqlUsuarios, function (erroUsuarios, usuarios) {
+                if (erroUsuarios) {
+                    console.error('Erro ao carregar usuários:', erroUsuarios);
+                    return res.status(500).send('Erro ao carregar usuários.');
+                }
+
+                // Renderizar a view 'usuario' com os dados atualizados
+                return res.render('usuario', {
+                    usuarios: usuarios,
+                    script: ` <script>
+                  swal({
+                    title: "Usuário Inativado!",
+                    text: "O usuário foi inativado com sucesso!",
+                    icon: "success",
+                    buttons: {
+                      confirm: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        className: "btn btn-success",
+                        closeModal: true,
+                      },
+                    },
+                  });
+                </script>`
+                });
+            });
         } else {
             console.log('Usuário não encontrado!');
+            return res.render('usuario', {
+                usuarios: [],
+                script: ` <script>
+              swal("Usuário não encontrado!", "O usuário não foi encontrado no sistema.", {
+                icon: "warning",
+                buttons: {
+                  confirm: {
+                    text: "OK",
+                    className: "btn btn-warning",
+                  },
+                },
+              });
+            </script>`
+            });
         }
-
-        // Redireciona para a página de usuários
-        res.redirect('/usuario');
     });
 }
 
