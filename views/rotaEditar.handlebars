@@ -229,154 +229,152 @@
                 <!--End MenuBar-->
                 <!--Start conteudo indiviudual da pagina-->
                 <div class="container">
-                    <div class="page-inner">
-                        <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
-                            <div class="mb-3 d-flex flex-column">
-                                <span class="fs-2 fw-bold">
-                                    Cadastro de Rota
-                                </span>
-                                <small class="text-muted">
-                                    Preencha os dados de cadastro e clique em salvar.
-                                </small>
-                            </div>
-                            <div>
-                                <a class="btn btn-secondary shadow-lg" href="/rotas">Voltar</a>
-                            </div>
-                        </div>
-                        <div class="card shadow-lg mb-3">
-                            <div class="card-header d-none">
-                                <div class="card-title">
-                                    <span class="fs-2 fw-bold"></span>
+                    <form action="/agendamento" method="POST">
+                        <div class="page-inner">
+                            <div
+                                class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
+                                <div class="mb-3 d-flex flex-column">
+                                    <span class="fs-2 fw-bold">Editar Rota de Coleta</span>
+                                    <small class="text-muted">Realize a programação da coleta.</small>
+                                </div>
+                                <div>
+                                    <a href="/agendamento" class="btn btn-secondary me-3 shadow-lg">Voltar</a>
                                 </div>
                             </div>
-                            <div class="card-body">
-                                <form id="formRotaCadastro" action="/RotaCadastro" method="POST">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Nome da Rota</label>
-                                            <input type="text" name="nomeRota" class="form-control" placeholder="Insira o nome ">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Data Agendada</label>
-                                            <input type="date" name="dataAgendaRota" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Peso total (Kg)</label>
-                                            <input type="text" name="pesoTotalRota" class="form-control" placeholder="Kg">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">KM Total (KM)</label>
-                                            <input type="text" name="quilometroTotalRota" class="form-control" placeholder="Km">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-end mt-3">
-                                    <button type="submit" class="btn btn-success fw-bold shadow-lg fs-5">
-                                        Salvar
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card shadow-lg mb-3">
-                            <div class="card-header">
-                                <div class="card-title">
-                                    <span class="fs-4 fw-bold">Selecione o agendamento para essa rota:</span>
-                                </div>
-                            </div>
-                            <div class="card-body p-0">
-                                <table class="table table-head-bg-success">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col"></th>
-                                            <th scope="col">Linha</th>
-                                            <th scope="col">Cod. do Material</th>
-                                            <th scope="col">Descrição</th>
-                                            <th scope="col">Endereço</th>
-                                            <th scope="col">Cidade/Bairro</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div>
-                                                    <input class="form-check-input" type="checkbox" id="checkboxNoLabel"
-                                                        value="" aria-label="..." checked>
-                                                </div>
-                                            </td>
-                                            <td><span class="badge badge-success fs-6">Verde</span></td>
-                                            <td>8533</td>
-                                            <td>Placas Marrom</td>
-                                            <td>Rua da Mangas, 764</td>
-                                            <td>Curitiba, Boqueirão</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div>
-                                                    <input class="form-check-input" type="checkbox" value=""
-                                                        aria-label="...">
-                                                </div>
-                                            </td>
-                                            <td><span class="badge badge-danger fs-6">Vermelha</span></td>
-                                            <td>1025</td>
-                                            <td>Tubos de Aço</td>
-                                            <td>Avenida Central, 1220</td>
-                                            <td>São Paulo, Vila Mariana</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div>
-                                                    <input class="form-check-input" type="checkbox" value=""
-                                                        aria-label="...">
-                                                </div>
-                                            </td>
-                                            <td><span class="badge badge-primary fs-6">Azul</span></td>
-                                            <td>6758</td>
-                                            <td>Fios Elétricos</td>
-                                            <td>Rua das Palmeiras, 45</td>
-                                            <td>Rio de Janeiro, Copacabana</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div>
-                                                    <input class="form-check-input" type="checkbox" value=""
-                                                        aria-label="...">
-                                                </div>
-                                            </td>
-                                            <td><span class="badge badge-warning fs-6">Laranja</span></td>
-                                            <td>3987</td>
-                                            <td>Chapas de Alumínio</td>
-                                            <td>Praça da Liberdade, 10</td>
-                                            <td>Belo Horizonte, Savassi</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div>
-                                                    <input class="form-check-input" type="checkbox" value=""
-                                                        aria-label="...">
-                                                </div>
-                                            </td>
-                                            <td><span class="badge badge-primary fs-6">Azul</span></td>
-                                            <td>7771</td>
-                                            <td>Parafusos de Inox</td>
-                                            <td>Rua das Rosas, 238</td>
-                                            <td>Porto Alegre, Centro</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
 
+                            <div class="card shadow-lg mb-5">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{!-- Nome Rota --}}
+                                                <label class="fw-bold">Nome</label>
+                                                <input type="text" class="form-control" placeholder="informe o nome da rota">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Distancia (KM)</label>
+                                                <input type="text" class="form-control"
+                                                    placeholder="___" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Peso previsto (KG)</label>
+                                                <input type="text" class="form-control" placeholder="___" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Data agendada</label>
+                                                <input type="date" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-end flex-wrap">
+                                        <button type="submit" class="btn btn-success shadow-lg">Salvar</button>
+                                    </div>
+                                </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card shadow-lg mb-5">
+                                        <div class="card-header">
+                                            <div class="card-title">
+                                                Pontos de coleta
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Nome do Agendamento</label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="informe o nome">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Endereco</label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="informe o endereço">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Peso do material (KG)</label>
+                                                        <input type="text" class="form-control" placeholder="___">
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                            <div class="d-flex justify-content-end flex-wrap gap-2">
+                                                <button type="button" class="btn btn-primary shadow-lg">Buscar</button>
+                                                <button type="submit" class="btn btn-success shadow-lg">Adicionar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card shadow-lg mb-5">
+                                        <div class="card-header">
+                                            <div class="card-title">
+                                                Lista de Pontos Adicionados
+                                            </div>
+                                        </div>
+                                        <div class="card-body p-0">
+                                            <table class="table table-head-bg-success mt-4">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Agendamento</th>
+                                                        <th scope="col">Endereço</th>
+                                                        <th scope="col">Peso</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>--</td>
+                                                        <td>--</td>
+                                                        <td>--</td>
+                                                        <td>
+                                                            <a class="btn btn-icon btn-round btn-danger"
+                                                                data-bs-toggle="modal" data-bs-target="#excluir">
+                                                                <i class="fa fa-trash"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+                <!--End conteudo indiviudual da pagina-->
+            </div>
+        </div>
+        <!--start modal-->
+        <div class="modal fade" id="excluir" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered p-5">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="d-flex justify-content-center text-center flex-column">
+                            <i class="fa fa-exclamation-triangle text-danger fs-2"></i>
+                            <span class="fw-bold fs-4">Tem certeza que deseja excluir o cadastro?</span>
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary">Confirmar</button>
                         </div>
                     </div>
                 </div>
-                <!--end conteudo indiviudual da pagina-->
             </div>
         </div>
+        <!--end modal-->
     </body>
-</main>

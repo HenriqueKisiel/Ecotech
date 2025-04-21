@@ -25,6 +25,7 @@ const servico17 = require('../servico/rota_estoqueEntrada.js');
 const servico18 = require('../servico/rota_estoqueSaida.js');
 const servico19 = require('../servico/rota_agendamentoAdd.js');
 const servico20 = require('../servico/rota_agendamentoEditar.js');
+const servico21 = require('../servico/rota_rota_editar.js');
 
 
 
@@ -82,6 +83,22 @@ router.post('/juridica', (req, res) => {
 // Rota para a página cadastro de usuario
 router.get('/usuario', (req, res) => {
     servico5.exibirUsuario(req, res);
+});
+
+router.get('/pessoas', (req, res) => {
+    servico5.buscarPessoa(req, res);
+});
+
+router.get('/pessoa/:id', (req, res) => {
+    servico5.buscarDetalhesPessoa(req, res);
+});
+
+router.get('/usuarioAdicionar', (req, res) => {
+    servico5.adicionarUsuario(req, res);
+});
+
+router.post('/usuarioAdicionar', (req, res) => {
+    servico5.cadastrarUsuario(req, res);
 });
 
 //Rota para editar usuario
@@ -221,6 +238,12 @@ router.get('/agendamentoAdd', (req, res) => {
 //página para editar agendamento
 router.get('/agendamentoEditar', (req, res) => {
     servico20.exibirEditarAgendamento(req, res);
+});
+
+// ----------------------- Servico21 -------------------//
+
+router.get('/rotaEditar', (req, res) => {
+    servico21.exibirrotaeditar(req, res);
 });
 
 //==================== END ROTAS ====================

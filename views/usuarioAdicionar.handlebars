@@ -39,7 +39,7 @@
                                 </span>
                                 <h4 class="text-section">Funções Do Sistema</h4>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item active">
                                 <a data-bs-toggle="collapse" href="#cadastro">
                                     <i class="fas fa-user"></i>
                                     <p>Cadastros</p>
@@ -106,7 +106,7 @@
                                     </ul>
                                 </div>
                             </li>
-                            <li class="nav-item active">
+                            <li class="nav-item">
                                 <a data-bs-toggle="collapse" href="#coleta">
                                     <i class="fa fa-map-marker-alt"></i>
                                     <p>Gestão de Coleta</p>
@@ -233,150 +233,146 @@
                         <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
                             <div class="mb-3 d-flex flex-column">
                                 <span class="fs-2 fw-bold">
-                                    Cadastro de Rota
+                                    Criar Usuário
                                 </span>
                                 <small class="text-muted">
-                                    Preencha os dados de cadastro e clique em salvar.
+                                    Preencha os dados para criar usuario e clique em salvar.
                                 </small>
                             </div>
-                            <div>
-                                <a class="btn btn-secondary shadow-lg" href="/rotas">Voltar</a>
-                            </div>
+                            <a href="/usuario" class="btn btn-secondary fw-bold shadow-lg me-3 mt-2">
+                                Voltar</a>
                         </div>
-                        <div class="card shadow-lg mb-3">
-                            <div class="card-header d-none">
-                                <div class="card-title">
-                                    <span class="fs-2 fw-bold"></span>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <form id="formRotaCadastro" action="/RotaCadastro" method="POST">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Nome da Rota</label>
-                                            <input type="text" name="nomeRota" class="form-control" placeholder="Insira o nome ">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Data Agendada</label>
-                                            <input type="date" name="dataAgendaRota" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Peso total (Kg)</label>
-                                            <input type="text" name="pesoTotalRota" class="form-control" placeholder="Kg">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">KM Total (KM)</label>
-                                            <input type="text" name="quilometroTotalRota" class="form-control" placeholder="Km">
-                                        </div>
+                        <form id="formCadastroUsuario" method="POST" action="/usuarioAdicionar">
+                            <div class="card shadow-lg">
+                                <div class="card-header d-none">
+                                    <div class="card-title">
+                                        <span class="fs-2 fw-bold"></span>
                                     </div>
                                 </div>
-                                <div class="d-flex justify-content-end mt-3">
-                                    <button type="submit" class="btn btn-success fw-bold shadow-lg fs-5">
-                                        Salvar
-                                    </button>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Nome do Usuário</label>
+                                                <select id="nome" name="nome" class="form-control" required>
+                                                    <option value="">Selecione um nome</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Email</label>
+                                                <input type="text" id="email" name="email" class="form-control" placeholder="Novo email" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Telefone</label>
+                                                <input type="text" id="telefone" name="telefone" class="form-control" placeholder="(41) xxxxx-xxxx" readonly>
+                                            </div>
+                                        </div> 
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold"> Usuário</label>
+                                                <input type="text" name="usuario" value="{{usuario.nm_usuario}}" class="form-control"
+                                                    placeholder="Usuario " required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Senha</label>
+                                                <input type="text" name="senha" value="{{usuario.ds_senha}}" class="form-control"
+                                                    placeholder="Nova senha"required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Situacao</label>
+                                                <div class="form-check">
+                                                    <input 
+                                                        type="checkbox" class="form-check-input"  id="ie_situacao" name="ie_situacao" value="A" 
+                                                        {{#if (eq usuario.ie_situacao "A")}}checked{{/if}}>
+                                                    <label class="form-check-label" for="ie_situacao">Ativo</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                                <input type="hidden" name="codigo" value="{{usuario.cd_usuario}}" class="form-control"
+                                                    placeholder="Insira o nome ">
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-end mt-3">
+                                        <button type="submit" class="btn btn-success">
+                                            Salvar
+                                        </button>
+                                    </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="card shadow-lg mb-3">
-                            <div class="card-header">
-                                <div class="card-title">
-                                    <span class="fs-4 fw-bold">Selecione o agendamento para essa rota:</span>
-                                </div>
-                            </div>
-                            <div class="card-body p-0">
-                                <table class="table table-head-bg-success">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col"></th>
-                                            <th scope="col">Linha</th>
-                                            <th scope="col">Cod. do Material</th>
-                                            <th scope="col">Descrição</th>
-                                            <th scope="col">Endereço</th>
-                                            <th scope="col">Cidade/Bairro</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div>
-                                                    <input class="form-check-input" type="checkbox" id="checkboxNoLabel"
-                                                        value="" aria-label="..." checked>
-                                                </div>
-                                            </td>
-                                            <td><span class="badge badge-success fs-6">Verde</span></td>
-                                            <td>8533</td>
-                                            <td>Placas Marrom</td>
-                                            <td>Rua da Mangas, 764</td>
-                                            <td>Curitiba, Boqueirão</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div>
-                                                    <input class="form-check-input" type="checkbox" value=""
-                                                        aria-label="...">
-                                                </div>
-                                            </td>
-                                            <td><span class="badge badge-danger fs-6">Vermelha</span></td>
-                                            <td>1025</td>
-                                            <td>Tubos de Aço</td>
-                                            <td>Avenida Central, 1220</td>
-                                            <td>São Paulo, Vila Mariana</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div>
-                                                    <input class="form-check-input" type="checkbox" value=""
-                                                        aria-label="...">
-                                                </div>
-                                            </td>
-                                            <td><span class="badge badge-primary fs-6">Azul</span></td>
-                                            <td>6758</td>
-                                            <td>Fios Elétricos</td>
-                                            <td>Rua das Palmeiras, 45</td>
-                                            <td>Rio de Janeiro, Copacabana</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div>
-                                                    <input class="form-check-input" type="checkbox" value=""
-                                                        aria-label="...">
-                                                </div>
-                                            </td>
-                                            <td><span class="badge badge-warning fs-6">Laranja</span></td>
-                                            <td>3987</td>
-                                            <td>Chapas de Alumínio</td>
-                                            <td>Praça da Liberdade, 10</td>
-                                            <td>Belo Horizonte, Savassi</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div>
-                                                    <input class="form-check-input" type="checkbox" value=""
-                                                        aria-label="...">
-                                                </div>
-                                            </td>
-                                            <td><span class="badge badge-primary fs-6">Azul</span></td>
-                                            <td>7771</td>
-                                            <td>Parafusos de Inox</td>
-                                            <td>Rua das Rosas, 238</td>
-                                            <td>Porto Alegre, Centro</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
                 <!--end conteudo indiviudual da pagina-->
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const nomeSelect = document.getElementById('nome');
+                        const emailInput = document.getElementById('email');
+                        const telefoneInput = document.getElementById('telefone');
+
+                        // Buscar nomes da tabela pessoa_fisica
+                        fetch('/pessoas')
+                            .then(response => response.json())
+                            .then(pessoas => {
+                                pessoas.forEach(pessoa => {
+                                    const option = document.createElement('option');
+                                    option.value = pessoa.cd_pessoa_fisica;
+                                    option.textContent = pessoa.nm_pessoa_fisica;
+                                    nomeSelect.appendChild(option);
+                                });
+                            })
+                            .catch(error => console.error('Erro ao carregar nomes:', error));
+
+                        // Atualizar email e telefone ao selecionar um nome
+                        nomeSelect.addEventListener('change', function () {
+                            const cd_pessoa_fisica = this.value;
+
+                            if (cd_pessoa_fisica) {
+                                fetch(`/pessoa/${cd_pessoa_fisica}`)
+                                    .then(response => response.json())
+                                    .then(detalhes => {
+                                        emailInput.value = detalhes.ds_email || '';
+                                        telefoneInput.value = detalhes.nr_telefone_celular || '';
+                                    })
+                                    .catch(error => console.error('Erro ao carregar detalhes da pessoa:', error));
+                            } else {
+                                emailInput.value = '';
+                                telefoneInput.value = '';
+                            }
+                        });
+                    });
+                </script>
+
+                <footer class="footer">
+                    <div class="container-fluid d-flex justify-content-between">
+                        <nav class="pull-left">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">footer#1</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">footer#2</a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <div class="copyright">
+                            2025 - Autores: Equipe 7
+                        </div>
+                    </div>
+                </footer>
             </div>
         </div>
     </body>
 </main>
+
+

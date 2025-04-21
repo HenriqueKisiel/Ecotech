@@ -11,6 +11,80 @@ function exibirUsuario(req, res) {
     });
 };
 
+//rota para buscar pessoas
+function buscarPessoa(req, res) {
+    const sql = 'SELECT cd_pessoa_fisica, nm_pessoa_fisica FROM pessoa_fisica';
+    conectiondb().query(sql, (erro, resultados) => {
+        if (erro) {
+            console.error('Erro ao buscar pessoas:', erro);
+            return res.status(500).send('Erro ao buscar pessoas.');
+        }
+        res.json(resultados); // Retorna os nomes como JSON
+    });
+}
+
+//rota para buscar detalhes da pessoa
+function buscarDetalhesPessoa(req, res) {
+    const sql = 'SELECT ds_email, nr_telefone_celular FROM pessoa_fisica WHERE cd_pessoa_fisica = ?';
+    conectiondb().query(sql, [req.params.id], (erro, resultados) => {
+        if (erro) {
+            console.error('Erro ao buscar detalhes da pessoa:', erro);
+            return res.status(500).send('Erro ao buscar detalhes da pessoa.');
+        }
+        res.json(resultados[0]); // Retorna os detalhes como JSON
+    });
+}
+
+//Função para adicionar usuario
+function adicionarUsuario(req, res) {
+    res.render('usuarioAdicionar', { usuario: {} });
+}
+
+//função para cadastrar usuario
+function cadastrarUsuario(req, res) {
+    const { nome, email, telefone, usuario, senha, ie_situacao } = req.body;
+
+    const sql = `
+        INSERT INTO usuario (cd_pessoa_fisica, nm_usuario, ds_senha, ie_situacao)
+        VALUES (?, ?, ?, ?)
+    `;
+
+    conectiondb().query(sql, [nome, usuario, senha, ie_situacao], (erro, resultado) => {
+        if (erro) {
+            console.error('Erro ao adicionar usuário:', erro);
+            return res.render('usuarioAdicionar', {
+                usuario: req.body,
+                script: `<script>
+                  swal("Erro ao adicionar!", "Não foi possível adicionar o usuário. Tente novamente.", {
+                    icon: "error",
+                    buttons: {
+                      confirm: {
+                        text: "OK",
+                        className: "btn btn-danger",
+                      },
+                    },
+                  });
+                </script>`
+            });
+        }
+
+        console.log('Usuário adicionado com sucesso!');
+        return res.render('usuarioAdicionar', {
+            script: `<script>
+              swal("Usuário Adicionado!", "O usuário foi adicionado com sucesso!", {
+                icon: "success",
+                buttons: {
+                  confirm: {
+                    text: "OK",
+                    className: "btn btn-success",
+                  },
+                },
+              });
+            </script>`
+        });
+    });
+}
+
 //Função para abrir edição do usuario
 function AlterarUsuario(req, res) {
     let sql = 'SELECT * FROM Pessoa_Usuario WHERE cd_usuario = ?';
@@ -113,7 +187,7 @@ function editarUsuario(req, res) {
                     nm_pessoa_fisica,
                     ds_email,
                     nr_telefone_celular,
-                    nm_usuario,
+                    nm_usuario,     
                     ds_senha,
                     ie_situacao
                 },
@@ -222,6 +296,10 @@ function inativarUsuario(req, res) {
 //exportando a função 
 module.exports = {
     exibirUsuario,
+    buscarPessoa,
+    buscarDetalhesPessoa,
+    adicionarUsuario,
+    cadastrarUsuario,
     AlterarUsuario,
     editarUsuario,
     inativarUsuario
