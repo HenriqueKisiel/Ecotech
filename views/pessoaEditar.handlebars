@@ -250,28 +250,29 @@
                         <div class="card-body">
                             <form id="formPessoaFisicaEditar" action="/pessoaEditar" method="POST">
                                 <div class="form-group">
-                                    <input type="hidden" name="codigo" value="{{pessoa.cd_pessoa_fisica}}">
+                                    <input type="hidden" name="codigo" value="{{pessoa_fisica.cd_pessoa_fisica}}">
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Nome Completo</label>
                                             <input maxlength="50" type="text" name="nomeFisico"
-                                                value="{{pessoa.nm_pessoa_fisica}}" class="form-control"
+                                                value="{{pessoa_fisica.nm_pessoa_fisica}}" class="form-control"
                                                 placeholder="Insira o nome completo">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">E-mail</label>
-                                            <input maxlength="50" type="email" name="email" value="{{pessoa.ds_email}}"
-                                                class="form-control" placeholder="Insira o E-mail">
+                                            <input maxlength="50" type="email" name="email"
+                                                value="{{pessoa_fisica.ds_email}}" class="form-control"
+                                                placeholder="Insira o E-mail">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">CPF</label>
-                                            <input maxlength="14" id="cpf" name="cpf" value="{{pessoa.nr_cpf}}"
+                                            <input maxlength="14" id="cpf" name="cpf" value="{{pessoa_fisica.nr_cpf}}"
                                                 class="form-control" placeholder="Insira o CPF">
                                             <small class="form-text text-muted">Em caso de pessoa física.</small>
                                         </div>
@@ -280,7 +281,7 @@
                                         <div class="form-group">
                                             <label class="fw-bold">Telefone</label>
                                             <input maxlength="18" id="telefone" name="telefone"
-                                                value="{{pessoa.nr_telefone_celular}}" class="form-control"
+                                                value="{{pessoa_fisica.nr_telefone_celular}}" class="form-control"
                                                 placeholder="Nr de telefone">
                                         </div>
                                     </div>
@@ -291,7 +292,7 @@
                                         <div class="form-group">
                                             <label class="fw-bold">Endereço</label>
                                             <input maxlength="50" type="text" name="endereco"
-                                                value="{{pessoa.ds_endereco}}" class="form-control"
+                                                value="{{pessoa_fisica.ds_endereco}}" class="form-control"
                                                 placeholder="Preencha o endereço">
                                         </div>
                                     </div>
@@ -299,7 +300,7 @@
                                         <div class="form-group">
                                             <label class="fw-bold">CEP</label>
                                             <input maxlength="9" id="cep" type="text" name="cep"
-                                                value="{{pessoa.nr_cep}}" class="form-control"
+                                                value="{{pessoa_fisica.nr_cep}}" class="form-control"
                                                 placeholder="Preencha o CEP">
                                         </div>
                                     </div>
@@ -307,7 +308,9 @@
                                         <div class="form-group">
                                             <label class="fw-bold">Cidade</label><br>
                                             <select class="form-select form-control" name="cidade">
-                                                <option value="1">Curitiba</option>
+                                                <option value="1" {{#if (eq pessoa_fisica.cd_cidade "1"
+                                                    )}}selected{{/if}}>Curitiba</option>
+                                                <!-- Adicione mais cidades conforme necessário -->
                                             </select>
                                         </div>
                                     </div>
@@ -315,7 +318,9 @@
                                         <div class="form-group">
                                             <label class="fw-bold">Bairro</label><br>
                                             <select class="form-select form-control" name="bairro">
-                                                <option value="1">Xaxim</option>
+                                                <option value="1" {{#if (eq pessoa_fisica.cd_bairro "1"
+                                                    )}}selected{{/if}}>Xaxim</option>
+                                                <!-- Adicione mais bairros conforme necessário -->
                                             </select>
                                         </div>
                                     </div>
@@ -325,33 +330,38 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Data de Nascimento</label>
-                                            <input type="date" name="dataNasc" value="{{pessoa.dt_nascimento}}"
+                                            <input type="date" name="dataNasc" value="{{pessoa_fisica.dt_nascimento}}"
                                                 class="form-control">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Sexo</label><br>
-                                            <select class="form-select form-control" name="sexo"
-                                                value="{{pessoa.ie_sexo}}">
-                                                <option value="m">Masculino</option>
-                                                <option value="f">Feminino</option>
+                                            <select class="form-select form-control" name="sexo">
+                                                <option value="m" {{#if (eq pessoa_fisica.ie_sexo "m"
+                                                    )}}selected{{/if}}>Masculino</option>
+                                                <option value="f" {{#if (eq pessoa_fisica.ie_sexo "f"
+                                                    )}}selected{{/if}}>Feminino</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-check">
                                             <input type="checkbox" class="form-check-input" id="ie_situacao"
-                                                name="ie_situacao" value="A" {{#if (eq pessoa.ie_situacao "A"
+                                                name="ie_situacao" value="A" {{#if (eq pessoa_fisica.ie_situacao "A"
                                                 )}}checked{{/if}}>
                                             <label class="form-check-label fw-bold fs-6" for="ie_situacao">Ativo</label>
                                         </div>
                                     </div>
+                                </div>
+
+                                <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Última Atualização</label>
-                                            <input type="text" name="Dt_atualizacao" value="{{pessoa.dt_atualizacao}}"
-                                                class="form-control" placeholder="25/12/2025" readonly>
+                                            <input type="text" name="Dt_atualizacao"
+                                                value="{{pessoa_fisica.dt_atualizacao}}" class="form-control"
+                                                placeholder="25/12/2025" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -360,6 +370,7 @@
                                     <button type="submit" class="btn btn-success">Salvar</button>
                                 </div>
                             </form>
+
                         </div>
                     </div>
                 </div>
