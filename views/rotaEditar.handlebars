@@ -229,7 +229,6 @@
                 <!--End MenuBar-->
                 <!--Start conteudo indiviudual da pagina-->
                 <div class="container">
-                    <form action="/agendamento" method="POST">
                         <div class="page-inner">
                             <div
                                 class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
@@ -238,45 +237,59 @@
                                     <small class="text-muted">Realize a programação da coleta.</small>
                                 </div>
                                 <div>
-                                    <a href="/agendamento" class="btn btn-secondary me-3 shadow-lg">Voltar</a>
+                                    <a href="/rotas" class="btn btn-secondary me-3 shadow-lg">Voltar</a>
                                 </div>
                             </div>
-
-                            <div class="card shadow-lg mb-5">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                {{!-- Nome Rota --}}
-                                                <label class="fw-bold">Nome</label>
-                                                <input type="text" class="form-control" placeholder="informe o nome da rota">
+                            <form method="POST" action="/rotaEditar">
+                                <div class="card shadow-lg mb-5">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    {{!-- Nome Rota --}}
+                                                    <label class="fw-bold">Código Rota</label>
+                                                    <input type="text" class="form-control" name="codigo" value="{{rotas.cd_rota}}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    {{!-- Nome Rota --}}
+                                                    <label class="fw-bold">Nome</label>
+                                                    <input type="text"  name="nome" class="form-control" value="{{rotas.nm_rota}}" placeholder="informe o nome da rota">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Distancia (KM)</label>
+                                                    <input type="text" value="{{rotas.nr_distancia_km}}"  class="form-control"
+                                                        placeholder="___" disabled>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Peso previsto (KG)</label>
+                                                    <input type="text" value="{{rotas.qt_peso_total_kg}}"  class="form-control" placeholder="___" disabled>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Data agendada</label>
+                                                    <input type="date" name="data" id="dataAgendada" class="form-control">
+                                                        <script>
+                                                            const data = "{{ rotas.dt_agendada }}"; // Supondo que venha como "21/04/2025"
+                                                            const partes = data.split('/');
+                                                            const formatada = `${partes[2]}-${partes[1]}-${partes[0]}`; // yyyy-mm-dd
+                                                            document.getElementById('dataAgendada').value = formatada;
+                                                        </script>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Distancia (KM)</label>
-                                                <input type="text" class="form-control"
-                                                    placeholder="___" disabled>
-                                            </div>
+                                        <div class="d-flex justify-content-end flex-wrap">
+                                            <button type="submit" class="btn btn-success shadow-lg">Salvar</button>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Peso previsto (KG)</label>
-                                                <input type="text" class="form-control" placeholder="___" disabled>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Data agendada</label>
-                                                <input type="date" class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-end flex-wrap">
-                                        <button type="submit" class="btn btn-success shadow-lg">Salvar</button>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="card shadow-lg mb-5">
@@ -307,8 +320,6 @@
                                                         <input type="text" class="form-control" placeholder="___">
                                                     </div>
                                                 </div>
-
-
                                             </div>
                                             <div class="d-flex justify-content-end flex-wrap gap-2">
                                                 <button type="button" class="btn btn-primary shadow-lg">Buscar</button>
@@ -352,9 +363,7 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
-                    </form>
                 </div>
                 <!--End conteudo indiviudual da pagina-->
             </div>
