@@ -156,7 +156,7 @@
                         <!-- Logo Header -->
                         <div class="logo-header" data-background-color="dark">
                             <a href="#" class="logo">
-                                <img src="public/assets/Eco.png" alt="navbar brand" class="navbar-brand" height="20" />
+                                <img src="assets/Eco.png" alt="navbar brand" class="navbar-brand" height="20" />
                             </a>
                             <div class="nav-toggle">
                                 <button class="btn btn-toggle toggle-sidebar">
@@ -227,255 +227,124 @@
                     <!-- End Navbar -->
                 </div>
                 <!--End MenuBar-->
-
-                <!-- Start conteudo indiviual da pagina -->
+                <!--Start conteudo indiviudual da pagina-->
                 <div class="container">
                     <div class="page-inner">
                         <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
                             <div class="mb-3 d-flex flex-column">
-                                <span class="fs-2 fw-bold">Buscar Cadastros</span>
-                                <small class="text-muted">Filtre por todos os tipos de cadastros do sistema.</small>
+                                <span class="fs-2 fw-bold">
+                                    Cadastro de Pessoa Jurídica
+                                </span>
+                                <small class="text-muted">
+                                    Preencha os dados de cadastro e clique em salvar.
+                                </small>
+                            </div>
+                            <div>
+                                <a href="/pessoa" class="btn btn-secondary shadow-lg">Voltar</a>
                             </div>
                         </div>
-
                         <div class="card shadow-lg">
+                            <div class="card-header d-none">
+                                <div class="card-title">
+                                    <span class="fs-2 fw-bold"></span>
+                                </div>
+                            </div>
                             <div class="card-body">
-                                <!-- FORM INICIANDO AQUI -->
-                                <form id="filtroForm" method="POST" action="/cadastros">
+                                <form id="formPessoaJuridica" action="/juridica" method="POST">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="fw-bold">Tipo de Cadastro</label>
-                                                <select class="form-select form-control" id="defaultSelect"
-                                                    name="tipoCadastro">
-                                                    <option value="Pessoa" {{#if (eq tipoCadastro "Pessoa"
-                                                        )}}selected{{/if}}>Pessoa</option>
-                                                    <option value="Usuário" {{#if (eq tipoCadastro "Usuário"
-                                                        )}}selected{{/if}}>Usuário</option>
-                                                    <option value="Fornecedor ou Pessoa Jurídica" {{#if (eq
-                                                        tipoCadastro "Fornecedor ou Pessoa Jurídica" )}}selected{{/if}}>
-                                                        Fornecedor ou Pessoa Jurídica</option>
-                                                    <option value="Planta de Reciclagem" {{#if (eq
-                                                        tipoCadastro "Planta de Reciclagem" )}}selected{{/if}}>Planta de
-                                                        Reciclagem</option>
-                                                </select>
+                                                <label class="fw-bold">Razão Social</label>
+                                                <input type="text" name="razaoSocial" class="form-control"
+                                                    placeholder="Insira o nome/razão">
                                             </div>
                                         </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Telefone</label>
-                                                <input maxlength="18" name="telefone" class="form-control"
-                                                    placeholder="Nr de telefone" />
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Nome</label>
-                                                <input type="text" name="nome" class="form-control"
-                                                    placeholder="Insira o Nome" />
-                                            </div>
-                                        </div>
-
-                                        <!-- CPF -->
-                                        <div class="col-md-6" id="cpfField">
-                                            <div class="form-group">
-                                                <label class="fw-bold">CPF</label>
-                                                <input type="text" name="cpf" class="form-control"
-                                                    placeholder="Informe o CPF" />
-                                            </div>
-                                        </div>
-
-                                        <!-- CNPJ -->
-                                        <div class="col-md-6" id="cnpjField">
-                                            <div class="form-group">
-                                                <label class="fw-bold">CNPJ</label>
-                                                <input type="text" name="cnpj" class="form-control"
-                                                    placeholder="Informe o CNPJ" />
-                                            </div>
-                                        </div>
-
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">E-mail</label>
-                                                <input type="text" name="email" class="form-control"
-                                                    placeholder="Insira o E-mail" />
+                                                <input type="email" name="email" class="form-control"
+                                                    placeholder="Insira o E-mail">
                                             </div>
                                         </div>
-
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="fw-bold">Código Cadastrado</label>
-                                                <input type="text" name="codigo" class="form-control"
-                                                    placeholder="Informe o código" />
+                                                <label class="fw-bold">CNPJ</label>
+                                                <input maxlength="18" type="text" name="cnpj" class="form-control"
+                                                    placeholder="Insira o CNPJ">
+                                                <small class="form-text text-muted">Em caso de pessoa jurídica.</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Telefone</label>
+                                                <input maxlength="18" type="text" name="telefone" class="form-control"
+                                                    placeholder="Nr de telefone">
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="card-footer d-flex justify-content-end mt-3">
-                                        <button type="button" id="limparBtn" class="btn btn-info me-3">Limpar
-                                            Filtros</button>
-                                        <button type="submit" class="btn btn-primary">Buscar</button>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Endereço</label>
+                                                <input maxlength="50" type="text" name="endereco" class="form-control"
+                                                    placeholder="Preencha o endereço">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="fw-bold">CEP</label>
+                                                <input maxlength="9" type="text" name="cep" class="form-control"
+                                                    placeholder="Preencha o CEP">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Cidade</label><br>
+                                                <select class="form-select form-control" name="cidade">
+                                                    <option value="1">Curitiba</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Bairro</label><br>
+                                                <select class="form-select form-control" name="bairro">
+                                                    <option value="1">Xaxim</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-end mt-3">
+                                        <a href="/home" class="btn btn-secondary me-3">Voltar</a>
+                                        <button type="submit" class="btn btn-success">Salvar</button>
                                     </div>
                                 </form>
-                            </div>
-                        </div>
 
-                        <!-- TABELA DE RESULTADO -->
-                        <div class="card shadow-lg mt-4">
-                            <div class="card-body">
-                                <div class="table-responsive rounded">
-                                    <table class="table table-bordered table-head-bg-success">
-                                        <thead>
-                                            <tr>
-                                                <th>Nome</th>
-                                                <th>Email</th>
-                                                <th>CPF/CNPJ</th>
-                                                <th>Código</th>
-                                                <th>Telefone</th>
-                                                <th>Ações</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {{#if resultados}}
-                                            {{#each resultados}}
-                                            <tr>
-                                                <td>{{nome}}</td>
-                                                <td>{{#if email}}{{email}}{{else}}-{{/if}}</td>
-                                                <td>{{#if cpf}}{{cpf}}{{else}}{{#if
-                                                    cnpj}}{{cnpj}}{{else}}-{{/if}}{{/if}}</td>
-                                                <td>{{codigo}}</td>
-                                                <td>{{#if telefone}}{{telefone}}{{else}}-{{/if}}</td>
-                                                <td>
-                                                    <a href="/editar/{{codigo}}"
-                                                        class="btn btn-icon btn-round btn-warning me-2 btn-editar"
-                                                        data-codigo="{{codigo}}">
-                                                        <i class="fa fa-edit text-white"></i>
-                                                    </a>
-                                                    <a class="btn btn-icon btn-round btn-danger" data-bs-toggle="modal"
-                                                        data-bs-target="#excluir">
-                                                        <i class="fa fa-trash"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            {{/each}}
-                                            {{else}}
-                                            <tr>
-                                                <td colspan="6" class="text-center text-muted">Nenhum cadastro
-                                                    encontrado</td>
-                                            </tr>
-                                            {{/if}}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <!--end conteudo indiviual da pagina-->
-
-
-                        <!-- Scripts -->
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function () {
-                                const tipoCadastro = document.getElementById('defaultSelect');
-                                const cpfField = document.getElementById('cpfField');
-                                const cnpjField = document.getElementById('cnpjField');
-                                const limparBtn = document.getElementById('limparBtn');
-                                const form = document.getElementById('filtroForm');
-                                const editarLinks = document.querySelectorAll('.btn-editar');
-
-                                function updateFields() {
-                                    const selected = tipoCadastro.value;
-                                    cpfField.style.display = 'none';
-                                    cnpjField.style.display = 'none';
-
-                                    if (selected === 'Pessoa' || selected === 'Usuário') {
-                                        cpfField.style.display = 'block';
-                                    } else if (selected === 'Fornecedor ou Pessoa Jurídica' || selected === 'Planta de Reciclagem') {
-                                        cnpjField.style.display = 'block';
-                                    }
-                                }
-
-                                function atualizarLinksEditar() {
-                                    const tipo = tipoCadastro.value;
-                                    let rota = '/editar';
-
-                                    switch (tipo) {
-                                        case 'Pessoa':
-                                            rota = '/pessoaEditar';
-                                            break;
-                                        case 'Usuário':
-                                            rota = '/usuarioEditar';
-                                            break;
-                                        case 'Fornecedor ou Pessoa Jurídica':
-                                            rota = '/juridica';
-                                            break;
-                                        case 'Planta de Reciclagem':
-                                            rota = '/planta';
-                                            break;
-                                    }
-
-                                    editarLinks.forEach(link => {
-                                        const codigo = link.getAttribute('data-codigo');
-                                        link.setAttribute('href', `${rota}/${codigo}`);
-                                    });
-                                }
-
-                                tipoCadastro.addEventListener('change', () => {
-                                    updateFields();
-                                    atualizarLinksEditar();
-                                });
-
-                                limparBtn.addEventListener('click', () => {
-                                    form.reset();
-                                    updateFields();
-                                    atualizarLinksEditar();
-                                });
-
-                                updateFields();
-                                atualizarLinksEditar();
-                            });
-                        </script>
-
-                        <!-- Script para alterar os campos visíveis com base no tipo de cadastro -->
-                        <footer class="footer">
-                            <div class="container-fluid d-flex justify-content-between">
-                                <nav class="pull-left">
-                                    <ul class="nav">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#">footer#1</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#">footer#2</a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                                <div class="copyright">
-                                    2025 - Autores: Equipe 7
-                                </div>
-                            </div>
-                        </footer>
-                    </div>
-                </div>
-                <!--start modal-->
-                <div class="modal fade" id="excluir" tabindex="-1" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered p-5">
-                        <div class="modal-content">
-                            <div class="modal-body">
-                                <div class="d-flex justify-content-center text-center flex-column">
-                                    <i class="fa fa-exclamation-triangle text-danger fs-2"></i>
-                                    <span class="fw-bold fs-4">Tem certeza que deseja excluir o cadastro?</span>
-                                </div>
-                                <div class="modal-footer d-flex justify-content-center">
-                                    <button type="button" class="btn btn-danger"
-                                        data-bs-dismiss="modal">Cancelar</button>
-                                    <button type="button" class="btn btn-primary">Confirmar</button>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!--end modal-->
+                <!--end conteudo indiviudual da pagina-->
+                <footer class="footer">
+                    <div class="container-fluid d-flex justify-content-between">
+                        <nav class="pull-left">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">footer#1</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">footer#2</a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <div class="copyright">
+                            2025 - Autores: Equipe 7
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
     </body>
 </main>

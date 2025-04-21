@@ -26,6 +26,9 @@ const servico18 = require('../servico/rota_estoqueSaida.js');
 const servico19 = require('../servico/rota_agendamentoAdd.js');
 const servico20 = require('../servico/rota_agendamentoEditar.js');
 const servico21 = require('../servico/rota_rota_editar.js');
+const servico22 = require('../servico/rota_pessoaEditar.js');
+const servico23 = require('../servico/rota_juridicaEditar.js');
+const servico24 = require('../servico/rota_plantaEditar.js');
 
 
 
@@ -241,9 +244,31 @@ router.get('/agendamentoEditar', (req, res) => {
 });
 
 // ----------------------- Servico21 -------------------//
-
+//página para editar rota
 router.get('/rotaEditar', (req, res) => {
     servico21.exibirrotaeditar(req, res);
+});
+
+// ----------------------- Servico22 -------------------//
+//página para editar pessoa
+router.get('/pessoaEditar/:cd_pessoa_fisica', (req, res) => {
+    servico22.exibirPessoaEditar(req, res);
+});
+
+router.post('/pessoaEditar', (req, res) => {
+    servico22.editarPessoa(req, res);
+});
+
+// ----------------------- Servico23 -------------------//
+//página para editar pessoa juridica
+router.get('/juridicaEditar', (req, res) => {
+    servico23.exibirJuridicaEditar(req, res);
+});
+
+// ----------------------- Servico24 -------------------//
+//página para editar pessoa juridica
+router.get('/plantaEditar', (req, res) => {
+    servico24.exibirPlantaEditar(req, res);
 });
 
 //==================== END ROTAS ====================
