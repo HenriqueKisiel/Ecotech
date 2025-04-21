@@ -233,60 +233,126 @@
                         <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
                             <div class="mb-3 d-flex flex-column">
                                 <span class="fs-2 fw-bold">
-                                    Cadastro de Usuário
+                                    Criar Usuário
                                 </span>
                                 <small class="text-muted">
-                                    Preencha os dados de cadastro e clique em salvar.
+                                    Preencha os dados para criar usuario e clique em salvar.
                                 </small>
-                                <a href="/usuarioAdicionar" class="btn btn-secondary fw-bold shadow-lg me-3 mt-2">
-                                            Adicionar
-                                        </a>
                             </div>
+                            <a href="/usuario" class="btn btn-secondary fw-bold shadow-lg me-3 mt-2">
+                                Voltar</a>
                         </div>
-                        <form id="formCadastroUsuario" method="POST" action="/Usuario">
-                        </form>
-                        <!-- Listagem de Usuários -->
-                        <div class="card-body">
-                            <div class="table-responsive rounded">
-                                    <table class="table table-bordered table-head-bg-success">
-                                        <thead>
-                                            <tr>
-                                                <th>Codigo</th>
-                                                <th>Usuario</th>
-                                                <th>Nome</th>
-                                                <th>Email</th>
-                                                <th>Situação</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {{#each usuarios}}
-                                            <tr>
-                                                <td>{{cd_usuario}}</td>
-                                                <td>{{nm_usuario}}</td>
-                                                <td>{{nm_pessoa_fisica}}</td>
-                                                <td>{{ds_email}}</td> 
-                                                <td>{{ie_situacao}}</td>  
-                                                <td>
-                                                    <!-- Nesse espaço a rota ira mudar dependendo do tipo de cadastro -->
-                                                    <a href="/usuarioEditar/{{cd_usuario}}"
-                                                        class="btn btn-icon btn-round btn-warning me-3">
-                                                        <i class="fa fa-edit text-white"></i>
-                                                    </a>
-                                                    <a href="/inativarUsuario/{{cd_usuario}}&{{nm_usuario}}"
-                                                        class="btn btn-icon btn-round btn-danger">
-                                                        <i class="fa fa-trash"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            {{/each}}
-                                        </tbody>
-                                    </table>
+                        <form id="formCadastroUsuario" method="POST" action="/usuarioAdicionar">
+                            <div class="card shadow-lg">
+                                <div class="card-header d-none">
+                                    <div class="card-title">
+                                        <span class="fs-2 fw-bold"></span>
+                                    </div>
                                 </div>
-                        </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Nome do Usuário</label>
+                                                <select id="nome" name="nome" class="form-control" required>
+                                                    <option value="">Selecione um nome</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Email</label>
+                                                <input type="text" id="email" name="email" class="form-control" placeholder="Novo email" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Telefone</label>
+                                                <input type="text" id="telefone" name="telefone" class="form-control" placeholder="(41) xxxxx-xxxx" readonly>
+                                            </div>
+                                        </div> 
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold"> Usuário</label>
+                                                <input type="text" name="usuario" value="{{usuario.nm_usuario}}" class="form-control"
+                                                    placeholder="Usuario " required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Senha</label>
+                                                <input type="text" name="senha" value="{{usuario.ds_senha}}" class="form-control"
+                                                    placeholder="Nova senha"required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Situacao</label>
+                                                <div class="form-check">
+                                                    <input 
+                                                        type="checkbox" class="form-check-input"  id="ie_situacao" name="ie_situacao" value="A" 
+                                                        {{#if (eq usuario.ie_situacao "A")}}checked{{/if}}>
+                                                    <label class="form-check-label" for="ie_situacao">Ativo</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                                <input type="hidden" name="codigo" value="{{usuario.cd_usuario}}" class="form-control"
+                                                    placeholder="Insira o nome ">
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-end mt-3">
+                                        <button type="submit" class="btn btn-success">
+                                            Salvar
+                                        </button>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <!--end conteudo indiviudual da pagina-->
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const nomeSelect = document.getElementById('nome');
+                        const emailInput = document.getElementById('email');
+                        const telefoneInput = document.getElementById('telefone');
+
+                        // Buscar nomes da tabela pessoa_fisica
+                        fetch('/pessoas')
+                            .then(response => response.json())
+                            .then(pessoas => {
+                                pessoas.forEach(pessoa => {
+                                    const option = document.createElement('option');
+                                    option.value = pessoa.cd_pessoa_fisica;
+                                    option.textContent = pessoa.nm_pessoa_fisica;
+                                    nomeSelect.appendChild(option);
+                                });
+                            })
+                            .catch(error => console.error('Erro ao carregar nomes:', error));
+
+                        // Atualizar email e telefone ao selecionar um nome
+                        nomeSelect.addEventListener('change', function () {
+                            const cd_pessoa_fisica = this.value;
+
+                            if (cd_pessoa_fisica) {
+                                fetch(`/pessoa/${cd_pessoa_fisica}`)
+                                    .then(response => response.json())
+                                    .then(detalhes => {
+                                        emailInput.value = detalhes.ds_email || '';
+                                        telefoneInput.value = detalhes.nr_telefone_celular || '';
+                                    })
+                                    .catch(error => console.error('Erro ao carregar detalhes da pessoa:', error));
+                            } else {
+                                emailInput.value = '';
+                                telefoneInput.value = '';
+                            }
+                        });
+                    });
+                </script>
+
                 <footer class="footer">
                     <div class="container-fluid d-flex justify-content-between">
                         <nav class="pull-left">
@@ -308,3 +374,5 @@
         </div>
     </body>
 </main>
+
+

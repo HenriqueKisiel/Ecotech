@@ -84,6 +84,22 @@ router.get('/usuario', (req, res) => {
     servico5.exibirUsuario(req, res);
 });
 
+router.get('/pessoas', (req, res) => {
+    servico5.buscarPessoa(req, res);
+});
+
+router.get('/pessoa/:id', (req, res) => {
+    servico5.buscarDetalhesPessoa(req, res);
+});
+
+router.get('/usuarioAdicionar', (req, res) => {
+    servico5.adicionarUsuario(req, res);
+});
+
+router.post('/usuarioAdicionar', (req, res) => {
+    servico5.cadastrarUsuario(req, res);
+});
+
 //Rota para editar usuario
 router.get('/usuarioEditar/:cd_usuario', (req, res) => {
     servico5.AlterarUsuario(req, res);
