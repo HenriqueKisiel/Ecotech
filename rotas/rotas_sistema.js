@@ -246,6 +246,14 @@ router.get('/rotaEditar', (req, res) => {
     servico21.exibirrotaeditar(req, res);
 });
 
+router.get('/rotaEditar/:cd_rota', (req, res) => {
+    servico21.exibirrotaeditar(req, res);
+});
+
+router.post('/rotaEditar', (req, res) => {
+    servico21.editarRota(req, res);
+});
+
 //==================== END ROTAS ====================
 
 module.exports = router;
