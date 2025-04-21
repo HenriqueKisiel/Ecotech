@@ -156,7 +156,7 @@
                         <!-- Logo Header -->
                         <div class="logo-header" data-background-color="dark">
                             <a href="#" class="logo">
-                                <img src="assets/Eco.png" alt="navbar brand" class="navbar-brand" height="20" />
+                                <img src="public/assets/Eco.png" alt="navbar brand" class="navbar-brand" height="20" />
                             </a>
                             <div class="nav-toggle">
                                 <button class="btn btn-toggle toggle-sidebar">
@@ -233,97 +233,91 @@
                         <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
                             <div class="mb-3 d-flex flex-column">
                                 <span class="fs-2 fw-bold">
-                                    Cadastro de Pessoa Jurídica
+                                    Editar Usuário
                                 </span>
                                 <small class="text-muted">
-                                    Preencha os dados de cadastro e clique em salvar.
+                                    Preencha os dados que deseja editar e clique em salvar.
                                 </small>
                             </div>
-                            <div>
-                                <a href="/pessoa" class="btn btn-secondary shadow-lg">Voltar</a>
-                            </div>
+                            <a href="/usuario" class="btn btn-secondary fw-bold shadow-lg me-3 mt-2">
+                                Voltar</a>
                         </div>
-                        <div class="card shadow-lg">
-                            <div class="card-header d-none">
-                                <div class="card-title">
-                                    <span class="fs-2 fw-bold"></span>
+                        <form id="formCadastroUsuario" method="POST" action="/usuarioEditar">
+                            <div class="card shadow-lg">
+                                <div class="card-header d-none">
+                                    <div class="card-title">
+                                        <span class="fs-2 fw-bold"></span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="card-body">
-                                <form id="formPessoaJuridica" action="/juridica" method="POST">
+                                <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="fw-bold">Razão Social</label>
-                                                <input type="text" name="razaoSocial" class="form-control"
-                                                    placeholder="Insira o nome/razão">
+                                                <label class="fw-bold">Nome do Usuário</label>
+                                                <input type="text" name="nome" value="{{usuario.nm_pessoa_fisica}}" class="form-control"
+                                                    placeholder="Insira o nome " readonly>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="fw-bold">E-mail</label>
-                                                <input type="email" name="email" class="form-control"
-                                                    placeholder="Insira o E-mail">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">CNPJ</label>
-                                                <input maxlength="18" type="text" name="cnpj" class="form-control"
-                                                    placeholder="Insira o CNPJ">
-                                                <small class="form-text text-muted">Em caso de pessoa jurídica.</small>
+                                                <label class="fw-bold">Email</label>
+                                                <input type="text" name="email" value="{{usuario.ds_email}}" class="form-control"
+                                                    placeholder="Novo email " required>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Telefone</label>
-                                                <input maxlength="18" type="text" name="telefone" class="form-control"
-                                                    placeholder="Nr de telefone">
+                                                <input type="text" name="telefone" value="{{usuario.nr_telefone_celular}}" class="form-control"
+                                                    placeholder="(41) xxxxx-xxxx " required>
                                             </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold"> Usuário</label>
+                                                <input type="text" name="usuario" value="{{usuario.nm_usuario}}" class="form-control"
+                                                    placeholder="Usuario " readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Senha</label>
+                                                <input type="text" name="senha" value="{{usuario.ds_senha}}" class="form-control"
+                                                    placeholder="Nova senha"required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Ultima Atualização</label>
+                                                <input type="text" name="Dt_atualicao" value="{{usuario.dt_atualizacao}}" class="form-control"
+                                                    placeholder="25/12/2025" readonly> 
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Situacao</label>
+                                                <div class="form-check">
+                                                    <input 
+                                                        type="checkbox" class="form-check-input"  id="ie_situacao" name="ie_situacao" value="A" 
+                                                        {{#if (eq usuario.ie_situacao "A")}}checked{{/if}}>
+                                                    <label class="form-check-label" for="ie_situacao">Ativo</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                                <input type="hidden" name="codigo" value="{{usuario.cd_usuario}}" class="form-control"
+                                                    placeholder="Insira o nome ">
                                         </div>
                                     </div>
-
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Endereço</label>
-                                                <input maxlength="50" type="text" name="endereco" class="form-control"
-                                                    placeholder="Preencha o endereço">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label class="fw-bold">CEP</label>
-                                                <input maxlength="9" type="text" name="cep" class="form-control"
-                                                    placeholder="Preencha o CEP">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Cidade</label><br>
-                                                <select class="form-select form-control" name="cidade">
-                                                    <option value="1">Curitiba</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Bairro</label><br>
-                                                <select class="form-select form-control" name="bairro">
-                                                    <option value="1">Xaxim</option>
-                                                </select>
-                                            </div>
-                                        </div>
                                     </div>
-
                                     <div class="d-flex justify-content-end mt-3">
-                                        <a href="/home" class="btn btn-secondary me-3">Voltar</a>
-                                        <button type="submit" class="btn btn-success">Salvar</button>
+                                        <button type="submit" class="btn btn-success">
+                                            Salvar
+                                        </button>
                                     </div>
-                                </form>
-
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
                 <!--end conteudo indiviudual da pagina-->

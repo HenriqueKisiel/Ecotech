@@ -6,7 +6,7 @@ function exibirPessoa(req, res) {
 }
 
 // Função para cadastrar pessoa física
-function Insert(req, res) {
+function insertPessoa(req, res) {
     const {
         nomeFisico,
         dataNasc,
@@ -15,8 +15,8 @@ function Insert(req, res) {
         telefone,
         email,
         endereco,
-        bairro,
-        cidade,
+        bairro, // futuramente excluir a tabela e fazer tipo
+        cidade, // já é o ID
         cep
     } = req.body;
 
@@ -39,21 +39,49 @@ function Insert(req, res) {
         cep
     ];
 
-    conectiondb.query(sql, values, (error, results) => {
+    conectiondb().query(sql, values, (error, results) => {
         if (error) {
             console.error('Erro ao cadastrar pessoa:', error);
             res.render('pessoa', {
-                script: `<script>alert('Erro ao cadastrar. Verifique os dados e tente novamente.');</script>`
+                script: ` <script>
+          swal("Erro ao cadastrar!", "Verifique os dados e tente novamente.", {
+            icon: "error",
+            buttons: {
+              confirm: {
+                text: "OK",
+                className: "btn btn-danger",
+              },
+            },
+          });
+        </script>`
             });
         } else {
             res.render('pessoa', {
-                script: `<script>alert('Pessoa cadastrada com sucesso!');</script>`
+                script: `  <script>
+          swal({
+            title: "Cadastro realizado!",
+            text: "Pessoa cadastrada com sucesso!",
+            icon: "success",
+            buttons: {
+              confirm: {
+                text: "OK",
+                value: true,
+                visible: true,
+                className: "btn btn-success",
+                closeModal: true,
+              },
+            },
+          });
+        </script>`
             });
         }
     });
 }
 
+
+
+// Exportando as funções
 module.exports = {
     exibirPessoa,
-    Insert
+    insertPessoa
 };

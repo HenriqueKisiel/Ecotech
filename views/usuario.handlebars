@@ -254,13 +254,15 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Nome do Usuário</label>
-                                                <input type="text" name="usuario" class="form-control" placeholder="Insira o nome ">
+                                                <input type="text" name="usuario" class="form-control"
+                                                    placeholder="Insira o nome ">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Senha</label>
-                                                <input type="password" name="senha" class="form-control" placeholder="Informe a senha">
+                                                <input type="password" name="senha" class="form-control"
+                                                    placeholder="Informe a senha">
                                             </div>
                                         </div>
                                     </div>
@@ -274,27 +276,42 @@
                         </form>
                         <!-- Listagem de Usuários -->
                         <div class="card-body">
-                            <div class="row">
-                               {{#each usuarios}}
-                                     <div class="col-12">
-                                    <div class="card">
-                                        <div>
-                                            <p>{{cd_pessoa_fisica}}</p>
-                                            <p>{{nm_usuario}}</p>
-                                            <p>{{nm_pessoa_fisica}}</p>
-                                            <p>{{ds_email}}</p>
-                                            <p>{{ie_situacao}}</p>
-                                        </div>
-                                        <a href="/alterarUsuario/{{nm_usuario}}" class="btn btn-icon btn-round btn-warning me-3">
-                                            <i class="fa fa-edit text-white"></i>
-                                        </a>
-                                        <a href="/inativarUsuario/{{nm_usuario}}" class="btn btn-icon btn-round btn-danger" >
-                                            <i class="fa fa-trash"></i>
-                                        </a>
-                                    </div>
+                            <div class="table-responsive rounded">
+                                    <table class="table table-bordered table-head-bg-success">
+                                        <thead>
+                                            <tr>
+                                                <th>Codigo</th>
+                                                <th>Usuario</th>
+                                                <th>Nome</th>
+                                                <th>Email</th>
+                                                <th>Situação</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{#each usuarios}}
+                                            <tr>
+                                                <td>{{cd_usuario}}</td>
+                                                <td>{{nm_usuario}}</td>
+                                                <td>{{nm_pessoa_fisica}}</td>
+                                                <td>{{ds_email}}</td> 
+                                                <td>{{ie_situacao}}</td>  
+                                                <td>
+                                                    <!-- Nesse espaço a rota ira mudar dependendo do tipo de cadastro -->
+                                                    <a href="/usuarioEditar/{{cd_usuario}}"
+                                                        class="btn btn-icon btn-round btn-warning me-3">
+                                                        <i class="fa fa-edit text-white"></i>
+                                                    </a>
+                                                    <a href="/inativarUsuario/{{cd_usuario}}&{{nm_usuario}}"
+                                                        class="btn btn-icon btn-round btn-danger">
+                                                        <i class="fa fa-trash"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            {{/each}}
+                                        </tbody>
+                                    </table>
                                 </div>
-                               {{/each}}
-                            </div>
                         </div>
                     </div>
                 </div>

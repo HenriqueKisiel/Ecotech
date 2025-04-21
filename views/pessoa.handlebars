@@ -254,7 +254,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <form action="/pessoa" method="POST">
+                            <form id="formPessoaFisica" action="/pessoa" method="POST">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -273,7 +273,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">CPF</label>
-                                            <input maxlength="14" name="cpf" class="form-control"
+                                            <input maxlength="14" id="cpf" name="cpf" class="form-control"
                                                 placeholder="Insira o CPF">
                                             <small class="form-text text-muted">Em caso de pessoa física.</small>
                                         </div>
@@ -281,7 +281,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Telefone</label>
-                                            <input maxlength="18" name="telefone" class="form-control"
+                                            <input maxlength="18" id="telefone" name="telefone" class="form-control"
                                                 placeholder="Nr de telefone">
                                         </div>
                                     </div>
@@ -298,22 +298,24 @@
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label class="fw-bold">CEP</label>
-                                            <input maxlength="9" type="text" name="cep" class="form-control"
+                                            <input maxlength="9" id="cep" type="text" name="cep" class="form-control"
                                                 placeholder="Preencha o CEP">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="fw-bold">Cidade</label>
-                                            <input maxlength="50" type="text" name="cidade" class="form-control"
-                                                placeholder="Informe a cidade">
+                                            <label class="fw-bold">Cidade</label><br>
+                                            <select class="form-select form-control" name="cidade">
+                                                <option value="1">Curitiba</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="fw-bold">Bairro</label>
-                                            <input maxlength="50" type="text" name="bairro" class="form-control"
-                                                placeholder="Informe o bairro">
+                                            <label class="fw-bold">Bairro</label><br>
+                                            <select class="form-select form-control" name="bairro">
+                                                <option value="1">Xaxim</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -329,8 +331,8 @@
                                         <div class="form-group">
                                             <label class="fw-bold">Sexo</label><br>
                                             <select class="form-select form-control" name="sexo">
-                                                <option value="1" selected>Masculino</option>
-                                                <option value="2">Feminino</option>
+                                                <option value="m" selected>Masculino</option>
+                                                <option value="f">Feminino</option>
                                             </select>
                                         </div>
                                     </div>
@@ -388,4 +390,5 @@
         </div>
     </div>
     <!-- End Modal -->
+    {{{script}}}
 </main>

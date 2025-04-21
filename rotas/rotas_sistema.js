@@ -13,13 +13,18 @@ const servico5 = require('../servico/rota_usuario.js');
 const servico6 = require('../servico/rota_planta.js');
 const servico7 = require('../servico/rota_cadastro.js');
 const servico8 = require('../servico/rota_material.js');
-const servico9 = require('../servico/rota_estoque.js');
+const servico9 = require('../servico/rota_estoqueNovo.js');
 const servico10 = require('../servico/rota_agendamento.js');
 const servico11 = require('../servico/rota_rotas.js');
 const servico12 = require('../servico/rota_relatorio.js');
 const servico13 = require('../servico/rota_processamento.js');
 const servico14 = require('../servico/rota_attStatus.js');
 const servico15 = require('../servico/rota_cadastros.js');
+const servico16 = require('../servico/rota_estoqueBuscar.js');
+const servico17 = require('../servico/rota_estoqueEntrada.js');
+const servico18 = require('../servico/rota_estoqueSaida.js');
+
+
 
 
 //==================== START ROTAS ====================
@@ -57,10 +62,18 @@ router.get('/pessoa', (req, res) => {
     servico3.exibirPessoa(req, res);
 });
 
+router.post('/pessoa', (req, res) => {
+    servico3.insertPessoa(req, res);
+});
+
 //--------------------- Servico4 -------------------//
 // Rota para a página cadastro de pessoa juridica/fornecedor
 router.get('/juridica', (req, res) => {
     servico4.exibirFornecedor(req, res);
+});
+
+router.post('/juridica', (req, res) => {
+    servico4.insertPessoaJuridica(req, res);
 });
 
 //--------------------- Servico5 -------------------//
@@ -70,11 +83,15 @@ router.get('/usuario', (req, res) => {
 });
 
 //Rota para editar usuario
-router.get('/alterarUsuario/:nm_usuario', (req, res) => {
+router.get('/usuarioEditar/:cd_usuario', (req, res) => {
     servico5.AlterarUsuario(req, res);
 });
 
-router.get('/inativarUsuario/:nm_usuario', (req, res) => {
+router.post('/usuarioEditar', (req, res) => {
+    servico5.editarUsuario(req, res);
+});
+
+router.get('/inativarUsuario/:cd_usuario&:nm_usuario', (req, res) => {
     servico5.inativarUsuario(req, res);
 });
 
@@ -110,22 +127,7 @@ router.post('/material', (req, res) => {
 //---------------------- Servico9 -------------------//
 // Rota para a página de cadastrar estoque
 router.get('/estoqueNovo', (req, res) => {
-    servico9.exibirEstoqueNovo(req, res);
-});
-
-// Rota para a página de buscar material no estoque
-router.get('/estoqueBuscar', (req, res) => {
-    servico9.exibirEstoqueBuscar(req, res);
-});
-
-// Rota para a página de entrada de material
-router.get('/estoqueEntrada', (req, res) => {
-    servico9.exibirEstoqueEntrada(req, res);
-});
-
-// Rota para a página de saida de material
-router.get('/estoqueSaida', (req, res) => {
-    servico9.exibirEstoqueSaida(req, res);
+    servico9.exibirestoqueNovo(req, res);
 });
 
 //----------------------- Servico10 -------------------//
@@ -182,9 +184,31 @@ router.post('/cadastros', (req, res) => {
     servico15.buscarCadastros(req, res);
 });
 
+//------------------------ Servico16 -------------------//
+// Rota para exibir a página de buscar material no estoque
+router.get('/estoqueBuscar', (req, res) => {
+    servico16.exibirestoqueBuscar(req, res);
+});
+
+// Rota POST para realizar a busca no estoque
+router.post('/estoqueBuscar', (req, res) => {
+    servico16.localizarestoqueBuscar(req, res);
+});
+
+//------------------------ Servico17 -------------------//
+// Rota para a página de entrada de material
+router.get('/estoqueEntrada', (req, res) => {
+    servico17.exibirestoqueEntrada(req, res);
+});
+
+
+//------------------------ Servico18 -------------------//
+// Rota para a página de saida de material
+router.get('/estoqueSaida', (req, res) => {
+    servico18.exibirestoqueSaida(req, res);
+});
+
 
 //==================== END ROTAS ====================
-
-
 
 module.exports = router;
