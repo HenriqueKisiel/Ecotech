@@ -254,59 +254,61 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Nome do Usuário</label>
-                                                <input type="text" name="nome" value="{{usuario.nm_pessoa_fisica}}" class="form-control"
-                                                    placeholder="Insira o nome " readonly>
+                                                <input type="text" name="nome" value="{{usuario.nm_pessoa_fisica}}"
+                                                    class="form-control" placeholder="Insira o nome " readonly>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Email</label>
-                                                <input type="text" name="email" value="{{usuario.ds_email}}" class="form-control"
-                                                    placeholder="Novo email " required>
+                                                <input type="text" name="email" value="{{usuario.ds_email}}"
+                                                    class="form-control" placeholder="Novo email " required>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Telefone</label>
-                                                <input type="text" name="telefone" value="{{usuario.nr_telefone_celular}}" class="form-control"
+                                                <input type="text" name="telefone"
+                                                    value="{{usuario.nr_telefone_celular}}" class="form-control"
                                                     placeholder="(41) xxxxx-xxxx " required>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold"> Usuário</label>
-                                                <input type="text" name="usuario" value="{{usuario.nm_usuario}}" class="form-control"
-                                                    placeholder="Usuario " readonly>
+                                                <input type="text" name="usuario" value="{{usuario.nm_usuario}}"
+                                                    class="form-control" placeholder="Usuario " readonly>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Senha</label>
-                                                <input type="text" name="senha" value="{{usuario.ds_senha}}" class="form-control"
-                                                    placeholder="Nova senha"required>
+                                                <input type="text" name="senha" value="{{usuario.ds_senha}}"
+                                                    class="form-control" placeholder="Nova senha" required>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Ultima Atualização</label>
-                                                <input type="text" name="Dt_atualicao" value="{{usuario.dt_atualizacao}}" class="form-control"
-                                                    placeholder="25/12/2025" readonly> 
+                                                <input type="text" name="Dt_atualicao"
+                                                    value="{{usuario.dt_atualizacao}}" class="form-control"
+                                                    placeholder="25/12/2025" readonly>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Situacao</label>
                                                 <div class="form-check">
-                                                    <input 
-                                                        type="checkbox" class="form-check-input"  id="ie_situacao" name="ie_situacao" value="A" 
-                                                        {{#if (eq usuario.ie_situacao "A")}}checked{{/if}}>
+                                                    <input type="checkbox" class="form-check-input" id="ie_situacao"
+                                                        name="ie_situacao" value="A" {{#if (eq usuario.ie_situacao "A"
+                                                        )}}checked{{/if}}>
                                                     <label class="form-check-label" for="ie_situacao">Ativo</label>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                                <input type="hidden" name="codigo" value="{{usuario.cd_usuario}}" class="form-control"
-                                                    placeholder="Insira o nome ">
+                                            <input type="hidden" name="codigo" value="{{usuario.cd_usuario}}"
+                                                class="form-control" placeholder="Insira o nome ">
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-end mt-3">
@@ -314,31 +316,31 @@
                                             Salvar
                                         </button>
                                     </div>
-                                    </div>
                                 </div>
                             </div>
-                        </form>
+                    </div>
+                    </form>
+                </div>
+            </div>
+            <!--end conteudo indiviudual da pagina-->
+            <footer class="footer">
+                <div class="container-fluid d-flex justify-content-between">
+                    <nav class="pull-left">
+                        <ul class="nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">footer#1</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">footer#2</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div class="copyright">
+                        2025 - Autores: Equipe 7
                     </div>
                 </div>
-                <!--end conteudo indiviudual da pagina-->
-                <footer class="footer">
-                    <div class="container-fluid d-flex justify-content-between">
-                        <nav class="pull-left">
-                            <ul class="nav">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">footer#1</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">footer#2</a>
-                                </li>
-                            </ul>
-                        </nav>
-                        <div class="copyright">
-                            2025 - Autores: Equipe 7
-                        </div>
-                    </div>
-                </footer>
-            </div>
+            </footer>
+        </div>
         </div>
     </body>
 </main>
