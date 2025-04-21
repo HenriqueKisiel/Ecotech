@@ -250,38 +250,39 @@
                                 </div>
                             </div>
                             <div class="card-body">
+                                <form id="formRotaCadastro" action="/RotaCadastro" method="POST">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Nome da Rota</label>
-                                            <input type="text" class="form-control" placeholder="Insira o nome ">
+                                            <input type="text" name="nomeRota" class="form-control" placeholder="Insira o nome ">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Data Agendada</label>
-                                            <input type="date" class="form-control">
+                                            <input type="date" name="dataAgendaRota" class="form-control">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Peso total (Kg)</label>
-                                            <input type="text" class="form-control" placeholder="Kg">
+                                            <input type="text" name="pesoTotalRota" class="form-control" placeholder="Kg">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="fw-bold">Volume total (m³)</label>
-                                            <input type="text" class="form-control" placeholder="m³">
+                                            <label class="fw-bold">KM Total (KM)</label>
+                                            <input type="text" name="quilometroTotalRota" class="form-control" placeholder="Km">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-end mt-3">
-                                    <button type="button" class="btn btn-success fw-bold shadow-lg fs-5"
-                                        id="alert_demo_4">
+                                    <button type="submit" class="btn btn-success fw-bold shadow-lg fs-5">
                                         Salvar
                                     </button>
                                 </div>
+                                </form>
                             </div>
                         </div>
                         <div class="card shadow-lg mb-3">
