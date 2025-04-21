@@ -172,10 +172,16 @@ router.get('/attStatus', (req, res) => {
 
 //------------------------ Servico15 -------------------//
 
-// Rota para a página buscar cadastros
+// Rota para exibir a página de filtro de cadastros
 router.get('/cadastros', (req, res) => {
     servico15.exibirCadastros(req, res);
 });
+
+// Rota para processar os filtros e buscar os cadastros
+router.post('/cadastros', (req, res) => {
+    servico15.buscarCadastros(req, res);
+});
+
 
 //==================== END ROTAS ====================
 
