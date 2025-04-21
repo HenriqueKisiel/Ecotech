@@ -106,11 +106,12 @@ function buscarCadastros(req, res) {
             };
         });
 
-        console.log('Resultado formatado para o Handlebars:', resultadoFormatado);
-
-        // Renderizando a página com os resultados formatados
+        // Renderizando a página com os resultados formatados e o tipo de cadastro selecionado
         console.log('Enviando para o Handlebars:', resultadoFormatado);
-        res.render('cadastros', { resultados: resultadoFormatado });
+        res.render('cadastros', {
+            resultados: resultadoFormatado,
+            tipoCadastro: tipoCadastroCorrigido // Passando o tipo de cadastro para o Handlebars
+        });
     });
 }
 
