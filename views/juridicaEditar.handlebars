@@ -233,7 +233,7 @@
                         <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
                             <div class="mb-3 d-flex flex-column">
                                 <span class="fs-2 fw-bold">
-                                    Cadastro de Pessoa Jurídica
+                                    Editar Pessoa Jurídica
                                 </span>
                                 <small class="text-muted">
                                     Preencha os dados de cadastro e clique em salvar.
@@ -250,20 +250,21 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <form id="formPessoaJuridica" action="/juridica" method="POST">
+                                <form id="formEditarPessoaJuridica" action="/juridicaEditar" method="POST">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="fw-bold">Razão Social</label>
-                                                <input type="text" name="razaoSocial" class="form-control"
+                                                <label class="fw-bold">Nome Fantasia</label>
+                                                <input type="text" name="razaoSocial"
+                                                    value="{{pessoa_juridica.nm_fantasia}}" class="form-control"
                                                     placeholder="Insira o nome/razão">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">E-mail</label>
-                                                <input type="email" name="email" class="form-control"
-                                                    placeholder="Insira o E-mail">
+                                                <input type="email" name="email" value="{{pessoa_juridica.ds_email}}"
+                                                    class="form-control" placeholder="Insira o E-mail">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
