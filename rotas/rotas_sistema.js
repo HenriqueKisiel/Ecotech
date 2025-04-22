@@ -278,13 +278,17 @@ router.post('/pessoaEditar', (req, res) => {
 
 // ----------------------- Servico23 -------------------//
 //página para editar pessoa juridica
-router.get('/juridicaEditar', (req, res) => {
+router.get('/juridicaEditar/:cd_pessoa_juridica', (req, res) => {
     servico23.exibirJuridicaEditar(req, res);
+});
+
+router.post('/juridicaEditar', (req, res) => {
+    servico23.editarJuridica(req, res);
 });
 
 // ----------------------- Servico24 -------------------//
 //página para editar pessoa juridica
-router.get('/plantaEditar', (req, res) => {
+router.get('/plantaEditar/:cd_planta', (req, res) => {
     servico24.exibirPlantaEditar(req, res);
 });
 

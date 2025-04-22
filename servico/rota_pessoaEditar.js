@@ -152,9 +152,34 @@ function editarPessoa(req, res) {
     });
 }
 
+// function excluirPessoaFisica(req, res) {
+//     const { codigo } = req.body;
+
+//     if (!codigo || codigo.trim() === '') {
+//         return res.status(400).json({ success: false, message: 'Código da pessoa ausente ou inválido.' });
+//     }
+
+//     const sql = 'UPDATE pessoa_fisica SET ie_situacao = 0 WHERE cd_pessoa_fisica = ?';
+
+//     conectiondb().query(sql, [codigo], function (erro, resultado) {
+//         if (erro) {
+//             console.error('Erro ao excluir pessoa física:', erro.sqlMessage);
+//             return res.status(500).json({ success: false, message: 'Erro ao excluir pessoa física no banco de dados.' });
+//         }
+
+//         if (resultado.affectedRows > 0) {
+//             console.log(`Pessoa física com código ${codigo} desativada com sucesso.`);
+//             return res.json({ success: true });
+//         } else {
+//             console.log(`Nenhuma pessoa física encontrada com o código ${codigo}.`);
+//             return res.status(404).json({ success: false, message: 'Nenhuma pessoa física encontrada com o código informado.' });
+//         }
+//     });
+// }
 
 
 module.exports = {
     exibirPessoaEditar,
-    editarPessoa
+    editarPessoa,
+    // excluirPessoaFisica
 };
