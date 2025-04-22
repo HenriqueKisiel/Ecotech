@@ -269,19 +269,18 @@ router.post('/pessoaEditar', (req, res) => {
 
 // ----------------------- Servico23 -------------------//
 //página para editar pessoa juridica
-router.get('/juridicaEditar', (req, res) => {
+router.get('/juridicaEditar/:cd_pessoa_juridica', (req, res) => {
     servico23.exibirJuridicaEditar(req, res);
+});
+
+router.post('/juridicaEditar', (req, res) => {
+    servico23.editarJuridica(req, res);
 });
 
 // ----------------------- Servico24 -------------------//
 //página para editar pessoa juridica
 router.get('/plantaEditar', (req, res) => {
     servico24.exibirPlantaEditar(req, res);
-});
-
-// Rota para excluir pessoa (atualizar o ie_situacao para 0)
-router.post('/pessoaExcluir', (req, res) => {
-    servico22.excluirPessoaFisica(req, res);
 });
 
 //==================== END ROTAS ====================
