@@ -275,8 +275,13 @@ router.get('/juridicaEditar', (req, res) => {
 
 // ----------------------- Servico24 -------------------//
 //página para editar pessoa juridica
-router.get('/plantaEditar', (req, res) => {
+router.get('/plantaEditar/:cd_planta', (req, res) => {
     servico24.exibirPlantaEditar(req, res);
+});
+
+// Salvar alterações da planta
+router.post('/plantaEditar', (req, res) => {
+    servico24.editarPlanta(req, res);
 });
 
 //==================== END ROTAS ====================
