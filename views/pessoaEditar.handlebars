@@ -6,7 +6,7 @@
                 <!-- Logo Header -->
                 <div class="logo-header" data-background-color="dark">
                     <a href="/home" class="logo">
-                        <img src="assets/Eco.png" alt="navbar brand" class="navbar-brand" height="30" />
+                        <img src="/assets/Eco.png" alt="navbar brand" class="navbar-brand" height="30" />
                     </a>
                     <div class="nav-toggle">
                         <button class="btn btn-toggle toggle-sidebar">
@@ -258,7 +258,7 @@
                                             <label class="fw-bold">Nome Completo</label>
                                             <input maxlength="50" type="text" name="nomeFisico"
                                                 value="{{pessoa_fisica.nm_pessoa_fisica}}" class="form-control"
-                                                placeholder="Insira o nome completo">
+                                                placeholder="Insira o nome completo" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -266,14 +266,14 @@
                                             <label class="fw-bold">E-mail</label>
                                             <input maxlength="50" type="email" name="email"
                                                 value="{{pessoa_fisica.ds_email}}" class="form-control"
-                                                placeholder="Insira o E-mail">
+                                                placeholder="Insira o E-mail" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">CPF</label>
                                             <input maxlength="14" id="cpf" name="cpf" value="{{pessoa_fisica.nr_cpf}}"
-                                                class="form-control" placeholder="Insira o CPF">
+                                                class="form-control" placeholder="Insira o CPF" required>
                                             <small class="form-text text-muted">Em caso de pessoa física.</small>
                                         </div>
                                     </div>
@@ -345,14 +345,14 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    {{!-- <div class="col-md-6">
                                         <div class="form-check">
                                             <input type="checkbox" class="form-check-input" id="ie_situacao"
                                                 name="ie_situacao" value="A" {{#if (eq pessoa_fisica.ie_situacao "A"
                                                 )}}checked{{/if}}>
                                             <label class="form-check-label fw-bold fs-6" for="ie_situacao">Ativo</label>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
 
                                 <div class="row">
@@ -367,7 +367,8 @@
                                 </div>
 
                                 <div class="d-flex justify-content-end mt-3">
-                                    <button type="submit" class="btn btn-success">Salvar</button>
+                                    {{!-- <button type="button" class="btn btn-danger shadow-lg">Excluir</button> --}}
+                                    <button type="submit" class="btn btn-success shadow-lg">Salvar</button>
                                 </div>
                             </form>
 
@@ -376,6 +377,87 @@
                 </div>
             </div>
             <!--end conteudo indiviudual da pagina-->
+            {{!--
+            <script>
+                $(document).ready(function () {
+                    $(".btn-danger").click(function (e) {
+                        e.preventDefault(); // Impede o comportamento padrão do botão (submit do formulário)
+
+                        const codigoPessoaFisica = $(this).closest('form').find('input[name="codigo"]').val();
+
+                        swal({
+                            title: "Tem certeza?",
+                            text: "Você não poderá reverter isso!",
+                            icon: "warning",
+                            buttons: {
+                                cancel: {
+                                    text: "Não, cancelar!",
+                                    visible: true,
+                                    className: "btn btn-danger",
+                                },
+                                confirm: {
+                                    text: "Sim, excluir!",
+                                    className: "btn btn-success",
+                                },
+                            },
+                        }).then((willDelete) => {
+                            if (willDelete) {
+                                // Envia a requisição POST para o servidor para desativar a pessoa física
+                                $.ajax({
+                                    url: '/pessoaExcluir',
+                                    method: 'POST',
+                                    dataType: 'json',
+                                    data: { codigo: codigoPessoaFisica },
+                                    success: function (data) {
+                                        if (data.success) {
+                                            swal("Desativado!", "O registro foi desativado com sucesso!", {
+                                                icon: "success",
+                                                buttons: {
+                                                    confirm: {
+                                                        className: "btn btn-success",
+                                                    },
+                                                },
+                                            }).then(() => {
+                                                // redireciona no ok
+                                                window.location.href = '/cadastros';
+                                            });
+                                        } else {
+                                            swal("Erro!", data.message || "Ocorreu um erro ao desativar o registro.", {
+                                                icon: "error",
+                                                buttons: {
+                                                    confirm: {
+                                                        className: "btn btn-danger",
+                                                    },
+                                                },
+                                            });
+                                        }
+                                    },
+                                    error: function (error) {
+                                        console.error("Erro ao enviar requisição de exclusão:", error);
+                                        swal("Erro!", "Ocorreu um erro ao tentar desativar o registro.", {
+                                            icon: "error",
+                                            buttons: {
+                                                confirm: {
+                                                    className: "btn btn-danger",
+                                                },
+                                            },
+                                        });
+                                    }
+                                });
+                            } else {
+                                swal("Cancelado!", "O registro permanece ativo!", {
+                                    icon: "info",
+                                    buttons: {
+                                        confirm: {
+                                            className: "btn btn-success",
+                                        },
+                                    },
+                                });
+                            }
+                        });
+                    });
+                });
+            </script> --}}
             <footer class="footer">
                 <div class="container-fluid d-flex justify-content-between">
                     <nav class="pull-left">

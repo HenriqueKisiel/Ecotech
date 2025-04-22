@@ -115,6 +115,7 @@ function buscarCadastros(req, res) {
     });
 }
 
+
 module.exports = {
     exibirCadastros,
     buscarCadastros

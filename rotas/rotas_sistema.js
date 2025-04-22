@@ -271,6 +271,11 @@ router.get('/plantaEditar', (req, res) => {
     servico24.exibirPlantaEditar(req, res);
 });
 
+// Rota para excluir pessoa (atualizar o ie_situacao para 0)
+router.post('/pessoaExcluir', (req, res) => {
+    servico22.excluirPessoaFisica(req, res);
+});
+
 //==================== END ROTAS ====================
 
 module.exports = router;

@@ -349,13 +349,12 @@
                                                 <td>{{#if telefone}}{{telefone}}{{else}}-{{/if}}</td>
                                                 <td>
                                                     <a href="/editar/{{codigo}}"
-                                                        class="btn btn-icon btn-round btn-warning me-2 btn-editar"
+                                                        class="btn btn-primary btn-round btn-border fw-bold shadow-sm btn-editar"
                                                         data-codigo="{{codigo}}">
-                                                        <i class="fa fa-edit text-white"></i>
-                                                    </a>
-                                                    <a class="btn btn-icon btn-round btn-danger" data-bs-toggle="modal"
-                                                        data-bs-target="#excluir">
-                                                        <i class="fa fa-trash"></i>
+                                                        <span class="btn-label">
+                                                            <i class="fas fa-angle-double-right"></i>
+                                                        </span>
+                                                        Acessar
                                                     </a>
                                                 </td>
                                             </tr>
@@ -371,7 +370,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!--end conteudo indiviual da pagina-->
+
 
 
                         <!-- Scripts -->
@@ -438,6 +437,7 @@
                         </script>
 
                         <!-- Script para alterar os campos visíveis com base no tipo de cadastro -->
+
                         <footer class="footer">
                             <div class="container-fluid d-flex justify-content-between">
                                 <nav class="pull-left">
@@ -457,25 +457,6 @@
                         </footer>
                     </div>
                 </div>
-                <!--start modal-->
-                <div class="modal fade" id="excluir" tabindex="-1" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered p-5">
-                        <div class="modal-content">
-                            <div class="modal-body">
-                                <div class="d-flex justify-content-center text-center flex-column">
-                                    <i class="fa fa-exclamation-triangle text-danger fs-2"></i>
-                                    <span class="fw-bold fs-4">Tem certeza que deseja excluir o cadastro?</span>
-                                </div>
-                                <div class="modal-footer d-flex justify-content-center">
-                                    <button type="button" class="btn btn-danger"
-                                        data-bs-dismiss="modal">Cancelar</button>
-                                    <button type="button" class="btn btn-primary">Confirmar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--end modal-->
+                <!--end conteudo indiviual da pagina-->
     </body>
 </main>
