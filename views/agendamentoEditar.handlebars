@@ -228,8 +228,8 @@
                 </div>
                 <!--End MenuBar-->
                 <!--Start conteudo indiviudual da pagina-->
-                <div class="container">
-                    <form action="/agendamento" method="POST">
+                tela de edição: <div class="container">
+                    <form action="/agendamento/editar" method="POST">
                         <div class="page-inner">
                             <div
                                 class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
@@ -242,111 +242,153 @@
                                 </div>
                             </div>
 
+                            <!-- Formulário de Edição -->
                             <div class="card shadow-lg mb-5">
                                 <div class="card-body">
                                     <div class="row">
+                                        <!-- Campo Hidden para o ID -->
+                                        <input type="hidden" name="id_agendamento"
+                                            value="{{agendamento.cd_agendamento}}">
+
+                                        <!-- Nome (Pessoa Física ou Jurídica) -->
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                {{!-- Nome pessoa fisica --}}
                                                 <label class="fw-bold">Nome</label>
-                                                <input type="text" class="form-control" placeholder="informe o nome">
+                                                <!-- Verifique se o nome está correto -->
+                                                <input type="text" class="form-control" name="nome"
+                                                    placeholder="Informe o nome" value="{{nomePessoa}}">
                                             </div>
                                         </div>
+
+                                        <!-- Nome Fantasia -->
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                {{!-- Nome pessoa juridica --}}
                                                 <label class="fw-bold">Nome Fantasia</label>
-                                                <input type="text" class="form-control"
-                                                    placeholder="informe o nome fantasia">
+                                                <input type="text" class="form-control" name="nome_fantasia"
+                                                    placeholder="Informe o nome fantasia"
+                                                    value="{{agendamento.nm_pessoa_juridica_fantasia}}">
                                             </div>
                                         </div>
+
+                                        <!-- Endereço -->
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Endereço</label>
-                                                <input type="text" class="form-control"
-                                                    placeholder="informe o endereço">
+                                                <input type="text" class="form-control" name="endereco"
+                                                    placeholder="Informe o endereço"
+                                                    value="{{agendamento.ds_endereco}}">
                                             </div>
                                         </div>
+
+                                        <!-- Cidade -->
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Cidade</label><br>
-                                                <select class="form-select form-control" name="cidade">
-                                                    <option value="1">Curitiba</option>
+                                                <select class="form-select form-control" name="cd_cidade">
+                                                    <option value="{{agendamento.cd_cidade}}">
+                                                        {{agendamento.cidade.nm_cidade}} <!-- Nome da cidade -->
+                                                    </option>
+                                                    {{#each cidades}}
+                                                    <option value="{{cd_cidade}}">{{nm_cidade}}</option>
+                                                    {{/each}}
                                                 </select>
                                             </div>
                                         </div>
+
+                                        <!-- Bairro -->
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Bairro</label><br>
-                                                <select class="form-select form-control" name="bairro">
-                                                    <option value="1">Xaxim</option>
+                                                <select class="form-select form-control" name="cd_bairro">
+                                                    <option value="{{agendamento.cd_bairro}}">
+                                                        {{agendamento.bairro.nm_bairro}} <!-- Nome do bairro -->
+                                                    </option>
+                                                    {{#each bairros}}
+                                                    <option value="{{cd_bairro}}">{{nm_bairro}}</option>
+                                                    {{/each}}
                                                 </select>
                                             </div>
                                         </div>
+
+                                        <!-- Data Solicitada -->
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Data Solicitada</label>
-                                                <input type="date" class="form-control">
+                                                <input type="date" class="form-control" name="dt_solicitada"
+                                                    value="{{agendamento.dt_solicitada}}">
                                             </div>
                                         </div>
+
+                                        <!-- Peso Previsto (KG) -->
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Peso previsto (KG)</label>
-                                                <input type="text" class="form-control" placeholder="___" disabled>
+                                                <input type="text" class="form-control" name="peso_previsto"
+                                                    placeholder="___" value="{{agendamento.qt_quantidade_prevista_kg}}"
+                                                    disabled>
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="d-flex justify-content-end flex-wrap">
                                         <button type="submit" class="btn btn-success shadow-lg">Salvar</button>
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Formulário para Inserir Itens -->
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="card shadow-lg mb-5">
                                         <div class="card-header">
-                                            <div class="card-title">
-                                                Itens
-                                            </div>
+                                            <div class="card-title">Adicionar Item</div>
                                         </div>
                                         <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="fw-bold">Nome do material</label>
-                                                        <input type="text" class="form-control"
-                                                            placeholder="informe o nome">
+                                            <form
+                                                action="/agendamento/editar/{{agendamento.cd_agendamento}}/adicionarItem"
+                                                method="POST">
+                                                <div class="row">
+                                                    <!-- Nome do Material -->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="fw-bold">Nome do material</label>
+                                                            <input type="text" class="form-control" name="item_nome"
+                                                                placeholder="Informe o nome do material" required>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="fw-bold">Tipo do material</label>
-                                                        <input type="text" class="form-control"
-                                                            placeholder="informe o tipo">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="fw-bold">Peso do material (KG)</label>
-                                                        <input type="text" class="form-control" placeholder="___">
-                                                    </div>
-                                                </div>
 
+                                                    <!-- Tipo do Material -->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="fw-bold">Tipo do material</label>
+                                                            <input type="text" class="form-control" name="item_tipo"
+                                                                placeholder="Informe o tipo do material" required>
+                                                        </div>
+                                                    </div>
 
-                                            </div>
-                                            <div class="d-flex justify-content-end flex-wrap">
-                                                <button type="submit"
-                                                    class="btn btn-success shadow-lg">Adicionar</button>
-                                            </div>
+                                                    <!-- Peso do Material -->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="fw-bold">Peso do material (KG)</label>
+                                                            <input type="number" class="form-control" name="item_peso"
+                                                                placeholder="Informe o peso do material" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex justify-content-end flex-wrap">
+                                                    <button type="submit" class="btn btn-success shadow-lg">Adicionar
+                                                        Item</button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- Lista de Itens -->
                                 <div class="col-md-6">
                                     <div class="card shadow-lg mb-5">
                                         <div class="card-header">
-                                            <div class="card-title">
-                                                Lista de itens
-                                            </div>
+                                            <div class="card-title">Lista de Itens</div>
                                         </div>
                                         <div class="card-body p-0">
                                             <table class="table table-head-bg-success mt-4">
@@ -355,21 +397,30 @@
                                                         <th scope="col">Material</th>
                                                         <th scope="col">Tipo</th>
                                                         <th scope="col">Peso</th>
-                                                        <th></th>
+                                                        <th scope="col">Ações</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    {{#each agendamento.itens}} <!-- Loop pelos itens -->
                                                     <tr>
-                                                        <td>--</td>
-                                                        <td>--</td>
-                                                        <td>--</td>
+                                                        <td>{{nome}}</td> <!-- Nome do material -->
+                                                        <td>{{tipo}}</td> <!-- Tipo do material -->
+                                                        <td>{{peso}}</td> <!-- Peso do material -->
                                                         <td>
-                                                            <a class="btn btn-icon btn-round btn-danger"
-                                                                data-bs-toggle="modal" data-bs-target="#excluir">
-                                                                <i class="fa fa-trash"></i>
+                                                            <!-- Botão para Excluir -->
+                                                            <a href="/agendamento/editar/{{agendamento.cd_agendamento}}/itens/{{this.id}}/excluir"
+                                                                class="btn btn-danger btn-sm"
+                                                                onclick="return confirm('Tem certeza que deseja excluir este item?');">
+                                                                <i class="fa fa-trash"></i> Excluir
+                                                            </a>
+                                                            <!-- Botão para Editar -->
+                                                            <a href="/agendamento/editar/{{agendamento.cd_agendamento}}/itens/{{this.id}}/editar"
+                                                                class="btn btn-warning btn-sm">
+                                                                <i class="fa fa-edit"></i> Editar
                                                             </a>
                                                         </td>
                                                     </tr>
+                                                    {{/each}}
                                                 </tbody>
                                             </table>
                                         </div>
@@ -377,28 +428,27 @@
                                 </div>
                             </div>
 
-                        </div>
-                    </form>
+                            <!--End conteudo indiviudual da pagina-->
+                        </div>z
                 </div>
-                <!--End conteudo indiviudual da pagina-->
-            </div>
-        </div>
-        <!--start modal-->
-        <div class="modal fade" id="excluir" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered p-5">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="d-flex justify-content-center text-center flex-column">
-                            <i class="fa fa-exclamation-triangle text-danger fs-2"></i>
-                            <span class="fw-bold fs-4">Tem certeza que deseja excluir o cadastro?</span>
-                        </div>
-                        <div class="modal-footer d-flex justify-content-center">
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-primary">Confirmar</button>
+                <!--start modal-->
+                <div class="modal fade" id="excluir" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered p-5">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <div class="d-flex justify-content-center text-center flex-column">
+                                    <i class="fa fa-exclamation-triangle text-danger fs-2"></i>
+                                    <span class="fw-bold fs-4">Tem certeza que deseja excluir o cadastro?</span>
+                                </div>
+                                <div class="modal-footer d-flex justify-content-center">
+                                    <button type="button" class="btn btn-danger"
+                                        data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="button" class="btn btn-primary">Confirmar</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <!--end modal-->
+                <!--end modal-->
     </body>

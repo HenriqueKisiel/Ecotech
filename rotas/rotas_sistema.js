@@ -133,13 +133,14 @@ router.get('/estoqueNovo', (req, res) => {
 });
 
 //----------------------- Servico10 -------------------//
-// Rota para a página de agendamento de coleta
+// Rota GET para exibir a lista de agendamentos
 router.get('/agendamento', (req, res) => {
     servico10.exibirAgendamento(req, res);
 });
-// Rota de registro de coleta
+
+// Rota POST para realizar a busca de agendamentos
 router.post('/agendamento', (req, res) => {
-    servico10.registrarAgendamento(req, res);
+    servico10.buscarAgendamentos(req, res);
 });
 //---------------------- Servico11 -------------------//
 // Rota para a página de rotas programadas
@@ -212,17 +213,24 @@ router.get('/estoqueSaida', (req, res) => {
 });
 
 //----------------------- Servico19 -------------------//
-//página para adicionar agendamento
+// Rota para exibir o formulário de novo agendamento (GET)
 router.get('/agendamentoAdd', (req, res) => {
-    servico19.exibirNovoAgendamento(req, res);
+    servico19.exibirAgendamento(req, res);
 });
 
+// Rota para registrar o agendamento no banco de dados (POST)
+router.post('/agendamentoAdd', (req, res) => {
+    servico19.registrarAgendamento(req, res);
+});
 //----------------------- Servico20 -------------------//
-//página para editar agendamento
+// Rota GET para exibir o formulário de edição do agendamento
 router.get('/agendamentoEditar', (req, res) => {
     servico20.exibirEditarAgendamento(req, res);
 });
-
+// Rota POST para atualizar o agendamento
+router.post('/agendamentoEditar', (req, res) => {
+    servico20.atualizarAgendamento(req, res);
+});
 //==================== END ROTAS ====================
 
 module.exports = router;

@@ -231,6 +231,7 @@
                 <div class="container">
                     <form action="/agendamento" method="POST">
                         <div class="page-inner">
+                            <!-- Título e Botões -->
                             <div
                                 class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
                                 <div class="mb-3 d-flex flex-column">
@@ -244,42 +245,50 @@
                                 </div>
                             </div>
 
+                            <!-- Filtro de Busca -->
                             <div class="card shadow-lg mb-5">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Nome</label>
-                                                <input type="text" class="form-control" placeholder="informe o nome">
+                                                <input type="text" class="form-control" placeholder="Informe o nome"
+                                                    name="nome">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Endereço</label>
-                                                <input type="text" class="form-control"
-                                                    placeholder="informe o endereço">
+                                                <input type="text" class="form-control" placeholder="Informe o endereço"
+                                                    name="endereco">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Cidade</label><br>
-                                                <select class="form-select form-control" name="cidade">
-                                                    <option value="1">Curitiba</option>
+                                                <select class="form-select form-control" name="cd_cidade">
+                                                    <option value="">Selecione uma cidade</option>
+                                                    {{#each cidades}}
+                                                    <option value="{{cd_cidade}}">{{nm_cidade}}</option>
+                                                    {{/each}}
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Bairro</label><br>
-                                                <select class="form-select form-control" name="bairro">
-                                                    <option value="1">Xaxim</option>
+                                                <select class="form-select form-control" name="cd_bairro">
+                                                    <option value="">Selecione um bairro</option>
+                                                    {{#each bairros}}
+                                                    <option value="{{cd_bairro}}">{{nm_bairro}}</option>
+                                                    {{/each}}
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Data Solicitada</label>
-                                                <input type="date" class="form-control">
+                                                <input type="date" class="form-control" name="dt_solicitada">
                                             </div>
                                         </div>
                                     </div>
@@ -288,158 +297,54 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card shadow-lg">
-                                <div class="card-header d-none">
-                                    <div class="card-title">
-                                        <span class="fs-2 fw-bold">Retorno</span>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="table-responsive rounded">
-                                        <table class="table table-bordered table-head-bg-success">
-                                            <thead>
-                                                <tr>
-                                                    <th>Nome</th>
-                                                    <th>Endereço</th>
-                                                    <th>Cidade</th>
-                                                    <th>Data Solicitada</th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>--</td>
-                                                    <td>--</td>
-                                                    <td>--</td>
-                                                    <td>--</td>
-                                                    <td class="text-end">
-                                                        <a href="/agendamentoEditar"
-                                                            class="btn btn-icon btn-round btn-warning me-3">
-                                                            <i class="fa fa-edit text-white"></i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            {{!-- <div class="row">
-                                <div class="col-md-6">
-                                    <div class="card shadow-lg">
-                                        <div class="card-header">
-                                            <div class="card-title">
-                                                <span class="fs-4 fw-bold">Material a ser
-                                                    coletado:</span>
-                                            </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="fw-bold">Codigo do
-                                                            Material</label>
-                                                        <input type="text" class="form-control"
-                                                            placeholder="informe o codigo">
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="fw-bold">Descrição do
-                                                                Material</label>
-                                                            <input type="text" name="descricao_material"
-                                                                class="form-control" placeholder="Informe a descrição">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="fw-bold">Cod. Pessoa
-                                                            Física</label>
-                                                        <input type="text" class="form-control"
-                                                            placeholder="Informe o codigo">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="fw-bold">Cod. Pessoa
-                                                            Jurídica</label>
-                                                        <input type="text" class="form-control"
-                                                            placeholder="Informe o codigo">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="fw-bold">Data Solicitada</label>
-                                                        <input type="date" class="form-control form-control"
-                                                            id="defaultInput">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="fw-bold">Valor por KG</label>
-                                                        <input type="text" class="form-control" placeholder="R$">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="fw-bold">Peso Previsto
-                                                            (KG)</label>
-                                                        <input type="text" class="form-control" placeholder="Kg">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="card shadow-lg">
-                                        <div class="card-header">
-                                            <div class="card-title">
-                                                <span class="fs-4 fw-bold">Dados da coleta:</span>
-                                            </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="fw-bold">CEP da Coleta</label>
-                                                        <input type="text" name="cep" class="form-control"
-                                                            placeholder="informe o CEP">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="fw-bold">Endereço da
-                                                            Coleta</label>
-                                                        <input type="text" name="endereco" class="form-control"
-                                                            placeholder="informe o endereço">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="fw-bold">Cidade</label>
-                                                        <input type="text" name="cidade" class="form-control"
-                                                            placeholder="informe a cidade">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="fw-bold">Bairro</label>
-                                                        <input type="text" name="bairro" class="form-control"
-                                                            placeholder="informe o bairro">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex justify-content-end mt-3">
-                                                <button type="submit" class="btn btn-success">Salvar</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> --}}
                         </div>
                     </form>
+
+                    <!-- Resultado da Busca -->
+                    <div class="card shadow-lg">
+                        <div class="card-header d-none">
+                            <div class="card-title">
+                                <span class="fs-2 fw-bold">Retorno</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive rounded">
+                                <table class="table table-bordered table-head-bg-success">
+                                    <thead>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>Endereço</th>
+                                            <th>Cidade</th>
+                                            <th>Bairro</th>
+                                            <th>Data Solicitada</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each agendamentos}}
+                                        <tr>
+                                            <td>{{nome}}</td>
+                                            <td>{{endereco}}</td>
+                                            <td>{{cidade}}</td>
+                                            <td>{{bairro}}</td>
+                                            <td>{{dt_solicitada}}</td>
+                                            <td class="text-end">
+                                                <!-- Link para a página de edição -->
+                                                <a href="/agendamentoEditar?id_agendamento={{cd_agendamento}}"
+                                                    class="btn btn-icon btn-round btn-warning me-3">
+                                                    <i class="fa fa-edit text-white"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+
                 <!--End conteudo indiviudual da pagina-->
             </div>
         </div>

@@ -229,7 +229,7 @@
                 <!--End MenuBar-->
                 <!--Start conteudo indiviudual da pagina-->
                 <div class="container">
-                    <form action="/agendamento" method="POST">
+                    <form action="/agendamentoAdd" method="POST">
                         <div class="page-inner">
                             <div
                                 class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
@@ -245,58 +245,89 @@
                             <div class="card shadow-lg mb-5">
                                 <div class="card-body">
                                     <div class="row">
+
+                                        <!-- Pessoa Física -->
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                {{!-- Nome pessoa fisica --}}
-                                                <label class="fw-bold">Nome</label>
-                                                <input type="text" class="form-control" placeholder="informe o nome">
+                                                <label class="fw-bold">Nome Pessoa Física</label>
+                                                <select class="form-control" name="cd_pessoa_fisica">
+                                                    <option value="">Selecione uma pessoa física</option>
+                                                    {{#each pessoasFisicas}}
+                                                    <option value="{{cd_pessoa_fisica}}">{{nm_pessoa_fisica}}</option>
+                                                    {{/each}}
+                                                </select>
                                             </div>
                                         </div>
+
+                                        <!-- Pessoa Jurídica -->
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                {{!-- Nome pessoa juridica --}}
                                                 <label class="fw-bold">Nome Fantasia</label>
-                                                <input type="text" class="form-control"
-                                                    placeholder="informe o nome fantasia">
+                                                <select class="form-control" name="cd_pessoa_juridica">
+                                                    <option value="">Selecione uma pessoa jurídica</option>
+                                                    {{#each pessoasJuridicas}}
+                                                    <option value="{{cd_pessoa_juridica}}">{{nm_fantasia}}</option>
+                                                    {{/each}}
+                                                </select>
                                             </div>
                                         </div>
+
+                                        <!-- Endereço -->
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Endereço</label>
-                                                <input type="text" class="form-control"
-                                                    placeholder="informe o endereço">
+                                                <input type="text" class="form-control" name="ds_endereco"
+                                                    placeholder="Informe o endereço">
                                             </div>
                                         </div>
+
+                                        <!-- Cidade -->
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="fw-bold">Cidade</label><br>
-                                                <select class="form-select form-control" name="cidade">
-                                                    <option value="1">Curitiba</option>
+                                                <label class="fw-bold">Cidade</label>
+                                                <select class="form-control" name="cd_cidade">
+                                                    <option value="">Selecione uma cidade</option>
+                                                    {{#each cidades}}
+                                                    <option value="{{cd_cidade}}">{{nm_cidade}}</option>
+                                                    {{/each}}
                                                 </select>
                                             </div>
                                         </div>
+
+                                        <!-- Bairro -->
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="fw-bold">Bairro</label><br>
-                                                <select class="form-select form-control" name="bairro">
-                                                    <option value="1">Xaxim</option>
+                                                <label class="fw-bold">Bairro</label>
+                                                <select class="form-control" name="cd_bairro">
+                                                    <option value="">Selecione um bairro</option>
+                                                    {{#each bairros}}
+                                                    <option value="{{cd_bairro}}">{{nm_bairro}}</option>
+                                                    {{/each}}
                                                 </select>
                                             </div>
                                         </div>
+
+                                        <!-- Data Solicitada -->
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Data Solicitada</label>
-                                                <input type="date" class="form-control">
+                                                <input type="date" class="form-control" name="dt_solicitada">
                                             </div>
                                         </div>
+
+                                        <!-- Peso Previsto -->
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="fw-bold">Peso previsto (KG)</label>
-                                                <input type="text" class="form-control" placeholder="___">
+                                                <label class="fw-bold">Peso Previsto (KG)</label>
+                                                <input type="number" class="form-control"
+                                                    name="qt_quantidade_prevista_kg"
+                                                    placeholder="Informe o peso previsto (em KG)" step="0.01">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="d-flex justify-content-end flex-wrap">
+
+                                    <!-- Botão de Salvar -->
+                                    <div class="d-flex justify-content-end flex-wrap mt-3">
                                         <button type="submit" class="btn btn-success shadow-lg">Salvar</button>
                                     </div>
                                 </div>
@@ -304,6 +335,8 @@
                         </div>
                     </form>
                 </div>
+
+
                 <!--End conteudo indiviudual da pagina-->
             </div>
         </div>
