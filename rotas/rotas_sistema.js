@@ -249,6 +249,14 @@ router.get('/rotaEditar', (req, res) => {
     servico21.exibirrotaeditar(req, res);
 });
 
+router.get('/rotaEditar/:cd_rota', (req, res) => {
+    servico21.exibirrotaeditar(req, res);
+});
+
+router.post('/rotaEditar', (req, res) => {
+    servico21.editarRota(req, res);
+});
+
 // ----------------------- Servico22 -------------------//
 //página para editar pessoa
 router.get('/pessoaEditar/:cd_pessoa_fisica', (req, res) => {
