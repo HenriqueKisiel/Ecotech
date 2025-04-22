@@ -264,6 +264,8 @@ router.get('/rotaEditar/:cd_rota', (req, res) => {
 
 router.post('/rotaEditar', (req, res) => {
     servico21.editarRota(req, res);
+
+
 });
 
 // ----------------------- Servico22 -------------------//
