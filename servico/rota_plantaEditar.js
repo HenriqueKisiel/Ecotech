@@ -29,12 +29,16 @@ function editarPlanta(req, res) {
         cd_bairro
     } = req.body;
 
+    // ✅ Aqui você trata corretamente a situação
+    const situacao = req.body.ie_situacao === 'A' ? 'A' : 'I';
+
     const sql = `
         UPDATE planta SET 
             nm_planta = ?, 
             qt_area_total_m2 = ?, 
             qt_capacidade_total_kg = ?, 
-            qt_capacidade_atual_kg = ?, 
+            qt_capacidade_atual_kg = ?,
+            ie_situacao = ?, 
             ds_endereco = ?, 
             nr_cep = ?, 
             cd_cidade = ?, 
@@ -47,6 +51,7 @@ function editarPlanta(req, res) {
         qt_area_total_m2,
         qt_capacidade_total_kg,
         qt_capacidade_atual_kg,
+        situacao, // ✅ aqui está o valor tratado
         ds_endereco,
         nr_cep,
         cd_cidade,
@@ -67,6 +72,7 @@ function editarPlanta(req, res) {
                 qt_area_total_m2,
                 qt_capacidade_total_kg,
                 qt_capacidade_atual_kg,
+                ie_situacao: situacao,
                 ds_endereco,
                 nr_cep,
                 cd_cidade,
@@ -94,6 +100,7 @@ function editarPlanta(req, res) {
         });
     });
 }
+
 
 
 module.exports = {

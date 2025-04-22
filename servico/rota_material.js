@@ -37,8 +37,32 @@ function cadastrarMaterial(req, res) {
             linha
         });
 
-        // Redireciona para a página de cadastro de material
-        res.redirect('/material');
+        res.render('material', {
+            material: {
+                descricao,
+            valor_kg,
+            peso,
+            linha
+            },
+            script: `
+                <script>
+                    swal({
+                        title: "Cadastro realizado!",
+                        text: "Material cadastrado com sucesso!",
+                        icon: "success",
+                        buttons: {
+                            confirm: {
+                                text: "OK",
+                                value: true,
+                                visible: true,
+                                className: "btn btn-success",
+                                closeModal: true
+                            }
+                        }
+                    });
+                </script>
+            `
+        });
     });
 }
 

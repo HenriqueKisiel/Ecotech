@@ -281,36 +281,50 @@
                                                 placeholder="Capacidade Atual (Kg)">
                                         </div>
                                     </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Situação</label>
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" id="ie_situacao"
+                                                    name="ie_situacao" value="A" {{#if (eq planta.ie_situacao "A"
+                                                    )}}checked{{/if}}>
+                                                <label class="form-check-label" for="ie_situacao">Ativo</label>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <hr>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Endereço</label>
-                                            <input type="text" class="form-control" value="{{planta.ds_endereco}}" name="ds_endereco"
-                                                placeholder="Preencha o endereço" required>
+                                            <input type="text" class="form-control" value="{{planta.ds_endereco}}"
+                                                name="ds_endereco" placeholder="Preencha o endereço" required>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label class="fw-bold">CEP</label>
-                                            <input type="text" class="form-control" value="{{planta.nr_cep}}" name="nr_cep"
-                                                placeholder="Preencha o CEP" required pattern="^\d{8}$" maxlength="8">
+                                            <input type="text" class="form-control" value="{{planta.nr_cep}}"
+                                                name="nr_cep" placeholder="Preencha o CEP" required pattern="^\d{8}$"
+                                                maxlength="8">
 
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Cidade</label>
-                                            <input type="number" class="form-control" value="{{planta.cd_cidade}}" name="cd_cidade"
-                                                placeholder="Informe o código da cidade" required min="1">
+                                            <input type="number" class="form-control" value="{{planta.cd_cidade}}"
+                                                name="cd_cidade" placeholder="Informe o código da cidade" required
+                                                min="1">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Bairro</label>
-                                            <input type="number" class="form-control" value="{{planta.cd_bairro}}" name="cd_bairro"
-                                                placeholder="Informe o código do bairro" required min="1">
+                                            <input type="number" class="form-control" value="{{planta.cd_bairro}}"
+                                                name="cd_bairro" placeholder="Informe o código do bairro" required
+                                                min="1">
                                         </div>
                                     </div>
                                 </div>

@@ -248,6 +248,12 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
+                                        <label class="fw-bold" for="input">Nome da Planta</label>
+                                        <input type="text" class="form-control" placeholder="Informe o nome">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
                                         <label class="fw-bold" for="input">Codigo da planta</label>
                                         <input type="text" class="form-control"
                                             placeholder="cod da planta em que o estoque esta vinculado">
@@ -255,53 +261,63 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="fw-bold" for="input">Nome da Planta</label>
-                                        <input type="text" class="form-control" placeholder="Informe o nome">
+                                        <label class="fw-bold" for="input">Capacidade Máxima do Estoque (Kg)</label>
+                                        <input type="text" class="form-control" placeholder="Insira a capacidade">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="fw-bold" for="input">Capacidade do Estoque (Kg)</label>
+                                        <label class="fw-bold" for="input">Capacidade Atual do Estoque (Kg)</label>
                                         <input type="text" class="form-control" placeholder="Insira a capacidade">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="fw-bold" for="input">Linhas do Estoque</label>
-                                        <div class="row gutters-xs d-flex justify-content-start">
-                                            <div class="col-auto">
-                                                <label class="colorinput">
-                                                    <input name="color" type="checkbox" value="primary"
+                                        <div class="d-flex flex-row flex-wrap">
+                                            <div class="d-flex align-items-center me-5 mb-2">
+                                                <span class="me-2">Linha Azul</span>
+                                                <label class="colorinput mb-0">
+                                                    <input name="color" type="checkbox" value="1"
                                                         class="colorinput-input">
                                                     <span class="colorinput-color bg-primary"></span>
                                                 </label>
                                             </div>
-                                            <div class="col-auto">
-                                                <label class="colorinput">
-                                                    <input name="color" type="checkbox" value="success"
+                                            <div class="d-flex align-items-center me-5 mb-2">
+                                                <span class="me-2">Linha Verde</span>
+                                                <label class="colorinput mb-0">
+                                                    <input name="color" type="checkbox" value="2"
                                                         class="colorinput-input">
                                                     <span class="colorinput-color bg-success"></span>
                                                 </label>
                                             </div>
-                                            <div class="col-auto">
-                                                <label class="colorinput">
-                                                    <input name="color" type="checkbox" value="danger"
-                                                        class="colorinput-input">
-                                                    <span class="colorinput-color bg-danger"></span>
-                                                </label>
-                                            </div>
-                                            <div class="col-auto">
-                                                <label class="colorinput">
-                                                    <input name="color" type="checkbox" value="warning"
+                                            <div class="d-flex align-items-center me-5 mb-2">
+                                                <span class="me-2">Linha Laranja</span>
+                                                <label class="colorinput mb-0">
+                                                    <input name="color" type="checkbox" value="3"
                                                         class="colorinput-input">
                                                     <span class="colorinput-color bg-warning"></span>
+                                                </label>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-2">
+                                                <span class="me-2">Linha Vermelha</span>
+                                                <label class="colorinput mb-0">
+                                                    <input name="color" type="checkbox" value="4"
+                                                        class="colorinput-input">
+                                                    <span class="colorinput-color bg-danger"></span>
                                                 </label>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="fw-bold">Código do Estoque</label>
+                                        <input type="text" class="form-control" placeholder="Gerado automaticamente"
+                                            disabled>
+                                    </div>
+                                </div>
                             </div>
-
                         </div>
                         <div class="card-footer d-flex justify-content-end">
                             <a href="/home" class="btn btn-secondary me-3">

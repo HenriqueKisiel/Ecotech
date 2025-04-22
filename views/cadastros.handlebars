@@ -240,7 +240,6 @@
 
                         <div class="card shadow-lg">
                             <div class="card-body">
-                                <!-- FORM INICIANDO AQUI -->
                                 <form id="filtroForm" method="POST" action="/cadastros">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -262,13 +261,29 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-6">
+                                        <!-- Situação - Substitui Telefone quando for Planta de Reciclagem -->
+                                        <div class="col-md-6" id="situacaoField" style="display:none;">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Situação</label>
+                                                <select name="situacao" class="form-select form-control">
+                                                    <option value="Todos">Todos</option>
+                                                    <option value="Ativo">Ativo</option>
+                                                    <option value="Inativo">Inativo</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- Telefone (será escondido quando for Planta de Reciclagem) -->
+                                        <div class="col-md-6" id="telefoneField">
                                             <div class="form-group">
                                                 <label class="fw-bold">Telefone</label>
                                                 <input maxlength="18" name="telefone" class="form-control"
                                                     placeholder="Nr de telefone" />
                                             </div>
                                         </div>
+
+
+
 
                                         <div class="col-md-6">
                                             <div class="form-group">
@@ -330,10 +345,19 @@
                                         <thead>
                                             <tr>
                                                 <th>Nome</th>
+                                                {{#if (eq tipoCadastro "Planta de Reciclagem")}}
+                                                <th>Área Total (m²)</th>
+                                                <th>Capacidade Total (Kg)</th>
+                                                <th>Capacidade Atual (Kg)</th>
+                                                {{else}}
                                                 <th>Email</th>
                                                 <th>CPF/CNPJ</th>
-                                                <th>Código</th>
                                                 <th>Telefone</th>
+                                                {{/if}}
+                                                <th>Código</th>
+                                                {{#if (eq tipoCadastro "Planta de Reciclagem")}}
+                                                <th>Situação</th>
+                                                {{/if}}
                                                 <th>Ações</th>
                                             </tr>
                                         </thead>
@@ -342,11 +366,27 @@
                                             {{#each resultados}}
                                             <tr>
                                                 <td>{{nome}}</td>
+
+                                                {{#if (eq ../tipoCadastro "Planta de Reciclagem")}}
+                                                <td>{{area_total}}</td>
+                                                <td>{{capacidade_total}}</td>
+                                                <td>{{capacidade_atual}}</td>
+                                                {{else}}
                                                 <td>{{#if email}}{{email}}{{else}}-{{/if}}</td>
-                                                <td>{{#if cpf}}{{cpf}}{{else}}{{#if
-                                                    cnpj}}{{cnpj}}{{else}}-{{/if}}{{/if}}</td>
-                                                <td>{{codigo}}</td>
+                                                <td>
+                                                    {{#if cpf}}{{cpf}}{{else}}
+                                                    {{#if cnpj}}{{cnpj}}{{else}}-{{/if}}
+                                                    {{/if}}
+                                                </td>
                                                 <td>{{#if telefone}}{{telefone}}{{else}}-{{/if}}</td>
+                                                {{/if}}
+
+                                                <td>{{codigo}}</td>
+
+                                                {{#if (eq ../tipoCadastro "Planta de Reciclagem")}}
+                                                <td>{{#if situacao}}{{situacao}}{{else}}-{{/if}}</td>
+                                                {{/if}}
+
                                                 <td>
                                                     <a href="/editar/{{codigo}}"
                                                         class="btn btn-primary btn-round btn-border fw-bold shadow-sm btn-editar"
@@ -361,7 +401,7 @@
                                             {{/each}}
                                             {{else}}
                                             <tr>
-                                                <td colspan="6" class="text-center text-muted">Nenhum cadastro
+                                                <td colspan="7" class="text-center text-muted">Nenhum cadastro
                                                     encontrado</td>
                                             </tr>
                                             {{/if}}
@@ -371,28 +411,47 @@
                             </div>
                         </div>
 
+
                         <!-- Scripts -->
                         <script>
                             document.addEventListener('DOMContentLoaded', function () {
                                 const tipoCadastro = document.getElementById('defaultSelect');
+                                const telefoneField = document.getElementById('telefoneField');
+                                const situacaoField = document.getElementById('situacaoField');
                                 const cpfField = document.getElementById('cpfField');
                                 const cnpjField = document.getElementById('cnpjField');
                                 const limparBtn = document.getElementById('limparBtn');
                                 const form = document.getElementById('filtroForm');
                                 const editarLinks = document.querySelectorAll('.btn-editar');
 
+                                // Função para atualizar os campos de acordo com o tipo de cadastro
                                 function updateFields() {
                                     const selected = tipoCadastro.value;
+
+                                    // Esconde todos os campos inicialmente
+                                    telefoneField.style.display = 'none';
+                                    situacaoField.style.display = 'none';
                                     cpfField.style.display = 'none';
                                     cnpjField.style.display = 'none';
 
-                                    if (selected === 'Pessoa' || selected === 'Usuário') {
-                                        cpfField.style.display = 'block';
-                                    } else if (selected === 'Fornecedor ou Pessoa Jurídica' || selected === 'Planta de Reciclagem') {
-                                        cnpjField.style.display = 'block';
+                                    // Mostrar o campo 'Situação' se for 'Planta de Reciclagem'
+                                    if (selected === 'Planta de Reciclagem') {
+                                        situacaoField.style.display = 'block'; // Mostra Situação para Planta de Reciclagem
+                                        cnpjField.style.display = 'block'; // Mostra CNPJ para Planta de Reciclagem
+                                    }
+                                    // Caso contrário, mostra o campo 'Telefone' e os campos de CPF ou CNPJ conforme o tipo de cadastro
+                                    else {
+                                        telefoneField.style.display = 'block';
+                                        cnpjField.style.display = 'none'; // Garante que CNPJ não apareça para outros tipos que não sejam Planta
+                                        if (selected === 'Pessoa' || selected === 'Usuário') {
+                                            cpfField.style.display = 'block'; // Mostrar CPF para Pessoa e Usuário
+                                        } else if (selected === 'Fornecedor ou Pessoa Jurídica') {
+                                            cnpjField.style.display = 'block'; // Mostrar CNPJ para Fornecedor ou Pessoa Jurídica
+                                        }
                                     }
                                 }
 
+                                // Função para atualizar os links de edição com base no tipo de cadastro
                                 function atualizarLinksEditar() {
                                     const tipo = tipoCadastro.value;
                                     let rota = '/editar';
@@ -418,43 +477,50 @@
                                     });
                                 }
 
+                                // Adiciona o evento de mudança para atualizar os campos e os links de edição
                                 tipoCadastro.addEventListener('change', () => {
                                     updateFields();
                                     atualizarLinksEditar();
                                 });
 
+                                // Função de limpar os campos do filtro e resetar as visibilidades
                                 limparBtn.addEventListener('click', () => {
                                     form.reset();
                                     updateFields();
                                     atualizarLinksEditar();
                                 });
 
+                                // Chama a função para configurar os campos ao carregar a página
                                 updateFields();
                                 atualizarLinksEditar();
                             });
                         </script>
-                        <!-- Script para alterar os campos visíveis com base no tipo de cadastro -->
 
-                        
-                        <footer class="footer">
-                            <div class="container-fluid d-flex justify-content-between">
-                                <nav class="pull-left">
-                                    <ul class="nav">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#">footer#1</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#">footer#2</a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                                <div class="copyright">
-                                    2025 - Autores: Equipe 7
-                                </div>
-                            </div>
-                        </footer>
                     </div>
                 </div>
-                <!--end conteudo indiviual da pagina-->
+
+                <!-- Script para alterar os campos visíveis com base no tipo de cadastro -->
+
+
+                <footer class="footer">
+                    <div class="container-fluid d-flex justify-content-between">
+                        <nav class="pull-left">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">footer#1</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">footer#2</a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <div class="copyright">
+                            2025 - Autores: Equipe 7
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <!--end conteudo indiviual da pagina-->
     </body>
 </main>

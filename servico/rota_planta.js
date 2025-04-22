@@ -9,7 +9,15 @@ function exibirPlanta(req, res) {
 
 // Função para validar campos obrigatórios
 function validarCampos(req, res) {
-    const { nm_planta, qt_area_total_m2, qt_capacidade_total_kg, ds_endereco, cd_bairro, cd_cidade, nr_cep } = req.body;
+    const {
+        nm_planta,
+        qt_area_total_m2,
+        qt_capacidade_total_kg,
+        ds_endereco,
+        cd_bairro,
+        cd_cidade,
+        nr_cep
+    } = req.body;
 
     // Verificar se todos os campos obrigatórios estão preenchidos
     if (!nm_planta || !qt_area_total_m2 || !ds_endereco || !cd_bairro || !cd_cidade || !nr_cep) {
@@ -30,10 +38,23 @@ function validarCampos(req, res) {
 
 // Função para cadastrar uma nova planta no banco de dados
 function cadastrarPlanta(req, res) {
-    const { nm_planta, qt_area_total_m2, qt_capacidade_total_kg, qt_capacidade_atual_kg, ds_endereco, cd_bairro, cd_cidade, nr_cep } = req.body;
+    let {
+        nm_planta,
+        qt_area_total_m2,
+        qt_capacidade_total_kg,
+        qt_capacidade_atual_kg,
+        ie_situacao,
+        ds_endereco,
+        cd_bairro,
+        cd_cidade,
+        nr_cep
+    } = req.body;
 
     // Validação dos campos obrigatórios e dados
     if (validarCampos(req, res) !== true) return;
+
+    // Garantir que a situação será "A" se marcada, ou "I" caso contrário
+    ie_situacao = ie_situacao === "A" ? "A" : "I";
 
     const sql = `
         INSERT INTO planta (
@@ -41,11 +62,12 @@ function cadastrarPlanta(req, res) {
             qt_area_total_m2,
             qt_capacidade_total_kg,
             qt_capacidade_atual_kg,
+            ie_situacao,
             ds_endereco,
             cd_bairro,
             cd_cidade,
             nr_cep
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     const valores = [
@@ -53,6 +75,7 @@ function cadastrarPlanta(req, res) {
         qt_area_total_m2,
         qt_capacidade_total_kg || null,
         qt_capacidade_atual_kg || null,
+        ie_situacao,
         ds_endereco,
         cd_bairro,
         cd_cidade,
@@ -67,19 +90,49 @@ function cadastrarPlanta(req, res) {
 
         console.log('Planta cadastrada com sucesso!');
 
-        // Mostrar os dados cadastrados no console
+        res.render('planta', {
+            planta: {
+                nm_planta,
+                qt_area_total_m2,
+                qt_capacidade_total_kg,
+                qt_capacidade_atual_kg,
+                ie_situacao,
+                ds_endereco,
+                nr_cep,
+                cd_cidade,
+                cd_bairro
+            },
+            script: `
+                <script>
+                    swal({
+                        title: "Cadastro realizado!",
+                        text: "Planta cadastrada com sucesso!",
+                        icon: "success",
+                        buttons: {
+                            confirm: {
+                                text: "OK",
+                                value: true,
+                                visible: true,
+                                className: "btn btn-success",
+                                closeModal: true
+                            }
+                        }
+                    });
+                </script>
+            `
+        });
+
         console.log('Dados cadastrados:', {
             nm_planta,
             qt_area_total_m2,
             qt_capacidade_total_kg,
             qt_capacidade_atual_kg,
+            ie_situacao,
             ds_endereco,
             cd_bairro,
             cd_cidade,
             nr_cep
         });
-
-        res.redirect('/planta');
     });
 }
 

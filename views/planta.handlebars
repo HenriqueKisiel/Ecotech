@@ -279,6 +279,21 @@
                                                     placeholder="Capacidade Atual (Kg)">
                                             </div>
                                         </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Situação</label>
+
+                                                <!-- Campo oculto para garantir envio de "I" se checkbox não for marcado -->
+                                                <input type="hidden" name="ie_situacao" value="I">
+
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" id="ie_situacao"
+                                                        name="ie_situacao" value="A" {{#if (eq usuario.ie_situacao "A"
+                                                        )}}checked{{/if}}>
+                                                    <label class="form-check-label" for="ie_situacao">Ativo</label>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <hr>
                                     <div class="row">
