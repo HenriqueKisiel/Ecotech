@@ -1,14 +1,160 @@
 <main>
-
-    <body>
-        <div class="wrapper">
-            <!-- Sidebar -->
-            <div class="sidebar" data-background-color="dark">
-                <div class="sidebar-logo">
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <div class="sidebar" data-background-color="dark">
+            <div class="sidebar-logo">
+                <!-- Logo Header -->
+                <div class="logo-header" data-background-color="dark">
+                    <a href="/home" class="logo">
+                        <img src="assets/Eco.png" alt="navbar brand" class="navbar-brand" height="30" />
+                    </a>
+                    <div class="nav-toggle">
+                        <button class="btn btn-toggle toggle-sidebar">
+                            <i class="gg-menu-right"></i>
+                        </button>
+                        <button class="btn btn-toggle sidenav-toggler">
+                            <i class="gg-menu-left"></i>
+                        </button>
+                    </div>
+                    <button class="topbar-toggler more">
+                        <i class="gg-more-vertical-alt"></i>
+                    </button>
+                </div>
+                <!-- End Logo Header -->
+            </div>
+            <div class="sidebar-wrapper scrollbar scrollbar-inner">
+                <div class="sidebar-content">
+                    <ul class="nav nav-secondary">
+                        <li class="nav-item">
+                            <a href="/home" class="collapsed" aria-expanded="false">
+                                <i class="fas fa-home"></i>
+                                <p>Home</p>
+                            </a>
+                        </li>
+                        <li class="nav-section">
+                            <span class="sidebar-mini-icon">
+                                <i class="fa fa-ellipsis-h"></i>
+                            </span>
+                            <h4 class="text-section">Funções Do Sistema</h4>
+                        </li>
+                        <li class="nav-item active">
+                            <a data-bs-toggle="collapse" href="#cadastro">
+                                <i class="fas fa-user"></i>
+                                <p>Cadastros</p>
+                                <span class="caret"></span>
+                            </a>
+                            <div class="collapse" id="cadastro">
+                                <ul class="nav nav-collapse">
+                                    <li>
+                                        <a href="/cadastros">
+                                            <span class="sub-item">Buscar</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/pessoa">
+                                            <span class="sub-item">Nova Pessoa</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/usuario">
+                                            <span class="sub-item">Novo Usuario</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/planta">
+                                            <span class="sub-item">Nova Planta</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/material">
+                                            <span class="sub-item">Novo Material</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/estoqueNovo">
+                                            <span class="sub-item">Novo Estoque</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a data-bs-toggle="collapse" href="#estoque">
+                                <i class="fas fa-th-list"></i>
+                                <p>Estoque</p>
+                                <span class="caret"></span>
+                            </a>
+                            <div class="collapse" id="estoque">
+                                <ul class="nav nav-collapse">
+                                    <li>
+                                        <a href="/estoqueBuscar">
+                                            <span class="sub-item">Buscar Material</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/estoqueEntrada">
+                                            <span class="sub-item">Entrada de Material</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/estoqueSaida">
+                                            <span class="sub-item">Saída de Material</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a data-bs-toggle="collapse" href="#coleta">
+                                <i class="fa fa-map-marker-alt"></i>
+                                <p>Gestão de Coleta</p>
+                                <span class="caret"></span>
+                            </a>
+                            <div class="collapse" id="coleta">
+                                <ul class="nav nav-collapse">
+                                    <li>
+                                        <a href="/agendamento">
+                                            <span class="sub-item">Agendamento</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/rotas">
+                                            <span class="sub-item">Rotas Programadas</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/attStatus">
+                                            <span class="sub-item">Atualizar Status da Coleta</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/relatorios">
+                                <i class="fas fa-table"></i>
+                                <p>Relatórios</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/processamento">
+                                <i class="fas fa-thumbtack"></i>
+                                <p>Processamento</p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- End Sidebar -->
+        <!--Start MenuBar-->
+        <div class="main-panel">
+            <div class="main-header">
+                <div class="main-header-logo">
                     <!-- Logo Header -->
                     <div class="logo-header" data-background-color="dark">
-                        <a href="/home" class="logo">
-                            <img src="assets/Eco.png" alt="navbar brand" class="navbar-brand" height="30" />
+                        <a href="#" class="logo">
+                            <img src="public/assets/Eco.png" alt="navbar brand" class="navbar-brand" height="20" />
                         </a>
                         <div class="nav-toggle">
                             <button class="btn btn-toggle toggle-sidebar">
@@ -24,351 +170,205 @@
                     </div>
                     <!-- End Logo Header -->
                 </div>
-                <div class="sidebar-wrapper scrollbar scrollbar-inner">
-                    <div class="sidebar-content">
-                        <ul class="nav nav-secondary">
-                            <li class="nav-item">
-                                <a href="/home" class="collapsed" aria-expanded="false">
-                                    <i class="fas fa-home"></i>
-                                    <p>Home</p>
+                <!-- Navbar Header -->
+                <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+                    <div class="container-fluid">
+                        <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+                            <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                                    aria-expanded="false" aria-haspopup="true">
+                                    <i class="fa fa-search"></i>
                                 </a>
+                                <ul class="dropdown-menu dropdown-search animated fadeIn">
+                                    <form class="navbar-left navbar-form nav-search">
+                                        <div class="input-group">
+                                            <input type="text" placeholder="Search ..." class="form-control" />
+                                        </div>
+                                    </form>
+                                </ul>
                             </li>
-                            <li class="nav-section">
-                                <span class="sidebar-mini-icon">
-                                    <i class="fa fa-ellipsis-h"></i>
-                                </span>
-                                <h4 class="text-section">Funções Do Sistema</h4>
-                            </li>
-                            <li class="nav-item active">
-                                <a data-bs-toggle="collapse" href="#cadastro">
-                                    <i class="fas fa-user"></i>
-                                    <p>Cadastros</p>
-                                    <span class="caret"></span>
+                            <li class="nav-item topbar-user dropdown hidden-caret">
+                                <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
+                                    aria-expanded="false">
+                                    <span class="profile-username">
+                                        <i class="fas fa-user-circle fa-2x"></i>
+                                    </span>
                                 </a>
-                                <div class="collapse" id="cadastro">
-                                    <ul class="nav nav-collapse">
+                                <ul class="dropdown-menu dropdown-user animated fadeIn">
+                                    <div class="dropdown-user-scroll scrollbar-outer">
                                         <li>
-                                            <a href="/cadastros">
-                                                <span class="sub-item">Buscar</span>
-                                            </a>
+                                            <div class="user-box">
+                                                <div class="u-text">
+                                                    <h4>Henrique</h4>
+                                                    <p class="text-muted">henrique@gmail.com</p>
+                                                    <a href="#" class="btn btn-xs btn-secondary btn-sm">
+                                                        Ver
+                                                        Perfil
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </li>
                                         <li>
-                                            <a href="/pessoa">
-                                                <span class="sub-item">Nova Pessoa</span>
-                                            </a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">Minha conta</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">Configurações</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="/login">Sair</a>
                                         </li>
-                                        <li>
-                                            <a href="/usuario">
-                                                <span class="sub-item">Novo Usuario</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/planta">
-                                                <span class="sub-item">Nova Planta</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/material">
-                                                <span class="sub-item">Novo Material</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/estoqueNovo">
-                                                <span class="sub-item">Novo Estoque</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li class="nav-item">
-                                <a data-bs-toggle="collapse" href="#estoque">
-                                    <i class="fas fa-th-list"></i>
-                                    <p>Estoque</p>
-                                    <span class="caret"></span>
-                                </a>
-                                <div class="collapse" id="estoque">
-                                    <ul class="nav nav-collapse">
-                                        <li>
-                                            <a href="/estoqueBuscar">
-                                                <span class="sub-item">Buscar Material</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/estoqueEntrada">
-                                                <span class="sub-item">Entrada de Material</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/estoqueSaida">
-                                                <span class="sub-item">Saída de Material</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li class="nav-item">
-                                <a data-bs-toggle="collapse" href="#coleta">
-                                    <i class="fa fa-map-marker-alt"></i>
-                                    <p>Gestão de Coleta</p>
-                                    <span class="caret"></span>
-                                </a>
-                                <div class="collapse" id="coleta">
-                                    <ul class="nav nav-collapse">
-                                        <li>
-                                            <a href="/agendamento">
-                                                <span class="sub-item">Agendamento</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/rotas">
-                                                <span class="sub-item">Rotas Programadas</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/attStatus">
-                                                <span class="sub-item">Atualizar Status da Coleta</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/relatorios">
-                                    <i class="fas fa-table"></i>
-                                    <p>Relatórios</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/processamento">
-                                    <i class="fas fa-thumbtack"></i>
-                                    <p>Processamento</p>
-                                </a>
+                                    </div>
+                                </ul>
                             </li>
                         </ul>
                     </div>
+                </nav>
+                <!-- End Navbar -->
+            </div>
+            <!--End MenuBar-->
+            <!--Start conteudo indiviudual da pagina-->
+            <div class="container">
+                <div class="page-inner">
+                    <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
+                        <div class="mb-3 d-flex flex-column">
+                            <span class="fs-2 fw-bold">
+                                Editar Planta de Reciclagem
+                            </span>
+                            <small class="text-muted">
+                                Preencha os dados de cadastro e clique em salvar.
+                            </small>
+                        </div>
+                    </div>
+                    <div class="card shadow-lg">
+                        <div class="card-body">
+                            <form id="formCadastroPlanta" method="POST" action="/plantaEditar">
+                                <div class="row">
+                                    <input type="hidden" name="codigo" value="{{planta.cd_planta}}">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Nome da Planta</label>
+                                            <input type="text" class="form-control" name="nm_planta"
+                                                value="{{planta.nm_planta}}" placeholder="Insira o nome" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Código da Planta</label>
+                                            <input type="text" class="form-control" value="{{planta.cd_planta}}"
+                                                placeholder="Gerado automaticamente" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Área total em m²</label>
+                                            <input type="number" class="form-control" name="qt_area_total_m2"
+                                                value="{{planta.qt_area_total_m2}}" placeholder="Nr de m²" required
+                                                min="1">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Capacidade Total (Kg)</label>
+                                            <input type="number" class="form-control"
+                                                value="{{planta.qt_capacidade_total_kg}}" name="qt_capacidade_total_kg"
+                                                placeholder="Capacidade Total (Kg)" required min="1">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Capacidade Atual (Kg)</label>
+                                            <input type="number" class="form-control"
+                                                value="{{planta.qt_capacidade_atual_kg}}" name="qt_capacidade_atual_kg"
+                                                placeholder="Capacidade Atual (Kg)">
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Endereço</label>
+                                            <input type="text" class="form-control" value="{{planta.ds_endereco}}" name="ds_endereco"
+                                                placeholder="Preencha o endereço" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="fw-bold">CEP</label>
+                                            <input type="text" class="form-control" value="{{planta.nr_cep}}" name="nr_cep"
+                                                placeholder="Preencha o CEP" required pattern="^\d{8}$" maxlength="8">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Cidade</label>
+                                            <input type="number" class="form-control" value="{{planta.cd_cidade}}" name="cd_cidade"
+                                                placeholder="Informe o código da cidade" required min="1">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Bairro</label>
+                                            <input type="number" class="form-control" value="{{planta.cd_bairro}}" name="cd_bairro"
+                                                placeholder="Informe o código do bairro" required min="1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end mt-3">
+                                    <a href="/cadastros" class="btn btn-secondary me-3">
+                                        Voltar
+                                    </a>
+                                    <button type="submit" class="btn btn-success">
+                                        Salvar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!-- End Sidebar -->
-            <!--Start MenuBar-->
-            <div class="main-panel">
-                <div class="main-header">
-                    <div class="main-header-logo">
-                        <!-- Logo Header -->
-                        <div class="logo-header" data-background-color="dark">
-                            <a href="#" class="logo">
-                                <img src="public/assets/Eco.png" alt="navbar brand" class="navbar-brand" height="20" />
-                            </a>
-                            <div class="nav-toggle">
-                                <button class="btn btn-toggle toggle-sidebar">
-                                    <i class="gg-menu-right"></i>
-                                </button>
-                                <button class="btn btn-toggle sidenav-toggler">
-                                    <i class="gg-menu-left"></i>
-                                </button>
-                            </div>
-                            <button class="topbar-toggler more">
-                                <i class="gg-more-vertical-alt"></i>
-                            </button>
-                        </div>
-                        <!-- End Logo Header -->
-                    </div>
-                    <!-- Navbar Header -->
-                    <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
-                        <div class="container-fluid">
-                            <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
-                                <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
-                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-                                        aria-expanded="false" aria-haspopup="true">
-                                        <i class="fa fa-search"></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-search animated fadeIn">
-                                        <form class="navbar-left navbar-form nav-search">
-                                            <div class="input-group">
-                                                <input type="text" placeholder="Search ..." class="form-control" />
-                                            </div>
-                                        </form>
-                                    </ul>
-                                </li>
-                                <li class="nav-item topbar-user dropdown hidden-caret">
-                                    <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
-                                        aria-expanded="false">
-                                        <span class="profile-username">
-                                            <i class="fas fa-user-circle fa-2x"></i>
-                                        </span>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-user animated fadeIn">
-                                        <div class="dropdown-user-scroll scrollbar-outer">
-                                            <li>
-                                                <div class="user-box">
-                                                    <div class="u-text">
-                                                        <h4>Henrique</h4>
-                                                        <p class="text-muted">henrique@gmail.com</p>
-                                                        <a href="#" class="btn btn-xs btn-secondary btn-sm">
-                                                            Ver
-                                                            Perfil
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#">Minha conta</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#">Configurações</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="/login">Sair</a>
-                                            </li>
-                                        </div>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
+            <!--end conteudo indiviudual da pagina-->
+            <!-- Script para validação extra no frontend -->
+            <script>
+                document.getElementById('formCadastroPlanta').addEventListener('submit', function (event) {
+                    let formValid = true;
+
+                    const nomePlanta = document.getElementsByName('nm_planta')[0].value;
+                    if (nomePlanta.trim() === "") {
+                        alert('O nome da planta é obrigatório.');
+                        formValid = false;
+                    }
+
+                    const cep = document.getElementsByName('nr_cep')[0].value;
+                    const cepPattern = /^\d{8}$/;
+                    if (!cep.match(cepPattern)) {
+                        alert('O CEP deve ter o formato 00000-000.');
+                        formValid = false;
+                    }
+
+                    if (!formValid) {
+                        event.preventDefault();
+                    }
+                });
+            </script>
+
+            <footer class="footer">
+                <div class="container-fluid d-flex justify-content-between">
+                    <nav class="pull-left">
+                        <ul class="nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">footer#1</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">footer#2</a>
+                            </li>
+                        </ul>
                     </nav>
-                    <!-- End Navbar -->
-                </div>
-                <!--End MenuBar-->
-                <!--Start conteudo indiviudual da pagina-->
-                <div class="container">
-                    <div class="page-inner">
-                        <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
-                            <div class="mb-3 d-flex flex-column">
-                                <span class="fs-2 fw-bold">
-                                    Cadastro de Planta de Reciclagem
-                                </span>
-                                <small class="text-muted">
-                                    Preencha os dados de cadastro e clique em salvar.
-                                </small>
-                            </div>
-                        </div>
-                        <div class="card shadow-lg">
-                            <div class="card-body">
-                                <form id="formCadastroPlanta" method="POST" action="/planta">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Nome da Planta</label>
-                                                <input type="text" class="form-control" name="nm_planta"
-                                                    placeholder="Insira o nome" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Código da Planta</label>
-                                                <input type="text" class="form-control"
-                                                    placeholder="Gerado automaticamente" disabled>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Área total em m²</label>
-                                                <input type="number" class="form-control" name="qt_area_total_m2"
-                                                    placeholder="Nr de m²" required min="1">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Capacidade Total (Kg)</label>
-                                                <input type="number" class="form-control" name="qt_capacidade_total_kg"
-                                                    placeholder="Capacidade Total (Kg)" required min="1">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Capacidade Atual (Kg)</label>
-                                                <input type="number" class="form-control" name="qt_capacidade_atual_kg"
-                                                    placeholder="Capacidade Atual (Kg)">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Endereço</label>
-                                                <input type="text" class="form-control" name="ds_endereco"
-                                                    placeholder="Preencha o endereço" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label class="fw-bold">CEP</label>
-                                                <input type="text" class="form-control" name="nr_cep"
-                                                    placeholder="Preencha o CEP" required pattern="^\d{8}$"
-                                                    maxlength="8">
-
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Cidade (ID)</label>
-                                                <input type="number" class="form-control" name="cd_cidade"
-                                                    placeholder="Informe o código da cidade" required min="1">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Bairro (ID)</label>
-                                                <input type="number" class="form-control" name="cd_bairro"
-                                                    placeholder="Informe o código do bairro" required min="1">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-end mt-3">
-                                        <a href="/home" class="btn btn-secondary me-3">
-                                            Voltar
-                                        </a>
-                                        <button type="submit" class="btn btn-success">
-                                            Salvar
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                    <div class="copyright">
+                        2025 - Autores: Equipe 7
                     </div>
                 </div>
-                <!--end conteudo indiviudual da pagina-->
-                <!-- Script para validação extra no frontend -->
-                <script>
-                    document.getElementById('formCadastroPlanta').addEventListener('submit', function (event) {
-                        let formValid = true;
-
-                        const nomePlanta = document.getElementsByName('nm_planta')[0].value;
-                        if (nomePlanta.trim() === "") {
-                            alert('O nome da planta é obrigatório.');
-                            formValid = false;
-                        }
-
-                        const cep = document.getElementsByName('nr_cep')[0].value;
-                        const cepPattern = /^\d{8}$/;
-                        if (!cep.match(cepPattern)) {
-                            alert('O CEP deve ter o formato 00000-000.');
-                            formValid = false;
-                        }
-
-                        if (!formValid) {
-                            event.preventDefault();
-                        }
-                    });
-                </script>
-
-                <footer class="footer">
-                    <div class="container-fluid d-flex justify-content-between">
-                        <nav class="pull-left">
-                            <ul class="nav">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">footer#1</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">footer#2</a>
-                                </li>
-                            </ul>
-                        </nav>
-                        <div class="copyright">
-                            2025 - Autores: Equipe 7
-                        </div>
-                    </div>
-                </footer>
-            </div>
+            </footer>
         </div>
-    </body>
+    </div>
 </main>
