@@ -39,7 +39,7 @@
                                 </span>
                                 <h4 class="text-section">Funções Do Sistema</h4>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item active">
                                 <a data-bs-toggle="collapse" href="#cadastro">
                                     <i class="fas fa-user"></i>
                                     <p>Cadastros</p>
@@ -106,7 +106,7 @@
                                     </ul>
                                 </div>
                             </li>
-                            <li class="nav-item active">
+                            <li class="nav-item">
                                 <a data-bs-toggle="collapse" href="#coleta">
                                     <i class="fa fa-map-marker-alt"></i>
                                     <p>Gestão de Coleta</p>
@@ -233,61 +233,141 @@
                         <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
                             <div class="mb-3 d-flex flex-column">
                                 <span class="fs-2 fw-bold">
-                                    Cadastro de Rota
+                                    Cadastro de Planta de Reciclagem
                                 </span>
                                 <small class="text-muted">
                                     Preencha os dados de cadastro e clique em salvar.
                                 </small>
                             </div>
-                            <div>
-                                <a class="btn btn-secondary shadow-lg" href="/rotas">Voltar</a>
-                            </div>
                         </div>
-                        <div class="card shadow-lg mb-3">
-                            <div class="card-header d-none">
-                                <div class="card-title">
-                                    <span class="fs-2 fw-bold"></span>
-                                </div>
-                            </div>
+                        <div class="card shadow-lg">
                             <div class="card-body">
-                                <form id="formRotaCadastro" action="/RotaCadastro" method="POST">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Nome da Rota</label>
-                                            <input type="text" name="nomeRota" class="form-control" placeholder="Insira o nome ">
+                                <form id="formCadastroPlanta" method="POST" action="/planta">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Nome da Planta</label>
+                                                <input type="text" class="form-control" name="nm_planta"
+                                                    placeholder="Insira o nome" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Código da Planta</label>
+                                                <input type="text" class="form-control"
+                                                    placeholder="Gerado automaticamente" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Área total em m²</label>
+                                                <input type="number" class="form-control" name="qt_area_total_m2"
+                                                    placeholder="Nr de m²" required min="1">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Capacidade Total (Kg)</label>
+                                                <input type="number" class="form-control" name="qt_capacidade_total_kg"
+                                                    placeholder="Capacidade Total (Kg)" required min="1">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Capacidade Atual (Kg)</label>
+                                                <input type="number" class="form-control" name="qt_capacidade_atual_kg"
+                                                    placeholder="Capacidade Atual (Kg)">
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Data Agendada</label>
-                                            <input type="date" name="dataAgendaRota" class="form-control">
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Endereço</label>
+                                                <input type="text" class="form-control" name="ds_endereco"
+                                                    placeholder="Preencha o endereço" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="fw-bold">CEP</label>
+                                                <input type="text" class="form-control" name="nr_cep"
+                                                    placeholder="Preencha o CEP" required pattern="^\d{8}$"
+                                                    maxlength="8">
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Cidade (ID)</label>
+                                                <input type="number" class="form-control" name="cd_cidade"
+                                                    placeholder="Informe o código da cidade" required min="1">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Bairro (ID)</label>
+                                                <input type="number" class="form-control" name="cd_bairro"
+                                                    placeholder="Informe o código do bairro" required min="1">
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Peso total (Kg)</label>
-                                            <input type="text" name="pesoTotalRota" class="form-control" placeholder="Kg">
-                                        </div>
+                                    <div class="d-flex justify-content-end mt-3">
+                                        <a href="/home" class="btn btn-secondary me-3">
+                                            Voltar
+                                        </a>
+                                        <button type="submit" class="btn btn-success">
+                                            Salvar
+                                        </button>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">KM Total (KM)</label>
-                                            <input type="text" name="quilometroTotalRota" class="form-control" placeholder="Km">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-end mt-3">
-                                    <button type="submit" class="btn btn-success fw-bold shadow-lg fs-5">
-                                        Salvar
-                                    </button>
-                                </div>
+                                </form>
                             </div>
                         </div>
-                        
                     </div>
                 </div>
                 <!--end conteudo indiviudual da pagina-->
+                <!-- Script para validação extra no frontend -->
+                <script>
+                    document.getElementById('formCadastroPlanta').addEventListener('submit', function (event) {
+                        let formValid = true;
+
+                        const nomePlanta = document.getElementsByName('nm_planta')[0].value;
+                        if (nomePlanta.trim() === "") {
+                            alert('O nome da planta é obrigatório.');
+                            formValid = false;
+                        }
+
+                        const cep = document.getElementsByName('nr_cep')[0].value;
+                        const cepPattern = /^\d{8}$/;
+                        if (!cep.match(cepPattern)) {
+                            alert('O CEP deve ter o formato 00000-000.');
+                            formValid = false;
+                        }
+
+                        if (!formValid) {
+                            event.preventDefault();
+                        }
+                    });
+                </script>
+
+                <footer class="footer">
+                    <div class="container-fluid d-flex justify-content-between">
+                        <nav class="pull-left">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">footer#1</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">footer#2</a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <div class="copyright">
+                            2025 - Autores: Equipe 7
+                        </div>
+                    </div>
+                </footer>
             </div>
         </div>
     </body>

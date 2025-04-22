@@ -231,20 +231,14 @@
                     <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
                         <div class="mb-3 d-flex flex-column">
                             <span class="fs-2 fw-bold">
-                                Cadastro de Pessoa Física
+                                Editar Pessoa Física
                             </span>
                             <small class="text-muted">
                                 Preencha os dados de cadastro e clique em salvar.
                             </small>
                         </div>
                         <div>
-                            <a href="/juridica" class="btn btn-primary fw-bold shadow-lg me-3 mt-2"> Sou Pessoa
-                                Jurídica
-                                ou
-                                Fornecedor</a>
-                            <a href="/usuarioAdicionar" class="btn btn-warning text-white fw-bold shadow-lg mt-2"
-                                data-bs-toggle="modal" data-bs-target="#aviso">Sou Usuário
-                                do Sistema</a>
+                            <a href="/cadastros" class="btn btn-secondary fw-bold shadow-lg me-3 mt-2">Voltar</a>
                         </div>
                     </div>
                     <div class="card shadow-lg">
@@ -254,34 +248,40 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <form id="formPessoaFisica" action="/pessoa" method="POST">
+                            <form id="formPessoaFisicaEditar" action="/pessoaEditar" method="POST">
+                                <div class="form-group">
+                                    <input type="hidden" name="codigo" value="{{pessoa_fisica.cd_pessoa_fisica}}">
+                                </div>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Nome Completo</label>
-                                            <input maxlength="50" type="text" name="nomeFisico" class="form-control"
+                                            <input maxlength="50" type="text" name="nomeFisico"
+                                                value="{{pessoa_fisica.nm_pessoa_fisica}}" class="form-control"
                                                 placeholder="Insira o nome completo">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">E-mail</label>
-                                            <input maxlength="50" type="email" name="email" class="form-control"
+                                            <input maxlength="50" type="email" name="email"
+                                                value="{{pessoa_fisica.ds_email}}" class="form-control"
                                                 placeholder="Insira o E-mail">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">CPF</label>
-                                            <input maxlength="14" id="cpf" name="cpf" class="form-control"
-                                                placeholder="Insira o CPF">
+                                            <input maxlength="14" id="cpf" name="cpf" value="{{pessoa_fisica.nr_cpf}}"
+                                                class="form-control" placeholder="Insira o CPF">
                                             <small class="form-text text-muted">Em caso de pessoa física.</small>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Telefone</label>
-                                            <input maxlength="18" id="telefone" name="telefone" class="form-control"
+                                            <input maxlength="18" id="telefone" name="telefone"
+                                                value="{{pessoa_fisica.nr_telefone_celular}}" class="form-control"
                                                 placeholder="Nr de telefone">
                                         </div>
                                     </div>
@@ -291,14 +291,16 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Endereço</label>
-                                            <input maxlength="50" type="text" name="endereco" class="form-control"
+                                            <input maxlength="50" type="text" name="endereco"
+                                                value="{{pessoa_fisica.ds_endereco}}" class="form-control"
                                                 placeholder="Preencha o endereço">
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label class="fw-bold">CEP</label>
-                                            <input maxlength="9" id="cep" type="text" name="cep" class="form-control"
+                                            <input maxlength="9" id="cep" type="text" name="cep"
+                                                value="{{pessoa_fisica.nr_cep}}" class="form-control"
                                                 placeholder="Preencha o CEP">
                                         </div>
                                     </div>
@@ -306,7 +308,9 @@
                                         <div class="form-group">
                                             <label class="fw-bold">Cidade</label><br>
                                             <select class="form-select form-control" name="cidade">
-                                                <option value="1">Curitiba</option>
+                                                <option value="1" {{#if (eq pessoa_fisica.cd_cidade "1"
+                                                    )}}selected{{/if}}>Curitiba</option>
+                                                <!-- Adicione mais cidades conforme necessário -->
                                             </select>
                                         </div>
                                     </div>
@@ -314,7 +318,9 @@
                                         <div class="form-group">
                                             <label class="fw-bold">Bairro</label><br>
                                             <select class="form-select form-control" name="bairro">
-                                                <option value="1">Xaxim</option>
+                                                <option value="1" {{#if (eq pessoa_fisica.cd_bairro "1"
+                                                    )}}selected{{/if}}>Xaxim</option>
+                                                <!-- Adicione mais bairros conforme necessário -->
                                             </select>
                                         </div>
                                     </div>
@@ -324,25 +330,47 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Data de Nascimento</label>
-                                            <input type="date" name="dataNasc" class="form-control">
+                                            <input type="date" name="dataNasc" value="{{pessoa_fisica.dt_nascimento}}"
+                                                class="form-control">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Sexo</label><br>
                                             <select class="form-select form-control" name="sexo">
-                                                <option value="m" selected>Masculino</option>
-                                                <option value="f">Feminino</option>
+                                                <option value="m" {{#if (eq pessoa_fisica.ie_sexo "m"
+                                                    )}}selected{{/if}}>Masculino</option>
+                                                <option value="f" {{#if (eq pessoa_fisica.ie_sexo "f"
+                                                    )}}selected{{/if}}>Feminino</option>
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="ie_situacao"
+                                                name="ie_situacao" value="A" {{#if (eq pessoa_fisica.ie_situacao "A"
+                                                )}}checked{{/if}}>
+                                            <label class="form-check-label fw-bold fs-6" for="ie_situacao">Ativo</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Última Atualização</label>
+                                            <input type="text" name="Dt_atualizacao"
+                                                value="{{pessoa_fisica.dt_atualizacao}}" class="form-control"
+                                                placeholder="25/12/2025" readonly>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="d-flex justify-content-end mt-3">
-                                    <a href="/home" class="btn btn-secondary me-3">Voltar</a>
                                     <button type="submit" class="btn btn-success">Salvar</button>
                                 </div>
                             </form>
+
                         </div>
                     </div>
                 </div>

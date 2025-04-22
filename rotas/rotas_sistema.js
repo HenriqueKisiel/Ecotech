@@ -25,6 +25,10 @@ const servico17 = require('../servico/rota_estoqueEntrada.js');
 const servico18 = require('../servico/rota_estoqueSaida.js');
 const servico19 = require('../servico/rota_agendamentoAdd.js');
 const servico20 = require('../servico/rota_agendamentoEditar.js');
+const servico21 = require('../servico/rota_rota_editar.js');
+const servico22 = require('../servico/rota_pessoaEditar.js');
+const servico23 = require('../servico/rota_juridicaEditar.js');
+const servico24 = require('../servico/rota_plantaEditar.js');
 
 
 
@@ -82,6 +86,22 @@ router.post('/juridica', (req, res) => {
 // Rota para a página cadastro de usuario
 router.get('/usuario', (req, res) => {
     servico5.exibirUsuario(req, res);
+});
+
+router.get('/pessoas', (req, res) => {
+    servico5.buscarPessoa(req, res);
+});
+
+router.get('/pessoa/:id', (req, res) => {
+    servico5.buscarDetalhesPessoa(req, res);
+});
+
+router.get('/usuarioAdicionar', (req, res) => {
+    servico5.adicionarUsuario(req, res);
+});
+
+router.post('/usuarioAdicionar', (req, res) => {
+    servico5.cadastrarUsuario(req, res);
 });
 
 //Rota para editar usuario
@@ -227,10 +247,50 @@ router.post('/agendamentoAdd', (req, res) => {
 router.get('/agendamentoEditar', (req, res) => {
     servico20.exibirEditarAgendamento(req, res);
 });
+<<<<<<< HEAD
 // Rota POST para atualizar o agendamento
 router.post('/agendamentoEditar', (req, res) => {
     servico20.atualizarAgendamento(req, res);
 });
+=======
+
+// ----------------------- Servico21 -------------------//
+//página para editar rota
+router.get('/rotaEditar', (req, res) => {
+    servico21.exibirrotaeditar(req, res);
+});
+
+router.get('/rotaEditar/:cd_rota', (req, res) => {
+    servico21.exibirrotaeditar(req, res);
+});
+
+router.post('/rotaEditar', (req, res) => {
+    servico21.editarRota(req, res);
+});
+
+// ----------------------- Servico22 -------------------//
+//página para editar pessoa
+router.get('/pessoaEditar/:cd_pessoa_fisica', (req, res) => {
+    servico22.exibirPessoaEditar(req, res);
+});
+
+router.post('/pessoaEditar', (req, res) => {
+    servico22.editarPessoa(req, res);
+});
+
+// ----------------------- Servico23 -------------------//
+//página para editar pessoa juridica
+router.get('/juridicaEditar', (req, res) => {
+    servico23.exibirJuridicaEditar(req, res);
+});
+
+// ----------------------- Servico24 -------------------//
+//página para editar pessoa juridica
+router.get('/plantaEditar', (req, res) => {
+    servico24.exibirPlantaEditar(req, res);
+});
+
+>>>>>>> 7975926f938a8e9ea0bec4d41d2bdffad69aa46a
 //==================== END ROTAS ====================
 
 module.exports = router;

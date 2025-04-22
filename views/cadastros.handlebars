@@ -248,10 +248,16 @@
                                                 <label class="fw-bold">Tipo de Cadastro</label>
                                                 <select class="form-select form-control" id="defaultSelect"
                                                     name="tipoCadastro">
-                                                    <option>Pessoa</option>
-                                                    <option>Usuário</option>
-                                                    <option>Fornecedor ou Pessoa Jurídica</option>
-                                                    <option>Planta de Reciclagem</option>
+                                                    <option value="Pessoa" {{#if (eq tipoCadastro "Pessoa"
+                                                        )}}selected{{/if}}>Pessoa</option>
+                                                    <option value="Usuário" {{#if (eq tipoCadastro "Usuário"
+                                                        )}}selected{{/if}}>Usuário</option>
+                                                    <option value="Fornecedor ou Pessoa Jurídica" {{#if (eq
+                                                        tipoCadastro "Fornecedor ou Pessoa Jurídica" )}}selected{{/if}}>
+                                                        Fornecedor ou Pessoa Jurídica</option>
+                                                    <option value="Planta de Reciclagem" {{#if (eq
+                                                        tipoCadastro "Planta de Reciclagem" )}}selected{{/if}}>Planta de
+                                                        Reciclagem</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -343,7 +349,8 @@
                                                 <td>{{#if telefone}}{{telefone}}{{else}}-{{/if}}</td>
                                                 <td>
                                                     <a href="/editar/{{codigo}}"
-                                                        class="btn btn-icon btn-round btn-warning me-2">
+                                                        class="btn btn-icon btn-round btn-warning me-2 btn-editar"
+                                                        data-codigo="{{codigo}}">
                                                         <i class="fa fa-edit text-white"></i>
                                                     </a>
                                                     <a class="btn btn-icon btn-round btn-danger" data-bs-toggle="modal"
@@ -375,6 +382,7 @@
                                 const cnpjField = document.getElementById('cnpjField');
                                 const limparBtn = document.getElementById('limparBtn');
                                 const form = document.getElementById('filtroForm');
+                                const editarLinks = document.querySelectorAll('.btn-editar');
 
                                 function updateFields() {
                                     const selected = tipoCadastro.value;
@@ -388,18 +396,48 @@
                                     }
                                 }
 
-                                tipoCadastro.addEventListener('change', updateFields);
-                                updateFields(); // já atualiza ao carregar a página
+                                function atualizarLinksEditar() {
+                                    const tipo = tipoCadastro.value;
+                                    let rota = '/editar';
+
+                                    switch (tipo) {
+                                        case 'Pessoa':
+                                            rota = '/pessoaEditar';
+                                            break;
+                                        case 'Usuário':
+                                            rota = '/usuarioEditar';
+                                            break;
+                                        case 'Fornecedor ou Pessoa Jurídica':
+                                            rota = '/juridica';
+                                            break;
+                                        case 'Planta de Reciclagem':
+                                            rota = '/planta';
+                                            break;
+                                    }
+
+                                    editarLinks.forEach(link => {
+                                        const codigo = link.getAttribute('data-codigo');
+                                        link.setAttribute('href', `${rota}/${codigo}`);
+                                    });
+                                }
+
+                                tipoCadastro.addEventListener('change', () => {
+                                    updateFields();
+                                    atualizarLinksEditar();
+                                });
 
                                 limparBtn.addEventListener('click', () => {
                                     form.reset();
                                     updateFields();
+                                    atualizarLinksEditar();
                                 });
+
+                                updateFields();
+                                atualizarLinksEditar();
                             });
                         </script>
+
                         <!-- Script para alterar os campos visíveis com base no tipo de cadastro -->
-
-
                         <footer class="footer">
                             <div class="container-fluid d-flex justify-content-between">
                                 <nav class="pull-left">

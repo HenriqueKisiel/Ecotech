@@ -229,66 +229,161 @@
                 <!--End MenuBar-->
                 <!--Start conteudo indiviudual da pagina-->
                 <div class="container">
-                    <div class="page-inner">
-                        <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
-                            <div class="mb-3 d-flex flex-column">
-                                <span class="fs-2 fw-bold">
-                                    Cadastro de Rota
-                                </span>
-                                <small class="text-muted">
-                                    Preencha os dados de cadastro e clique em salvar.
-                                </small>
+                        <div class="page-inner">
+                            <div
+                                class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
+                                <div class="mb-3 d-flex flex-column">
+                                    <span class="fs-2 fw-bold">Editar Rota de Coleta</span>
+                                    <small class="text-muted">Realize a programação da coleta.</small>
+                                </div>
+                                <div>
+                                    <a href="/rotas" class="btn btn-secondary me-3 shadow-lg">Voltar</a>
+                                </div>
                             </div>
-                            <div>
-                                <a class="btn btn-secondary shadow-lg" href="/rotas">Voltar</a>
+                            <form method="POST" action="/rotaEditar">
+                                <div class="card shadow-lg mb-5">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    {{!-- Nome Rota --}}
+                                                    <label class="fw-bold">Código Rota</label>
+                                                    <input type="text" class="form-control" name="codigo" value="{{rotas.cd_rota}}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    {{!-- Nome Rota --}}
+                                                    <label class="fw-bold">Nome</label>
+                                                    <input type="text"  name="nome" class="form-control" value="{{rotas.nm_rota}}" placeholder="informe o nome da rota">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Distancia (KM)</label>
+                                                    <input type="text" value="{{rotas.nr_distancia_km}}"  class="form-control"
+                                                        placeholder="___" disabled>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Peso previsto (KG)</label>
+                                                    <input type="text" value="{{rotas.qt_peso_total_kg}}"  class="form-control" placeholder="___" disabled>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Data agendada</label>
+                                                    <input type="date" name="data" id="dataAgendada" class="form-control">
+                                                        <script>
+                                                            const data = "{{ rotas.dt_agendada }}"; // Supondo que venha como "21/04/2025"
+                                                            const partes = data.split('/');
+                                                            const formatada = `${partes[2]}-${partes[1]}-${partes[0]}`; // yyyy-mm-dd
+                                                            document.getElementById('dataAgendada').value = formatada;
+                                                        </script>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-end flex-wrap">
+                                            <button type="submit" class="btn btn-success shadow-lg">Salvar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card shadow-lg mb-5">
+                                        <div class="card-header">
+                                            <div class="card-title">
+                                                Pontos de coleta
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Nome do Agendamento</label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="informe o nome">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Endereco</label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="informe o endereço">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Peso do material (KG)</label>
+                                                        <input type="text" class="form-control" placeholder="___">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-end flex-wrap gap-2">
+                                                <button type="button" class="btn btn-primary shadow-lg">Buscar</button>
+                                                <button type="submit" class="btn btn-success shadow-lg">Adicionar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card shadow-lg mb-5">
+                                        <div class="card-header">
+                                            <div class="card-title">
+                                                Lista de Pontos Adicionados
+                                            </div>
+                                        </div>
+                                        <div class="card-body p-0">
+                                            <table class="table table-head-bg-success mt-4">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Agendamento</th>
+                                                        <th scope="col">Endereço</th>
+                                                        <th scope="col">Peso</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>--</td>
+                                                        <td>--</td>
+                                                        <td>--</td>
+                                                        <td>
+                                                            <a class="btn btn-icon btn-round btn-danger"
+                                                                data-bs-toggle="modal" data-bs-target="#excluir">
+                                                                <i class="fa fa-trash"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="card shadow-lg mb-3">
-                            <div class="card-header d-none">
-                                <div class="card-title">
-                                    <span class="fs-2 fw-bold"></span>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <form id="formRotaCadastro" action="/RotaCadastro" method="POST">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Nome da Rota</label>
-                                            <input type="text" name="nomeRota" class="form-control" placeholder="Insira o nome ">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Data Agendada</label>
-                                            <input type="date" name="dataAgendaRota" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Peso total (Kg)</label>
-                                            <input type="text" name="pesoTotalRota" class="form-control" placeholder="Kg">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">KM Total (KM)</label>
-                                            <input type="text" name="quilometroTotalRota" class="form-control" placeholder="Km">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-end mt-3">
-                                    <button type="submit" class="btn btn-success fw-bold shadow-lg fs-5">
-                                        Salvar
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </div>
                 </div>
-                <!--end conteudo indiviudual da pagina-->
+                <!--End conteudo indiviudual da pagina-->
             </div>
         </div>
+        <!--start modal-->
+        <div class="modal fade" id="excluir" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered p-5">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="d-flex justify-content-center text-center flex-column">
+                            <i class="fa fa-exclamation-triangle text-danger fs-2"></i>
+                            <span class="fw-bold fs-4">Tem certeza que deseja excluir o cadastro?</span>
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary">Confirmar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end modal-->
     </body>
-</main>

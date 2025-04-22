@@ -39,7 +39,7 @@
                                 </span>
                                 <h4 class="text-section">Funções Do Sistema</h4>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item active">
                                 <a data-bs-toggle="collapse" href="#cadastro">
                                     <i class="fas fa-user"></i>
                                     <p>Cadastros</p>
@@ -106,7 +106,7 @@
                                     </ul>
                                 </div>
                             </li>
-                            <li class="nav-item active">
+                            <li class="nav-item">
                                 <a data-bs-toggle="collapse" href="#coleta">
                                     <i class="fa fa-map-marker-alt"></i>
                                     <p>Gestão de Coleta</p>
@@ -156,7 +156,7 @@
                         <!-- Logo Header -->
                         <div class="logo-header" data-background-color="dark">
                             <a href="#" class="logo">
-                                <img src="public/assets/Eco.png" alt="navbar brand" class="navbar-brand" height="20" />
+                                <img src="assets/Eco.png" alt="navbar brand" class="navbar-brand" height="20" />
                             </a>
                             <div class="nav-toggle">
                                 <button class="btn btn-toggle toggle-sidebar">
@@ -233,61 +233,117 @@
                         <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
                             <div class="mb-3 d-flex flex-column">
                                 <span class="fs-2 fw-bold">
-                                    Cadastro de Rota
+                                    Cadastro de Pessoa Jurídica
                                 </span>
                                 <small class="text-muted">
                                     Preencha os dados de cadastro e clique em salvar.
                                 </small>
                             </div>
                             <div>
-                                <a class="btn btn-secondary shadow-lg" href="/rotas">Voltar</a>
+                                <a href="/pessoa" class="btn btn-secondary shadow-lg">Voltar</a>
                             </div>
                         </div>
-                        <div class="card shadow-lg mb-3">
+                        <div class="card shadow-lg">
                             <div class="card-header d-none">
                                 <div class="card-title">
                                     <span class="fs-2 fw-bold"></span>
                                 </div>
                             </div>
                             <div class="card-body">
-                                <form id="formRotaCadastro" action="/RotaCadastro" method="POST">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Nome da Rota</label>
-                                            <input type="text" name="nomeRota" class="form-control" placeholder="Insira o nome ">
+                                <form id="formPessoaJuridica" action="/juridica" method="POST">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Razão Social</label>
+                                                <input type="text" name="razaoSocial" class="form-control"
+                                                    placeholder="Insira o nome/razão">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">E-mail</label>
+                                                <input type="email" name="email" class="form-control"
+                                                    placeholder="Insira o E-mail">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">CNPJ</label>
+                                                <input maxlength="18" type="text" name="cnpj" class="form-control"
+                                                    placeholder="Insira o CNPJ">
+                                                <small class="form-text text-muted">Em caso de pessoa jurídica.</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Telefone</label>
+                                                <input maxlength="18" type="text" name="telefone" class="form-control"
+                                                    placeholder="Nr de telefone">
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Data Agendada</label>
-                                            <input type="date" name="dataAgendaRota" class="form-control">
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Endereço</label>
+                                                <input maxlength="50" type="text" name="endereco" class="form-control"
+                                                    placeholder="Preencha o endereço">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="fw-bold">CEP</label>
+                                                <input maxlength="9" type="text" name="cep" class="form-control"
+                                                    placeholder="Preencha o CEP">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Cidade</label><br>
+                                                <select class="form-select form-control" name="cidade">
+                                                    <option value="1">Curitiba</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Bairro</label><br>
+                                                <select class="form-select form-control" name="bairro">
+                                                    <option value="1">Xaxim</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Peso total (Kg)</label>
-                                            <input type="text" name="pesoTotalRota" class="form-control" placeholder="Kg">
-                                        </div>
+
+                                    <div class="d-flex justify-content-end mt-3">
+                                        <a href="/home" class="btn btn-secondary me-3">Voltar</a>
+                                        <button type="submit" class="btn btn-success">Salvar</button>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">KM Total (KM)</label>
-                                            <input type="text" name="quilometroTotalRota" class="form-control" placeholder="Km">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-end mt-3">
-                                    <button type="submit" class="btn btn-success fw-bold shadow-lg fs-5">
-                                        Salvar
-                                    </button>
-                                </div>
+                                </form>
+
                             </div>
                         </div>
-                        
                     </div>
                 </div>
                 <!--end conteudo indiviudual da pagina-->
+                <footer class="footer">
+                    <div class="container-fluid d-flex justify-content-between">
+                        <nav class="pull-left">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">footer#1</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">footer#2</a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <div class="copyright">
+                            2025 - Autores: Equipe 7
+                        </div>
+                    </div>
+                </footer>
             </div>
         </div>
     </body>
