@@ -247,12 +247,10 @@ router.post('/agendamentoAdd', (req, res) => {
 router.get('/agendamentoEditar', (req, res) => {
     servico20.exibirEditarAgendamento(req, res);
 });
-<<<<<<< HEAD
 // Rota POST para atualizar o agendamento
 router.post('/agendamentoEditar', (req, res) => {
     servico20.atualizarAgendamento(req, res);
 });
-=======
 
 // ----------------------- Servico21 -------------------//
 //página para editar rota
@@ -290,7 +288,6 @@ router.get('/plantaEditar', (req, res) => {
     servico24.exibirPlantaEditar(req, res);
 });
 
->>>>>>> 7975926f938a8e9ea0bec4d41d2bdffad69aa46a
 //==================== END ROTAS ====================
 
 module.exports = router;

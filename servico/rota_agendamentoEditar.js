@@ -2,23 +2,19 @@ const conectiondb = require('../bd/conexao_mysql.js');
 
 // Função para exibir a tela de edição com os dados do agendamento
 function exibirEditarAgendamento(req, res) {
-    const idAgendamento = req.query.id_agendamento; // Pega o id do agendamento da query string
-    console.log("id_agendamento capturado:", idAgendamento); // Adicionando log para depuração
+    const idAgendamento = req.query.id_agendamento;
 
     if (!idAgendamento) {
         return res.status(400).send('ID do agendamento não fornecido');
     }
 
-    // Conexão com o banco
     const connection = conectiondb();
 
-    // Consulta para buscar o agendamento pelo ID, com JOIN para pegar dados relacionados
     const query = `
         SELECT 
             agendamento.*, 
             pf.nm_pessoa_fisica, 
             pj.nm_fantasia AS nm_pessoa_juridica_fantasia, 
-            pj.nm_razao_social AS nm_pessoa_juridica_razao_social, 
             c.nm_cidade, 
             b.nm_bairro 
         FROM agendamento
@@ -31,39 +27,33 @@ function exibirEditarAgendamento(req, res) {
     
     connection.query(query, [idAgendamento], (err, results) => {
         if (err) {
-            console.log(err);
+            console.log("Erro na consulta do agendamento:", err);
             return res.status(500).send('Erro ao buscar os dados do agendamento');
         }
 
         if (results.length > 0) {
-            const agendamento = results[0]; // Assumindo que a consulta retorna apenas um resultado
+            const agendamento = results[0];
 
-            // Definir nome com base nas condições
-            const nomePessoa = agendamento.nm_pessoa_fisica || agendamento.nm_pessoa_juridica_fantasia;
+            // Buscar todas as pessoas físicas e jurídicas
+            const pessoasFisicasQuery = 'SELECT cd_pessoa_fisica, nm_pessoa_fisica FROM pessoa_fisica';
+            const pessoasJuridicasQuery = 'SELECT cd_pessoa_juridica, nm_fantasia FROM pessoa_juridica';
 
-            // Consultas para pegar as cidades, bairros, pessoas físicas e jurídicas
-            const cidadesQuery = 'SELECT * FROM cidade';
-            const bairrosQuery = 'SELECT * FROM bairro';
-
-            // Consultas para cidades e bairros
-            connection.query(cidadesQuery, (err, cidades) => {
+            connection.query(pessoasFisicasQuery, (err, pessoasFisicas) => {
                 if (err) {
-                    console.log(err);
-                    return res.status(500).send('Erro ao buscar as cidades');
+                    console.log("Erro na consulta das pessoas físicas:", err);
+                    return res.status(500).send('Erro ao buscar as pessoas físicas');
                 }
 
-                connection.query(bairrosQuery, (err, bairros) => {
+                connection.query(pessoasJuridicasQuery, (err, pessoasJuridicas) => {
                     if (err) {
-                        console.log(err);
-                        return res.status(500).send('Erro ao buscar os bairros');
+                        console.log("Erro na consulta das pessoas jurídicas:", err);
+                        return res.status(500).send('Erro ao buscar as pessoas jurídicas');
                     }
 
-                    // Renderizando a página de edição com os dados
                     res.render('agendamentoEditar', {
                         agendamento,
-                        nomePessoa,  // Envia o nome já processado
-                        cidades,
-                        bairros
+                        pessoasFisicas,
+                        pessoasJuridicas
                     });
                 });
             });
@@ -73,21 +63,37 @@ function exibirEditarAgendamento(req, res) {
     });
 }
 
-// Função para atualizar os dados do agendamento
 function atualizarAgendamento(req, res) {
     const {
         id_agendamento, 
-        dt_solicitada, 
+        nome_pessoa_fisica, 
+        nome_fantasia, 
+        endereco, 
         cd_pessoa_fisica, 
         cd_pessoa_juridica, 
-        ds_endereco, 
         cd_bairro, 
         cd_cidade, 
-        nr_cep, 
-        qt_quantidade_prevista_kg, 
-        vlr_previsto_reais 
+        Dt_solicitada, 
+        peso_previsto, 
+        item_nome,
+        item_tipo,
+        item_peso
     } = req.body;
 
+    console.log("Dados recebidos para atualização:", req.body); // Log para depuração
+
+    // Verificação para garantir que o ID foi fornecido
+    if (!id_agendamento) {
+        return res.status(400).send('ID do agendamento não fornecido');
+    }
+
+    // Verificação para garantir que pelo menos uma pessoa (física ou jurídica) foi informada
+    if (!cd_pessoa_fisica && !cd_pessoa_juridica) {
+        console.log("Erro: Nenhuma pessoa física ou jurídica informada");
+        return res.status(400).send('É necessário informar uma pessoa física ou jurídica');
+    }
+
+    // Ajuste na query para não incluir `nr_cep` se ele não for enviado
     const query = `
         UPDATE agendamento
         SET dt_solicitada = ?, 
@@ -96,22 +102,23 @@ function atualizarAgendamento(req, res) {
             ds_endereco = ?, 
             cd_bairro = ?, 
             cd_cidade = ?, 
-            nr_cep = ?, 
             qt_quantidade_prevista_kg = ?, 
             vlr_previsto_reais = ?
         WHERE cd_agendamento = ?
     `;
 
+    // Valores a serem passados para a query
     const values = [
-        dt_solicitada,
-        cd_pessoa_fisica,
-        cd_pessoa_juridica,
-        ds_endereco,
+        Dt_solicitada,
+        cd_pessoa_fisica || null,  // Se não for pessoa física, será NULL
+        cd_pessoa_juridica || null, // Se não for pessoa jurídica, será NULL
+        endereco,
         cd_bairro,
         cd_cidade,
-        nr_cep,
-        qt_quantidade_prevista_kg,
-        vlr_previsto_reais,
+        peso_previsto,
+        item_nome, // Exemplo de outro campo que poderia estar sendo manipulado
+        item_tipo, 
+        item_peso,
         id_agendamento
     ];
 
@@ -121,10 +128,12 @@ function atualizarAgendamento(req, res) {
     // Atualizando o agendamento no banco de dados
     connection.query(query, values, (err, result) => {
         if (err) {
-            console.log(err);
+            console.log("Erro ao atualizar agendamento:", err);
             return res.status(500).send('Erro ao atualizar o agendamento');
         }
 
+        // Log de sucesso
+        console.log(`Agendamento com ID ${id_agendamento} atualizado com sucesso!`);
         // Redireciona de volta para a lista de agendamentos ou para a página de edição
         res.redirect('/agendamento');
     });
