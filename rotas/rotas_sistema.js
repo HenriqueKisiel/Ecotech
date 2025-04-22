@@ -292,6 +292,10 @@ router.get('/plantaEditar/:cd_planta', (req, res) => {
     servico24.exibirPlantaEditar(req, res);
 });
 
+router.post('/plantaEditar', (req, res) => {
+    servico24.editarPlanta(req, res);
+});
+
 //==================== END ROTAS ====================
 
 module.exports = router;
