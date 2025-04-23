@@ -117,7 +117,7 @@ function buscarCadastros(req, res) {
                 resultado.capacidade_atual = item[colunas.capacidade_atual] || '-';
                 resultado.situacao = item[colunas.situacao] === 'A' ? 'Ativo' : 'Inativo';
             } else if (tipoCadastroCorrigido === 'Usuário') {
-                resultado.situacao = item[colunas.situacao] === 'A' ? 'Ativo' : 'Inativo'; // Adicione esta linha
+                resultado.situacao = item[colunas.situacao] === 'A' ? 'Ativo' : 'Inativo'; 
             }
                 resultado.email = colunas.email ? item[colunas.email] || null : null;
                 resultado.telefone = colunas.telefone ? item[colunas.telefone] || null : null;
