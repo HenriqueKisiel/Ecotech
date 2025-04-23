@@ -8,7 +8,7 @@
                     <!-- Logo Header -->
                     <div class="logo-header" data-background-color="dark">
                         <a href="/home" class="logo">
-                            <img src="assets/Eco.png" alt="navbar brand" class="navbar-brand" height="30" />
+                            <img src="/assets/Eco.png" alt="navbar brand" class="navbar-brand" height="30" />
                         </a>
                         <div class="nav-toggle">
                             <button class="btn btn-toggle toggle-sidebar">
@@ -67,16 +67,6 @@
                                                 <span class="sub-item">Nova Planta</span>
                                             </a>
                                         </li>
-                                        <li>
-                                            <a href="/material">
-                                                <span class="sub-item">Novo Material</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/estoqueNovo">
-                                                <span class="sub-item">Novo Estoque</span>
-                                            </a>
-                                        </li>
                                     </ul>
                                 </div>
                             </li>
@@ -90,17 +80,22 @@
                                     <ul class="nav nav-collapse">
                                         <li>
                                             <a href="/estoqueBuscar">
-                                                <span class="sub-item">Buscar Material</span>
+                                                <span class="sub-item">Buscar</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/estoqueEntrada">
-                                                <span class="sub-item">Entrada de Material</span>
+                                            <a href="/estoqueNovo">
+                                                <span class="sub-item">Novo Estoque</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/material">
+                                                <span class="sub-item">Novo Material</span>
                                             </a>
                                         </li>
                                         <li>
                                             <a href="/estoqueSaida">
-                                                <span class="sub-item">Saída de Material</span>
+                                                <span class="sub-item">Movimentações</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -355,7 +350,8 @@
                                                 <th>Telefone</th>
                                                 {{/if}}
                                                 <th>Código</th>
-                                                {{#if (eq tipoCadastro "Planta de Reciclagem")}}
+                                                {{#if (or (eq tipoCadastro "Planta de Reciclagem") (eq tipoCadastro
+                                                "Usuário"))}}
                                                 <th>Situação</th>
                                                 {{/if}}
                                                 <th>Ações</th>
@@ -383,7 +379,8 @@
 
                                                 <td>{{codigo}}</td>
 
-                                                {{#if (eq ../tipoCadastro "Planta de Reciclagem")}}
+                                                {{#if (or (eq ../tipoCadastro "Planta de Reciclagem") (eq
+                                                ../tipoCadastro "Usuário"))}}
                                                 <td>{{#if situacao}}{{situacao}}{{else}}-{{/if}}</td>
                                                 {{/if}}
 
@@ -435,9 +432,11 @@
                                     cnpjField.style.display = 'none';
 
                                     // Mostrar o campo 'Situação' se for 'Planta de Reciclagem'
-                                    if (selected === 'Planta de Reciclagem') {
+                                    if (selected === 'Planta de Reciclagem' || selected === 'Usuário') {
                                         situacaoField.style.display = 'block'; // Mostra Situação para Planta de Reciclagem
-                                        cnpjField.style.display = 'block'; // Mostra CNPJ para Planta de Reciclagem
+                                        if (selected === 'Planta de Reciclagem') {
+                                            cnpjField.style.display = 'block'; // Mostra CNPJ para Planta de Reciclagem
+                                        }
                                     }
                                     // Caso contrário, mostra o campo 'Telefone' e os campos de CPF ou CNPJ conforme o tipo de cadastro
                                     else {

@@ -160,6 +160,7 @@ function editarUsuario(req, res) {
                 console.error('Erro ao atualizar Usuario:', erroUsuario);
                 return res.render('usuarioEditar', {
                     usuario: {
+                        cd_usuario,
                         nm_pessoa_fisica,
                         ds_email,
                         nr_telefone_celular,
@@ -184,6 +185,7 @@ function editarUsuario(req, res) {
             console.log('Usuário atualizado com sucesso!');
             return res.render('usuarioEditar', {
                 usuario: {
+                    cd_usuario,
                     nm_pessoa_fisica,
                     ds_email,
                     nr_telefone_celular,

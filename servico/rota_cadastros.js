@@ -18,10 +18,14 @@ const configuracoesPorTipo = {
         }
     },
     'Usuário': {
-        tabela: 'usuario',
+        tabela: 'Pessoa_Usuario',
         colunas: {
             nome: 'nm_usuario',
-            codigo: 'cd_usuario'
+            codigo: 'cd_usuario',
+            email: 'ds_email',
+            telefone: 'nr_telefone_celular',
+            cpf: 'nr_cpf',
+            situacao: 'ie_situacao'
         }
     },
     'Fornecedor ou Pessoa Jurídica': {
@@ -88,7 +92,7 @@ function buscarCadastros(req, res) {
     }
 
     // Filtro adicional para "Situação" se for "Planta de Reciclagem"
-    if (tipoCadastroCorrigido === 'Planta de Reciclagem' && situacao && situacao !== 'Todos') {
+    if ((tipoCadastroCorrigido === 'Planta de Reciclagem' || tipoCadastroCorrigido === 'Usuário') && situacao && situacao !== 'Todos') {
         query += ` AND ${colunas.situacao} = ?`;
         params.push(situacao === 'Ativo' ? 'A' : 'I'); // 'A' para Ativo, 'I' para Inativo
     }
@@ -112,12 +116,14 @@ function buscarCadastros(req, res) {
                 resultado.capacidade_total = item[colunas.capacidade_total] || '-';
                 resultado.capacidade_atual = item[colunas.capacidade_atual] || '-';
                 resultado.situacao = item[colunas.situacao] === 'A' ? 'Ativo' : 'Inativo';
-            } else {
+            } else if (tipoCadastroCorrigido === 'Usuário') {
+                resultado.situacao = item[colunas.situacao] === 'A' ? 'Ativo' : 'Inativo'; 
+            }
                 resultado.email = colunas.email ? item[colunas.email] || null : null;
                 resultado.telefone = colunas.telefone ? item[colunas.telefone] || null : null;
                 resultado.cpf = colunas.cpf ? item[colunas.cpf] || null : null;
                 resultado.cnpj = colunas.cnpj ? item[colunas.cnpj] || null : null;
-            }
+            
 
             return resultado;
         });
