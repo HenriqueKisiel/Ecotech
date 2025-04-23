@@ -20,8 +20,6 @@ function exibirCadastrarRotas(req, res) {
     res.render('rotasCadastrar');
 };
 
-
-
 // Função cadastrar uma Rota
 function insertRota(req, res){
     const{
@@ -84,26 +82,51 @@ function insertRota(req, res){
     });
 }
 
-/**
- * //rota para buscar pessoas
-function buscarPessoa(req, res) {
-    const sql = 'SELECT cd_pessoa_fisica, nm_pessoa_fisica FROM pessoa_fisica';
-    conectiondb().query(sql, (erro, resultados) => {
-        if (erro) {
-            console.error('Erro ao buscar pessoas:', erro);
-            return res.status(500).send('Erro ao buscar pessoas.');
-        }
-        res.json(resultados); // Retorna os nomes como JSON
-    });
+// Função Buscar Rota
+function buscarRota(req, res) {
+  console.log("Função buscarRotas chamada");
+
+  const { nome_rota, dt_rota } = req.body;
+
+  let query = `
+    SELECT 
+      cd_rota,
+      nm_rota,
+      nr_distancia_km,
+      qt_peso_total_kg,
+      DATE_FORMAT(dt_agendada, '%d/%m/%Y') AS dt_agendada
+    FROM rota_coleta
+    WHERE 1=1
+  `;
+
+  const valores = [];
+
+  if (nome_rota) {
+    query += " AND nm_rota LIKE ?";
+    valores.push(`%${nome_rota}%`);
+  }
+
+  if (dt_rota) {
+    query += " AND DATE_FORMAT(dt_agendada, '%Y-%m-%d') = ?";
+    valores.push(dt_rota);
+  }
+
+  conectiondb().query(query, valores, function (err, results) {
+    if (err) {
+      console.error("Erro ao buscar rotas:", err);
+      return res.status(500).send("Erro ao buscar rotas");
+    }
+
+    res.render('rotas', { rotas: results });
+  });
 }
- */
 
 
-//exportando a função 
 module.exports = {
     exibirRotas,
     exibirAtualizarRotas,
     exibirCadastrarRotas,
+    buscarRota,
     insertRota
 }
 
