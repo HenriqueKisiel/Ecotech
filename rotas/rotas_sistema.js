@@ -243,14 +243,25 @@ router.post('/agendamentoAdd', (req, res) => {
     servico19.registrarAgendamento(req, res);
 });
 //----------------------- Servico20 -------------------//
-// Rota GET para exibir o formulário de edição do agendamento
-router.get('/agendamentoEditar', (req, res) => {
-    servico20.exibirEditarAgendamento(req, res);
-});
-// Rota POST para atualizar o agendamento
-router.post('/agendamentoEditar', (req, res) => {
-    servico20.atualizarAgendamento(req, res);
-});
+// Rota GET principal que exibe a tela de edição do agendamento.
+// Esta tela inclui os dados do agendamento e a lista de itens associados.
+router.get('/agendamentoEditar', servico20.exibirEditarAgendamento);
+
+// Rota POST para adicionar um novo item ao agendamento.
+// Recebe os dados do formulário de novo item e insere no banco.
+router.post('/agendamentoEditar/:id_agendamento/adicionarItem', servico20.adicionarItem);
+
+// Rota GET para carregar os dados de um item específico na tela de edição.
+// Usada para preencher o formulário de item com os dados do item que será editado.
+router.get('/agendamentoEditar/:id_agendamento/itens/:itemId/editar', servico20.exibirEditarItem);
+
+// Rota POST que recebe os dados atualizados de um item e salva no banco.
+// Após salvar, redireciona de volta para a mesma tela de edição.
+router.post('/agendamentoEditar/:id_agendamento/itens/:itemId/editar', servico20.atualizarItem);
+
+// Rota GET para excluir um item do agendamento.
+// Após exclusão, redireciona para a mesma tela de edição com a lista atualizada.
+router.get('/agendamentoEditar/:id_agendamento/itens/:itemId/excluir', servico20.excluirItem);
 
 // ----------------------- Servico21 -------------------//
 //página para editar rota

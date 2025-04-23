@@ -229,8 +229,10 @@
                 <!--End MenuBar-->
                 <!--Start conteudo indiviudual da pagina-->
                 <div class="container">
-                    <form action="/agendamentoEditar" method="POST">
-                        <div class="page-inner">
+                    <div class="page-inner">
+                        <!-- Formulário de Edição -->
+                        <form action="/agendamentoEditar" method="POST">
+
                             <div
                                 class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
                                 <div class="mb-3 d-flex flex-column">
@@ -246,35 +248,31 @@
                             <div class="card shadow-lg mb-5">
                                 <div class="card-body">
                                     <div class="row">
-                                        <!-- Campo Hidden para o ID -->
                                         <input type="hidden" name="id_agendamento"
                                             value="{{agendamento.cd_agendamento}}">
 
-                                        <!-- Pessoa Física -->
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Nome Pessoa Física</label>
                                                 <input type="text" class="form-control" name="nome_pessoa_fisica"
                                                     placeholder="Nome Pessoa Física"
-                                                    value="{{agendamento.nm_pessoa_fisica}}" >
+                                                    value="{{agendamento.nm_pessoa_fisica}}">
                                                 <input type="hidden" name="cd_pessoa_fisica"
                                                     value="{{agendamento.cd_pessoa_fisica}}">
                                             </div>
                                         </div>
 
-                                        <!-- Pessoa Jurídica -->
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Nome Fantasia (Pessoa Jurídica)</label>
                                                 <input type="text" class="form-control" name="nome_fantasia"
                                                     placeholder="Nome Fantasia"
-                                                    value="{{agendamento.nm_pessoa_juridica_fantasia}}" >
+                                                    value="{{agendamento.nm_pessoa_juridica_fantasia}}">
                                                 <input type="hidden" name="cd_pessoa_juridica"
                                                     value="{{agendamento.cd_pessoa_juridica}}">
                                             </div>
                                         </div>
 
-                                        <!-- Endereço -->
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Endereço</label>
@@ -284,7 +282,6 @@
                                             </div>
                                         </div>
 
-                                        <!-- Cidade -->
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Cidade</label>
@@ -294,7 +291,6 @@
                                             </div>
                                         </div>
 
-                                        <!-- Bairro -->
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Bairro</label>
@@ -304,17 +300,14 @@
                                             </div>
                                         </div>
 
-                                        <!-- Data Solicitada -->
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Última Atualização</label>
-                                                <input type="text" name="Dt_solicitada"
-                                                    value="{{agendamento.dt_solicitada}}" class="form-control"
-                                                    placeholder="25/12/2025" readonly>
+                                                <input type="text" name="dt_solicitada"
+                                                    value="{{agendamento.dt_solicitada}}" class="form-control" readonly>
                                             </div>
                                         </div>
 
-                                        <!-- Peso Previsto (KG) -->
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Peso previsto (KG)</label>
@@ -330,121 +323,126 @@
                                 </div>
                             </div>
 
-                            <!-- Formulário para Inserir Itens -->
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="card shadow-lg mb-5">
-                                        <div class="card-header">
-                                            <div class="card-title">Adicionar Item</div>
-                                        </div>
-                                        <div class="card-body">
-                                            <form
-                                                action="/agendamentoEditar/{{agendamento.cd_agendamento}}/adicionarItem"
-                                                method="POST">
-                                                <div class="row">
-                                                    <!-- Nome do Material -->
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="fw-bold">Nome do material</label>
-                                                            <input type="text" class="form-control" name="item_nome"
-                                                                placeholder="Informe o nome do material">
-                                                        </div>
-                                                    </div>
+                        </form>
 
-                                                    <!-- Tipo do Material -->
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="fw-bold">Tipo do material</label>
-                                                            <input type="text" class="form-control" name="item_tipo"
-                                                                placeholder="Informe o tipo do material">
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Peso do Material -->
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="fw-bold">Peso do material (KG)</label>
-                                                            <input type="number" class="form-control" name="item_peso"
-                                                                placeholder="Informe o peso do material">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex justify-content-end flex-wrap">
-                                                    <button type="submit" class="btn btn-success shadow-lg">Adicionar
-                                                        Item</button>
-                                                </div>
-                                            </form>
+                        <!-- Formulário para Inserir/Editar Itens -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card shadow-lg mb-5">
+                                    <div class="card-header">
+                                        <div class="card-title">
+                                            {{#if editandoItem}}Editar Item{{else}}Adicionar Item{{/if}}
                                         </div>
                                     </div>
-                                </div>
+                                    <div class="card-body">
+                                        <form
+                                            action="{{#if editandoItem}}/agendamentoEditar/{{agendamento.cd_agendamento}}/itens/{{item.cd_mat_agenda}}/editar{{else}}/agendamentoEditar/{{agendamento.cd_agendamento}}/adicionarItem{{/if}}"
+                                            method="POST">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Nome do material</label>
+                                                        <input type="text" class="form-control" name="item_nome"
+                                                            placeholder="Informe o nome do material"
+                                                            value="{{item.ds_mat_agenda}}">
+                                                    </div>
+                                                </div>
 
-                                <!-- Lista de Itens -->
-                                <div class="col-md-6">
-                                    <div class="card shadow-lg mb-5">
-                                        <div class="card-header">
-                                            <div class="card-title">Lista de Itens</div>
-                                        </div>
-                                        <div class="card-body p-0">
-                                            <table class="table table-head-bg-success mt-4">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">Material</th>
-                                                        <th scope="col">Tipo</th>
-                                                        <th scope="col">Peso</th>
-                                                        <th scope="col">Ações</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {{#each agendamento.itens}} <!-- Loop pelos itens -->
-                                                    <tr>
-                                                        <td>{{nome}}</td> <!-- Nome do material -->
-                                                        <td>{{tipo}}</td> <!-- Tipo do material -->
-                                                        <td>{{peso}}</td> <!-- Peso do material -->
-                                                        <td>
-                                                            <!-- Botão para Excluir -->
-                                                            <a href="/agendamentoEditar/{{agendamento.cd_agendamento}}/itens/{{this.id}}/excluir"
-                                                                class="btn btn-danger btn-sm"
-                                                                onclick="return confirm('Tem certeza que deseja excluir este item?');">
-                                                                <i class="fa fa-trash"></i> Excluir
-                                                            </a>
-                                                            <!-- Botão para Editar -->
-                                                            <a href="/agendamentoEditar/{{agendamento.cd_agendamento}}/itens/{{this.id}}/editar"
-                                                                class="btn btn-warning btn-sm">
-                                                                <i class="fa fa-edit"></i> Editar
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                    {{/each}}
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Linha do material</label>
+                                                        <input type="text" class="form-control" name="linha_material"
+                                                            placeholder="Informe a linha do material"
+                                                            value="{{item.ie_linha}}">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Peso do material (KG)</label>
+                                                        <input type="number" step="0.01" class="form-control"
+                                                            name="item_peso" placeholder="Informe o peso do material"
+                                                            value="{{item.qt_peso_material_total_kg}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="d-flex justify-content-end flex-wrap gap-2">
+                                                {{#if editandoItem}}
+                                                <a href="/agendamentoEditar/{{agendamento.cd_agendamento}}"
+                                                    class="btn btn-secondary shadow-lg">Cancelar</a>
+                                                {{/if}}
+                                                <button type="submit" class="btn btn-success shadow-lg">
+                                                    {{#if editandoItem}}Atualizar Item{{else}}Adicionar Item{{/if}}
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Lista de Itens -->
+                            <div class="col-md-6">
+                                <div class="card shadow-lg mb-5">
+                                    <div class="card-header">
+                                        <div class="card-title">Lista de Itens</div>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <table class="table table-striped table-bordered table-hover mt-4">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Material</th>
+                                                    <th scope="col">Linha</th>
+                                                    <th scope="col">Peso</th>
+                                                    <th scope="col">Ações</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {{#each itens}}
+                                                <tr>
+                                                    <td>{{ds_mat_agenda}}</td>
+                                                    <td>{{ie_linha}}</td>
+                                                    <td>{{qt_peso_material_total_kg}}</td>
+                                                    <td>
+                                                        <a href="/agendamentoEditar/{{../agendamento.cd_agendamento}}/itens/{{cd_mat_agenda}}/excluir"
+                                                            class="btn btn-danger btn-sm"
+                                                            onclick="return confirm('Tem certeza que deseja excluir este item?');">
+                                                            <i class="fa fa-trash"></i> Excluir
+                                                        </a>
+                                                        <a href="/agendamentoEditar/{{../agendamento.cd_agendamento}}/itens/{{cd_mat_agenda}}/editar"
+                                                            class="btn btn-warning btn-sm">
+                                                            <i class="fa fa-edit"></i> Editar
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                {{/each}}
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
+
+                    <!--End conteudo indiviudual da pagina-->
                 </div>
-
-
-                <!--End conteudo indiviudual da pagina-->
-            </div>z
-        </div>
-        <!--start modal-->
-        <div class="modal fade" id="excluir" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered p-5">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="d-flex justify-content-center text-center flex-column">
-                            <i class="fa fa-exclamation-triangle text-danger fs-2"></i>
-                            <span class="fw-bold fs-4">Tem certeza que deseja excluir o cadastro?</span>
-                        </div>
-                        <div class="modal-footer d-flex justify-content-center">
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-primary">Confirmar</button>
+            </div>
+            <!--start modal-->
+            <div class="modal fade" id="excluir" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered p-5">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="d-flex justify-content-center text-center flex-column">
+                                <i class="fa fa-exclamation-triangle text-danger fs-2"></i>
+                                <span class="fw-bold fs-4">Tem certeza que deseja excluir o cadastro?</span>
+                            </div>
+                            <div class="modal-footer d-flex justify-content-center">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-primary">Confirmar</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!--end modal-->
+            <!--end modal-->
     </body>
