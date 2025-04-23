@@ -1,4 +1,4 @@
-<main>
+    <main>
 
     <body>
         <div class="wrapper">
@@ -355,7 +355,7 @@
                                                 <th>Telefone</th>
                                                 {{/if}}
                                                 <th>Código</th>
-                                                {{#if (eq tipoCadastro "Planta de Reciclagem")}}
+                                                {{#if (or (eq tipoCadastro "Planta de Reciclagem") (eq tipoCadastro "Usuário"))}}
                                                 <th>Situação</th>
                                                 {{/if}}
                                                 <th>Ações</th>
@@ -383,7 +383,7 @@
 
                                                 <td>{{codigo}}</td>
 
-                                                {{#if (eq ../tipoCadastro "Planta de Reciclagem")}}
+                                                {{#if (or (eq ../tipoCadastro "Planta de Reciclagem") (eq ../tipoCadastro "Usuário"))}}
                                                 <td>{{#if situacao}}{{situacao}}{{else}}-{{/if}}</td>
                                                 {{/if}}
 
@@ -401,8 +401,7 @@
                                             {{/each}}
                                             {{else}}
                                             <tr>
-                                                <td colspan="7" class="text-center text-muted">Nenhum cadastro
-                                                    encontrado</td>
+                                                <td colspan="7" class="text-center text-muted">Nenhum cadastro encontrado</td>
                                             </tr>
                                             {{/if}}
                                         </tbody>
@@ -435,9 +434,11 @@
                                     cnpjField.style.display = 'none';
 
                                     // Mostrar o campo 'Situação' se for 'Planta de Reciclagem'
-                                    if (selected === 'Planta de Reciclagem') {
+                                    if (selected === 'Planta de Reciclagem'|| selected === 'Usuário') {
                                         situacaoField.style.display = 'block'; // Mostra Situação para Planta de Reciclagem
-                                        cnpjField.style.display = 'block'; // Mostra CNPJ para Planta de Reciclagem
+                                        if (selected === 'Planta de Reciclagem') {
+                                            cnpjField.style.display = 'block'; // Mostra CNPJ para Planta de Reciclagem
+                                        }
                                     }
                                     // Caso contrário, mostra o campo 'Telefone' e os campos de CPF ou CNPJ conforme o tipo de cadastro
                                     else {
