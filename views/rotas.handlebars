@@ -229,7 +229,7 @@
                 <!--End MenuBar-->
                 <!--Start conteudo indiviudual da pagina-->
                <div class="container">
-                    <form action="/agendamento" method="POST">
+                    <form action="/rotas" method="POST">
                         <div class="page-inner">
                             <div
                                 class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
@@ -243,36 +243,20 @@
                                         Rota</a>
                                 </div>
                             </div>
-
+                            
                             <div class="card shadow-lg mb-5">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Nome</label>
-                                                <input type="text" class="form-control" placeholder="informe o nome">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Cidade</label><br>
-                                                <select class="form-select form-control" name="cidade">
-                                                    <option value="1">Curitiba</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Bairro</label><br>
-                                                <select class="form-select form-control" name="bairro">
-                                                    <option value="1">Xaxim</option>
-                                                </select>
+                                                <input type="text" name="nome_rota" class="form-control" placeholder="informe o nome">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Data Rota</label>
-                                                <input type="date" class="form-control">
+                                                <input type="date" name="dt_rota" class="form-control">
                                             </div>
                                         </div>
                                     </div>

@@ -171,6 +171,10 @@ router.post('/RotaCadastro', (req, res) => {
     servico11.insertRota(req, res);
 });
 
+router.post('/rotas', (req, res) => {
+    servico11.buscarRota(req, res);
+});
+
 //----------------------- Servico12 -------------------//
 // Rota para a página de relatorios
 router.get('/relatorios', (req, res) => {
