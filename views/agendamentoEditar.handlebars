@@ -8,7 +8,7 @@
                     <!-- Logo Header -->
                     <div class="logo-header" data-background-color="dark">
                         <a href="/home" class="logo">
-                            <img src="assets/Eco.png" alt="navbar brand" class="navbar-brand" height="30" />
+                            <img src="/assets/Eco.png" alt="navbar brand" class="navbar-brand" height="30" />
                         </a>
                         <div class="nav-toggle">
                             <button class="btn btn-toggle toggle-sidebar">
@@ -67,16 +67,6 @@
                                                 <span class="sub-item">Nova Planta</span>
                                             </a>
                                         </li>
-                                        <li>
-                                            <a href="/material">
-                                                <span class="sub-item">Novo Material</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/estoqueNovo">
-                                                <span class="sub-item">Novo Estoque</span>
-                                            </a>
-                                        </li>
                                     </ul>
                                 </div>
                             </li>
@@ -90,17 +80,22 @@
                                     <ul class="nav nav-collapse">
                                         <li>
                                             <a href="/estoqueBuscar">
-                                                <span class="sub-item">Buscar Material</span>
+                                                <span class="sub-item">Buscar</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/estoqueEntrada">
-                                                <span class="sub-item">Entrada de Material</span>
+                                            <a href="/estoqueNovo">
+                                                <span class="sub-item">Novo Estoque</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/material">
+                                                <span class="sub-item">Novo Material</span>
                                             </a>
                                         </li>
                                         <li>
                                             <a href="/estoqueSaida">
-                                                <span class="sub-item">Saída de Material</span>
+                                                <span class="sub-item">Movimentações</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -256,7 +251,7 @@
                                                 <label class="fw-bold">Nome Pessoa Física</label>
                                                 <input type="text" class="form-control" name="nome_pessoa_fisica"
                                                     placeholder="Nome Pessoa Física"
-                                                    value="{{agendamento.nm_pessoa_fisica}}" >
+                                                    value="{{agendamento.nm_pessoa_fisica}}">
                                                 <input type="hidden" name="cd_pessoa_fisica"
                                                     value="{{agendamento.cd_pessoa_fisica}}">
                                             </div>
@@ -268,7 +263,7 @@
                                                 <label class="fw-bold">Nome Fantasia (Pessoa Jurídica)</label>
                                                 <input type="text" class="form-control" name="nome_fantasia"
                                                     placeholder="Nome Fantasia"
-                                                    value="{{agendamento.nm_pessoa_juridica_fantasia}}" >
+                                                    value="{{agendamento.nm_pessoa_juridica_fantasia}}">
                                                 <input type="hidden" name="cd_pessoa_juridica"
                                                     value="{{agendamento.cd_pessoa_juridica}}">
                                             </div>

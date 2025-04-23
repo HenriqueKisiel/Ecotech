@@ -8,7 +8,7 @@
                     <!-- Logo Header -->
                     <div class="logo-header" data-background-color="dark">
                         <a href="/home" class="logo">
-                            <img src="assets/Eco.png" alt="navbar brand" class="navbar-brand" height="30" />
+                            <img src="/assets/Eco.png" alt="navbar brand" class="navbar-brand" height="30" />
                         </a>
                         <div class="nav-toggle">
                             <button class="btn btn-toggle toggle-sidebar">
@@ -39,7 +39,7 @@
                                 </span>
                                 <h4 class="text-section">Funções Do Sistema</h4>
                             </li>
-                            <li class="nav-item active">
+                            <li class="nav-item">
                                 <a data-bs-toggle="collapse" href="#cadastro">
                                     <i class="fas fa-user"></i>
                                     <p>Cadastros</p>
@@ -67,20 +67,10 @@
                                                 <span class="sub-item">Nova Planta</span>
                                             </a>
                                         </li>
-                                        <li>
-                                            <a href="/material">
-                                                <span class="sub-item">Novo Material</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/estoqueNovo">
-                                                <span class="sub-item">Novo Estoque</span>
-                                            </a>
-                                        </li>
                                     </ul>
                                 </div>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item active">
                                 <a data-bs-toggle="collapse" href="#estoque">
                                     <i class="fas fa-th-list"></i>
                                     <p>Estoque</p>
@@ -90,17 +80,22 @@
                                     <ul class="nav nav-collapse">
                                         <li>
                                             <a href="/estoqueBuscar">
-                                                <span class="sub-item">Buscar Material</span>
+                                                <span class="sub-item">Buscar</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/estoqueEntrada">
-                                                <span class="sub-item">Entrada de Material</span>
+                                            <a href="/estoqueNovo">
+                                                <span class="sub-item">Novo Estoque</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/material">
+                                                <span class="sub-item">Novo Material</span>
                                             </a>
                                         </li>
                                         <li>
                                             <a href="/estoqueSaida">
-                                                <span class="sub-item">Saída de Material</span>
+                                                <span class="sub-item">Movimentações</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -259,13 +254,6 @@
                                                             name="valor_kg" placeholder="R$" required>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="fw-bold">Peso (Kg)</label>
-                                                        <input type="number" step="0.01" class="form-control"
-                                                            name="peso" placeholder="Kg" required>
-                                                    </div>
-                                                </div>
                                             </div>
                                             <div class="d-flex justify-content-end mt-3">
                                                 <a href="/home" class="btn btn-secondary me-3">
@@ -307,9 +295,9 @@
                                             </div>
                                             <div class="col-7 col-md-8">
                                                 <div class="tab-content" id="v-pills-with-icon-tabContent">
-                                                    <div class="tab-pane fade show active" id="v-pills-home-icons"
-                                                        role="tabpanel">
-                                                        <div class="d-flex flex-column p-4">
+                                                    <div class="tab-pane fade show active bg-primary rounded opacity-75"
+                                                        id="v-pills-home-icons" role="tabpanel">
+                                                        <div class="d-flex flex-column p-4 text-white">
                                                             <span class="fs-4">- Batedeiras</span>
                                                             <span class="fs-4">- Centrífugas</span>
                                                             <span class="fs-4">- Torradeiras</span>
@@ -322,9 +310,9 @@
                                                             <span class="fs-4">- Entre Outros</span>
                                                         </div>
                                                     </div>
-                                                    <div class="tab-pane fade" id="v-pills-profile-icons"
-                                                        role="tabpanel">
-                                                        <div class="d-flex flex-column p-4">
+                                                    <div class="tab-pane fade bg-success rounded opacity-75"
+                                                        id="v-pills-profile-icons" role="tabpanel">
+                                                        <div class="d-flex flex-column p-4 text-white">
                                                             <span class="fs-4">- Computadores desktops</span>
                                                             <span class="fs-4">- Notebooks</span>
                                                             <span class="fs-4">- Fax</span>
@@ -336,9 +324,9 @@
                                                             <span class="fs-4">- Entre Outros</span>
                                                         </div>
                                                     </div>
-                                                    <div class="tab-pane fade" id="v-pills-profile-icons2"
-                                                        role="tabpanel">
-                                                        <div class="d-flex flex-column p-4">
+                                                    <div class="tab-pane fade bg-warning rounded opacity-75"
+                                                        id="v-pills-profile-icons2" role="tabpanel">
+                                                        <div class="d-flex flex-column p-4 text-white">
                                                             <span class="fs-4">- Componentes de Áudio</span>
                                                             <span class="fs-4">- Aparelhos de Som</span>
                                                             <span class="fs-4">- Projetores</span>
@@ -347,9 +335,9 @@
                                                             <span class="fs-4">- Entre Outros</span>
                                                         </div>
                                                     </div>
-                                                    <div class="tab-pane fade" id="v-pills-profile-icons3"
-                                                        role="tabpanel">
-                                                        <div class="d-flex flex-column p-4">
+                                                    <div class="tab-pane fade bg-danger rounded opacity-75"
+                                                        id="v-pills-profile-icons3" role="tabpanel">
+                                                        <div class="d-flex flex-column p-4 text-white">
                                                             <span class="fs-4">- Geladeira</span>
                                                             <span class="fs-4">- Freezer</span>
                                                             <span class="fs-4">- Máquina de Lavar</span>

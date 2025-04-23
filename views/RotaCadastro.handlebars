@@ -8,7 +8,7 @@
                     <!-- Logo Header -->
                     <div class="logo-header" data-background-color="dark">
                         <a href="/home" class="logo">
-                            <img src="assets/Eco.png" alt="navbar brand" class="navbar-brand" height="30" />
+                            <img src="/assets/Eco.png" alt="navbar brand" class="navbar-brand" height="30" />
                         </a>
                         <div class="nav-toggle">
                             <button class="btn btn-toggle toggle-sidebar">
@@ -67,16 +67,6 @@
                                                 <span class="sub-item">Nova Planta</span>
                                             </a>
                                         </li>
-                                        <li>
-                                            <a href="/material">
-                                                <span class="sub-item">Novo Material</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/estoqueNovo">
-                                                <span class="sub-item">Novo Estoque</span>
-                                            </a>
-                                        </li>
                                     </ul>
                                 </div>
                             </li>
@@ -90,17 +80,22 @@
                                     <ul class="nav nav-collapse">
                                         <li>
                                             <a href="/estoqueBuscar">
-                                                <span class="sub-item">Buscar Material</span>
+                                                <span class="sub-item">Buscar</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/estoqueEntrada">
-                                                <span class="sub-item">Entrada de Material</span>
+                                            <a href="/estoqueNovo">
+                                                <span class="sub-item">Novo Estoque</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/material">
+                                                <span class="sub-item">Novo Material</span>
                                             </a>
                                         </li>
                                         <li>
                                             <a href="/estoqueSaida">
-                                                <span class="sub-item">Saída de Material</span>
+                                                <span class="sub-item">Movimentações</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -251,40 +246,43 @@
                             </div>
                             <div class="card-body">
                                 <form id="formRotaCadastro" action="/RotaCadastro" method="POST">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Nome da Rota</label>
-                                            <input type="text" name="nomeRota" class="form-control" placeholder="Insira o nome ">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Nome da Rota</label>
+                                                <input type="text" name="nomeRota" class="form-control"
+                                                    placeholder="Insira o nome ">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Data Agendada</label>
+                                                <input type="date" name="dataAgendaRota" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Peso total (Kg)</label>
+                                                <input type="text" name="pesoTotalRota" class="form-control"
+                                                    placeholder="Kg">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">KM Total (KM)</label>
+                                                <input type="text" name="quilometroTotalRota" class="form-control"
+                                                    placeholder="Km">
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Data Agendada</label>
-                                            <input type="date" name="dataAgendaRota" class="form-control">
-                                        </div>
+                                    <div class="d-flex justify-content-end mt-3">
+                                        <button type="submit" class="btn btn-success fw-bold shadow-lg fs-5">
+                                            Salvar
+                                        </button>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Peso total (Kg)</label>
-                                            <input type="text" name="pesoTotalRota" class="form-control" placeholder="Kg">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">KM Total (KM)</label>
-                                            <input type="text" name="quilometroTotalRota" class="form-control" placeholder="Km">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-end mt-3">
-                                    <button type="submit" class="btn btn-success fw-bold shadow-lg fs-5">
-                                        Salvar
-                                    </button>
-                                </div>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
                 <!--end conteudo indiviudual da pagina-->

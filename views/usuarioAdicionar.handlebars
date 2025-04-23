@@ -8,7 +8,7 @@
                     <!-- Logo Header -->
                     <div class="logo-header" data-background-color="dark">
                         <a href="/home" class="logo">
-                            <img src="assets/Eco.png" alt="navbar brand" class="navbar-brand" height="30" />
+                            <img src="/assets/Eco.png" alt="navbar brand" class="navbar-brand" height="30" />
                         </a>
                         <div class="nav-toggle">
                             <button class="btn btn-toggle toggle-sidebar">
@@ -67,16 +67,6 @@
                                                 <span class="sub-item">Nova Planta</span>
                                             </a>
                                         </li>
-                                        <li>
-                                            <a href="/material">
-                                                <span class="sub-item">Novo Material</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/estoqueNovo">
-                                                <span class="sub-item">Novo Estoque</span>
-                                            </a>
-                                        </li>
                                     </ul>
                                 </div>
                             </li>
@@ -90,17 +80,22 @@
                                     <ul class="nav nav-collapse">
                                         <li>
                                             <a href="/estoqueBuscar">
-                                                <span class="sub-item">Buscar Material</span>
+                                                <span class="sub-item">Buscar</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/estoqueEntrada">
-                                                <span class="sub-item">Entrada de Material</span>
+                                            <a href="/estoqueNovo">
+                                                <span class="sub-item">Novo Estoque</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/material">
+                                                <span class="sub-item">Novo Material</span>
                                             </a>
                                         </li>
                                         <li>
                                             <a href="/estoqueSaida">
-                                                <span class="sub-item">Saída de Material</span>
+                                                <span class="sub-item">Movimentações</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -262,43 +257,45 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Email</label>
-                                                <input type="text" id="email" name="email" class="form-control" placeholder="Novo email" readonly>
+                                                <input type="text" id="email" name="email" class="form-control"
+                                                    placeholder="Novo email" readonly>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Telefone</label>
-                                                <input type="text" id="telefone" name="telefone" class="form-control" placeholder="(41) xxxxx-xxxx" readonly>
+                                                <input type="text" id="telefone" name="telefone" class="form-control"
+                                                    placeholder="(41) xxxxx-xxxx" readonly>
                                             </div>
-                                        </div> 
+                                        </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold"> Usuário</label>
-                                                <input type="text" name="usuario" value="{{usuario.nm_usuario}}" class="form-control"
-                                                    placeholder="Usuario " required>
+                                                <input type="text" name="usuario" value="{{usuario.nm_usuario}}"
+                                                    class="form-control" placeholder="Usuario " required>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Senha</label>
-                                                <input type="text" name="senha" value="{{usuario.ds_senha}}" class="form-control"
-                                                    placeholder="Nova senha"required>
+                                                <input type="text" name="senha" value="{{usuario.ds_senha}}"
+                                                    class="form-control" placeholder="Nova senha" required>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Situacao</label>
                                                 <div class="form-check">
-                                                    <input 
-                                                        type="checkbox" class="form-check-input"  id="ie_situacao" name="ie_situacao" value="A" 
-                                                        {{#if (eq usuario.ie_situacao "A")}}checked{{/if}}>
+                                                    <input type="checkbox" class="form-check-input" id="ie_situacao"
+                                                        name="ie_situacao" value="A" {{#if (eq usuario.ie_situacao "A"
+                                                        )}}checked{{/if}}>
                                                     <label class="form-check-label" for="ie_situacao">Ativo</label>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                                <input type="hidden" name="codigo" value="{{usuario.cd_usuario}}" class="form-control"
-                                                    placeholder="Insira o nome ">
+                                            <input type="hidden" name="codigo" value="{{usuario.cd_usuario}}"
+                                                class="form-control" placeholder="Insira o nome ">
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-end mt-3">
@@ -306,73 +303,71 @@
                                             Salvar
                                         </button>
                                     </div>
-                                    </div>
                                 </div>
                             </div>
-                        </form>
+                    </div>
+                    </form>
+                </div>
+            </div>
+            <!--end conteudo indiviudual da pagina-->
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const nomeSelect = document.getElementById('nome');
+                    const emailInput = document.getElementById('email');
+                    const telefoneInput = document.getElementById('telefone');
+
+                    // Buscar nomes da tabela pessoa_fisica
+                    fetch('/pessoas')
+                        .then(response => response.json())
+                        .then(pessoas => {
+                            pessoas.forEach(pessoa => {
+                                const option = document.createElement('option');
+                                option.value = pessoa.cd_pessoa_fisica;
+                                option.textContent = pessoa.nm_pessoa_fisica;
+                                nomeSelect.appendChild(option);
+                            });
+                        })
+                        .catch(error => console.error('Erro ao carregar nomes:', error));
+
+                    // Atualizar email e telefone ao selecionar um nome
+                    nomeSelect.addEventListener('change', function () {
+                        const cd_pessoa_fisica = this.value;
+
+                        if (cd_pessoa_fisica) {
+                            fetch(`/pessoa/${cd_pessoa_fisica}`)
+                                .then(response => response.json())
+                                .then(detalhes => {
+                                    emailInput.value = detalhes.ds_email || '';
+                                    telefoneInput.value = detalhes.nr_telefone_celular || '';
+                                })
+                                .catch(error => console.error('Erro ao carregar detalhes da pessoa:', error));
+                        } else {
+                            emailInput.value = '';
+                            telefoneInput.value = '';
+                        }
+                    });
+                });
+            </script>
+
+            <footer class="footer">
+                <div class="container-fluid d-flex justify-content-between">
+                    <nav class="pull-left">
+                        <ul class="nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">footer#1</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">footer#2</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div class="copyright">
+                        2025 - Autores: Equipe 7
                     </div>
                 </div>
-                <!--end conteudo indiviudual da pagina-->
-
-                <script>
-                    document.addEventListener('DOMContentLoaded', function () {
-                        const nomeSelect = document.getElementById('nome');
-                        const emailInput = document.getElementById('email');
-                        const telefoneInput = document.getElementById('telefone');
-
-                        // Buscar nomes da tabela pessoa_fisica
-                        fetch('/pessoas')
-                            .then(response => response.json())
-                            .then(pessoas => {
-                                pessoas.forEach(pessoa => {
-                                    const option = document.createElement('option');
-                                    option.value = pessoa.cd_pessoa_fisica;
-                                    option.textContent = pessoa.nm_pessoa_fisica;
-                                    nomeSelect.appendChild(option);
-                                });
-                            })
-                            .catch(error => console.error('Erro ao carregar nomes:', error));
-
-                        // Atualizar email e telefone ao selecionar um nome
-                        nomeSelect.addEventListener('change', function () {
-                            const cd_pessoa_fisica = this.value;
-
-                            if (cd_pessoa_fisica) {
-                                fetch(`/pessoa/${cd_pessoa_fisica}`)
-                                    .then(response => response.json())
-                                    .then(detalhes => {
-                                        emailInput.value = detalhes.ds_email || '';
-                                        telefoneInput.value = detalhes.nr_telefone_celular || '';
-                                    })
-                                    .catch(error => console.error('Erro ao carregar detalhes da pessoa:', error));
-                            } else {
-                                emailInput.value = '';
-                                telefoneInput.value = '';
-                            }
-                        });
-                    });
-                </script>
-
-                <footer class="footer">
-                    <div class="container-fluid d-flex justify-content-between">
-                        <nav class="pull-left">
-                            <ul class="nav">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">footer#1</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">footer#2</a>
-                                </li>
-                            </ul>
-                        </nav>
-                        <div class="copyright">
-                            2025 - Autores: Equipe 7
-                        </div>
-                    </div>
-                </footer>
-            </div>
+            </footer>
+        </div>
         </div>
     </body>
 </main>
-
-
