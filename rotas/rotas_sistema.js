@@ -128,6 +128,11 @@ router.post('/planta', (req, res) => {
     servico6.cadastrarPlanta(req, res);
 });
 
+// Rota para buscar bairros filtrando pela cidade selecionada
+router.get('/bairros/:cd_cidade', (req, res) => {
+    servico6.buscarBairrosPorCidade(req, res);
+});
+
 //---------------------- Servico7 -------------------//
 
 // Rota para a página de cadastrar rota

@@ -2,8 +2,38 @@ const db = require('../bd/conexao_mysql.js')();
 
 // Função para exibir a página de cadastro da planta
 function exibirPlanta(req, res) {
-    res.render('planta', {
-        title: 'Cadastro de Planta de Reciclagem'
+    const sql = 'SELECT cd_cidade, nm_cidade FROM cidade ORDER BY nm_cidade';
+
+    db.query(sql, function (err, resultados) {
+        if (err) {
+            console.error('Erro ao buscar cidades:', err);
+            return res.status(500).send('Erro ao carregar cidades.');
+        }
+
+        res.render('planta', {
+            title: 'Cadastro de Planta de Reciclagem',
+            cidades: resultados
+        });
+    });
+}
+
+// Função para buscar bairros de uma cidade específica
+function buscarBairrosPorCidade(req, res) {
+    const cd_cidade = req.params.cd_cidade;
+
+    if (!cd_cidade) {
+        return res.status(400).json({ error: 'ID da cidade não informado.' });
+    }
+
+    const sql = 'SELECT cd_bairro, nm_bairro FROM bairro WHERE cd_cidade = ? ORDER BY nm_bairro';
+
+    db.query(sql, [cd_cidade], function (err, resultados) {
+        if (err) {
+            console.error('Erro ao buscar bairros:', err);
+            return res.status(500).json({ error: 'Erro ao buscar bairros.' });
+        }
+
+        res.json(resultados);
     });
 }
 
@@ -19,12 +49,10 @@ function validarCampos(req, res) {
         nr_cep
     } = req.body;
 
-    // Verificar se todos os campos obrigatórios estão preenchidos
     if (!nm_planta || !qt_area_total_m2 || !ds_endereco || !cd_bairro || !cd_cidade || !nr_cep) {
         return res.status(400).send("Todos os campos obrigatórios devem ser preenchidos.");
     }
 
-    // Validar se as quantidades são números válidos e positivos
     if (isNaN(qt_area_total_m2) || qt_area_total_m2 <= 0) {
         return res.status(400).send("A área total deve ser um número positivo.");
     }
@@ -50,11 +78,12 @@ function cadastrarPlanta(req, res) {
         nr_cep
     } = req.body;
 
-    // Validação dos campos obrigatórios e dados
     if (validarCampos(req, res) !== true) return;
 
-    // Garantir que a situação será "A" se marcada, ou "I" caso contrário
     ie_situacao = ie_situacao === "A" ? "A" : "I";
+
+    // Verificar e registrar o valor de ie_situacao antes de inserir no banco
+    console.log("Valor de 'ie_situacao' antes da inserção no banco:", ie_situacao);
 
     const sql = `
         INSERT INTO planta (
@@ -136,8 +165,9 @@ function cadastrarPlanta(req, res) {
     });
 }
 
-// Exportando as funções para uso nas rotas
+// Exportando as funções
 module.exports = {
-    exibirPlanta: exibirPlanta,
-    cadastrarPlanta: cadastrarPlanta
+    exibirPlanta,
+    cadastrarPlanta,
+    buscarBairrosPorCidade
 };
