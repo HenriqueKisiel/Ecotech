@@ -316,6 +316,11 @@ router.post('/plantaEditar', (req, res) => {
     servico24.editarPlanta(req, res);
 });
 
+router.get('/planta/bairros/:cd_cidade', (req, res) => {
+    servico24.buscarBairrosPorCidade(req, res);
+});
+
+
 //==================== END ROTAS ====================
 
 module.exports = router;

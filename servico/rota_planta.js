@@ -165,7 +165,6 @@ function cadastrarPlanta(req, res) {
     });
 }
 
-// Exportando as funções
 module.exports = {
     exibirPlanta,
     cadastrarPlanta,
