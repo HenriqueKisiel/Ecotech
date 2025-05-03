@@ -268,7 +268,7 @@ router.post('/agendamentoEditar/:id_agendamento/itens/:itemId/editar', servico20
 router.get('/agendamentoEditar/:id_agendamento/itens/:itemId/excluir', servico20.excluirItem);
 
 // ----------------------- Servico21 -------------------//
-//página para editar rota
+// Página para editar rota
 router.get('/rotaEditar', (req, res) => {
     servico21.exibirrotaeditar(req, res);
 });
@@ -279,6 +279,11 @@ router.get('/rotaEditar/:cd_rota', (req, res) => {
 
 router.post('/rotaEditar', (req, res) => {
     servico21.editarRota(req, res);
+});
+
+// Buscar agendamentos (para preencher o select)
+router.get('/buscarAgendamentos', (req, res) => {
+    servico21.buscarAgendamento(req, res);
 });
 
 // ----------------------- Servico22 -------------------//

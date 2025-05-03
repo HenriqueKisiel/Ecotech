@@ -33,7 +33,7 @@ function editarRota(req, res){
     conectiondb().query(sqlrota, [nm_rota, dt_agendada, cd_rota], function (errorota) {
         if (errorota) {
             console.error('Erro ao atualizar Rota:', errorota);
-            return res.render('usuarioEditar', {
+            return res.render('rotaEditar', {
                 rota: {
                     cd_rota,
                     nm_rota,
@@ -80,10 +80,22 @@ function editarRota(req, res){
 });
 }
 
+// Função Select de Agendamentos
+function buscarAgendamento(req, res) {
+    const sql = 'SELECT cd_agendamento, nm_agendamento, ds_endereco, qt_quantidade_prevista_kg FROM agendamento';
+    conectiondb().query(sql, (erro, resultados) => {
+        if (erro) {
+            console.error('Erro ao buscar Agendamentos:', erro);
+            return res.status(500).send('Erro ao buscar Agendamentos.');
+        }
+        res.json(resultados);
+    });
+}
 
 
 
 module.exports = {
     exibirrotaeditar,
-    editarRota
+    editarRota,
+    buscarAgendamento
 }

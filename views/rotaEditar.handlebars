@@ -296,32 +296,38 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="fw-bold">Nome do Agendamento</label>
-                                                    <input type="text" class="form-control"
-                                                        placeholder="informe o nome">
+                                        <form id="formPontosAdicionar" method="POST" action="/rotasEditar">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Nome do Agendamento</label>
+                                                        <select id="agendamento" name="agendamento"
+                                                            class="form-control">
+                                                            <option value="">Selecione um agendamento</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Endereco</label>
+                                                        <input type="text" id="endereco" name="endereco"
+                                                            class="form-control" placeholder="Informe o endereço">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Peso do material (KG)</label>
+                                                        <input type="text" id="peso" name="peso" class="form-control"
+                                                            placeholder="___">
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="fw-bold">Endereco</label>
-                                                    <input type="text" class="form-control"
-                                                        placeholder="informe o endereço">
-                                                </div>
+                                            <div class="d-flex justify-content-end flex-wrap gap-2">
+                                                <button type="button" class="btn btn-primary shadow-lg">Buscar</button>
+                                                <button type="submit"
+                                                    class="btn btn-success shadow-lg">Adicionar</button>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="fw-bold">Peso do material (KG)</label>
-                                                    <input type="text" class="form-control" placeholder="___">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-end flex-wrap gap-2">
-                                            <button type="button" class="btn btn-primary shadow-lg">Buscar</button>
-                                            <button type="submit" class="btn btn-success shadow-lg">Adicionar</button>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -363,6 +369,33 @@
                     </div>
                 </div>
                 <!--End conteudo indiviudual da pagina-->
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        fetch('/buscarAgendamentos')
+                            .then(response => response.json())
+                            .then(agendamentos => {
+                                const selectAgendamento = document.getElementById('agendamento');
+
+                                agendamentos.forEach(agendamento => {
+                                    const option = document.createElement('option');
+                                    option.value = agendamento.cd_agendamento;
+                                    option.textContent = agendamento.nm_agendamento;  // Corrigido
+                                    option.dataset.endereco = agendamento.ds_endereco;
+                                    option.dataset.peso = agendamento.qt_quantidade_prevista_kg;
+                                    selectAgendamento.appendChild(option);
+                                });
+
+                                selectAgendamento.addEventListener('change', function () {
+                                    const selectedOption = this.options[this.selectedIndex];
+                                    document.getElementById('endereco').value = selectedOption.dataset.endereco || '';
+                                    document.getElementById('peso').value = selectedOption.dataset.peso || '';
+                                });
+                            })
+                            .catch(error => console.error('Erro ao carregar agendamentos:', error));
+                    });
+
+                </script>
+
             </div>
         </div>
         <!--start modal-->
