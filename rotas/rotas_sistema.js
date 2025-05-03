@@ -29,7 +29,8 @@ const servico21 = require('../servico/rota_rota_editar.js');
 const servico22 = require('../servico/rota_pessoaEditar.js');
 const servico23 = require('../servico/rota_juridicaEditar.js');
 const servico24 = require('../servico/rota_plantaEditar.js');
-
+const servico25 = require('../servico/rota_novoMaterial.js');
+const servico26 = require('../servico/rota_novoMaterial2.js');
 
 
 
@@ -320,6 +321,15 @@ router.get('/planta/bairros/:cd_cidade', (req, res) => {
     servico24.buscarBairrosPorCidade(req, res);
 });
 
+// ----------------------- Servico25 -------------------//
+router.get('/novoMaterial', (req, res) => {
+    servico25.exibirNovoMaterial(req, res);
+});
+
+// ----------------------- Servico26 -------------------//
+router.get('/novoMaterial2', (req, res) => {
+    servico26.exibirNovoMaterial2(req, res);
+});
 
 //==================== END ROTAS ====================
 
