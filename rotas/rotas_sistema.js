@@ -128,6 +128,11 @@ router.post('/planta', (req, res) => {
     servico6.cadastrarPlanta(req, res);
 });
 
+// Rota para buscar bairros filtrando pela cidade selecionada
+router.get('/bairros/:cd_cidade', (req, res) => {
+    servico6.buscarBairrosPorCidade(req, res);
+});
+
 //---------------------- Servico7 -------------------//
 
 // Rota para a página de cadastrar rota
@@ -310,6 +315,11 @@ router.get('/plantaEditar/:cd_planta', (req, res) => {
 router.post('/plantaEditar', (req, res) => {
     servico24.editarPlanta(req, res);
 });
+
+router.get('/planta/bairros/:cd_cidade', (req, res) => {
+    servico24.buscarBairrosPorCidade(req, res);
+});
+
 
 //==================== END ROTAS ====================
 

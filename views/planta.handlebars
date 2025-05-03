@@ -274,13 +274,10 @@
                                                     placeholder="Capacidade Atual (Kg)">
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <!--<div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="fw-bold">Situação</label>
-
-                                                <!-- Campo oculto para garantir envio de "I" se checkbox não for marcado -->
+                                                <label class="fw-bold">Situação</label>                                           
                                                 <input type="hidden" name="ie_situacao" value="I">
-
                                                 <div class="form-check">
                                                     <input type="checkbox" class="form-check-input" id="ie_situacao"
                                                         name="ie_situacao" value="A" {{#if (eq usuario.ie_situacao "A"
@@ -288,7 +285,7 @@
                                                     <label class="form-check-label" for="ie_situacao">Ativo</label>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <hr>
                                     <div class="row">
@@ -302,24 +299,27 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label class="fw-bold">CEP</label>
-                                                <input type="text" class="form-control" name="nr_cep"
-                                                    placeholder="Preencha o CEP" required pattern="^\d{8}$"
-                                                    maxlength="8">
-
+                                                <input type="text" class="form-control" name="nr_cep" id="nr_cep"
+                                                    placeholder="Preencha o CEP" required maxlength="9">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Cidade</label>
-                                                <input type="number" class="form-control" name="cd_cidade"
-                                                    placeholder="Informe o código da cidade" required min="1">
+                                                <select class="form-control" name="cd_cidade" id="cd_cidade" required>
+                                                    <option value="">Selecione a cidade</option>
+                                                    {{#each cidades}}
+                                                    <option value="{{cd_cidade}}">{{nm_cidade}}</option>
+                                                    {{/each}}
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Bairro</label>
-                                                <input type="number" class="form-control" name="cd_bairro"
-                                                    placeholder="Informe o código do bairro" required min="1">
+                                                <select class="form-control" name="cd_bairro" id="cd_bairro" required>
+                                                    <option value="">Selecione o bairro</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -339,6 +339,7 @@
                 <!--end conteudo indiviudual da pagina-->
                 <!-- Script para validação extra no frontend -->
                 <script>
+                    // Validação do formulário no submit
                     document.getElementById('formCadastroPlanta').addEventListener('submit', function (event) {
                         let formValid = true;
 
@@ -348,19 +349,67 @@
                             formValid = false;
                         }
 
-                        const cep = document.getElementsByName('nr_cep')[0].value;
-                        const cepPattern = /^\d{8}$/;
-                        if (!cep.match(cepPattern)) {
-                            alert('O CEP deve ter o formato 00000-000.');
+                        const cepInput = document.getElementById('nr_cep');
+                        const rawCep = cepInput.value.replace(/\D/g, ''); // remove qualquer não-numérico
+
+                        if (!/^\d{8}$/.test(rawCep)) {
+                            alert('O CEP deve conter 8 dígitos numéricos.');
                             formValid = false;
                         }
+
+                        // Atualiza o campo para enviar ao back-end sem hífen
+                        cepInput.value = rawCep;
 
                         if (!formValid) {
                             event.preventDefault();
                         }
                     });
-                </script>
 
+                    // Máscara de CEP visual (sem impactar valor real)
+                    document.getElementById('nr_cep').addEventListener('input', function (event) {
+                        let cep = event.target.value.replace(/\D/g, '');
+
+                        if (cep.length > 5) {
+                            cep = cep.slice(0, 5) + '-' + cep.slice(5, 8);
+                        }
+
+                        event.target.value = cep;
+                    });
+
+                    // Atualizar bairros automaticamente quando mudar a cidade
+                    document.getElementById('cd_cidade').addEventListener('change', function () {
+                        const cidadeId = this.value;
+                        const bairroSelect = document.getElementById('cd_bairro');
+
+                        bairroSelect.innerHTML = '<option value="">Selecione o bairro</option>';
+
+                        if (cidadeId) {
+                            fetch(`/bairros/${cidadeId}`)
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.length === 0) {
+                                        const option = document.createElement('option');
+                                        option.value = "";
+                                        option.textContent = "Nenhum bairro encontrado";
+                                        bairroSelect.appendChild(option);
+                                    } else {
+                                        data.forEach(bairro => {
+                                            const option = document.createElement('option');
+                                            option.value = bairro.cd_bairro;
+                                            option.textContent = bairro.nm_bairro;
+                                            bairroSelect.appendChild(option);
+                                        });
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Erro ao buscar bairros:', error);
+                                    alert('Erro ao carregar bairros.');
+                                });
+                        }
+                    });
+                </script>
+                <!-- End Script-->
+                
                 <footer class="footer">
                     <div class="container-fluid d-flex justify-content-between">
                         <nav class="pull-left">

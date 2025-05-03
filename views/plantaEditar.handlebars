@@ -220,7 +220,7 @@
                 <!-- End Navbar -->
             </div>
             <!--End MenuBar-->
-            <!--Start conteudo indiviudual da pagina-->
+            <!-- Start conteudo indiviudual da pagina -->
             <div class="container">
                 <div class="page-inner">
                     <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
@@ -301,65 +301,135 @@
                                         <div class="form-group">
                                             <label class="fw-bold">CEP</label>
                                             <input type="text" class="form-control" value="{{planta.nr_cep}}"
-                                                name="nr_cep" placeholder="Preencha o CEP" required pattern="^\d{8}$"
-                                                maxlength="8">
-
+                                                name="nr_cep" placeholder="Preencha o CEP" required maxlength="9">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Cidade</label>
-                                            <input type="number" class="form-control" value="{{planta.cd_cidade}}"
-                                                name="cd_cidade" placeholder="Informe o código da cidade" required
-                                                min="1">
+                                            <select name="cd_cidade" class="form-control" id="cd_cidade" required>
+                                                <option value="">Selecione uma cidade</option>
+                                                {{#each cidades}}
+                                                <option value="{{cd_cidade}}" {{#if (eq this.cd_cidade
+                                                    ../planta.cd_cidade)}}selected{{/if}}>
+                                                    {{nm_cidade}}
+                                                </option>
+                                                {{/each}}
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Bairro</label>
-                                            <input type="number" class="form-control" value="{{planta.cd_bairro}}"
-                                                name="cd_bairro" placeholder="Informe o código do bairro" required
-                                                min="1">
+                                            <select name="cd_bairro" class="form-control" id="cd_bairro" required>
+                                                <option value="">Selecione um bairro</option>
+                                                {{#each bairros}}
+                                                <option value="{{cd_bairro}}" {{#if (eq this.cd_bairro
+                                                    ../planta.cd_bairro)}}selected{{/if}}>
+                                                    {{nm_bairro}}
+                                                </option>
+                                                {{/each}}
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-end mt-3">
-                                    <a href="/cadastros" class="btn btn-secondary me-3">
-                                        Voltar
-                                    </a>
-                                    <button type="submit" class="btn btn-success">
-                                        Salvar
-                                    </button>
+                                    <a href="/cadastros" class="btn btn-secondary me-3">Voltar</a>
+                                    <button type="submit" class="btn btn-success">Salvar</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
-            <!--end conteudo indiviudual da pagina-->
-            <!-- Script para validação extra no frontend -->
+            <!-- End conteudo indiviudual da pagina -->
+            <!-- Scripts -->
             <script>
-                document.getElementById('formCadastroPlanta').addEventListener('submit', function (event) {
-                    let formValid = true;
+                const cdBairroSelecionado = {{ planta.cd_bairro }};
+                document.addEventListener('DOMContentLoaded', function () {
+                    const cidadeSelect = document.getElementById('cd_cidade');
+                    const bairroSelect = document.getElementById('cd_bairro');
+                    const cepInput = document.querySelector('input[name="nr_cep"]');
 
-                    const nomePlanta = document.getElementsByName('nm_planta')[0].value;
-                    if (nomePlanta.trim() === "") {
-                        alert('O nome da planta é obrigatório.');
-                        formValid = false;
+                    // Função para formatar o CEP (após o 5º dígito insere o traço)
+                    function formatarCEP(cep) {
+                        return cep.replace(/^(\d{5})(\d{3})$/, '$1-$2');
                     }
 
-                    const cep = document.getElementsByName('nr_cep')[0].value;
-                    const cepPattern = /^\d{8}$/;
-                    if (!cep.match(cepPattern)) {
-                        alert('O CEP deve ter o formato 00000-000.');
-                        formValid = false;
+                    // Aplicar a formatação no CEP ao carregar a página
+                    if (cepInput.value) {
+                        cepInput.value = formatarCEP(cepInput.value);
                     }
 
-                    if (!formValid) {
-                        event.preventDefault();
+                    // Adiciona o traço automaticamente durante a digitação
+                    cepInput.addEventListener('input', function (event) {
+                        let cep = cepInput.value.replace(/\D/g, '');  // Remove qualquer caractere não numérico
+
+                        // Limita o CEP a 8 caracteres (5 primeiros + 3 últimos)
+                        if (cep.length > 8) {
+                            cep = cep.slice(0, 8);
+                        }
+
+                        // Adiciona o traço após o 5º caractere
+                        if (cep.length > 5) {
+                            cep = cep.slice(0, 5) + '-' + cep.slice(5, 8);
+                        }
+
+                        // Atualiza o valor do input
+                        cepInput.value = cep;
+                    });
+
+                    function atualizarBairros() {
+                        const cdCidade = cidadeSelect.value;
+
+                        if (!cdCidade) {
+                            bairroSelect.innerHTML = '<option value="">Selecione uma cidade primeiro</option>';
+                            return;
+                        }
+
+                        fetch(`/planta/bairros/${cdCidade}`)
+                            .then(response => response.json())
+                            .then(bairros => {
+                                bairroSelect.innerHTML = '<option value="">Selecione um bairro</option>';
+
+                                bairros.forEach(bairro => {
+                                    const option = document.createElement('option');
+                                    option.value = bairro.cd_bairro;
+                                    option.textContent = bairro.nm_bairro;
+
+                                    if (bairro.cd_bairro == cdBairroSelecionado) {
+                                        option.selected = true;
+                                    }
+
+                                    bairroSelect.appendChild(option);
+                                });
+                            })
+                            .catch(error => {
+                                console.error('Erro ao carregar bairros:', error);
+                                bairroSelect.innerHTML = '<option value="">Erro ao carregar bairros</option>';
+                            });
                     }
+
+                    cidadeSelect.addEventListener('change', atualizarBairros);
+
+                    // Atualiza os bairros caso uma cidade já esteja selecionada ao carregar a página
+                    if (cidadeSelect.value) {
+                        atualizarBairros();
+                    }
+
+                    // Remover o traço do CEP antes de enviar, e garantir que o CEP tem 8 números
+                    document.getElementById('formCadastroPlanta').addEventListener('submit', function (event) {
+                        let cepValue = cepInput.value.replace('-', ''); // Remove o traço
+                        if (cepValue.length !== 8) {
+                            event.preventDefault();  // Impede o envio do formulário
+                            alert('O CEP precisa ter exatamente 8 números.');
+                            return false;
+                        }
+                        cepInput.value = cepValue; // Garantir que apenas os 8 números sejam enviados
+                    });
                 });
             </script>
+            <!-- End Scripts -->
 
             <footer class="footer">
                 <div class="container-fluid d-flex justify-content-between">
