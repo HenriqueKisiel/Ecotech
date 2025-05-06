@@ -80,7 +80,8 @@ function cadastrarPlanta(req, res) {
 
     if (validarCampos(req, res) !== true) return;
 
-    ie_situacao = ie_situacao === "A" ? "A" : "I";
+    ie_situacao = Array.isArray(ie_situacao) ? ie_situacao[ie_situacao.length - 1] : ie_situacao;
+ie_situacao = (typeof ie_situacao === "string" && ie_situacao.trim().toUpperCase() === "A") ? "A" : "I";
 
     // Verificar e registrar o valor de ie_situacao antes de inserir no banco
     console.log("Valor de 'ie_situacao' antes da inserção no banco:", ie_situacao);

@@ -274,18 +274,18 @@
                                                     placeholder="Capacidade Atual (Kg)">
                                             </div>
                                         </div>
-                                        <!--<div class="col-md-6">
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Situação</label>                                           
                                                 <input type="hidden" name="ie_situacao" value="I">
                                                 <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input" id="ie_situacao"
-                                                        name="ie_situacao" value="A" {{#if (eq usuario.ie_situacao "A"
-                                                        )}}checked{{/if}}>
-                                                    <label class="form-check-label" for="ie_situacao">Ativo</label>
-                                                </div>
+                                                    <div class="form-check">
+                                                        <input type="checkbox" class="form-check-input" id="ie_situacao_checkbox" value="A">
+                                                        <label class="form-check-label" for="ie_situacao_checkbox">Ativo</label>
+                                                    </div>
+                                                    <input type="hidden" id="hidden_ie_situacao" name="ie_situacao" value="I">
                                             </div>
-                                        </div> -->
+                                        </div>
                                     </div>
                                     <hr>
                                     <div class="row">
@@ -406,6 +406,19 @@
                                     alert('Erro ao carregar bairros.');
                                 });
                         }
+                    });
+
+                    // Atualizar o valor de 'ie_situacao' antes de enviar o formulário
+                    document.getElementById('formCadastroPlanta').addEventListener('submit', function () {
+                        const checkbox = document.getElementById('ie_situacao_checkbox');
+                        const hiddenInput = document.getElementById('hidden_ie_situacao');
+                        
+                        // Atualiza o valor do campo hidden com base no estado do checkbox
+                        hiddenInput.value = checkbox.checked ? 'A' : 'I';
+
+                        // Log para depuração
+                        console.log('Checkbox marcado:', checkbox.checked);
+                        console.log('Valor enviado de ie_situacao:', hiddenInput.value);
                     });
                 </script>
                 <!-- End Script-->
