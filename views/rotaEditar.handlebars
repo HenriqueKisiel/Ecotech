@@ -296,8 +296,15 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <form id="formPontosAdicionar" method="POST" action="/rotasEditar">
+                                        <form method="POST" action="/rotaEditar/{{rotas.cd_rota}}">
                                             <div class="row">
+                                                 <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Codigo Agendamento</label>
+                                                        <input type="text" id="codigo_agendamento" name="codigo_agendamento"
+                                                            class="form-control" readonly>
+                                                    </div>
+                                                </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="fw-bold">Nome do Agendamento</label>
@@ -323,7 +330,6 @@
                                                 </div>
                                             </div>
                                             <div class="d-flex justify-content-end flex-wrap gap-2">
-                                                <button type="button" class="btn btn-primary shadow-lg">Buscar</button>
                                                 <button type="submit"
                                                     class="btn btn-success shadow-lg">Adicionar</button>
                                             </div>
@@ -349,10 +355,11 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                {{#each pontos}}
                                                 <tr>
-                                                    <td>--</td>
-                                                    <td>--</td>
-                                                    <td>--</td>
+                                                    <td>{{nm_agendamento}}</td>
+                                                    <td>{{ds_endereco}}</td>
+                                                    <td>{{qt_quantidade_prevista_kg}}</td>
                                                     <td>
                                                         <a class="btn btn-icon btn-round btn-danger"
                                                             data-bs-toggle="modal" data-bs-target="#excluir">
@@ -360,6 +367,7 @@
                                                         </a>
                                                     </td>
                                                 </tr>
+                                                {{/each}}
                                             </tbody>
                                         </table>
                                     </div>
@@ -389,6 +397,7 @@
                                     const selectedOption = this.options[this.selectedIndex];
                                     document.getElementById('endereco').value = selectedOption.dataset.endereco || '';
                                     document.getElementById('peso').value = selectedOption.dataset.peso || '';
+                                    document.getElementById('codigo_agendamento').value = selectedOption.value;
                                 });
                             })
                             .catch(error => console.error('Erro ao carregar agendamentos:', error));

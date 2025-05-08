@@ -292,6 +292,11 @@ router.get('/buscarAgendamentos', (req, res) => {
     servico21.buscarAgendamento(req, res);
 });
 
+// Adicionar Agendamento em uma rota
+router.post('/rotaEditar/:cd_rota', (req, res) => {
+    servico21.adicionarAgendamentoNaRota(req, res);
+});
+
 // ----------------------- Servico22 -------------------//
 //página para editar pessoa
 router.get('/pessoaEditar/:cd_pessoa_fisica', (req, res) => {
