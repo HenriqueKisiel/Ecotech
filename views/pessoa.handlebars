@@ -252,31 +252,31 @@
                             <form id="formPessoaFisica" action="/pessoa" method="POST">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div class="form-group">
+                                        <div class="form-group {{#if hasError.nomeFisico}}has-error{{/if}}">
                                             <label class="fw-bold">Nome Completo</label>
                                             <input maxlength="50" type="text" name="nomeFisico" class="form-control"
-                                                placeholder="Insira o nome completo">
+                                                placeholder="Insira o nome completo" value="{{dadosForm.nomeFisico}}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="form-group">
+                                        <div class="form-group {{#if hasError.email}}has-error{{/if}}">
                                             <label class="fw-bold">E-mail</label>
                                             <input maxlength="50" type="email" name="email" class="form-control"
-                                                placeholder="Insira o E-mail">
+                                                placeholder="Insira o E-mail" value="{{dadosForm.email}}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="form-group">
+                                        <div class="form-group {{#if hasError.cpf}}has-error{{/if}}">
                                             <label class="fw-bold">CPF</label>
                                             <input maxlength="14" id="cpf" name="cpf" class="form-control"
-                                                placeholder="Insira o CPF">
+                                                placeholder="Insira o CPF" value="{{dadosForm.cpf}}">
                                             <small class="form-text text-muted">Em caso de pessoa física.</small>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Telefone</label>
-                                            <input maxlength="18" id="telefone" name="telefone" class="form-control"
+                                            <input maxlength="14" id="telefone" name="telefone" class="form-control"
                                                 placeholder="Nr de telefone">
                                         </div>
                                     </div>
