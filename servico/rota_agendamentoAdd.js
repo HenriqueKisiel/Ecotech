@@ -57,6 +57,11 @@ function registrarAgendamento(req, res) {
       (dt_solicitada, cd_pessoa_fisica, cd_pessoa_juridica, ds_endereco, cd_bairro, cd_cidade, nr_cep, qt_quantidade_prevista_kg, status)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
+    const insertQuery = `
+        INSERT INTO agendamento 
+        (dt_solicitada, cd_pessoa_fisica, cd_pessoa_juridica, ds_endereco, cd_bairro, cd_cidade, nr_cep, qt_quantidade_prevista_kg)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `;
 
   const valores = [
     dt_solicitada,
@@ -108,7 +113,39 @@ function registrarAgendamento(req, res) {
           </script>
       `);
   });
+    conexao.query(insertQuery, valores, (erro, resultado) => {
+        if (erro) {
+            console.error("Erro ao registrar agendamento:", erro);
+            return exibirAgendamento(req, res, 'Erro ao registrar o agendamento. Verifique os dados e tente novamente.');
+        }
+
+        const novoId = resultado.insertId;
+        console.log("Agendamento inserido com ID:", novoId);
+
+        // Agora executa a função gerar_nome_agendamento e atualiza o campo
+        const gerarNomeQuery = `SELECT gerar_nome_agendamento(?) AS nome`;
+        conexao.query(gerarNomeQuery, [novoId], (erro2, resultado2) => {
+            if (erro2) {
+                console.error("Erro ao gerar nome do agendamento:", erro2);
+                return exibirAgendamento(req, res, 'Agendamento registrado, mas houve erro ao gerar o nome.');
+            }
+
+            const nomeGerado = resultado2[0].nome;
+
+            const updateQuery = `UPDATE agendamento SET nm_agendamento = ? WHERE cd_agendamento = ?`;
+            conexao.query(updateQuery, [nomeGerado, novoId], (erro3) => {
+                if (erro3) {
+                    console.error("Erro ao atualizar nome do agendamento:", erro3);
+                    return exibirAgendamento(req, res, 'Agendamento registrado, mas houve erro ao salvar o nome.');
+                }
+
+                console.log("Nome do agendamento atualizado com sucesso!");
+                exibirAgendamento(req, res, 'Agendamento registrado com sucesso!');
+            });
+        });
+    });
 }
+
 
 module.exports = {
   exibirAgendamento,

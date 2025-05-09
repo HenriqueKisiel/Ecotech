@@ -29,7 +29,8 @@ const servico21 = require('../servico/rota_rota_editar.js');
 const servico22 = require('../servico/rota_pessoaEditar.js');
 const servico23 = require('../servico/rota_juridicaEditar.js');
 const servico24 = require('../servico/rota_plantaEditar.js');
-
+const servico25 = require('../servico/rota_novoMaterial.js');
+const servico26 = require('../servico/rota_novoMaterial2.js');
 
 
 
@@ -126,6 +127,11 @@ router.get('/planta', (req, res) => {
 // Rota para cadastrar nova planta
 router.post('/planta', (req, res) => {
     servico6.cadastrarPlanta(req, res);
+});
+
+// Rota para buscar bairros filtrando pela cidade selecionada
+router.get('/bairros/:cd_cidade', (req, res) => {
+    servico6.buscarBairrosPorCidade(req, res);
 });
 
 //---------------------- Servico7 -------------------//
@@ -271,7 +277,7 @@ router.post('/agendamentoEditar/:id_agendamento/itens/:itemId/editar', servico20
 // Após exclusão, redireciona para a mesma tela de edição com a lista atualizada.
 router.get('/agendamentoEditar/:id_agendamento/itens/:itemId/excluir', servico20.excluirItem);
 // ----------------------- Servico21 -------------------//
-//página para editar rota
+// Página para editar rota
 router.get('/rotaEditar', (req, res) => {
     servico21.exibirrotaeditar(req, res);
 });
@@ -282,6 +288,16 @@ router.get('/rotaEditar/:cd_rota', (req, res) => {
 
 router.post('/rotaEditar', (req, res) => {
     servico21.editarRota(req, res);
+});
+
+// Buscar agendamentos (para preencher o select)
+router.get('/buscarAgendamentos', (req, res) => {
+    servico21.buscarAgendamento(req, res);
+});
+
+// Adicionar Agendamento em uma rota
+router.post('/rotaEditar/:cd_rota', (req, res) => {
+    servico21.adicionarAgendamentoNaRota(req, res);
 });
 
 // ----------------------- Servico22 -------------------//
@@ -312,6 +328,20 @@ router.get('/plantaEditar/:cd_planta', (req, res) => {
 
 router.post('/plantaEditar', (req, res) => {
     servico24.editarPlanta(req, res);
+});
+
+router.get('/planta/bairros/:cd_cidade', (req, res) => {
+    servico24.buscarBairrosPorCidade(req, res);
+});
+
+// ----------------------- Servico25 -------------------//
+router.get('/novoMaterial', (req, res) => {
+    servico25.exibirNovoMaterial(req, res);
+});
+
+// ----------------------- Servico26 -------------------//
+router.get('/novoMaterial2', (req, res) => {
+    servico26.exibirNovoMaterial2(req, res);
 });
 
 //==================== END ROTAS ====================
