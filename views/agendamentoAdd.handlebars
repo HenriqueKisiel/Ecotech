@@ -223,6 +223,8 @@
                 </div>
                 <!--End MenuBar-->
                 <!--Start conteudo indiviudual da pagina-->
+                {{{mensagem}}}
+
                 <div class="container">
                     <form action="/agendamentoAdd" method="POST">
                         <div class="page-inner">
@@ -231,9 +233,6 @@
                                 <div class="mb-3 d-flex flex-column">
                                     <span class="fs-2 fw-bold">Novo agendamento de Coleta</span>
                                     <small class="text-muted">Realize o agendamento programado da coleta.</small>
-                                </div>
-                                <div>
-                                    <a href="/agendamento" class="btn btn-secondary me-3 shadow-lg">Voltar</a>
                                 </div>
                             </div>
 
@@ -319,10 +318,20 @@
                                                     placeholder="Informe o peso previsto (em KG)" step="0.01">
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <!-- Botão de Salvar -->
+                                        <!-- Checkbox para Atividade -->
+                                        <div class="col-md-6">
+                                            <div class="form-group form-check mt-4">
+                                                <input type="checkbox" class="form-check-input" id="statusAtivo"
+                                                    name="status_ativo">
+                                                <label class="form-check-label" for="statusAtivo">Ativo</label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    
                                     <div class="d-flex justify-content-end flex-wrap mt-3">
+                                        <a href="/agendamento" class="btn btn-secondary me-3 shadow-lg">Voltar</a>
                                         <button type="submit" class="btn btn-success shadow-lg">Salvar</button>
                                     </div>
                                 </div>
@@ -330,8 +339,6 @@
                         </div>
                     </form>
                 </div>
-
-
                 <!--End conteudo indiviudual da pagina-->
             </div>
         </div>
