@@ -336,6 +336,18 @@ router.get('/novoMaterial', (req, res) => {
     servico25.exibirNovoMaterial(req, res);
 });
 
+router.get('/buscarAgendamentoMaterial', (req,res) =>{
+    servico25.buscarAgendamentoMaterial(req,res)
+});
+
+router.get('/buscarItensgenda', (req,res) =>{
+    servico25.buscarItensgenda(req,res)
+}); 
+
+router.post('/atualizarPesos', (req, res) =>{
+    servico25.atualizarPesos(req,res)
+});
+
 // ----------------------- Servico26 -------------------//
 router.get('/novoMaterial2', (req, res) => {
     servico26.exibirNovoMaterial2(req, res);
