@@ -252,6 +252,14 @@
                                                 placeholder="Gerado automaticamente" readonly>
                                         </div>
                                     </div>
+                                     <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Capacidade Total (Kg)</label>
+                                            <input type="number" class="form-control"
+                                                value="{{planta.qt_capacidade_total_kg}}" name="qt_capacidade_total_kg"
+                                                placeholder="Capacidade Total (Kg)" required min="1">
+                                        </div>
+                                    </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Área total em m²</label>
@@ -262,18 +270,10 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="fw-bold">Capacidade Total (Kg)</label>
-                                            <input type="number" class="form-control"
-                                                value="{{planta.qt_capacidade_total_kg}}" name="qt_capacidade_total_kg"
-                                                placeholder="Capacidade Total (Kg)" required min="1">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
                                             <label class="fw-bold">Capacidade Atual (Kg)</label>
                                             <input type="number" class="form-control"
                                                 value="{{planta.qt_capacidade_atual_kg}}" name="qt_capacidade_atual_kg"
-                                                placeholder="Capacidade Atual (Kg)">
+                                                placeholder="Capacidade Atual (Kg)" readonly>
                                         </div>
                                     </div>
                                     <div class="col-md-6">

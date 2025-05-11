@@ -282,7 +282,10 @@
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-end flex-wrap">
-                                        <button type="submit" class="btn btn-success shadow-lg">Salvar</button>
+                                        <button type="submit" name="action" value="editar"
+                                            class="btn btn-success shadow-lg me-3">Salvar</button>
+                                        <button type="submit" name="action" value="excluir"
+                                            class="btn btn-danger shadow-lg">Excluir</button>
                                     </div>
                                 </div>
                             </div>
@@ -296,32 +299,44 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="fw-bold">Nome do Agendamento</label>
-                                                    <input type="text" class="form-control"
-                                                        placeholder="informe o nome">
+                                        <form method="POST" action="/rotaEditar/{{rotas.cd_rota}}">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Codigo Agendamento</label>
+                                                        <input type="text" id="codigo_agendamento"
+                                                            name="codigo_agendamento" class="form-control" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Nome do Agendamento</label>
+                                                        <select id="agendamento" name="agendamento"
+                                                            class="form-control">
+                                                            <option value="">Selecione um agendamento</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Endereco</label>
+                                                        <input type="text" id="endereco" name="endereco"
+                                                            class="form-control" placeholder="Informe o endereço">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Peso do material (KG)</label>
+                                                        <input type="text" id="peso" name="peso" class="form-control"
+                                                            placeholder="___">
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="fw-bold">Endereco</label>
-                                                    <input type="text" class="form-control"
-                                                        placeholder="informe o endereço">
-                                                </div>
+                                            <div class="d-flex justify-content-end flex-wrap gap-2">
+                                                <button type="submit"
+                                                    class="btn btn-success shadow-lg">Adicionar</button>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label class="fw-bold">Peso do material (KG)</label>
-                                                    <input type="text" class="form-control" placeholder="___">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-end flex-wrap gap-2">
-                                            <button type="button" class="btn btn-primary shadow-lg">Buscar</button>
-                                            <button type="submit" class="btn btn-success shadow-lg">Adicionar</button>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -343,17 +358,20 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                {{#each pontos}}
                                                 <tr>
-                                                    <td>--</td>
-                                                    <td>--</td>
-                                                    <td>--</td>
+                                                    <td>{{nm_agendamento}}</td>
+                                                    <td>{{ds_endereco}}</td>
+                                                    <td>{{qt_quantidade_prevista_kg}}</td>
                                                     <td>
                                                         <a class="btn btn-icon btn-round btn-danger"
-                                                            data-bs-toggle="modal" data-bs-target="#excluir">
+                                                            data-bs-toggle="modal" data-bs-target="#excluir"
+                                                            data-id={{cd_ponto_coleta}} data-rota="{{cd_rota}}">
                                                             <i class="fa fa-trash"></i>
                                                         </a>
                                                     </td>
                                                 </tr>
+                                                {{/each}}
                                             </tbody>
                                         </table>
                                     </div>
@@ -363,24 +381,93 @@
                     </div>
                 </div>
                 <!--End conteudo indiviudual da pagina-->
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        fetch('/buscarAgendamentos')
+                            .then(response => response.json())
+                            .then(agendamentos => {
+                                const selectAgendamento = document.getElementById('agendamento');
+
+                                agendamentos.forEach(agendamento => {
+                                    const option = document.createElement('option');
+                                    option.value = agendamento.cd_agendamento;
+                                    option.textContent = agendamento.nm_agendamento;  // Corrigido
+                                    option.dataset.endereco = agendamento.ds_endereco;
+                                    option.dataset.peso = agendamento.qt_quantidade_prevista_kg;
+                                    selectAgendamento.appendChild(option);
+                                });
+
+                                selectAgendamento.addEventListener('change', function () {
+                                    const selectedOption = this.options[this.selectedIndex];
+                                    document.getElementById('endereco').value = selectedOption.dataset.endereco || '';
+                                    document.getElementById('peso').value = selectedOption.dataset.peso || '';
+                                    document.getElementById('codigo_agendamento').value = selectedOption.value;
+                                });
+                            })
+                            .catch(error => console.error('Erro ao carregar agendamentos:', error));
+                    });
+
+                </script>
+
             </div>
         </div>
         <!--start modal-->
-        <div class="modal fade" id="excluir" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered p-5">
+        <!-- Modal de Confirmação -->
+        <div class="modal fade" id="excluir" tabindex="-1">
+            <div class="modal-dialog">
                 <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmar Exclusão</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
                     <div class="modal-body">
-                        <div class="d-flex justify-content-center text-center flex-column">
-                            <i class="fa fa-exclamation-triangle text-danger fs-2"></i>
-                            <span class="fw-bold fs-4">Tem certeza que deseja excluir o cadastro?</span>
-                        </div>
-                        <div class="modal-footer d-flex justify-content-center">
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-primary">Confirmar</button>
-                        </div>
+                        <p>Tem certeza que deseja excluir este ponto de coleta?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" id="btnConfirmarExclusao" class="btn btn-danger">Excluir</button>
                     </div>
                 </div>
             </div>
         </div>
         <!--end modal-->
+        <script>
+            let pontoId = null;
+            let rotaId = null;
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const excluirModal = document.getElementById('excluir');
+
+                excluirModal.addEventListener('show.bs.modal', function (event) {
+                    const button = event.relatedTarget;
+                    pontoId = button.getAttribute('data-id');
+                    rotaId = button.getAttribute('data-rota');
+                });
+
+                document.getElementById('btnConfirmarExclusao').addEventListener('click', function () {
+                    if (!pontoId) return;
+
+                    fetch(`/excluirPonto/${pontoId}`, {
+                        method: 'POST'
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                // Fecha o modal
+                                const modal = bootstrap.Modal.getInstance(document.getElementById('excluir'));
+                                modal.hide();
+                                // Recarrega a página para atualizar a lista
+                                window.location.href = `/rotaEditar/${rotaId}`;
+                            } else {
+                                alert('Erro ao excluir ponto!');
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            alert('Erro na requisição!');
+                        });
+                });
+            });
+        </script>
+
+
     </body>

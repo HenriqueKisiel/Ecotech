@@ -223,60 +223,77 @@
                 </div>
                 <!--End MenuBar-->
                 <!--Start conteudo indiviudual da pagina-->
+                {{{mensagem}}}
                 <div class="container">
                     <div class="page-inner">
-                        <!-- Formulário de Edição -->
-                        <form action="/agendamentoEditar" method="POST">
 
+                        <!-- ===== Formulário de Edição de Agendamento ===== -->
+                        <form action="/agendamentoEditar/{{agendamento.cd_agendamento}}" method="POST">
                             <div
                                 class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
                                 <div class="mb-3 d-flex flex-column">
                                     <span class="fs-2 fw-bold">Editar agendamento de Coleta</span>
                                     <small class="text-muted">Realize o agendamento programado da coleta.</small>
                                 </div>
-                                <div>
-                                    <a href="/agendamento" class="btn btn-secondary me-3 shadow-lg">Voltar</a>
-                                </div>
                             </div>
-
-                            <!-- Formulário de Edição -->
                             <div class="card shadow-lg mb-5">
                                 <div class="card-body">
-                                    <div class="row">
-                                        <input type="hidden" name="id_agendamento"
-                                            value="{{agendamento.cd_agendamento}}">
+                                    <input type="hidden" name="id_agendamento" value="{{agendamento.cd_agendamento}}">
 
+                                    <div class="row">
+                                        <!-- Pessoa Física -->
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Nome Pessoa Física</label>
-                                                <input type="text" class="form-control" name="nome_pessoa_fisica"
-                                                    placeholder="Nome Pessoa Física"
-                                                    value="{{agendamento.nm_pessoa_fisica}}">
-                                                <input type="hidden" name="cd_pessoa_fisica"
-                                                    value="{{agendamento.cd_pessoa_fisica}}">
+                                                <select class="form-control" name="cd_pessoa_fisica">
+                                                    <option value="">Selecione uma pessoa física</option>
+                                                    {{#each pessoasFisicas}}
+                                                    <option value="{{this.cd_pessoa_fisica}}" {{#if (eq
+                                                        this.cd_pessoa_fisica
+                                                        ../agendamento.cd_pessoa_fisica)}}selected{{/if}}>
+                                                        {{this.nm_pessoa_fisica}}
+                                                    </option>
+                                                    {{/each}}
+                                                </select>
                                             </div>
                                         </div>
 
+                                        <!-- Pessoa Jurídica -->
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Nome Fantasia (Pessoa Jurídica)</label>
-                                                <input type="text" class="form-control" name="nome_fantasia"
-                                                    placeholder="Nome Fantasia"
-                                                    value="{{agendamento.nm_pessoa_juridica_fantasia}}">
-                                                <input type="hidden" name="cd_pessoa_juridica"
-                                                    value="{{agendamento.cd_pessoa_juridica}}">
+                                                <select class="form-control" name="cd_pessoa_juridica">
+                                                    <option value="">Selecione uma pessoa jurídica</option>
+                                                    {{#each pessoasJuridicas}}
+                                                    <option value="{{this.cd_pessoa_juridica}}" {{#if (eq
+                                                        this.cd_pessoa_juridica
+                                                        ../agendamento.cd_pessoa_juridica)}}selected{{/if}}>
+                                                        {{this.nm_fantasia}}
+                                                    </option>
+                                                    {{/each}}
+                                                </select>
                                             </div>
                                         </div>
 
+                                        <!-- Endereço -->
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Endereço</label>
                                                 <input type="text" class="form-control" name="endereco"
-                                                    placeholder="Informe o endereço"
                                                     value="{{agendamento.ds_endereco}}">
                                             </div>
                                         </div>
 
+                                        <!-- CEP -->
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">CEP</label>
+                                                <input type="text" class="form-control" name="nr_cep" id="cep"
+                                                    placeholder="Informe o CEP" maxlength="9">
+                                            </div>
+                                        </div>
+
+                                        <!-- Cidade / Bairro -->
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Cidade</label>
@@ -285,7 +302,6 @@
                                                 <input type="hidden" name="cd_cidade" value="{{agendamento.cd_cidade}}">
                                             </div>
                                         </div>
-
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Bairro</label>
@@ -295,75 +311,80 @@
                                             </div>
                                         </div>
 
+                                        <!-- Data Solicitada / Peso Previsto -->
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="fw-bold">Última Atualização</label>
-                                                <input type="text" name="dt_solicitada"
-                                                    value="{{agendamento.dt_solicitada}}" class="form-control" readonly>
+                                                <label class="fw-bold">Data Solicitada</label>
+                                                <input type="text" class="form-control" readonly name="dt_solicitada"
+                                                    value="{{agendamento.dt_solicitada}}">
                                             </div>
                                         </div>
-
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Peso previsto (KG)</label>
-                                                <input type="text" class="form-control" name="peso_previsto"
-                                                    placeholder="___" value="{{agendamento.qt_quantidade_prevista_kg}}">
+                                                <input type="text" class="form-control" readonly name="peso_previsto"
+                                                    value="{{agendamento.qt_quantidade_prevista_kg}}">
+                                            </div>
+                                        </div>
+
+                                        <!-- Status -->
+                                        <div class="col-md-6">
+                                            <div class="form-group form-check mt-4">
+                                                <input type="hidden" name="status" value="cancelado">
+                                                <input type="checkbox" class="form-check-input" id="status_checkbox"
+                                                    name="status" value="ativo" {{#if (eq agendamento.status "ativo"
+                                                    )}}checked{{/if}}>
+                                                <label class="form-check-label fw-bold"
+                                                    for="status_checkbox">Agendamento Ativo</label>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="d-flex justify-content-end flex-wrap">
+                                    <div class="d-flex justify-content-end">
+                                        <a href="/agendamento" class="btn btn-secondary me-3 shadow-lg">Voltar</a>
                                         <button type="submit" class="btn btn-success shadow-lg">Salvar</button>
                                     </div>
                                 </div>
                             </div>
-
                         </form>
+                        <!-- ===== Fim do form de Agendamento ===== -->
 
-                        <!-- Formulário para Inserir/Editar Itens -->
+
                         <div class="row">
+                            <!-- ===== Formulário de Inserção/Edição de Itens ===== -->
                             <div class="col-md-6">
                                 <div class="card shadow-lg mb-5">
                                     <div class="card-header">
-                                        <div class="card-title">
-                                            {{#if editandoItem}}Editar Item{{else}}Adicionar Item{{/if}}
-                                        </div>
+                                        <div class="card-title">{{#if editandoItem}}Editar Item{{else}}Adicionar
+                                            Item{{/if}}</div>
                                     </div>
                                     <div class="card-body">
-                                        <form
-                                            action="{{#if editandoItem}}/agendamentoEditar/{{agendamento.cd_agendamento}}/itens/{{item.cd_mat_agenda}}/editar{{else}}/agendamentoEditar/{{agendamento.cd_agendamento}}/adicionarItem{{/if}}"
+                                        <form action="/agendamentoEditar/{{agendamento.cd_agendamento}}/adicionarItem"
                                             method="POST">
+                                            {{!-- Se estiver editando, você precisaria de outra rota
+                                            /:id_agendamento/itens/:itemId/editar --}}
+                                            <input type="hidden" name="itemId"
+                                                value="{{#if editandoItem}}{{item.cd_mat_agenda}}{{/if}}" />
+
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="fw-bold">Nome do material</label>
-                                                        <input type="text" class="form-control" name="item_nome"
-                                                            placeholder="Informe o nome do material"
-                                                            value="{{item.ds_mat_agenda}}">
-                                                    </div>
+                                                    <label class="fw-bold">Nome do material</label>
+                                                    <input type="text" class="form-control" name="item_nome"
+                                                        value="{{item.ds_mat_agenda}}" required>
                                                 </div>
-
                                                 <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="fw-bold">Linha do material</label>
-                                                        <input type="text" class="form-control" name="linha_material"
-                                                            placeholder="Informe a linha do material"
-                                                            value="{{item.ie_linha}}">
-                                                    </div>
+                                                    <label class="fw-bold">Linha do material</label>
+                                                    <input type="text" class="form-control" name="linha_material"
+                                                        value="{{item.ie_linha}}" required>
                                                 </div>
-
                                                 <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="fw-bold">Peso do material (KG)</label>
-                                                        <input type="number" step="0.01" class="form-control"
-                                                            name="item_peso" placeholder="Informe o peso do material"
-                                                            value="{{item.qt_peso_material_total_kg}}">
-                                                    </div>
+                                                    <label class="fw-bold">Peso do material (KG)</label>
+                                                    <input type="number" step="0.01" class="form-control"
+                                                        name="item_peso" value="{{item.qt_peso_material_total_kg}}"
+                                                        required>
                                                 </div>
                                             </div>
-
-                                            <div class="d-flex justify-content-end flex-wrap gap-2">
-                                                {{#if editandoItem}}
+                                            <div class="d-flex justify-content-end gap-2 mt-3">
                                                 <a href="/agendamentoEditar/{{agendamento.cd_agendamento}}"
                                                     class="btn btn-secondary shadow-lg">Cancelar</a>
                                                 {{/if}}
@@ -371,12 +392,13 @@
                                                     {{#if editandoItem}}Atualizar Item{{else}}Adicionar Item{{/if}}
                                                 </button>
                                             </div>
+
                                         </form>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Lista de Itens -->
+                            <!-- ===== Lista de Itens ===== -->
                             <div class="col-md-6">
                                 <div class="card shadow-lg mb-5">
                                     <div class="card-header">
@@ -386,10 +408,10 @@
                                         <table class="table table-head-bg-success">
                                             <thead>
                                                 <tr>
-                                                    <th scope="col">Material</th>
-                                                    <th scope="col">Linha</th>
-                                                    <th scope="col">Peso</th>
-                                                    <th scope="col">Ações</th>
+                                                    <th>Material</th>
+                                                    <th>Linha</th>
+                                                    <th>Peso</th>
+                                                    <th>Ações</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -418,8 +440,55 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <!-- Script de máscara para CEP -->
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const cepInput = document.getElementById('cep');
+                        const form = document.querySelector('form');
 
-                    <!--End conteudo indiviudual da pagina-->
+                        cepInput.addEventListener('input', function (e) {
+                            let cep = e.target.value.replace(/\D/g, '');
+                            if (cep.length > 5) {
+                                cep = cep.slice(0, 5) + '-' + cep.slice(5, 8);
+                            }
+                            e.target.value = cep;
+                        });
+
+                        form.addEventListener('submit', function () {
+                            cepInput.value = cepInput.value.replace(/\D/g, '');
+                        });
+                    });
+                </script>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const botaoAtualizar = document.getElementById("btnAtualizarItem");
+                        const urlAtual = window.location.href;
+
+                        if (!urlAtual.includes("formation")) {
+                            botaoAtualizar.style.display = "none";
+                        }
+                    });
+                </script>
+            </div>
+        </div>
+        <!--End conteudo indiviudual da pagina-->
+        <!--start modal-- >
+        <div class="modal fade" id="excluir" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered p-5">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="d-flex justify-content-center text-center flex-column">
+                            <i class="fa fa-exclamation-triangle text-danger fs-2"></i>
+                            <span class="fw-bold fs-4">Tem certeza que deseja excluir o cadastro?</span>
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary">Confirmar</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-    </body>
+        </div>
+        <!--end modal-- >
+    </body >
