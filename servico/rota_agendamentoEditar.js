@@ -76,7 +76,7 @@ function exibirEditarAgendamento(req, res, itemEmEdicao = null) {
                         nomePessoaFisica: agendamento.nm_pessoa_fisica,
                         nomePessoaJuridica: agendamento.nm_pessoa_juridica_fantasia,
                         item: itemEmEdicao,               // <-- renomeado para "item"
-                        editandoItem: !!itemEmEdicao      // <-- flag usada no template
+                        editandoItem: itemEmEdicao    !== null   // <-- flag usada no template
                     });
                 });
             });
@@ -242,15 +242,15 @@ function adicionarItem(req, res) {
 
 
 function exibirEditarItem(req, res) {
-    const { id_agendamento, itemId } = req.params;
-
     const connection = conectiondb();
+    const idAgendamento = req.params.id_agendamento;
+    const itemId = req.params.itemId;
 
-    const queryItem = 'SELECT * FROM materiais_agenda WHERE cd_mat_agenda = ?';
-    connection.query(queryItem, [itemId], (err, results) => {
+    const itemQuery = 'SELECT * FROM materiais_agenda WHERE cd_mat_agenda = ?';
+    connection.query(itemQuery, [itemId], (err, results) => {
         if (err) {
-            console.log("Erro ao buscar item:", err);
-            return res.status(500).send('Erro ao buscar item');
+            console.log('Erro ao buscar o item para edição:', err);
+            return res.status(500).send('Erro ao buscar o item');
         }
 
         if (results.length === 0) {
@@ -258,12 +258,12 @@ function exibirEditarItem(req, res) {
         }
 
         const item = results[0];
-
-        // Chama a função original de exibição da tela de edição, mas passando o item
-        // Você pode modificar exibirEditarAgendamento para aceitar item e editandoItem também
-        req.query.id_agendamento = id_agendamento; // Garante que o ID esteja no query
+        // Reaproveita a função, mas agora com item preenchido → editandoItem = true
+        req.query.id_agendamento = idAgendamento; // forçando o uso do mesmo parâmetro
+        exibirEditarAgendamento(req, res, item);
     });
 }
+
 
 // Atualiza os dados de um item existente
 function atualizarItem(req, res) {
