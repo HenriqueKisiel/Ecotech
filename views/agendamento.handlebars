@@ -234,7 +234,6 @@
                                     <small class="text-muted">Realize o agendamento programado da coleta.</small>
                                 </div>
                                 <div>
-                                    <a href="/home" class="btn btn-secondary me-3 shadow-lg">Voltar</a>
                                     <a href="/agendamentoAdd" class="btn btn-success shadow-lg">Adicionar
                                         Agendamento</a>
                                 </div>
@@ -286,8 +285,20 @@
                                                 <input type="date" class="form-control" name="dt_solicitada">
                                             </div>
                                         </div>
+                                        <!-- Filtro de Status -->
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Status</label><br>
+                                                <select class="form-select form-control" name="status">
+                                                    <option value="">Selecione um status</option>
+                                                    <option value="ativo">Ativo</option>
+                                                    <option value="cancelado">Cancelado</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="d-flex justify-content-end flex-wrap">
+                                         <a href="/home" class="btn btn-secondary me-3 shadow-lg">Voltar</a>
                                         <button type="submit" class="btn btn-primary shadow-lg">Buscar</button>
                                     </div>
                                 </div>

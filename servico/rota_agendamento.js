@@ -49,10 +49,10 @@ function buscarAgendamentos(req, res) {
     console.log("Função buscarAgendamentos chamada");
 
     // Captura os filtros do corpo do formulário
-    const { nome, endereco, cd_cidade, cd_bairro, dt_solicitada } = req.body;
+    const { nome, endereco, cd_cidade, cd_bairro, dt_solicitada, status } = req.body;
 
     // Monta a query principal com os JOINs para buscar dados relacionados
-    let query = `
+    let query = ` 
         SELECT 
             a.cd_agendamento, 
             a.ds_endereco AS endereco, 
@@ -73,7 +73,6 @@ function buscarAgendamentos(req, res) {
 
     // Adiciona condições à query conforme os filtros informados
     if (nome) {
-        // Busca tanto no nome da pessoa física quanto no nome fantasia da jurídica
         query += " AND (pf.nm_pessoa_fisica LIKE ? OR pj.nm_fantasia LIKE ?)";
         valores.push(`%${nome}%`, `%${nome}%`);
     }
@@ -93,6 +92,10 @@ function buscarAgendamentos(req, res) {
         query += " AND a.dt_solicitada = ?";
         valores.push(dt_solicitada);
     }
+    if (status) {
+        query += " AND a.status = ?";
+        valores.push(status);
+    }
 
     // Consultas auxiliares para recarregar os filtros depois da busca
     const queryPessoasFisicas = 'SELECT cd_pessoa_fisica, nm_pessoa_fisica FROM pessoa_fisica';
@@ -103,11 +106,11 @@ function buscarAgendamentos(req, res) {
     // Executa a query principal com os filtros
     conexao.query(query, valores, (erro, resultados) => {
         if (erro) {
-            console.error("Erro ao buscar agendamentos:", erro);
-            return res.status(500).send("Erro ao buscar agendamentos.");
+            console.error("Erro na consulta de agendamentos:", erro);
+            return res.status(500).send('Erro ao buscar agendamentos');
         }
 
-        // Recarrega os filtros para manter o formulário populado
+        // Recarrega os dados dos filtros
         conexao.query(queryPessoasFisicas, (err1, pessoasFisicas) => {
             if (err1) return res.status(500).send('Erro ao buscar pessoas físicas');
 
@@ -120,14 +123,14 @@ function buscarAgendamentos(req, res) {
                     conexao.query(queryBairros, (err4, bairros) => {
                         if (err4) return res.status(500).send('Erro ao buscar bairros');
 
-                        // Renderiza novamente a página com os resultados da busca e filtros carregados
+                        // Renderiza a tela com os resultados da busca
                         res.render('agendamento', {
-                            agendamentos: resultados,
+                            mensagem: 'Agendamentos encontrados:',
                             pessoasFisicas,
                             pessoasJuridicas,
                             cidades,
                             bairros,
-                            mensagem: ''
+                            agendamentos: resultados  // Passa os resultados da busca
                         });
                     });
                 });
@@ -136,7 +139,6 @@ function buscarAgendamentos(req, res) {
     });
 }
 
-// Exporta as funções para serem usadas nas rotas
 module.exports = {
     exibirAgendamento,
     buscarAgendamentos

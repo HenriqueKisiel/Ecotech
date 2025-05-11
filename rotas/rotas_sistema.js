@@ -257,10 +257,19 @@ router.get('/agendamentoAdd', (req, res) => {
 router.post('/agendamentoAdd', (req, res) => {
     servico19.registrarAgendamento(req, res);
 });
+
+// Rota para buscar bairros por cidade (GET)
+router.get('/agendamento/bairros/:cd_cidade', (req, res) => {
+    servico19.buscarBairrosPorCidade(req, res);
+});
 //----------------------- Servico20 -------------------//
 // Rota GET principal que exibe a tela de edição do agendamento.
 // Esta tela inclui os dados do agendamento e a lista de itens associados.
 router.get('/agendamentoEditar', servico20.exibirEditarAgendamento);
+
+// Rota POST para atualizar os dados do agendamento.
+// Recebe os dados do formulário e atualiza o agendamento no banco de dados.
+router.post('/agendamentoEditar/:id_agendamento', servico20.atualizarAgendamento);
 
 // Rota POST para adicionar um novo item ao agendamento.
 // Recebe os dados do formulário de novo item e insere no banco.
@@ -277,7 +286,6 @@ router.post('/agendamentoEditar/:id_agendamento/itens/:itemId/editar', servico20
 // Rota GET para excluir um item do agendamento.
 // Após exclusão, redireciona para a mesma tela de edição com a lista atualizada.
 router.get('/agendamentoEditar/:id_agendamento/itens/:itemId/excluir', servico20.excluirItem);
-
 // ----------------------- Servico21 -------------------//
 // Página para editar rota
 router.get('/rotaEditar', (req, res) => {
