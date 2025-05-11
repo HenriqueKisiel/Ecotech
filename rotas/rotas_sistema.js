@@ -152,10 +152,15 @@ router.post('/material', (req, res) => {
     servico8.cadastrarMaterial(req, res);
 });
 
-//---------------------- Servico9 -------------------//
-// Rota para a página de cadastrar estoque
+///---------------------- Servico9 -------------------//
+// Rota para a página de cadastrar estoque (GET)
 router.get('/estoqueNovo', (req, res) => {
     servico9.exibirestoqueNovo(req, res);
+});
+
+// Rota para cadastrar o estoque (POST)
+router.post('/estoque/cadastrar', (req, res) => {
+    servico9.cadastrarEstoque(req, res);
 });
 
 //----------------------- Servico10 -------------------//
@@ -252,10 +257,19 @@ router.get('/agendamentoAdd', (req, res) => {
 router.post('/agendamentoAdd', (req, res) => {
     servico19.registrarAgendamento(req, res);
 });
+
+// Rota para buscar bairros por cidade (GET)
+router.get('/agendamento/bairros/:cd_cidade', (req, res) => {
+    servico19.buscarBairrosPorCidade(req, res);
+});
 //----------------------- Servico20 -------------------//
 // Rota GET principal que exibe a tela de edição do agendamento.
 // Esta tela inclui os dados do agendamento e a lista de itens associados.
 router.get('/agendamentoEditar', servico20.exibirEditarAgendamento);
+
+// Rota POST para atualizar os dados do agendamento.
+// Recebe os dados do formulário e atualiza o agendamento no banco de dados.
+router.post('/agendamentoEditar/:id_agendamento', servico20.atualizarAgendamento);
 
 // Rota POST para adicionar um novo item ao agendamento.
 // Recebe os dados do formulário de novo item e insere no banco.
@@ -272,7 +286,6 @@ router.post('/agendamentoEditar/:id_agendamento/itens/:itemId/editar', servico20
 // Rota GET para excluir um item do agendamento.
 // Após exclusão, redireciona para a mesma tela de edição com a lista atualizada.
 router.get('/agendamentoEditar/:id_agendamento/itens/:itemId/excluir', servico20.excluirItem);
-
 // ----------------------- Servico21 -------------------//
 // Página para editar rota
 router.get('/rotaEditar', (req, res) => {
@@ -295,6 +308,10 @@ router.get('/buscarAgendamentos', (req, res) => {
 // Adicionar Agendamento em uma rota
 router.post('/rotaEditar/:cd_rota', (req, res) => {
     servico21.adicionarAgendamentoNaRota(req, res);
+});
+
+router.post('/excluirPonto/:id', (req, res) => {
+    servico21.excluirPontoColeta(req, res);
 });
 
 // ----------------------- Servico22 -------------------//
