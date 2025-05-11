@@ -386,11 +386,18 @@
                                             </div>
                                             <div class="d-flex justify-content-end gap-2 mt-3">
                                                 <a href="/agendamentoEditar/{{agendamento.cd_agendamento}}"
-                                                    class="btn btn-secondary shadow-lg">Cancelar</a>
-                                                {{/if}}
-                                                <button type="submit" class="btn btn-success shadow-lg">
-                                                    {{#if editandoItem}}Atualizar Item{{else}}Adicionar Item{{/if}}
+                                                    class="btn btn-secondary">
+                                                    Cancelar
+                                                </a>
+
+                                                <button
+                                                    formaction="/agendamentoEditar/{{agendamento.cd_agendamento}}/itens/{{item.cd_mat_agenda}}/editar"
+                                                    class="btn btn-warning">
+                                                    Atualizar Item
                                                 </button>
+
+                                                <button type="submit" class="btn btn-success">Adicionar Item</button>
+
                                             </div>
 
                                         </form>
