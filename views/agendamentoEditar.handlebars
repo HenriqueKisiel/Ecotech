@@ -361,8 +361,6 @@
                                     <div class="card-body">
                                         <form action="/agendamentoEditar/{{agendamento.cd_agendamento}}/adicionarItem"
                                             method="POST">
-                                            {{!-- Se estiver editando, você precisaria de outra rota
-                                            /:id_agendamento/itens/:itemId/editar --}}
                                             <input type="hidden" name="itemId"
                                                 value="{{#if editandoItem}}{{item.cd_mat_agenda}}{{/if}}" />
 

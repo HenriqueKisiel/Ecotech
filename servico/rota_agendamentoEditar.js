@@ -106,8 +106,8 @@ function atualizarAgendamento(req, res) {
     // Verificando os dados que estão sendo recebidos
     console.log('Dados de atualização recebidos:', {
         id_agendamento,
-        cd_pessoa_fisica, // O código da pessoa física
-        nm_pessoa_fisica, // O nome da pessoa física
+        cd_pessoa_fisica, 
+        nm_pessoa_fisica, 
         cd_pessoa_juridica,
         endereco,
         cd_bairro,
@@ -260,7 +260,6 @@ function exibirEditarItem(req, res) {
         const item = results[0];
 
         // Chama a função original de exibição da tela de edição, mas passando o item
-        // Você pode modificar exibirEditarAgendamento para aceitar item e editandoItem também
         req.query.id_agendamento = id_agendamento; // Garante que o ID esteja no query
     });
 }
