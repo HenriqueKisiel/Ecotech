@@ -42,6 +42,7 @@ function registrarAgendamento(req, res) {
     cd_pessoa_fisica,
     cd_pessoa_juridica,
     ds_endereco,
+    nr_cep, 
     cd_cidade,
     cd_bairro,
     dt_solicitada,
@@ -63,17 +64,17 @@ function registrarAgendamento(req, res) {
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
-  const valores = [
-    dt_solicitada,
-    cd_pessoa_fisica || null,
-    cd_pessoa_juridica || null,
-    ds_endereco,
-    cd_bairro,
-    cd_cidade,
-    "", // CEP
-    qt_quantidade_prevista_kg_num,
-    'ativo' // Definindo o status como "ativo"
-  ];
+    const valores = [
+      dt_solicitada,
+      cd_pessoa_fisica || null,
+      cd_pessoa_juridica || null,
+      ds_endereco,
+      cd_bairro,
+      cd_cidade,
+      nr_cep.replace(/\D/g, ''), // <-- Aqui, removendo caracteres não numéricos
+      qt_quantidade_prevista_kg_num,
+      'ativo'
+    ];
 
   conexao.query(query, valores, (erro, resultado) => {
     if (erro) {
@@ -146,8 +147,24 @@ function registrarAgendamento(req, res) {
     });
 }
 
+function buscarBairrosPorCidade(req, res) {
+  const cd_cidade = req.params.cd_cidade; // Recebe o ID da cidade via parâmetro de URL
+
+  // Consulta SQL para buscar os bairros relacionados à cidade
+  const query = 'SELECT cd_bairro, nm_bairro FROM bairro WHERE cd_cidade = ?';
+
+  conexao.query(query, [cd_cidade], (erro, bairros) => {
+    if (erro) {
+      return res.status(500).send('Erro ao buscar bairros');
+    }
+    
+    // Retorna os bairros em formato JSON
+    return res.json(bairros);
+  });
+}
 
 module.exports = {
   exibirAgendamento,
-  registrarAgendamento
+  registrarAgendamento,
+  buscarBairrosPorCidade
 };

@@ -284,11 +284,20 @@
                                             </div>
                                         </div>
 
+                                        <!-- CEP -->
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="fw-bold">CEP</label>
+                                                <input type="text" class="form-control" name="nr_cep" id="cep"
+                                                    placeholder="Informe o CEP" maxlength="9">
+                                            </div>
+                                        </div>
+
                                         <!-- Cidade / Bairro -->
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Cidade</label>
-                                                <input type="text" class="form-control" readonly
+                                                <input type="text" class="form-control"
                                                     value="{{agendamento.nm_cidade}}">
                                                 <input type="hidden" name="cd_cidade" value="{{agendamento.cd_cidade}}">
                                             </div>
@@ -296,7 +305,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Bairro</label>
-                                                <input type="text" class="form-control" readonly
+                                                <input type="text" class="form-control"
                                                     value="{{agendamento.nm_bairro}}">
                                                 <input type="hidden" name="cd_bairro" value="{{agendamento.cd_bairro}}">
                                             </div>
@@ -433,13 +442,32 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
+                <!-- Script de máscara para CEP -->
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const cepInput = document.getElementById('cep');
+                        const form = document.querySelector('form');
+
+                        cepInput.addEventListener('input', function (e) {
+                            let cep = e.target.value.replace(/\D/g, '');
+                            if (cep.length > 5) {
+                                cep = cep.slice(0, 5) + '-' + cep.slice(5, 8);
+                            }
+                            e.target.value = cep;
+                        });
+
+                        form.addEventListener('submit', function () {
+                            cepInput.value = cepInput.value.replace(/\D/g, '');
+                        });
+                    });
+
+
                 <!--End conteudo indiviudual da pagina-->
-            </div>
-        </div>
-        <!--start modal-->
+            </div >
+        </div >
+        < !--start modal-- >
         <div class="modal fade" id="excluir" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered p-5">
                 <div class="modal-content">
@@ -456,5 +484,5 @@
                 </div>
             </div>
         </div>
-        <!--end modal-->
-    </body>
+        <!--end modal-- >
+    </body >
