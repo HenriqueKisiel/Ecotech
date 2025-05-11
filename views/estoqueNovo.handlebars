@@ -220,7 +220,7 @@
                 <!-- End Navbar -->
             </div>
             <!--End MenuBar-->
-            <!--Start conteudo indiviudual da pagina-->
+            <!-- Início do conteúdo individual da página -->
             <div class="container">
                 <div class="page-inner">
                     <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
@@ -233,6 +233,8 @@
                             </small>
                         </div>
                     </div>
+
+                    <!-- Card do Formulário -->
                     <div class="card shadow-lg h-100">
                         <div class="card-header d-none">
                             <div class="card-title">
@@ -240,92 +242,141 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="fw-bold" for="input">Nome da Planta</label>
-                                        <input type="text" class="form-control" placeholder="Informe o nome">
+                            <!-- Formulário para cadastro de estoque -->
+                            <form action="/estoque/cadastrar" method="POST">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold" for="selectNomePlanta">Nome da Planta</label>
+                                            <select id="selectNomePlanta" class="form-control" name="nm_planta">
+                                                <option value="">Nome da planta onde o estoque será cadastrado</option>
+                                                {{#each plantas}}
+                                                <option value="{{cd_planta}}" data-nome="{{nm_planta}}">{{nm_planta}}
+                                                </option>
+                                                {{/each}}
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="fw-bold" for="input">Codigo da planta</label>
-                                        <input type="text" class="form-control"
-                                            placeholder="cod da planta em que o estoque esta vinculado">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold" for="selectCodigoPlanta">Código da Planta</label>
+                                            <select id="selectCodigoPlanta" class="form-control" name="cd_planta"
+                                                required>
+                                                <option value="">Código da planta onde o estoque será cadastrado
+                                                </option>
+                                                {{#each plantas}}
+                                                <option value="{{cd_planta}}" data-nome="{{nm_planta}}">{{cd_planta}}
+                                                </option>
+                                                {{/each}}
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="fw-bold" for="input">Capacidade Máxima do Estoque (Kg)</label>
-                                        <input type="text" class="form-control" placeholder="Insira a capacidade">
+                                    <div class="col-12">
+                                        <hr class="my-4">
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="fw-bold" for="input">Capacidade Atual do Estoque (Kg)</label>
-                                        <input type="text" class="form-control" placeholder="Insira a capacidade">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold" for="input">Nome do Estoque</label>
+                                            <input type="text" class="form-control" name="nm_estoque"
+                                                placeholder="Informe o nome">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="fw-bold" for="input">Linhas do Estoque</label>
-                                        <div class="d-flex flex-row flex-wrap">
-                                            <div class="d-flex align-items-center me-5 mb-2">
-                                                <span class="me-2">Linha Azul</span>
-                                                <label class="colorinput mb-0">
-                                                    <input name="color" type="checkbox" value="1"
-                                                        class="colorinput-input">
-                                                    <span class="colorinput-color bg-primary"></span>
-                                                </label>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold" for="input">Capacidade Máxima do Estoque (Kg)</label>
+                                            <input type="text" class="form-control" name="qt_capacidade_maxima"
+                                                placeholder="Insira a capacidade">
+                                        </div>
+                                    </div>
+                                    <!--<div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold" for="input">Linha do Estoque</label>
+                                            <div class="d-flex flex-row flex-wrap mt-2">
+                                                <div class="d-flex align-items-center me-5 mb-2">
+                                                    <span class="me-3">Linha Azul</span>
+                                                    <label class="colorinput mb-0">
+                                                        <input name="cd_linha" type="radio" value="1"
+                                                            class="colorinput-input">
+                                                        <span class="colorinput-color bg-primary"></span>
+                                                    </label>
+                                                </div>
+                                                <div class="d-flex align-items-center me-5 mb-2">
+                                                    <span class="me-3">Linha Verde</span>
+                                                    <label class="colorinput mb-0">
+                                                        <input name="cd_linha" type="radio" value="2"
+                                                            class="colorinput-input">
+                                                        <span class="colorinput-color bg-success"></span>
+                                                    </label>
+                                                </div>
+                                                <div class="d-flex align-items-center me-5 mb-2">
+                                                    <span class="me-3">Linha Laranja</span>
+                                                    <label class="colorinput mb-0">
+                                                        <input name="cd_linha" type="radio" value="3"
+                                                            class="colorinput-input">
+                                                        <span class="colorinput-color bg-warning"></span>
+                                                    </label>
+                                                </div>
+                                                <div class="d-flex align-items-center mb-2">
+                                                    <span class="me-3">Linha Vermelha</span>
+                                                    <label class="colorinput mb-0">
+                                                        <input name="cd_linha" type="radio" value="4"
+                                                            class="colorinput-input">
+                                                        <span class="colorinput-color bg-danger"></span>
+                                                    </label>
+                                                </div>
                                             </div>
-                                            <div class="d-flex align-items-center me-5 mb-2">
-                                                <span class="me-2">Linha Verde</span>
-                                                <label class="colorinput mb-0">
-                                                    <input name="color" type="checkbox" value="2"
-                                                        class="colorinput-input">
-                                                    <span class="colorinput-color bg-success"></span>
-                                                </label>
-                                            </div>
-                                            <div class="d-flex align-items-center me-5 mb-2">
-                                                <span class="me-2">Linha Laranja</span>
-                                                <label class="colorinput mb-0">
-                                                    <input name="color" type="checkbox" value="3"
-                                                        class="colorinput-input">
-                                                    <span class="colorinput-color bg-warning"></span>
-                                                </label>
-                                            </div>
-                                            <div class="d-flex align-items-center mb-2">
-                                                <span class="me-2">Linha Vermelha</span>
-                                                <label class="colorinput mb-0">
-                                                    <input name="color" type="checkbox" value="4"
-                                                        class="colorinput-input">
-                                                    <span class="colorinput-color bg-danger"></span>
-                                                </label>
-                                            </div>
+                                        </div>
+                                    </div>-->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Código do Estoque</label>
+                                            <input type="text" class="form-control" value="{{codigoEstoque}}"
+                                                placeholder="Gerado automaticamente" disabled>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="fw-bold">Código do Estoque</label>
-                                        <input type="text" class="form-control" placeholder="Gerado automaticamente"
-                                            disabled>
-                                    </div>
+                                <!-- Botão de salvar -->
+                                <div class="card-footer d-flex justify-content-end mt-2">
+                                    <a href="/home" class="btn btn-secondary me-3">Voltar</a>
+                                    <button type="submit" class="btn btn-success">Salvar</button>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="card-footer d-flex justify-content-end">
-                            <a href="/home" class="btn btn-secondary me-3">
-                                Voltar
-                            </a>
-                            <button type="button" class="btn btn-success">
-                                Salvar
-                            </button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-            <!--end conteudo indiviudual da pagina-->
+            <!-- Fim do conteúdo individual da página -->
+
+            <!-- Start Script -->
+            <script>
+                const nomePlantaSelect = document.getElementById('selectNomePlanta');
+                const codigoPlantaSelect = document.getElementById('selectCodigoPlanta');
+
+                nomePlantaSelect.addEventListener('change', () => {
+                    const selectedCd = nomePlantaSelect.value;
+                    if (!selectedCd) return;
+
+                    for (let opt of codigoPlantaSelect.options) {
+                        if (opt.value === selectedCd) {
+                            codigoPlantaSelect.value = selectedCd;
+                            break;
+                        }
+                    }
+                });
+
+                codigoPlantaSelect.addEventListener('change', () => {
+                    const selectedCd = codigoPlantaSelect.value;
+                    if (!selectedCd) return;
+
+                    for (let opt of nomePlantaSelect.options) {
+                        if (opt.value === selectedCd) {
+                            nomePlantaSelect.value = selectedCd;
+                            break;
+                        }
+                    }
+                });
+            </script>
+            <!-- End Script -->
             <footer class="footer">
                 <div class="container-fluid d-flex justify-content-between">
                     <nav class="pull-left">

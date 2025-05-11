@@ -78,6 +78,8 @@ function cadastrarPlanta(req, res) {
         nr_cep
     } = req.body;
 
+    qt_capacidade_atual_kg = qt_capacidade_total_kg;
+    
     if (validarCampos(req, res) !== true) return;
 
     ie_situacao = Array.isArray(ie_situacao) ? ie_situacao[ie_situacao.length - 1] : ie_situacao;
