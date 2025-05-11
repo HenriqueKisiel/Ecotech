@@ -1,6 +1,4 @@
 const conectiondb = require('../bd/conexao_mysql.js');  // Importa a função de conexão com o banco de dados
-
-// Cria uma conexão com o banco
 const conexao = conectiondb();
 
 /**

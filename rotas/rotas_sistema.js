@@ -152,10 +152,15 @@ router.post('/material', (req, res) => {
     servico8.cadastrarMaterial(req, res);
 });
 
-//---------------------- Servico9 -------------------//
-// Rota para a página de cadastrar estoque
+///---------------------- Servico9 -------------------//
+// Rota para a página de cadastrar estoque (GET)
 router.get('/estoqueNovo', (req, res) => {
     servico9.exibirestoqueNovo(req, res);
+});
+
+// Rota para cadastrar o estoque (POST)
+router.post('/estoque/cadastrar', (req, res) => {
+    servico9.cadastrarEstoque(req, res);
 });
 
 //----------------------- Servico10 -------------------//
@@ -303,6 +308,10 @@ router.get('/buscarAgendamentos', (req, res) => {
 // Adicionar Agendamento em uma rota
 router.post('/rotaEditar/:cd_rota', (req, res) => {
     servico21.adicionarAgendamentoNaRota(req, res);
+});
+
+router.post('/excluirPonto/:id', (req, res) => {
+    servico21.excluirPontoColeta(req, res);
 });
 
 // ----------------------- Servico22 -------------------//
