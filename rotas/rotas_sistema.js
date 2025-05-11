@@ -252,6 +252,11 @@ router.get('/agendamentoAdd', (req, res) => {
 router.post('/agendamentoAdd', (req, res) => {
     servico19.registrarAgendamento(req, res);
 });
+
+// Rota para buscar bairros por cidade (GET)
+router.get('/agendamento/bairros/:cd_cidade', (req, res) => {
+    servico19.buscarBairrosPorCidade(req, res);
+});
 //----------------------- Servico20 -------------------//
 // Rota GET principal que exibe a tela de edição do agendamento.
 // Esta tela inclui os dados do agendamento e a lista de itens associados.
