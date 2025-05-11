@@ -249,9 +249,13 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Nome do Usuário</label>
-                                                <select id="nome" name="nome" class="form-control" required>
+                                                <select id="nome" name="nome"
+                                                    class="form-control {{#if hasError.nome}}is-invalid{{/if}}">
                                                     <option value="">Selecione um nome</option>
                                                 </select>
+                                                {{#if hasError.nome}}
+                                                <div class="invalid-feedback">Campo obrigatório</div>
+                                                {{/if}}
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -270,16 +274,24 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="fw-bold"> Usuário</label>
-                                                <input type="text" name="usuario" value="{{usuario.nm_usuario}}"
-                                                    class="form-control" placeholder="Usuario " required>
+                                                <label class="fw-bold">Usuário</label>
+                                                <input type="text" name="usuario" value="{{usuario.usuario}}"
+                                                    class="form-control {{#if hasError.usuario}}is-invalid{{/if}}"
+                                                    placeholder="Usuário">
+                                                {{#if hasError.usuario}}
+                                                <div class="invalid-feedback">Campo obrigatório</div>
+                                                {{/if}}
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Senha</label>
-                                                <input type="text" name="senha" value="{{usuario.ds_senha}}"
-                                                    class="form-control" placeholder="Nova senha" required>
+                                                <input type="text" name="senha" value="{{usuario.senha}}"
+                                                    class="form-control {{#if hasError.senha}}is-invalid{{/if}}"
+                                                    placeholder="Nova senha">
+                                                {{#if hasError.senha}}
+                                                <div class="invalid-feedback">Campo obrigatório</div>
+                                                {{/if}}
                                             </div>
                                         </div>
                                         <div class="col-md-6">
