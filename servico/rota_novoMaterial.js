@@ -108,6 +108,7 @@ function atualizarPesos(req, res) {
     });
 }
 
+
 //exportando a função 
 module.exports = {
     exibirNovoMaterial,
