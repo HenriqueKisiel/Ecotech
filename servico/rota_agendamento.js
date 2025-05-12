@@ -137,7 +137,25 @@ function buscarAgendamentos(req, res) {
     });
 }
 
+// Função que retorna os bairros com base em uma cidade selecionada
+function buscarBairrosPorCidade(req, res) {
+  const cd_cidade = req.params.cd_cidade; // Recebo o código da cidade por parâmetro na URL
+
+  // Faço a consulta SQL para buscar os bairros que pertencem a essa cidade
+  const query = 'SELECT cd_bairro, nm_bairro FROM bairro WHERE cd_cidade = ?';
+
+  conexao.query(query, [cd_cidade], (erro, bairros) => {
+    if (erro) {
+      return res.status(500).send('Erro ao buscar bairros');
+    }
+    
+    // Retorno os bairros encontrados em formato JSON
+    return res.json(bairros);
+  });
+}
+
 module.exports = {
     exibirAgendamento,
-    buscarAgendamentos
+    buscarAgendamentos,
+    buscarBairrosPorCidade
 };
