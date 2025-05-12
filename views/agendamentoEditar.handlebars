@@ -288,16 +288,18 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">CEP</label>
-                                                <input type="text" class="form-control" name="nr_cep" id="cep"
-                                                    placeholder="Informe o CEP" maxlength="9">
+                                                <input type="text" class="form-control" name="nr_cep"
+                                                    value="{{agendamento.nr_cep}}" placeholder="Informe o CEP"
+                                                    maxlength="9">
                                             </div>
                                         </div>
+
 
                                         <!-- Cidade / Bairro -->
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Cidade</label>
-                                                <input type="text" class="form-control"
+                                                <input type="text" class="form-control" readonly
                                                     value="{{agendamento.nm_cidade}}">
                                                 <input type="hidden" name="cd_cidade" value="{{agendamento.cd_cidade}}">
                                             </div>
@@ -305,7 +307,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Bairro</label>
-                                                <input type="text" class="form-control"
+                                                <input type="text" class="form-control" readonly
                                                     value="{{agendamento.nm_bairro}}">
                                                 <input type="hidden" name="cd_bairro" value="{{agendamento.cd_bairro}}">
                                             </div>
@@ -340,6 +342,7 @@
                                         </div>
                                     </div>
 
+
                                     <div class="d-flex justify-content-end">
                                         <a href="/agendamento" class="btn btn-secondary me-3 shadow-lg">Voltar</a>
                                         <button type="submit" class="btn btn-success shadow-lg">Salvar</button>
@@ -370,12 +373,21 @@
                                                     <input type="text" class="form-control" name="item_nome"
                                                         value="{{item.ds_mat_agenda}}" required>
                                                 </div>
+
                                                 <div class="col-md-6">
                                                     <label class="fw-bold">Linha do material</label>
-                                                    <input type="text" class="form-control" name="linha_material"
-                                                        value="{{item.ie_linha}}" required>
+                                                    <select name="linha_material" class="form-control">
+                                                        <option value="">Selecione a linha</option>
+                                                        {{#each linhas}}
+                                                        <option value="{{cd_linha}}" {{#if (eq ../item.ie_linha
+                                                            cd_linha)}}selected{{/if}}>
+                                                            {{nm_linha}}
+                                                        </option>
+                                                        {{/each}}
+                                                    </select>
                                                 </div>
-                                                <div class="col-md-6">
+
+                                                <div class="col-md-6 ">
                                                     <label class="fw-bold">Peso do material (KG)</label>
                                                     <input type="number" step="0.01" class="form-control"
                                                         name="item_peso" value="{{item.qt_peso_material_total_kg}}"
@@ -383,19 +395,19 @@
                                                 </div>
                                             </div>
                                             <div class="d-flex justify-content-end gap-2 mt-3">
-                                                <a href="/agendamentoEditar/{{agendamento.cd_agendamento}}"
+                                                <a href="/agendamentoEditar?id_agendamento={{agendamento.cd_agendamento}}"
                                                     class="btn btn-secondary">
                                                     Cancelar
                                                 </a>
-                    
+
                                                 <button
                                                     formaction="/agendamentoEditar/{{agendamento.cd_agendamento}}/itens/{{item.cd_mat_agenda}}/editar"
                                                     class="btn btn-warning">
                                                     Atualizar Item
                                                 </button>
-                                        
+
                                                 <button type="submit" class="btn btn-success">Adicionar Item</button>
-                                               
+
                                             </div>
 
                                         </form>
@@ -423,12 +435,11 @@
                                                 {{#each itens}}
                                                 <tr>
                                                     <td>{{ds_mat_agenda}}</td>
-                                                    <td>{{ie_linha}}</td>
+                                                    <td>{{nm_linha}}</td>
                                                     <td>{{qt_peso_material_total_kg}}</td>
                                                     <td>
-                                                        <a href="/agendamentoEditar/{{../agendamento.cd_agendamento}}/itens/{{cd_mat_agenda}}/excluir"
-                                                            class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('Excluir?');">
+                                                        <a href="#" class="btn btn-danger btn-sm"
+                                                            onclick="confirmarExclusao('{{../agendamento.cd_agendamento}}', '{{cd_mat_agenda}}')">
                                                             <i class="fa fa-trash"></i>
                                                         </a>
                                                         <a href="/agendamentoEditar/{{../agendamento.cd_agendamento}}/itens/{{cd_mat_agenda}}/editar"
@@ -475,8 +486,37 @@
                         }
                     });
                 </script>
+
+                <script>
+                    function confirmarExclusao(idAgendamento, itemId) {
+                        swal({
+                            title: "Tem certeza?",
+                            text: "Você não poderá desfazer esta ação!",
+                            icon: "warning",
+                            buttons: {
+                                cancel: {
+                                    text: "Cancelar",
+                                    visible: true,
+                                    className: "btn btn-secondary",
+                                },
+                                confirm: {
+                                    text: "Excluir",
+                                    className: "btn btn-danger",
+                                },
+                            },
+                            dangerMode: true,
+                        }).then((willDelete) => {
+                            if (willDelete) {
+                                // Redireciona para a rota de exclusão no back-end
+                                window.location.href = `/agendamentoEditar/${idAgendamento}/itens/${itemId}/excluir`;
+                            }
+                        });
+                    }
+                </script>
             </div>
         </div>
+
+
         <!--End conteudo indiviudual da pagina-->
         <!--start modal-- >
         <div class="modal fade" id="excluir" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

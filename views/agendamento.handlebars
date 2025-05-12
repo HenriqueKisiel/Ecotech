@@ -350,6 +350,39 @@
                     </div>
                 </div>
 
+                <script>
+                    // Função para atualizar os bairros com base na cidade selecionada
+                    document.querySelector('[name="cd_cidade"]').addEventListener('change', function () {
+                        const cidadeId = this.value;  // Obtém o ID da cidade selecionada
+
+                        // Verifica se uma cidade foi selecionada
+                        if (cidadeId) {
+                            // Realiza uma requisição Ajax para buscar os bairros
+                            fetch(`/agendamento/bairros/${cidadeId}`)
+                                .then(response => response.json())
+                                .then(bairros => {
+                                    const bairroSelect = document.querySelector('[name="cd_bairro"]');
+                                    bairroSelect.innerHTML = '<option value="">Selecione um bairro</option>';  // Limpa a lista de bairros antes de adicionar os novos
+
+                                    // Preenche a lista de bairros com os dados recebidos
+                                    bairros.forEach(bairro => {
+                                        const option = document.createElement('option');
+                                        option.value = bairro.cd_bairro;
+                                        option.textContent = bairro.nm_bairro;
+                                        bairroSelect.appendChild(option);
+                                    });
+                                })
+                                .catch(error => {
+                                    console.error('Erro ao buscar os bairros:', error);
+                                    alert('Erro ao carregar os bairros. Tente novamente mais tarde.');
+                                });
+                        } else {
+                            // Se não houver cidade selecionada, limpa os bairros
+                            document.querySelector('[name="cd_bairro"]').innerHTML = '<option value="">Selecione um bairro</option>';
+                        }
+                    });
+                </script>
+
 
                 <!--End conteudo indiviudual da pagina-->
             </div>

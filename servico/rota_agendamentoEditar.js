@@ -1,5 +1,6 @@
 const conectiondb = require('../bd/conexao_mysql.js');
 
+
 // Exibe a tela de edição com os dados do agendamento e seus itens
 function exibirEditarAgendamento(req, res, itemEmEdicao = null) {
     const idAgendamento = req.query.id_agendamento;
@@ -12,18 +13,19 @@ function exibirEditarAgendamento(req, res, itemEmEdicao = null) {
     const connection = conectiondb();
 
     const query = `
-        SELECT 
-            agendamento.*, 
-            pf.nm_pessoa_fisica, 
-            pj.nm_fantasia AS nm_pessoa_juridica_fantasia, 
-            c.nm_cidade, 
-            b.nm_bairro 
-        FROM agendamento
-        LEFT JOIN pessoa_fisica pf ON agendamento.cd_pessoa_fisica = pf.cd_pessoa_fisica
-        LEFT JOIN pessoa_juridica pj ON agendamento.cd_pessoa_juridica = pj.cd_pessoa_juridica
-        LEFT JOIN cidade c ON agendamento.cd_cidade = c.cd_cidade
-        LEFT JOIN bairro b ON agendamento.cd_bairro = b.cd_bairro
-        WHERE agendamento.cd_agendamento = ?`;
+    SELECT 
+        agendamento.*, 
+        agendamento.nr_cep, 
+        pf.nm_pessoa_fisica, 
+        pj.nm_fantasia AS nm_pessoa_juridica_fantasia, 
+        c.nm_cidade, 
+        b.nm_bairro 
+          FROM agendamento
+          LEFT JOIN pessoa_fisica pf ON agendamento.cd_pessoa_fisica = pf.cd_pessoa_fisica
+          LEFT JOIN pessoa_juridica pj ON agendamento.cd_pessoa_juridica = pj.cd_pessoa_juridica
+          LEFT JOIN cidade c ON agendamento.cd_cidade = c.cd_cidade
+          LEFT JOIN bairro b ON agendamento.cd_bairro = b.cd_bairro
+          WHERE agendamento.cd_agendamento = ?`;
 
     connection.query(query, [idAgendamento], (err, results) => {
         if (err) {
@@ -37,46 +39,61 @@ function exibirEditarAgendamento(req, res, itemEmEdicao = null) {
         }
 
         const agendamento = results[0];
-        console.log('Agendamento encontrado:', agendamento);
 
-        // Consulta para pegar os itens associados ao agendamento
-        const itensQuery = 'SELECT * FROM materiais_agenda WHERE ie_agenda = ?';
-        connection.query(itensQuery, [idAgendamento], (err, itens) => {
+        // Consulta para pegar todas as linhas cadastradas
+        const linhasQuery = 'SELECT cd_linha, nm_linha FROM linha';
+
+        connection.query(linhasQuery, (err, linhas) => {
             if (err) {
-                console.log("Erro na consulta dos itens:", err);
-                return res.status(500).send('Erro ao buscar os itens');
+                console.log('Erro ao buscar as linhas:', err);
+                return res.status(500).send('Erro ao buscar as linhas');
             }
 
-            // Consulta para pegar todas as pessoas físicas cadastradas
-            const pessoasFisicasQuery = 'SELECT cd_pessoa_fisica, nm_pessoa_fisica FROM pessoa_fisica';
+            // Consulta para pegar os itens associados ao agendamento
+            const itensQuery = `
+                SELECT a.*, l.nm_linha
+                FROM materiais_agenda a
+                LEFT JOIN linha l ON l.cd_linha = a.ie_linha
+                WHERE a.ie_agenda = ?`;
 
-            connection.query(pessoasFisicasQuery, (err, pessoasFisicas) => {
+            connection.query(itensQuery, [idAgendamento], (err, itens) => {
                 if (err) {
-                    console.log('Erro ao buscar as pessoas físicas:', err);
-                    return res.status(500).send('Erro ao buscar as pessoas físicas');
+                    console.log("Erro na consulta dos itens:", err);
+                    return res.status(500).send('Erro ao buscar os itens');
                 }
 
-                // Consulta para pegar as pessoas jurídicas
-                const pessoasJuridicasQuery = 'SELECT cd_pessoa_juridica, nm_fantasia FROM pessoa_juridica';
+                // Consulta para pegar todas as pessoas físicas cadastradas
+                const pessoasFisicasQuery = 'SELECT cd_pessoa_fisica, nm_pessoa_fisica FROM pessoa_fisica';
 
-                connection.query(pessoasJuridicasQuery, (err, pessoasJuridicas) => {
+                connection.query(pessoasFisicasQuery, (err, pessoasFisicas) => {
                     if (err) {
-                        console.log('Erro ao buscar as pessoas jurídicas:', err);
-                        return res.status(500).send('Erro ao buscar as pessoas jurídicas');
+                        console.log('Erro ao buscar as pessoas físicas:', err);
+                        return res.status(500).send('Erro ao buscar as pessoas físicas');
                     }
 
-                    // Passa os dados para o template
-                    res.render('agendamentoEditar', {
-                        agendamento,
-                        pessoasFisicas,
-                        pessoasJuridicas,
-                        itens,
-                        isPessoaFisica: agendamento.cd_pessoa_fisica !== null,
-                        isPessoaJuridica: agendamento.cd_pessoa_juridica !== null,
-                        nomePessoaFisica: agendamento.nm_pessoa_fisica,
-                        nomePessoaJuridica: agendamento.nm_pessoa_juridica_fantasia,
-                        item: itemEmEdicao,               // <-- renomeado para "item"
-                        editandoItem: itemEmEdicao    !== null   // <-- flag usada no template
+                    // Consulta para pegar as pessoas jurídicas
+                    const pessoasJuridicasQuery = 'SELECT cd_pessoa_juridica, nm_fantasia FROM pessoa_juridica';
+
+                    connection.query(pessoasJuridicasQuery, (err, pessoasJuridicas) => {
+                        if (err) {
+                            console.log('Erro ao buscar as pessoas jurídicas:', err);
+                            return res.status(500).send('Erro ao buscar as pessoas jurídicas');
+                        }
+
+                        // Renderiza a página com todos os dados necessários
+                        res.render('agendamentoEditar', {
+                            agendamento,
+                            pessoasFisicas,
+                            pessoasJuridicas,
+                            itens,
+                            linhas, // Aqui estão as linhas cadastradas
+                            isPessoaFisica: agendamento.cd_pessoa_fisica !== null,
+                            isPessoaJuridica: agendamento.cd_pessoa_juridica !== null,
+                            nomePessoaFisica: agendamento.nm_pessoa_fisica,
+                            nomePessoaJuridica: agendamento.nm_pessoa_juridica_fantasia,
+                            item: itemEmEdicao,
+                            editandoItem: itemEmEdicao !== null
+                        });
                     });
                 });
             });
@@ -84,37 +101,40 @@ function exibirEditarAgendamento(req, res, itemEmEdicao = null) {
     });
 }
 
-// Atualiza o agendamento
 function atualizarAgendamento(req, res) {
     const {
         id_agendamento,
         cd_pessoa_fisica,
         cd_pessoa_juridica,
         endereco,
+        nr_cep,
         cd_bairro,
         cd_cidade,
         dt_solicitada,
         peso_previsto,
         status,
-        nm_pessoa_fisica // Nome da pessoa física enviado pelo front-end
+        nm_pessoa_fisica
     } = req.body;
 
     const statusAtualizado = (status === 'ativo' || status === 'cancelado') ? status : 'ativo';
+    const dataCancelamento = (statusAtualizado === 'cancelado') ? new Date() : null; // Define a data de cancelamento
 
     const connection = conectiondb();
 
     // Verificando os dados que estão sendo recebidos
     console.log('Dados de atualização recebidos:', {
         id_agendamento,
-        cd_pessoa_fisica, 
-        nm_pessoa_fisica, 
+        cd_pessoa_fisica,
+        nm_pessoa_fisica,
         cd_pessoa_juridica,
         endereco,
+        nr_cep,
         cd_bairro,
         cd_cidade,
         dt_solicitada,
         peso_previsto,
-        status: statusAtualizado
+        status: statusAtualizado,
+        dt_cancelado: dataCancelamento
     });
 
     // Verifica se foi enviado o nome da pessoa física (para buscar o código)
@@ -123,7 +143,7 @@ function atualizarAgendamento(req, res) {
 
         // Passo 1: Consulta o código da pessoa física baseado no nome
         const queryPessoaFisica = 'SELECT cd_pessoa_fisica FROM pessoa_fisica WHERE nm_pessoa_fisica = ?';
-        
+
         connection.query(queryPessoaFisica, [nm_pessoa_fisica], (err, result) => {
             if (err) {
                 console.error('Erro ao buscar o código da pessoa física:', err);
@@ -137,7 +157,7 @@ function atualizarAgendamento(req, res) {
 
             const cd_pessoa_fisicaEncontrada = result[0].cd_pessoa_fisica; // Obter o código da pessoa física
             console.log('Código da pessoa física encontrado:', cd_pessoa_fisicaEncontrada);
-            
+
             // Agora podemos atualizar o agendamento com o código da pessoa física
             const sql = `
                 UPDATE agendamento SET
@@ -147,10 +167,10 @@ function atualizarAgendamento(req, res) {
                     cd_bairro = ?,
                     cd_cidade = ?,
                     qt_quantidade_prevista_kg = ?,
-                    status = ? 
-                WHERE cd_agendamento = ?`
-            ;
-            
+                    status = ?,
+                    dt_cancelado = ?
+                WHERE cd_agendamento = ?`;
+
             const valores = [
                 cd_pessoa_fisicaEncontrada, // Usando o código encontrado para atualizar
                 cd_pessoa_juridica || null,
@@ -159,6 +179,7 @@ function atualizarAgendamento(req, res) {
                 cd_cidade,
                 peso_previsto,
                 statusAtualizado,
+                dataCancelamento,
                 id_agendamento
             ];
 
@@ -184,9 +205,9 @@ function atualizarAgendamento(req, res) {
                 cd_bairro = ?,
                 cd_cidade = ?,
                 qt_quantidade_prevista_kg = ?,
-                status = ? 
-            WHERE cd_agendamento = ?`
-        ;
+                status = ?,
+                dt_cancelado = ?
+            WHERE cd_agendamento = ?`;
 
         const valores = [
             cd_pessoa_fisica,
@@ -196,6 +217,7 @@ function atualizarAgendamento(req, res) {
             cd_cidade,
             peso_previsto,
             statusAtualizado,
+            dataCancelamento,
             id_agendamento
         ];
 
@@ -208,7 +230,6 @@ function atualizarAgendamento(req, res) {
             console.log("Agendamento atualizado com sucesso!");
             res.redirect(`/agendamentoEditar?id_agendamento=${id_agendamento}`);
         });
-       
     }
 }
 
@@ -240,13 +261,18 @@ function adicionarItem(req, res) {
 }
 
 
-
 function exibirEditarItem(req, res) {
     const connection = conectiondb();
     const idAgendamento = req.params.id_agendamento;
     const itemId = req.params.itemId;
 
-    const itemQuery = 'SELECT * FROM materiais_agenda WHERE cd_mat_agenda = ?';
+    const itemQuery = `
+        SELECT a.*, l.nm_linha
+        FROM materiais_agenda a
+        LEFT JOIN linha l ON l.cd_linha = a.ie_linha
+        WHERE a.cd_mat_agenda = ?
+    `;
+
     connection.query(itemQuery, [itemId], (err, results) => {
         if (err) {
             console.log('Erro ao buscar o item para edição:', err);
@@ -257,10 +283,20 @@ function exibirEditarItem(req, res) {
             return res.status(404).send('Item não encontrado');
         }
 
-        const item = results[0];
-        // Reaproveita a função, mas agora com item preenchido → editandoItem = true
-        req.query.id_agendamento = idAgendamento; // forçando o uso do mesmo parâmetro
-        exibirEditarAgendamento(req, res, item);
+        const item = results[0]; // Atribui o resultado da consulta à variável `item`
+
+        const linhasQuery = 'SELECT cd_linha, nm_linha FROM linha';
+
+        connection.query(linhasQuery, (err, linhas) => {
+            if (err) {
+                console.log('Erro ao buscar as linhas:', err);
+                return res.status(500).send('Erro ao buscar as linhas');
+            }
+
+            // Reaproveita a função, mas agora com item preenchido → editandoItem = true
+            req.query.id_agendamento = idAgendamento; // Força o uso do mesmo parâmetro
+            exibirEditarAgendamento(req, res, { ...item, linhas });
+        });
     });
 }
 
@@ -304,7 +340,7 @@ function excluirItem(req, res) {
         itemId
     });
 
-    const query =` DELETE FROM materiais_agenda WHERE cd_mat_agenda = ?`;
+    const query = ` DELETE FROM materiais_agenda WHERE cd_mat_agenda = ?`;
 
     connection.query(query, [itemId], (err) => {
         if (err) {
@@ -315,7 +351,7 @@ function excluirItem(req, res) {
         console.log('Item excluído com sucesso');
         res.redirect(`/agendamentoEditar?id_agendamento=${id_agendamento}`);
     });
-    
+
 }
 
 // Exporta todas as funções
