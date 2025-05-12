@@ -235,135 +235,91 @@
                                 </small>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="card card-flush shadow-lg">
-                                    <div class="card-header d-none">
-                                        <card class="card-title">#101</card>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="mb-3">
-                                            <div class="fs-3 fw-bold" title="Código de Coleta">#101</div>
-                                        </div>
-                                        <div class="d-flex flex-column mb-3">
-                                            <span class="fs-6 pb-2"><strong>Fornecedor:</strong><span
-                                                    class="ps-2">Cleiton
-                                                    Junior</span></span>
-                                            <span class="fs-6 pb-2"><strong>Telefone:</strong><span class="ps-2">41
-                                                    98087797</span></span>
-                                            <span class="fs-6 pb-2"><strong>Endereço:</strong><span class="ps-2">Rua das
-                                                    Flores 654, Batel, Curitiba-PR</span></span>
-                                            <span class="fs-6 pb-2"><strong>Material:</strong><span class="ps-2">Linha
-                                                    Verde</span></span>
-                                            <span class="fs-6 pb-2"><strong>Status:</strong><span class="ps-2">Em
-                                                    Andamento</span></span>
-                                        </div>
-                                        <div class="d-flex justify-content-center">
-                                            <button type="button" class="btn btn-success me-3" id="alert_demo_8">
-                                                Finalizar
-                                            </button>
-                                            <button type="button" class="btn btn-danger" id="alert_demo_7">
-                                                Cancelar
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card card-flush shadow-lg">
-                                    <div class="card-header d-none">
-                                        <card class="card-title">#102</card>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="mb-3">
-                                            <div class="fs-3 fw-bold" title="Código de Coleta">#102</div>
-                                        </div>
-                                        <div class="d-flex flex-column mb-3">
-                                            <span class="fs-6 pb-2"><strong>Fornecedor:</strong><span class="ps-2">Maria
-                                                    Oliveira</span></span>
-                                            <span class="fs-6 pb-2"><strong>Telefone:</strong><span class="ps-2">41
-                                                    998765432</span></span>
-                                            <span class="fs-6 pb-2"><strong>Endereço:</strong><span class="ps-2">Av.
-                                                    República Argentina, 1234, Portão, Curitiba-PR</span></span>
-                                            <span class="fs-6 pb-2"><strong>Material:</strong><span class="ps-2">Linha
-                                                    Azul</span></span>
-                                            <span class="fs-6 pb-2"><strong>Status:</strong><span
-                                                    class="ps-2">Pendente</span></span>
-                                        </div>
-                                        <div class="d-flex justify-content-center">
-                                            <button type="button" class="btn btn-primary" id="alert_demo_9">
-                                                Iniciar
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="card">
+                            <div class="card-header d-none">
+                                <div class="card-title">Titulo
 
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="card card-flush shadow-lg">
-                                    <div class="card-header d-none">
-                                        <card class="card-title">#103</card>
+                            <div class="card-body">
+                                <div class="row d-flex align-items-center">
+                                    <div class="col-md-4">
+                                        <label class="fs-6 fw-bold">Rota:</label>
+                                        <div class="form-group">
+                                            <select class="form-select form-control" id="defaultSelect">
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option></option>
+                                            </select>
+                                        </div>
                                     </div>
-                                    <div class="card-body">
-                                        <div class="mb-3">
-                                            <div class="fs-3 fw-bold" title="Código de Coleta">#103</div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label class="fs-6 fw-bold">Data da Rota</label>
+                                            <input type="date" class="form-control">
                                         </div>
-                                        <div class="d-flex flex-column mb-3">
-                                            <span class="fs-6 pb-2"><strong>Fornecedor:</strong><span
-                                                    class="ps-2">Carlos
-                                                    Souza</span></span>
-                                            <span class="fs-6 pb-2"><strong>Telefone:</strong><span class="ps-2">41
-                                                    997654321</span></span>
-                                            <span class="fs-6 pb-2"><strong>Endereço:</strong><span class="ps-2">Rua XV
-                                                    de Novembro, 987, Centro, Curitiba-PR</span></span>
-                                            <span class="fs-6 pb-2"><strong>Material:</strong><span
-                                                    class="ps-2">Vidro</span></span>
-                                            <span class="fs-6 pb-2"><strong>Status:</strong><span
-                                                    class="ps-2">Finalizado</span></span>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label class="fs-6 fw-bold">Km</label>
+                                            <input type="text" class="form-control" placeholder="____">
                                         </div>
-                                        <div class="d-flex justify-content-center">
-                                            <button type="button" class="btn btn-success me-3" id="alert_demo_8">
-                                                Finalizar
-                                            </button>
-                                            <button type="button" class="btn btn-danger" id="alert_demo_7">
-                                                Cancelar
-                                            </button>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label class="fs-6 fw-bold">Peso (Kg)</label>
+                                            <input type="text" class="form-control" placeholder="____">
                                         </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="submit" class="btn btn-primary shadow-lg me-3 fs-6 fw-bold">
+                                            Iniciar
+                                        </button>
+                                        <button type="submit" class="btn btn-success shadow-lg fs-6 fw-bold">
+                                            Finalizar
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="card card-flush shadow-lg">
-                                    <div class="card-header d-none">
-                                        <card class="card-title">#104</card>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="mb-3">
-                                            <div class="fs-3 fw-bold" title="Código de Coleta">#104</div>
-                                        </div>
-                                        <div class="d-flex flex-column mb-3">
-                                            <span class="fs-6 pb-2"><strong>Fornecedor:</strong><span class="ps-2">Ana
-                                                    Pereira</span></span>
-                                            <span class="fs-6 pb-2"><strong>Telefone:</strong><span class="ps-2">41
-                                                    996543210</span></span>
-                                            <span class="fs-6 pb-2"><strong>Endereço:</strong><span class="ps-2">Rua
-                                                    Santa Efigenia, 456, Xaxim, Curitiba-PR</span></span>
-                                            <span class="fs-6 pb-2"><strong>Material:</strong><span
-                                                    class="ps-2">Metal</span></span>
-                                            <span class="fs-6 pb-2"><strong>Status:</strong><span class="ps-2">Em
-                                                    Andamento</span></span>
-                                        </div>
-                                        <div class="d-flex justify-content-center">
-                                            <button type="button" class="btn btn-success me-3" id="alert_demo_8">
-                                                Finalizar
-                                            </button>
-                                            <button type="button" class="btn btn-danger" id="alert_demo_7">
-                                                Cancelar
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
+                        </div>
+                        <div class="card shadow-lg">
+                            <div class="card-header">
+                                <div class="card-title">Pontos de Coleta</div>
+                            </div>
+                            <div class="card-body p-0">
 
+                                <table class="table table-head-bg-success mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Nome</th>
+                                            <th scope="col">Endereço</th>
+                                            <th scope="col">CEP</th>
+                                            <th scope="col">Cidade</th>
+                                            <th scope="col">Bairro</th>
+                                            <th scope="col">Contato</th>
+                                            <th scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Nauhany M</td>
+                                            <td>Rua das Flores 1234</td>
+                                            <td>81810-150</td>
+                                            <td>Curitiba</td>
+                                            <td>Fazendinha</td>
+                                            <td>(41) 998087797</td>
+                                            <td>
+                                                <div class="d-flex justify-content-end">
+                                                    <a class="btn btn-info me-3 fs-6 fw-bold shadow-lg">Coletado</a>
+
+                                                    <a class="btn btn-danger fs-6 fw-bold shadow-lg">Cancelar</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

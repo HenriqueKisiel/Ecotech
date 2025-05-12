@@ -422,7 +422,7 @@
                                         <div class="card-title">Lista de Itens</div>
                                     </div>
                                     <div class="card-body p-0">
-                                        <table class="table table-striped table-hover mt-4">
+                                        <table class="table table-head-bg-success">
                                             <thead>
                                                 <tr>
                                                     <th>Material</th>
@@ -438,13 +438,14 @@
                                                     <td>{{nm_linha}}</td>
                                                     <td>{{qt_peso_material_total_kg}}</td>
                                                     <td>
-                                                        <a href="#" class="btn btn-danger btn-sm"
-                                                            onclick="confirmarExclusao('{{../agendamento.cd_agendamento}}', '{{cd_mat_agenda}}')">
-                                                            <i class="fa fa-trash"></i>
+                                                        <a href="/agendamentoEditar/{{../agendamento.cd_agendamento}}/itens/{{cd_mat_agenda}}/excluir"
+                                                            class="btn btn-danger me-2"
+                                                            onclick="return confirm('Tem certeza que deseja excluir este item?');">
+                                                            <i class="fa fa-trash"></i> Excluir
                                                         </a>
                                                         <a href="/agendamentoEditar/{{../agendamento.cd_agendamento}}/itens/{{cd_mat_agenda}}/editar"
-                                                            class="btn btn-warning btn-sm">
-                                                            <i class="fa fa-edit"></i>
+                                                            class="btn btn-warning">
+                                                            <i class="fa fa-edit"></i> Editar
                                                         </a>
                                                     </td>
                                                 </tr>
