@@ -227,7 +227,7 @@
                     <div class="page-inner">
                         <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
                             <div class="mb-3 d-flex flex-column">
-                                <span class="fs-2 fw-bold">Entrada de Material</span>
+                                <span class="fs-2 fw-bold">Pesagem de Material</span>
                                 <small class="text-muted">Preencha os dados de cadastro e clique em continuar.</small>
                             </div>
                         </div>
@@ -235,14 +235,13 @@
                             <div class="card-body">
                                 <div class="row mb-5">
                                     <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Nome do Agendamento</label>
-                                                <select id="agendamento" name="agendamento"
-                                                    class="form-control">
-                                                    <option value="">Selecione um agendamento</option>
-                                                </select>
-                                            </div>
+                                        <div class="form-group">
+                                            <label class="fw-bold">Nome do Agendamento</label>
+                                            <select id="agendamento" name="agendamento" class="form-control">
+                                                <option value="">Selecione um agendamento</option>
+                                            </select>
                                         </div>
+                                    </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Peso previsto no agendamento (KG)</label>
@@ -264,37 +263,43 @@
                                     <div class="separator-dashed"></div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-5 col-md-4">
-                                        <div class="nav flex-column nav-pills nav-black nav-pills-no-bd"
-                                            id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                            <button class="btn btn-primary btn-linha" data-linha="1">Linha 1</button>
-                                            <button class="btn btn-success btn-linha" data-linha="2">Linha 2</button>
-                                            <button class="btn btn-warning btn-linha" data-linha="3">Linha 3</button>
-                                            <button class="btn btn-danger btn-linha" data-linha="4">Linha 4</button>
-                                        </div>                                        
+                                    <div class="col-md-3">
+                                        <div class="d-flex flex-column" id="v-pills-tab">
+                                            <button class="btn btn-sm shadow-lg mb-3 fs-6 fw-bold btn-primary btn-linha"
+                                                data-linha="1">Linha Azul</button>
+                                            <button class="btn btn-sm shadow-lg mb-3 fs-6 fw-bold btn-success btn-linha"
+                                                data-linha="2">Linha Verde</button>
+                                            <button class="btn btn-sm shadow-lg mb-3 fs-6 fw-bold btn-warning btn-linha"
+                                                data-linha="3">Linha Laranja</button>
+                                            <button class="btn btn-sm shadow-lg mb-3 fs-6 fw-bold btn-danger btn-linha"
+                                                data-linha="4">Linha Vermelho</button>
+                                        </div>
                                     </div>
-<div class="card-body">
-    <div class="table-responsive rounded">
-        <form id="formUpdate">
-            <table class="table table-bordered table-head-bg-success">
-                <thead>
-                    <tr>
-                        <th>Codigo</th>
-                        <th>Material</th>
-                        <th>Peso previsto</th>
-                        <th>Peso final</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                    <!-- Os dados serão inseridos aqui -->
-                </tbody>
-            </table>
-            <div class="d-flex justify-content-end mt-3">
-                <button type="submit" class="btn btn-primary">Salvar Alterações</button>
-            </div>
-        </form>
-    </div>
-</div>
+                                    <div class="col-md-9">
+                                        <div class="card-body">
+                                            <div class="table-responsive rounded">
+                                                <form id="formUpdate">
+                                                    <table class="table table-bordered table-head-bg-success">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Codigo</th>
+                                                                <th>Material</th>
+                                                                <th>Peso previsto</th>
+                                                                <th>Peso final</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="tableBody">
+                                                            <!-- Os dados serão inseridos aqui -->
+                                                        </tbody>
+                                                    </table>
+                                                    <div class="d-flex justify-content-end mt-3">
+                                                        <button type="submit" class="btn btn-primary">Salvar
+                                                            Alterações</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="card-footer d-flex justify-content-end">
@@ -308,86 +313,86 @@
                         </div>
                     </div>
                 </div>
- <script>
-    document.addEventListener("DOMContentLoaded", function () {
-    const selectAgendamento = document.getElementById('agendamento');
-    const buttonsLinha = document.querySelectorAll('.btn-linha');
-    const tableBody = document.getElementById('tableBody');
-    const formUpdate = document.getElementById('formUpdate');
-    const pesoInput = document.getElementById('peso');
-    const pesoRealInput = document.getElementById('pesoReal');
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const selectAgendamento = document.getElementById('agendamento');
+                        const buttonsLinha = document.querySelectorAll('.btn-linha');
+                        const tableBody = document.getElementById('tableBody');
+                        const formUpdate = document.getElementById('formUpdate');
+                        const pesoInput = document.getElementById('peso');
+                        const pesoRealInput = document.getElementById('pesoReal');
 
-    // Função para preencher o select com os agendamentos
-    function carregarAgendamentos() {
-        fetch('/buscarAgendamentoMaterial')
-            .then(response => response.json())
-            .then(agendamentos => {
-                agendamentos.forEach(agendamento => {
-                    const option = document.createElement('option');
-                    option.value = agendamento.cd_agendamento;
-                    option.textContent = agendamento.nm_agendamento; // Nome do agendamento
-                    option.dataset.peso = agendamento.qt_quantidade_prevista_kg; // Peso previsto
-                    option.dataset.pesoReal = agendamento.qt_peso_real; // Peso real
-                    selectAgendamento.appendChild(option);
-                });
+                        // Função para preencher o select com os agendamentos
+                        function carregarAgendamentos() {
+                            fetch('/buscarAgendamentoMaterial')
+                                .then(response => response.json())
+                                .then(agendamentos => {
+                                    agendamentos.forEach(agendamento => {
+                                        const option = document.createElement('option');
+                                        option.value = agendamento.cd_agendamento;
+                                        option.textContent = agendamento.nm_agendamento; // Nome do agendamento
+                                        option.dataset.peso = agendamento.qt_quantidade_prevista_kg; // Peso previsto
+                                        option.dataset.pesoReal = agendamento.qt_peso_real; // Peso real
+                                        selectAgendamento.appendChild(option);
+                                    });
 
-                // Adicionar evento de mudança no select
-                selectAgendamento.addEventListener('change', atualizarCamposAgendamento);
+                                    // Adicionar evento de mudança no select
+                                    selectAgendamento.addEventListener('change', atualizarCamposAgendamento);
 
-                // Preencher automaticamente o select com o valor da URL, se existir
-                const urlParams = new URLSearchParams(window.location.search);
-                const ie_agenda = urlParams.get('ie_agenda');
-                if (ie_agenda) {
-                    selectAgendamento.value = ie_agenda;
-                    atualizarCamposAgendamento(); // Atualizar os campos de peso e peso real
-                }
-            })
-            .catch(error => console.error('Erro ao carregar agendamentos:', error));
-    }
+                                    // Preencher automaticamente o select com o valor da URL, se existir
+                                    const urlParams = new URLSearchParams(window.location.search);
+                                    const ie_agenda = urlParams.get('ie_agenda');
+                                    if (ie_agenda) {
+                                        selectAgendamento.value = ie_agenda;
+                                        atualizarCamposAgendamento(); // Atualizar os campos de peso e peso real
+                                    }
+                                })
+                                .catch(error => console.error('Erro ao carregar agendamentos:', error));
+                        }
 
-    // Função para atualizar os campos ao selecionar um agendamento
-    function atualizarCamposAgendamento() {
-        const selectedOption = selectAgendamento.options[selectAgendamento.selectedIndex];
+                        // Função para atualizar os campos ao selecionar um agendamento
+                        function atualizarCamposAgendamento() {
+                            const selectedOption = selectAgendamento.options[selectAgendamento.selectedIndex];
 
-        // Atualizar os campos de peso e peso real
-        pesoInput.value = selectedOption.dataset.peso || '';
-        pesoRealInput.value = selectedOption.dataset.pesoReal || '';
-    }
+                            // Atualizar os campos de peso e peso real
+                            pesoInput.value = selectedOption.dataset.peso || '';
+                            pesoRealInput.value = selectedOption.dataset.pesoReal || '';
+                        }
 
-    // Função para buscar itens do agendamento e linha ao clicar nos botões
-    function configurarBotoesLinha() {
-    buttonsLinha.forEach(button => {
-        button.addEventListener('click', function () {
-            // Remover a classe 'active' de todos os botões
-            buttonsLinha.forEach(btn => btn.classList.remove('active'));
+                        // Função para buscar itens do agendamento e linha ao clicar nos botões
+                        function configurarBotoesLinha() {
+                            buttonsLinha.forEach(button => {
+                                button.addEventListener('click', function () {
+                                    // Remover a classe 'active' de todos os botões
+                                    buttonsLinha.forEach(btn => btn.classList.remove('active'));
 
-            // Adicionar a classe 'active' ao botão clicado
-            this.classList.add('active');
+                                    // Adicionar a classe 'active' ao botão clicado
+                                    this.classList.add('active');
 
-            const ie_linha = this.getAttribute('data-linha'); // Obter o valor da linha
-            const ie_agenda = selectAgendamento.value; // Obter o ID do agendamento selecionado
+                                    const ie_linha = this.getAttribute('data-linha'); // Obter o valor da linha
+                                    const ie_agenda = selectAgendamento.value; // Obter o ID do agendamento selecionado
 
-            if (!ie_agenda) {
-                alert('Selecione um agendamento primeiro.');
-                return;
-            }
+                                    if (!ie_agenda) {
+                                        alert('Selecione um agendamento primeiro.');
+                                        return;
+                                    }
 
-            // Fazer a requisição para buscar os itens do agendamento e linha
-            fetch(`/buscarItensgenda?ie_agenda=${ie_agenda}&ie_linha=${ie_linha}`)
-                .then(response => response.json())
-                .then(data => {
-                    // Limpar os resultados anteriores
-                    tableBody.innerHTML = '';
+                                    // Fazer a requisição para buscar os itens do agendamento e linha
+                                    fetch(`/buscarItensgenda?ie_agenda=${ie_agenda}&ie_linha=${ie_linha}`)
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            // Limpar os resultados anteriores
+                                            tableBody.innerHTML = '';
 
-                    if (data.length === 0) {
-                        tableBody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">Nenhum item encontrado</td></tr>';
-                        return;
-                    }
+                                            if (data.length === 0) {
+                                                tableBody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">Nenhum item encontrado</td></tr>';
+                                                return;
+                                            }
 
-                    // Exibir os resultados na tabela
-                    data.forEach(item => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
+                                            // Exibir os resultados na tabela
+                                            data.forEach(item => {
+                                                const row = document.createElement('tr');
+                                                row.innerHTML = `
                             <td>${item.cd_mat_agenda}</td>
                             <td>${item.ds_mat_agenda}</td>
                             <td>${item.qt_peso_material_total_kg}</td>
@@ -395,65 +400,65 @@
                                 <input type="number" name="pesoFinal[${item.cd_mat_agenda}]" class="form-control" value="${item.qt_peso_final || ''}" />
                             </td>
                         `;
-                        tableBody.appendChild(row);
+                                                tableBody.appendChild(row);
+                                            });
+                                        })
+                                        .catch(error => console.error('Erro ao buscar itens do agendamento e linha:', error));
+                                });
+                            });
+                        }
+
+                        // Função para salvar as alterações no formulário
+                        formUpdate.addEventListener('submit', function (event) {
+                            event.preventDefault(); // Impedir o envio padrão do formulário
+
+                            const formData = new FormData(formUpdate);
+
+                            // Log para verificar os dados enviados
+                            for (let [key, value] of formData.entries()) {
+                                console.log(`${key}: ${value}`);
+                            }
+
+                            // Obter os valores de agendamento e linha
+                            const ie_agenda = selectAgendamento.value;
+                            const ie_linha = document.querySelector('.btn-linha.active')?.getAttribute('data-linha');
+
+                            // Verificar se os valores estão corretos
+                            if (!ie_agenda) {
+                                alert('Selecione um agendamento antes de salvar.');
+                                return;
+                            }
+
+                            if (!ie_linha) {
+                                alert('Selecione uma linha antes de salvar.');
+                                return;
+                            }
+
+                            // Enviar os dados para o backend
+                            fetch('/atualizarPesos', {
+                                method: 'POST',
+                                body: formData
+                            })
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Erro na resposta do servidor');
+                                    }
+                                    return response.json();
+                                })
+                                .then(data => {
+                                    alert('Pesos atualizados com sucesso!');
+
+                                    // Recarregar a página com os mesmos parâmetros
+                                    window.location.href = `/novoMaterial?ie_agenda=${ie_agenda}&ie_linha=${ie_linha}`;
+                                })
+                                .catch(error => console.error('Erro ao atualizar os pesos:', error));
+                        });
+
+                        // Inicializar as funções
+                        carregarAgendamentos();
+                        configurarBotoesLinha();
                     });
-                })
-                .catch(error => console.error('Erro ao buscar itens do agendamento e linha:', error));
-        });
-    });
-}
- 
-    // Função para salvar as alterações no formulário
-    formUpdate.addEventListener('submit', function (event) {
-    event.preventDefault(); // Impedir o envio padrão do formulário
-
-    const formData = new FormData(formUpdate);
-
-    // Log para verificar os dados enviados
-    for (let [key, value] of formData.entries()) {
-        console.log(`${key}: ${value}`);
-    }
-
-    // Obter os valores de agendamento e linha
-    const ie_agenda = selectAgendamento.value;
-    const ie_linha = document.querySelector('.btn-linha.active')?.getAttribute('data-linha');
-
-    // Verificar se os valores estão corretos
-    if (!ie_agenda) {
-        alert('Selecione um agendamento antes de salvar.');
-        return;
-    }
-
-    if (!ie_linha) {
-        alert('Selecione uma linha antes de salvar.');
-        return;
-    }
-
-    // Enviar os dados para o backend
-    fetch('/atualizarPesos', {
-        method: 'POST',
-        body: formData
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Erro na resposta do servidor');
-            }
-            return response.json();
-        })
-        .then(data => {
-            alert('Pesos atualizados com sucesso!');
-
-            // Recarregar a página com os mesmos parâmetros
-            window.location.href = `/novoMaterial?ie_agenda=${ie_agenda}&ie_linha=${ie_linha}`;
-        })
-        .catch(error => console.error('Erro ao atualizar os pesos:', error));
-});
-   
-    // Inicializar as funções
-    carregarAgendamentos();
-    configurarBotoesLinha();
-});
-</script>
+                </script>
 
                 <footer class="footer">
                     <div class="container-fluid d-flex justify-content-between">
