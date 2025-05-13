@@ -9,7 +9,7 @@ function exibirNovoMaterial(req, res) {
 
 
 function buscarAgendamentoMaterial(req, res) {
-    const sql = 'SELECT cd_agendamento, nm_agendamento, ds_endereco, qt_quantidade_prevista_kg, qt_peso_real,status FROM agendamento WHERE dt_coleta <> "0000-00-00"';
+    const sql = 'SELECT cd_agendamento, nm_agendamento, ds_endereco, qt_quantidade_prevista_kg, qt_peso_real,status FROM agendamento WHERE dt_coleta <> "0000-00-00" AND dt_separacao IS NULL';
     conectiondb().query(sql, (erro, resultados) => {
         if (erro) {
             console.error('Erro ao buscar Agendamentos:', erro);
