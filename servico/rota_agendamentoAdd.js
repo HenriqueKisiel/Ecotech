@@ -53,11 +53,6 @@ function registrarAgendamento(req, res) {
 
   const qt_quantidade_prevista_kg_num = parseFloat(qt_quantidade_prevista_kg.replace(',', '.'));
 
-  const query = `
-      INSERT INTO agendamento 
-      (dt_solicitada, cd_pessoa_fisica, cd_pessoa_juridica, ds_endereco, cd_bairro, cd_cidade, nr_cep, qt_quantidade_prevista_kg, status)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `;
     const insertQuery = `
         INSERT INTO agendamento 
         (dt_solicitada, cd_pessoa_fisica, cd_pessoa_juridica, ds_endereco, cd_bairro, cd_cidade, nr_cep, qt_quantidade_prevista_kg)
@@ -76,7 +71,7 @@ function registrarAgendamento(req, res) {
       'ativo'
     ];
 
-  conexao.query(query, valores, (erro, resultado) => {
+  conexao.query(insertQuery, valores, (erro, resultado) => {
     if (erro) {
       console.error("Erro ao registrar agendamento:", erro);
       return exibirAgendamento(req, res, `

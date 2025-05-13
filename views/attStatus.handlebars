@@ -234,6 +234,9 @@
                                     Realize a atualização do status da coleta.
                                 </small>
                             </div>
+                            <div>
+                                 <a href="/rotas" class="btn btn-secondary me-3 shadow-lg">Voltar</a>
+                            </div>
                         </div>
                         <div class="card">
                             <div class="card-header d-none">
@@ -243,106 +246,343 @@
                             </div>
                             <div class="card-body">
                                 <div class="row d-flex align-items-center">
-                                    <div class="col-md-4">
-                                        <label class="fs-6 fw-bold">Rota:</label>
+                                    <div class="col-md-3">
                                         <div class="form-group">
-                                            <select class="form-select form-control" id="defaultSelect">
-                                                <option>1</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                                <option></option>
-                                            </select>
+                                            <label class="fs-6 fw-bold">Rota</label>
+                                            <input value="{{rotas.nm_rota}}" type="text" class="form-control">
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <label class="fs-6 fw-bold">Data da Rota</label>
-                                            <input type="date" class="form-control">
+                                            <input value="{{rotas.dt_agendada}}" type="text" class="form-control">
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-1">
                                         <div class="form-group">
                                             <label class="fs-6 fw-bold">Km</label>
-                                            <input type="text" class="form-control" placeholder="____">
+                                            <input value="{{rotas.nr_distancia_km}}" type="text" class="form-control"
+                                                placeholder="____">
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <label class="fs-6 fw-bold">Peso (Kg)</label>
-                                            <input type="text" class="form-control" placeholder="____">
+                                            <input type="text" value="{{rotas.qt_peso_total_kg}}" class="form-control"
+                                                placeholder="____">
                                         </div>
                                     </div>
                                     <div class="col-md-2">
-                                        <button type="submit" class="btn btn-primary shadow-lg me-3 fs-6 fw-bold">
+                                        <div class="form-group">
+                                            <label class="fs-6 fw-bold">Data inicio </label>
+                                            <input type="text" value="{{rotas.dt_iniciado}}" class="form-control"
+                                                placeholder="____">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label class="fs-6 fw-bold">Data Fim </label>
+                                            <input type="text" value="{{rotas.dt_fim}}" class="form-control"
+                                                placeholder="____">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 d-flex flex-row">
+                                        {{#unless naoIniciou}}
+                                        <button id="btn-iniciar"
+                                            class="btn btn-sm mt-2 btn-primary shadow-lg me-3 fs-6 fw-bold">
                                             Iniciar
                                         </button>
-                                        <button type="submit" class="btn btn-success shadow-lg fs-6 fw-bold">
+                                        {{/unless}}
+                                        <button id="btn-finalizar"
+                                            class="btn btn-sm mt-2 btn-success shadow-lg fs-6 fw-bold">
                                             Finalizar
                                         </button>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
-                        <div class="card shadow-lg">
-                            <div class="card-header">
-                                <div class="card-title">Pontos de Coleta</div>
-                            </div>
-                            <div class="card-body p-0">
+                    </div>
+                    <div class="card shadow-lg mx-4">
+                        <div class="card-header">
+                            <div class="card-title">Pontos de Coleta</div>
+                        </div>
+                        <div class="card-body p-0">
 
-                                <table class="table table-head-bg-success mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Nome</th>
-                                            <th scope="col">Endereço</th>
-                                            <th scope="col">CEP</th>
-                                            <th scope="col">Cidade</th>
-                                            <th scope="col">Bairro</th>
-                                            <th scope="col">Contato</th>
-                                            <th scope="col"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Nauhany M</td>
-                                            <td>Rua das Flores 1234</td>
-                                            <td>81810-150</td>
-                                            <td>Curitiba</td>
-                                            <td>Fazendinha</td>
-                                            <td>(41) 998087797</td>
-                                            <td>
-                                                <div class="d-flex justify-content-end">
-                                                    <a class="btn btn-info me-3 fs-6 fw-bold shadow-lg">Coletado</a>
-
-                                                    <a class="btn btn-danger fs-6 fw-bold shadow-lg">Cancelar</a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <table class="table table-head-bg-success mb-0">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Nome</th>
+                                        <th scope="col">Endereço</th>
+                                        <th scope="col">Cidade</th>
+                                        <th scope="col">Bairro</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each pontos}}
+                                    <tr>
+                                        <td>{{nm_agendamento}}</td>
+                                        <td>{{ds_endereco}}</td>
+                                        <td>{{nm_cidade}}</td>
+                                        <td>{{nm_bairro}}</td>
+                                        <td>
+                                            <div class="d-flex justify-content-end">
+                                                <a class="btn {{#if naoColetou}}btn-success {{else}}btn-info{{/if}} me-3 fs-6 fw-bold shadow-lg btn-coletar"
+                                                    data-id="{{cd_agendamento}}" data-rota="{{cd_rota}}">
+                                                    Coletado
+                                                </a>
+                                                <a class="btn btn-danger fs-6 fw-bold shadow-lg btn-cancelar"
+                                                    data-id="{{cd_agendamento}}" data-rota="{{cd_rota}}">
+                                                    Cancelar
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-                <!--end conteudo indiviudual da pagina-->
-                <footer class="footer">
-                    <div class="container-fluid d-flex justify-content-between">
-                        <nav class="pull-left">
-                            <ul class="nav">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">footer#1</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">footer#2</a>
-                                </li>
-                            </ul>
-                        </nav>
-                        <div class="copyright">
-                            2025 - Autores: Equipe 7
+            </div>
+            <!-- Modal de Confirmação -->
+            <div class="modal fade" id="modalSucesso" tabindex="-1" aria-labelledby="modalSucessoLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header bg-success text-white">
+                            <h5 class="modal-title" id="modalSucessoLabel">Sucesso</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                aria-label="Fechar"></button>
+                        </div>
+                        <div class="modal-body">
+                            Início registrado com sucesso!
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" data-bs-dismiss="modal">OK</button>
                         </div>
                     </div>
-                </footer>
+                </div>
             </div>
+            <!--end conteudo indiviudual da pagina-->
+            <script>
+                document.getElementById('btn-iniciar').addEventListener('click', async () => {
+                    const cdRota = {{ rotas.cd_rota }};
+                try {
+                    const response = await fetch(`/attStatus/${cdRota}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ acao: 'iniciar' })
+                    });
+
+                    const result = await response.json();
+                    if (result.success) {
+                        swal("Início registrado!", "A coleta foi iniciada com sucesso!", {
+                            icon: "success",
+                            buttons: {
+                                confirm: {
+                                    text: "OK",
+                                    className: "btn btn-success",
+                                },
+                            },
+                        }).then(() => {
+                            window.location.href = `/attStatus/${cdRota}`;
+                        });
+                    } else {
+                        swal("Erro!", "Não foi possível registrar o início.", {
+                            icon: "error",
+                            buttons: {
+                                confirm: {
+                                    text: "Fechar",
+                                    className: "btn btn-danger",
+                                },
+                            },
+                        });
+                    }
+                } catch (error) {
+                    console.error('Erro na requisição:', error);
+                    swal("Erro!", "Erro na comunicação com o servidor.", {
+                        icon: "error",
+                        buttons: {
+                            confirm: {
+                                text: "Fechar",
+                                className: "btn btn-danger",
+                            },
+                        },
+                    });
+                }
+                });
+            </script>
+
+            <script>
+                document.getElementById('btn-finalizar').addEventListener('click', async () => {
+                    const cdRota = {{ rotas.cd_rota }};
+                try {
+                    const response = await fetch(`/attStatus/${cdRota}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ acao: 'finalizar' })
+                    });
+
+                    const result = await response.json();
+                    if (result.success) {
+                        swal("Rota Finalizada com sucesso!", "A coleta foi finalizada com sucesso!", {
+                            icon: "success",
+                            buttons: {
+                                confirm: {
+                                    text: "OK",
+                                    className: "btn btn-success",
+                                },
+                            },
+                        }).then(() => {
+                            window.location.href = `/attStatus/${cdRota}`;
+                        });
+                    } else {
+                        swal("Erro!", "Não foi possível registrar o término.", {
+                            icon: "error",
+                            buttons: {
+                                confirm: {
+                                    text: "Fechar",
+                                    className: "btn btn-danger",
+                                },
+                            },
+                        });
+                    }
+                } catch (error) {
+                    console.error('Erro na requisição:', error);
+                    swal("Erro!", "Erro na comunicação com o servidor.", {
+                        icon: "error",
+                        buttons: {
+                            confirm: {
+                                text: "Fechar",
+                                className: "btn btn-danger",
+                            },
+                        },
+                    });
+                }
+                });
+
+            </script>
+
+            <script>
+                document.querySelectorAll('.btn-coletar').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        e.preventDefault();
+                        const cdAgendamento = btn.dataset.id;
+                        const cdRota = btn.dataset.rota;
+
+                        try {
+                            const response = await fetch(`/atualizarAgendamento/${cdAgendamento}`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ acao: 'coletar' })
+                            });
+
+                            const result = await response.json();
+                            if (result.success) {
+                                swal("Coleta registrada!", "O ponto foi marcado como coletado.", {
+                                    icon: "success",
+                                    buttons: {
+                                        confirm: {
+                                            text: "OK",
+                                            className: "btn btn-success",
+                                        },
+                                    },
+                                }).then(() => {
+                                    window.location.href = `/attStatus/${cdRota}`;
+                                });
+                            } else {
+                                throw new Error("Erro no servidor");
+                            }
+                        } catch (error) {
+                            console.error(error);
+                            swal("Erro!", "Não foi possível registrar a coleta.", {
+                                icon: "error",
+                                buttons: {
+                                    confirm: {
+                                        text: "Fechar",
+                                        className: "btn btn-danger",
+                                    },
+                                },
+                            });
+                        }
+                    });
+                });
+
+                document.querySelectorAll('.btn-cancelar').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        e.preventDefault();
+                        const cdAgendamento = btn.dataset.id;
+                        const cdRota = btn.dataset.rota;
+
+                        try {
+                            const response = await fetch(`/atualizarAgendamento/${cdAgendamento}`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ acao: 'cancelar' })
+                            });
+
+                            const result = await response.json();
+                            if (result.success) {
+                                swal("Cancelamento registrado!", "O agendamento foi cancelado.", {
+                                    icon: "warning",
+                                    buttons: {
+                                        confirm: {
+                                            text: "OK",
+                                            className: "btn btn-warning",
+                                        },
+                                    },
+                                }).then(() => {
+                                    window.location.href = `/attStatus/${cdRota}`;
+                                });
+                            } else {
+                                throw new Error("Erro no servidor");
+                            }
+                        } catch (error) {
+                            console.error(error);
+                            swal("Erro!", "Não foi possível registrar o cancelamento.", {
+                                icon: "error",
+                                buttons: {
+                                    confirm: {
+                                        text: "Fechar",
+                                        className: "btn btn-danger",
+                                    },
+                                },
+                            });
+                        }
+                    });
+                });
+            </script>
+
+
+
+            <footer class="footer">
+                <div class="container-fluid d-flex justify-content-between">
+                    <nav class="pull-left">
+                        <ul class="nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">footer#1</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">footer#2</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div class="copyright">
+                        2025 - Autores: Equipe 7
+                    </div>
+                </div>
+            </footer>
+        </div>
         </div>
     </body>
 </main>

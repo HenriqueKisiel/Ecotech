@@ -207,9 +207,20 @@ router.get('/processamento', (req, res) => {
 //------------------------ Servico14 -------------------//
 
 // Rota para a página de atualizar status das rotas
-router.get('/attStatus', (req, res) => {
+router.get('/attStatus/:cd_rota', (req, res) => {
     servico14.exibirAtualizarRotas(req, res);
 });
+
+// Atualiza status da ROTA (iniciar/finalizar)
+router.post('/attStatus/:cd_rota', (req, res) => {
+    servico14.atualizarStatusRota(req, res);
+});
+
+// Atualiza a data de coleta/cancelamento de um agendamento
+router.post('/atualizarAgendamento/:cd_agendamento', (req, res) => {
+    servico14.atualizarDataColeta(req, res);
+});
+
 
 //------------------------ Servico15 -------------------//
 
