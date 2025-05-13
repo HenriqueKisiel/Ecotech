@@ -152,15 +152,10 @@ router.post('/material', (req, res) => {
     servico8.cadastrarMaterial(req, res);
 });
 
-///---------------------- Servico9 -------------------//
-// Rota para a página de cadastrar estoque (GET)
+//---------------------- Servico9 -------------------//
+// Rota para a página de cadastrar estoque
 router.get('/estoqueNovo', (req, res) => {
     servico9.exibirestoqueNovo(req, res);
-});
-
-// Rota para cadastrar o estoque (POST)
-router.post('/estoque/cadastrar', (req, res) => {
-    servico9.cadastrarEstoque(req, res);
 });
 
 //----------------------- Servico10 -------------------//
@@ -321,10 +316,6 @@ router.post('/rotaEditar/:cd_rota', (req, res) => {
     servico21.adicionarAgendamentoNaRota(req, res);
 });
 
-router.post('/excluirPonto/:id', (req, res) => {
-    servico21.excluirPontoColeta(req, res);
-});
-
 // ----------------------- Servico22 -------------------//
 //página para editar pessoa
 router.get('/pessoaEditar/:cd_pessoa_fisica', (req, res) => {
@@ -362,6 +353,18 @@ router.get('/planta/bairros/:cd_cidade', (req, res) => {
 // ----------------------- Servico25 -------------------//
 router.get('/novoMaterial', (req, res) => {
     servico25.exibirNovoMaterial(req, res);
+});
+
+router.get('/buscarAgendamentoMaterial', (req,res) =>{
+    servico25.buscarAgendamentoMaterial(req,res)
+});
+
+router.get('/buscarItensgenda', (req,res) =>{
+    servico25.buscarItensgenda(req,res)
+}); 
+
+router.post('/atualizarPesos', (req, res) =>{
+    servico25.atualizarPesos(req,res)
 });
 
 // ----------------------- Servico26 -------------------//
