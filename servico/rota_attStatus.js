@@ -25,7 +25,7 @@ function exibirAtualizarRotas(req, res) {
             // Verifica se a data de início é inválida
             const isDateValid = resultado1[0].dt_iniciado !== '0000-00-00 00:00:00';
             const isColetaValid = resultado2.dt_coleta !== '000000';
-            
+
 
             res.render('attStatus', {
                 rotas: resultado1[0],
@@ -46,26 +46,80 @@ async function atualizarStatusRota(req, res) {
     const { acao } = req.body;
     const dataHoraAtual = new Date();
 
-    let coluna;
-    if (acao === 'iniciar') {
-        coluna = 'dt_iniciado';
-    } else if (acao === 'finalizar') {
-        coluna = 'dt_fim';
+    if (acao === 'finalizar') {
+        // Verifica se existe algum agendamento com dt_coleta preenchida
+        const verificarAgendamentos = `
+           SELECT COUNT(*) AS total 
+        FROM vw_pontos_coleta 
+        WHERE cd_rota = ? 
+        AND dt_coleta IS NULL 
+
+        `;
+
+        connection.query(verificarAgendamentos, [cd_rota], (erroVerificacao, resultadoVerificacao) => {
+            if (erroVerificacao) {
+                console.error("Erro ao verificar agendamentos:", erroVerificacao);
+                return res.status(500).json({ success: false });
+            }
+
+            const faltamcoletar = resultadoVerificacao[0].total;
+
+            if (faltamcoletar > 0) {
+                return res.json({ success: false, coletado: true, message: 'Existem agendamentos para serem coletados para esta rota. Não é possível finalizar.' });
+            }
+
+            // Se nenhum agendamento coletado, prossegue com o update
+            const query = `UPDATE rota_coleta SET dt_fim = ? WHERE cd_rota = ?`;
+            connection.query(query, [dataHoraAtual, cd_rota], (erro, resultado) => {
+                if (erro) {
+                    console.error(`Erro ao atualizar dt_fim:`, erro);
+                    return res.json({ success: false });
+                }
+
+                return res.json({ success: true });
+            });
+        });
+
+    } else if (acao === 'iniciar') {
+
+
+        // Verifica se existe algum agendamento com dt_coleta preenchida
+        const verificaRota = `
+           SELECT COUNT(*) AS total 
+        FROM vw_pontos_coleta 
+        WHERE cd_rota = ? 
+        AND dt_r_iniciada IS NOT NULL 
+
+        `;
+
+        connection.query(verificaRota, [cd_rota], (erroVerificacao, resultadoVerificacao) => {
+            if (erroVerificacao) {
+                console.error("Erro ao verificar agendamentos:", erroVerificacao);
+                return res.status(500).json({ success: false });
+            }
+
+            const faltamcoletar = resultadoVerificacao[0].total;
+
+            if (faltamcoletar > 0) {
+                return res.json({ success: false, iniciado: true, message: 'A Rota já foi iniciada.' });
+            }
+
+            // inicia uma rota
+            const query = `UPDATE rota_coleta SET dt_iniciado = ? WHERE cd_rota = ?`;
+            connection.query(query, [dataHoraAtual, cd_rota], (erro, resultado) => {
+                if (erro) {
+                    console.error(`Erro ao atualizar dt_iniciado:`, erro);
+                    return res.json({ success: false });
+                }
+
+                return res.json({ success: true });
+            });
+        });
     } else {
         return res.status(400).json({ success: false, message: 'Ação inválida' });
     }
-
-    const query = `UPDATE rota_coleta SET ${coluna} = ? WHERE cd_rota = ?`;
-
-    connection.query(query, [dataHoraAtual, cd_rota], (erro, resultado) => {
-        if (erro) {
-            console.error(`Erro ao atualizar ${coluna}:`, erro);
-            return res.json({ success: false });
-        }
-
-        res.json({ success: true });
-    });
 }
+
 
 async function atualizarDataColeta(req, res) {
     const connection = conectiondb();

@@ -240,7 +240,7 @@
                                 </small>
                             </div>
                             <div>
-                                 <a href="/rotas" class="btn btn-secondary me-3 shadow-lg">Voltar</a>
+                                <a href="/rotas" class="btn btn-secondary me-3 shadow-lg">Voltar</a>
                             </div>
                         </div>
                         <div class="card">
@@ -254,41 +254,39 @@
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label class="fs-6 fw-bold">Rota</label>
-                                            <input value="{{rotas.nm_rota}}" type="text" class="form-control">
+                                            <input value="{{rotas.nm_rota}}" type="text" class="form-control" disabled>
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <label class="fs-6 fw-bold">Data da Rota</label>
-                                            <input value="{{rotas.dt_agendada}}" type="text" class="form-control">
+                                            <input value="{{rotas.dt_agendada}}" type="text" class="form-control"disabled>
                                         </div>
                                     </div>
                                     <div class="col-md-1">
                                         <div class="form-group">
                                             <label class="fs-6 fw-bold">Km</label>
-                                            <input value="{{rotas.nr_distancia_km}}" type="text" class="form-control"
+                                            <input value="{{rotas.nr_distancia_km}}" type="text" class="form-control" disabled
                                                 placeholder="____">
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
-                                            <label class="fs-6 fw-bold">Peso (Kg)</label>
-                                            <input type="text" value="{{rotas.qt_peso_total_kg}}" class="form-control"
+                                            <label class="fs-6 fw-bold">Peso (Kg)</label >
+                                            <input type="text" value="{{rotas.qt_peso_total_kg}}" class="form-control" disabled
                                                 placeholder="____">
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <label class="fs-6 fw-bold">Data inicio </label>
-                                            <input type="text" value="{{rotas.dt_iniciado}}" class="form-control"
-                                                placeholder="____">
+                                            <input type="text" name="dt_inicio" value="{{rotas.dt_iniciado}}" class="form-control" disabled>
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <label class="fs-6 fw-bold">Data Fim </label>
-                                            <input type="text" value="{{rotas.dt_fim}}" class="form-control"
-                                                placeholder="____">
+                                            <input type="text" name="dt_fim" value="{{rotas.dt_fim}}" class="form-control" disabled>
                                         </div>
                                     </div>
                                     <div class="col-md-2 d-flex flex-row">
@@ -396,6 +394,16 @@
                         }).then(() => {
                             window.location.href = `/attStatus/${cdRota}`;
                         });
+                        } else if (result.iniciado) {
+                        swal("Atenção!", "Não é possível iniciar a rota pois ela já iniciou.", {
+                            icon: "warning",
+                            buttons: {
+                                confirm: {
+                                    text: "Entendi",
+                                    className: "btn btn-warning",
+                                },
+                            },
+                        });               
                     } else {
                         swal("Erro!", "Não foi possível registrar o início.", {
                             icon: "error",
@@ -447,6 +455,16 @@
                         }).then(() => {
                             window.location.href = `/attStatus/${cdRota}`;
                         });
+                    } else if (result.coletado) {
+                        swal("Atenção!", "Não é possível finalizar a rota pois existem agendamentos já coletados.", {
+                            icon: "warning",
+                            buttons: {
+                                confirm: {
+                                    text: "Entendi",
+                                    className: "btn btn-warning",
+                                },
+                            },
+                        });
                     } else {
                         swal("Erro!", "Não foi possível registrar o término.", {
                             icon: "error",
@@ -470,7 +488,8 @@
                         },
                     });
                 }
-                });
+            });
+
 
             </script>
 
@@ -568,6 +587,25 @@
                 });
             </script>
 
+
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const formatarData = (dataString) => {
+                        const data = new Date(dataString);
+                        const dia = String(data.getDate()).padStart(2, '0');
+                        const mes = String(data.getMonth() + 1).padStart(2, '0');
+                        const ano = String(data.getFullYear()).slice(-2);
+                        return `${dia}/${mes}/${ano}`;
+                    };
+
+                    const inputDtInicio = document.querySelector('input[name="dt_inicio"]');
+                    const inputDtFim = document.querySelector('input[name="dt_fim"]');
+
+                    if (inputDtInicio) inputDtInicio.value = formatarData(inputDtInicio.value);
+                    if (inputDtFim) inputDtFim.value = formatarData(inputDtFim.value);
+                });
+            </script>
 
 
             <footer class="footer">

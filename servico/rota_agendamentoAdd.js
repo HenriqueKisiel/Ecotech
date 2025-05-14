@@ -60,7 +60,6 @@ function registrarAgendamento(req, res) {
   // Converto o valor recebido como string para número, trocando vírgula por ponto
   const qt_quantidade_prevista_kg_num = parseFloat(qt_quantidade_prevista_kg.replace(',', '.'));
 
-<<<<<<< HEAD
     const insertQuery = `
         INSERT INTO agendamento 
         (dt_solicitada, cd_pessoa_fisica, cd_pessoa_juridica, ds_endereco, cd_bairro, cd_cidade, nr_cep, qt_quantidade_prevista_kg)
@@ -80,30 +79,6 @@ function registrarAgendamento(req, res) {
     ];
 
   conexao.query(insertQuery, valores, (erro, resultado) => {
-=======
-  // Query SQL para inserir o agendamento
-  const query = `
-      INSERT INTO agendamento 
-      (dt_solicitada, cd_pessoa_fisica, cd_pessoa_juridica, ds_endereco, cd_bairro, cd_cidade, nr_cep, qt_quantidade_prevista_kg, status)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `;
-  
-  // Preparo os valores que vão ser usados na query, tratando valores opcionais e o CEP
-  const valores = [
-    dt_solicitada,
-    cd_pessoa_fisica || null,
-    cd_pessoa_juridica || null,
-    ds_endereco,
-    cd_bairro,
-    cd_cidade,
-    nr_cep.replace(/\D/g, ''), // Aqui removo qualquer caractere que não for número do CEP
-    qt_quantidade_prevista_kg_num,
-    'ativo' // Status padrão do novo agendamento
-  ];
-
-  // Executo a query no banco de dados
-  conexao.query(query, valores, (erro, resultado) => {
->>>>>>> 186c4d544301294b5fed0c3912d0ef5205432f8f
     if (erro) {
       console.error("Erro ao registrar agendamento:", erro);
       // Se ocorrer erro, exibo alerta com erro usando SweetAlert
