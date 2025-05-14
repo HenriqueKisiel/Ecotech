@@ -1,58 +1,105 @@
 const conectiondb = require('../bd/conexao_mysql.js');
 
-// Função para exibir a página de busca
+// Exibe a página de busca de estoques
 function exibirestoqueBuscar(req, res) {
     console.log("Função exibirestoqueBuscar chamada");
-    // Renderiza a página "estoqueBuscar"
-    res.status(200).render('estoqueBuscar'); 
+    res.status(200).render('estoqueBuscar');
 }
 
-function localizarestoqueBuscar(req, res) {
-    console.log("Função localizarestoqueBuscar chamada");
+// Busca estoques ou materiais com base no tipo de cadastro e filtros
+function buscarEstoques(req, res) {
+    console.log("Função buscarEstoques chamada");
 
-    const { linhas, codigo } = req.query;
-    const conexao = conectiondb();
+    const {
+        tipoCadastro,
+        codigoCadastro,  // Aqui estamos verificando o filtro para cd_estoque
+        nomeCadastro,
+        estoqueCadastro,
+        plantaCadastro
+    } = req.body;
 
-    // Verificando se a conexão foi bem-sucedida
-    conexao.connect((erro) => {
-        if (erro) {
-            console.error("Erro na conexão com o banco de dados:", erro);
-            return res.status(500).json({ erro: 'Erro ao conectar ao banco de dados.' });
-        }
-        console.log("Conexão com o banco de dados estabelecida com sucesso.");
-    });
+    console.log("Filtros recebidos:", req.body);
 
-    let sql = 'SELECT * FROM materiais WHERE 1=1';
+    const conexao = conectiondb(); // Assume que retorna uma conexão válida
+
+    let sql = '';
     const params = [];
 
-    // Log para verificar os parâmetros da requisição
-    console.log("Parâmetros recebidos:", { linhas, codigo });
+    if (tipoCadastro === 'estoque') {
+        sql = `
+            SELECT 
+                e.cd_estoque,
+                e.nm_estoque,
+                e.cd_planta,
+                e.qt_disponivel,
+                e.qt_capacidade_maxima,
+                p.nm_planta
+            FROM estoque e
+            LEFT JOIN planta p ON e.cd_planta = p.cd_planta
+            WHERE 1=1
+        `;
 
-    if (linhas) {
-        const linhaArray = linhas.split(',');
-        sql += ` AND linha IN (${linhaArray.map(() => '?').join(',')})`;
-        params.push(...linhaArray);
-    }
-
-    if (codigo) {
-        sql += ' AND LOWER(codigo) LIKE ?';
-        params.push(`%${codigo.toLowerCase()}%`);
-    }
-
-    // Log da query SQL gerada e os parâmetros
-    console.log("SQL gerada:", sql);
-    console.log("Parâmetros da query:", params);
-
-    // Executa a query SQL
-    conexao.query(sql, params, (erro, resultados) => {
-        if (erro) {
-            // Log de erro da query
-            console.error("Erro ao executar a query:", erro);
-            return res.status(500).json({ erro: 'Erro ao executar a busca no banco de dados.' });
+        if (codigoCadastro) {
+            sql += ' AND e.cd_estoque = ?';  // Certifique-se de incluir o filtro aqui
+            params.push(codigoCadastro);  // O parâmetro será adicionado corretamente
         }
 
-        // Log para verificar os resultados da query
-        console.log("Resultados da busca:", resultados);
+        if (nomeCadastro) {
+            sql += ' AND e.nm_estoque LIKE ?';
+            params.push(`%${nomeCadastro}%`);
+        }
+
+        if (plantaCadastro) {
+            sql += ' AND e.cd_planta = ?';
+            params.push(plantaCadastro);
+        }
+
+    } else if (tipoCadastro === 'material') {
+        sql = `
+            SELECT 
+                m.cd_material,
+                m.ds_material,
+                m.vl_valor_por_kg,
+                IFNULL(em.qt_peso, '-') AS qt_peso,  -- Substituindo null por '-'
+                IFNULL(e.nm_estoque, '-') AS nm_estoque  -- Substituindo null por '-'
+            FROM materiais m
+            LEFT JOIN estoque_material em ON m.cd_material = em.cd_material
+            LEFT JOIN estoque e ON em.cd_estoque = e.cd_estoque
+            WHERE 1=1
+        `;
+
+        if (codigoCadastro) {
+            sql += ' AND m.cd_material = ?';
+            params.push(codigoCadastro);
+        }
+
+        if (nomeCadastro) {
+            sql += ' AND m.ds_material LIKE ?';
+            params.push(`%${nomeCadastro}%`);
+        }
+
+        if (estoqueCadastro) {
+            sql += ' AND e.cd_estoque = ?';
+            params.push(estoqueCadastro);
+        }
+
+    } else {
+        return res.status(400).json({ erro: 'Tipo de cadastro inválido.' });
+    }
+
+    console.log("SQL gerada:", sql);
+    console.log("Parâmetros:", params);
+
+    conexao.query(sql, params, (erro, resultados) => {
+        if (erro) {
+            console.error("Erro ao executar a query:", erro);
+            return res.status(500).json({ erro: 'Erro ao executar a busca.' });
+        }
+
+        console.log("Resultados encontrados:", resultados);
+        if (resultados.length === 0) {
+            console.log("Nenhum dado encontrado.");
+        }
 
         res.status(200).json(resultados);
     });
@@ -60,5 +107,5 @@ function localizarestoqueBuscar(req, res) {
 
 module.exports = {
     exibirestoqueBuscar,
-    localizarestoqueBuscar
+    buscarEstoques
 };

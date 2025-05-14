@@ -226,7 +226,7 @@ router.get('/estoqueBuscar', (req, res) => {
 
 // Rota POST para realizar a busca no estoque
 router.post('/estoqueBuscar', (req, res) => {
-    servico16.localizarestoqueBuscar(req, res);
+    servico16.buscarEstoques(req, res);
 });
 
 //------------------------ Servico17 -------------------//
@@ -344,16 +344,16 @@ router.get('/novoMaterial', (req, res) => {
     servico25.exibirNovoMaterial(req, res);
 });
 
-router.get('/buscarAgendamentoMaterial', (req,res) =>{
-    servico25.buscarAgendamentoMaterial(req,res)
+router.get('/buscarAgendamentoMaterial', (req, res) => {
+    servico25.buscarAgendamentoMaterial(req, res)
 });
 
-router.get('/buscarItensgenda', (req,res) =>{
-    servico25.buscarItensgenda(req,res)
-}); 
+router.get('/buscarItensgenda', (req, res) => {
+    servico25.buscarItensgenda(req, res)
+});
 
-router.post('/atualizarPesos', (req, res) =>{
-    servico25.atualizarPesos(req,res)
+router.post('/atualizarPesos', (req, res) => {
+    servico25.atualizarPesos(req, res)
 });
 
 // ----------------------- Servico26 -------------------//
