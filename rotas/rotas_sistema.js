@@ -315,6 +315,10 @@ router.post('/pessoaEditar', (req, res) => {
     servico22.editarPessoa(req, res);
 });
 
+router.get('/pessoa/bairros/:cd_cidade', (req, res) => {
+    servico22.buscarBairrosPorCidade(req, res);
+});
+
 // ----------------------- Servico23 -------------------//
 //página para editar pessoa juridica
 router.get('/juridicaEditar/:cd_pessoa_juridica', (req, res) => {

@@ -319,7 +319,8 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Data Solicitada</label>
-                                                <input type="date" class="form-control" name="dt_solicitada">
+                                                <input type="date" class="form-control" id="dt_solicitada"
+                                                    name="dt_solicitada" required>
                                             </div>
                                         </div>
 
@@ -403,6 +404,33 @@
                             // Se não houver cidade selecionada, limpa os bairros
                             document.querySelector('[name="cd_bairro"]').innerHTML = '<option value="">Selecione um bairro</option>';
                         }
+                    });
+                </script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const form = document.querySelector('form'); // Seleciona o formulário
+                        const dataSolicitada = document.getElementById('dt_solicitada'); // Campo de data
+
+                        form.addEventListener('submit', function (e) {
+                            const dataAtual = new Date(); // Data atual
+                            const dataSelecionada = new Date(dataSolicitada.value); // Data selecionada pelo usuário
+
+                            // Verifica se a data selecionada é inferior à data atual
+                            if (dataSelecionada < dataAtual.setHours(0, 0, 0, 0)) {
+                                e.preventDefault(); // Impede o envio do formulário
+                                swal({
+                                    title: "Data inválida!",
+                                    text: "A data solicitada não pode ser inferior à data atual.",
+                                    icon: "error",
+                                    buttons: {
+                                        confirm: {
+                                            text: "OK",
+                                            className: "btn btn-danger",
+                                        },
+                                    },
+                                });
+                            }
+                        });
                     });
                 </script>
                 <!--End conteudo indiviudual da pagina-->
