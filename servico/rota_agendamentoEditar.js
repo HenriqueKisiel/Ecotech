@@ -80,19 +80,30 @@ function exibirEditarAgendamento(req, res, itemEmEdicao = null) {
                             return res.status(500).send('Erro ao buscar as pessoas jurídicas');
                         }
 
-                        // Renderiza a página com todos os dados necessários
-                        res.render('agendamentoEditar', {
-                            agendamento,
-                            pessoasFisicas,
-                            pessoasJuridicas,
-                            itens,
-                            linhas, // Aqui estão as linhas cadastradas
-                            isPessoaFisica: agendamento.cd_pessoa_fisica !== null,
-                            isPessoaJuridica: agendamento.cd_pessoa_juridica !== null,
-                            nomePessoaFisica: agendamento.nm_pessoa_fisica,
-                            nomePessoaJuridica: agendamento.nm_pessoa_juridica_fantasia,
-                            item: itemEmEdicao,
-                            editandoItem: itemEmEdicao !== null
+                        // Consulta para pegar os materiais cadastrados
+                        const materiaisQuery = 'SELECT cd_material, ds_material, ie_linha FROM materiais';
+
+                        connection.query(materiaisQuery, (err, materiais) => {
+                            if (err) {
+                                console.log('Erro ao buscar os materiais:', err);
+                                return res.status(500).send('Erro ao buscar os materiais');
+                            }
+
+                            // Renderiza a página com todos os dados necessários
+                            res.render('agendamentoEditar', {
+                                agendamento,
+                                pessoasFisicas,
+                                pessoasJuridicas,
+                                itens,
+                                linhas,
+                                materiais, 
+                                isPessoaFisica: agendamento.cd_pessoa_fisica !== null,
+                                isPessoaJuridica: agendamento.cd_pessoa_juridica !== null,
+                                nomePessoaFisica: agendamento.nm_pessoa_fisica,
+                                nomePessoaJuridica: agendamento.nm_pessoa_juridica_fantasia,
+                                item: itemEmEdicao,
+                                editandoItem: itemEmEdicao !== null
+                            });
                         });
                     });
                 });
@@ -100,6 +111,7 @@ function exibirEditarAgendamento(req, res, itemEmEdicao = null) {
         });
     });
 }
+
 
 function atualizarAgendamento(req, res) {
     const {
@@ -157,6 +169,11 @@ function atualizarAgendamento(req, res) {
 
             const cd_pessoa_fisicaEncontrada = result[0].cd_pessoa_fisica; // Obter o código da pessoa física
             console.log('Código da pessoa física encontrado:', cd_pessoa_fisicaEncontrada);
+
+              // Validação: Pelo menos um dos campos deve estar preenchido
+            if (!cd_pessoa_fisica && !cd_pessoa_juridica) {
+                return res.status(400).send('Por favor, preencha pelo menos um dos campos: Pessoa Física ou Pessoa Jurídica.');
+            }
 
             // Agora podemos atualizar o agendamento com o código da pessoa física
             const sql = `

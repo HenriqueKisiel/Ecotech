@@ -39,7 +39,7 @@
                                 </span>
                                 <h4 class="text-section">Funções Do Sistema</h4>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item active">
                                 <a data-bs-toggle="collapse" href="#cadastro">
                                     <i class="fas fa-user"></i>
                                     <p>Cadastros</p>
@@ -70,7 +70,7 @@
                                     </ul>
                                 </div>
                             </li>
-                            <li class="nav-item active">
+                            <li class="nav-item">
                                 <a data-bs-toggle="collapse" href="#estoque">
                                     <i class="fas fa-th-list"></i>
                                     <p>Estoque</p>
@@ -299,8 +299,9 @@
                                             <div class="form-group">
                                                 <label class="fw-bold">Situação</label>
                                                 <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input" id="ie_situacao" name="ie_situacao" value="A" 
-                                                        {{#if (eq usuario.ie_situacao "A")}}checked{{/if}}>
+                                                    <input type="checkbox" class="form-check-input" id="ie_situacao"
+                                                        name="ie_situacao" value="A" {{#if (eq usuario.ie_situacao "A"
+                                                        )}}checked{{/if}}>
                                                     <label class="form-check-label" for="ie_situacao">Ativo</label>
                                                 </div>
                                             </div>

@@ -258,7 +258,8 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Código Cadastrado</label>
-                                            <input type="text" class="form-control" placeholder="Informe o código">
+                                            <input type="text" class="form-control" placeholder="Informe o código"
+                                                id="codigoCadastro">
                                         </div>
                                     </div>
                                 </div>
@@ -266,25 +267,28 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Nome</label>
-                                            <input type="text" class="form-control" placeholder="Informe o nome">
+                                            <input type="text" class="form-control" placeholder="Informe o nome"
+                                                id="nomeCadastro">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div id="campoEstoqueArmazenado" class="form-group">
                                             <label class="fw-bold">Estoque Armazenado</label>
                                             <input type="text" class="form-control" name="estoque_armazenado"
-                                                placeholder="Informe o estoque">
+                                                placeholder="Informe o estoque" id="estoqueCadastro">
                                         </div>
                                         <div id="campoPlantaCadastrada" class="form-group" style="display: none;">
                                             <label class="fw-bold">Planta Cadastrada</label>
                                             <input type="text" class="form-control" name="planta_cadastrada"
-                                                placeholder="Informe a planta">
+                                                placeholder="Informe a planta" id="plantaCadastro">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="card-footer d-flex justify-content-end">
-                                <a class="btn btn-primary">Buscar</a>
+                                <button type="button" id="limparBtn" class="btn btn-info me-3">Limpar
+                                    Filtros</button>
+                                <button class="btn btn-primary" id="btnBuscar">Buscar</button>
                             </div>
                         </div>
                         <div class="card">
@@ -294,14 +298,13 @@
                             <div class="card-body">
                                 <div class="table-responsive rounded">
                                     <table class="table table-bordered table-head-bg-success">
-                                        <thead>
-                                            <tr>
-                                                <th>Código</th>
-                                            </tr>
+                                        <thead id="tabelaCabecalho">
+                                            <!-- Cabeçalho será alterado dinamicamente com base na seleção -->
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td> Sem Resultados</td>
+                                                <td colspan="7" class="text-center text-muted">Nenhum cadastro
+                                                    encontrado</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -313,6 +316,47 @@
                 <!-- End conteudo indiviudual da pagina-->
                 <!-- Start Script-->
                 <script>
+                    // Função para atualizar o cabeçalho da tabela com base no tipo de cadastro
+                    function atualizarTabelaCabeçalho(tipo) {
+                        const tabelaCabecalho = document.getElementById('tabelaCabecalho');
+
+                        if (tipo === 'estoque') {
+                            tabelaCabecalho.innerHTML = `
+                <tr>
+                    <th>Código</th>
+                    <th>Estoque</th>
+                    <th>Planta</th>
+                    <th>Quantidade Disponível (Kg)</th>
+                    <th>Capacidade Máxima (Kg)</th>
+                </tr>
+            `;
+                        } else if (tipo === 'material') {
+                            tabelaCabecalho.innerHTML = `
+                <tr>
+                    <th>Código</th>
+                    <th>Material</th>
+                    <th>Valor por KG</th>
+                    <th>Quantidade (KG)</th>
+                    <th>Estoque</th>
+                </tr>
+            `;
+                        }
+                    }
+
+                    // Evento de troca de tipo de cadastro
+                    document.getElementById('tipoCadastro').addEventListener('change', function () {
+                        atualizarTabelaCabeçalho(this.value);
+                        atualizarCamposCadastro(this.value); // Atualiza os campos de entrada conforme o tipo de cadastro
+                    });
+
+                    // Inicializar com o tipo selecionado ao carregar
+                    window.addEventListener('DOMContentLoaded', () => {
+                        const tipoSelecionado = document.getElementById('tipoCadastro').value;
+                        atualizarTabelaCabeçalho(tipoSelecionado);
+                        atualizarCamposCadastro(tipoSelecionado);
+                    });
+
+                    // Função para atualizar os campos de entrada com base no tipo de cadastro
                     function atualizarCamposCadastro(tipo) {
                         const campoEstoque = document.getElementById('campoEstoqueArmazenado');
                         const campoPlanta = document.getElementById('campoPlantaCadastrada');
@@ -326,17 +370,112 @@
                         }
                     }
 
-                    // Ao mudar o select
-                    document.getElementById('tipoCadastro').addEventListener('change', function () {
-                        atualizarCamposCadastro(this.value);
+                    // 🚀 Função de busca ao clicar no botão
+                    document.getElementById('btnBuscar').addEventListener('click', async () => {
+                        const tipo = document.getElementById('tipoCadastro').value;
+                        const codigo = document.getElementById('codigoCadastro').value;
+                        const nome = document.getElementById('nomeCadastro').value;
+                        const estoque = document.getElementById('estoqueCadastro').value;
+                        const planta = document.getElementById('plantaCadastro').value;
+
+                        const filtros = { tipoCadastro: tipo };
+
+                        // Construindo filtros de acordo com o tipo de cadastro
+                        if (tipo === 'estoque') {
+                            if (codigo) filtros.codigoCadastro = codigo;
+                            if (nome) filtros.nomeCadastro = nome;
+                            if (planta) filtros.plantaCadastro = planta;
+                        } else if (tipo === 'material') {
+                            if (codigo) filtros.codigoCadastro = codigo;
+                            if (nome) filtros.nomeCadastro = nome;
+                            if (estoque) filtros.estoqueCadastro = estoque;
+                        }
+
+                        console.log("🔍 Filtros enviados:", filtros); // Log para depuração
+
+                        try {
+                            const resposta = await fetch('/estoquebuscar', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(filtros)
+                            });
+
+                            const dados = await resposta.json();
+                            console.log("📦 Dados recebidos do back-end:", dados); // Log para ver o retorno
+
+                            const tbody = document.querySelector('table tbody');
+                            tbody.innerHTML = ''; // Limpa a tabela antes de adicionar os novos dados
+
+                            if (!Array.isArray(dados) || dados.length === 0) {
+                                tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">Nenhum cadastro encontrado</td></tr>';
+                                return;
+                            }
+
+                            dados.forEach(item => {
+                                if (tipo === 'estoque') {
+                                    // Para "estoque", usamos os campos específicos de estoque
+                                    tbody.innerHTML += `
+                        <tr>
+                            <td>${item.cd_estoque}</td>
+                            <td>${item.nm_estoque}</td>
+                            <td>${item.nm_planta}</td>
+                            <td>${item.qt_disponivel}</td>
+                            <td>${item.qt_capacidade_maxima}</td>
+                        </tr>
+                    `;
+                                } else if (tipo === 'material') {
+                                    // Para "material", usamos os campos específicos de material
+                                    tbody.innerHTML += `
+                        <tr>
+                            <td>${item.cd_material}</td>
+                            <td>${item.ds_material}</td>
+                            <td>${item.vl_valor_por_kg}</td>
+                            <td>${item.qt_peso}</td>
+                            <td>${item.nm_estoque}</td>
+                        </tr>
+                    `;
+                                }
+                            });
+                        } catch (erro) {
+                            console.error('❌ Erro ao buscar:', erro);
+                            alert('Erro ao buscar os dados.');
+                        }
                     });
 
-                    // Inicializar com a opção padrão selecionada
-                    window.addEventListener('DOMContentLoaded', () => {
-                        atualizarCamposCadastro(document.getElementById('tipoCadastro').value);
+                    // Função para limpar filtros
+                    document.getElementById('limparBtn').addEventListener('click', () => {
+                        // Limpa os campos de filtro
+                        document.getElementById('codigoCadastro').value = '';
+                        document.getElementById('nomeCadastro').value = '';
+                        document.getElementById('estoqueCadastro').value = '';
+                        document.getElementById('plantaCadastro').value = '';
+
+                        // Opcional: redefine o tipo de cadastro para o primeiro da lista
+                        document.getElementById('tipoCadastro').selectedIndex = 0;
+
+                        // Limpa os resultados da tabela
+                        const tbody = document.querySelector('table tbody');
+                        tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">Nenhum cadastro encontrado</td></tr>';
                     });
+
+                    // Evento de troca de tipo de cadastro
+                    document.getElementById('tipoCadastro').addEventListener('change', function () {
+                        atualizarTabelaCabeçalho(this.value);
+                        atualizarCamposCadastro(this.value); // Atualiza os campos de entrada conforme o tipo de cadastro
+
+                        // Limpa os resultados da tabela ao trocar o tipo de cadastro
+                        const tbody = document.querySelector('table tbody');
+                        tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">Nenhum cadastro encontrado</td></tr>'
+
+                        // Limpa os filtros
+                        document.getElementById('codigoCadastro').value = '';
+                        document.getElementById('nomeCadastro').value = '';
+                        document.getElementById('estoqueCadastro').value = '';
+                        document.getElementById('plantaCadastro').value = '';
+                    });
+
                 </script>
-                <!-- End Script-->
+                <!--End Script-->
                 <!--end conteudo indiviudual da pagina-->
                 <footer class="footer">
                     <div class="container-fluid d-flex justify-content-between">

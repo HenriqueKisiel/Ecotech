@@ -237,7 +237,7 @@ router.get('/estoqueBuscar', (req, res) => {
 
 // Rota POST para realizar a busca no estoque
 router.post('/estoqueBuscar', (req, res) => {
-    servico16.localizarestoqueBuscar(req, res);
+    servico16.buscarEstoques(req, res);
 });
 
 //------------------------ Servico17 -------------------//
@@ -326,6 +326,10 @@ router.post('/pessoaEditar', (req, res) => {
     servico22.editarPessoa(req, res);
 });
 
+router.get('/pessoa/bairros/:cd_cidade', (req, res) => {
+    servico22.buscarBairrosPorCidade(req, res);
+});
+
 // ----------------------- Servico23 -------------------//
 //página para editar pessoa juridica
 router.get('/juridicaEditar/:cd_pessoa_juridica', (req, res) => {
@@ -355,16 +359,16 @@ router.get('/novoMaterial', (req, res) => {
     servico25.exibirNovoMaterial(req, res);
 });
 
-router.get('/buscarAgendamentoMaterial', (req,res) =>{
-    servico25.buscarAgendamentoMaterial(req,res)
+router.get('/buscarAgendamentoMaterial', (req, res) => {
+    servico25.buscarAgendamentoMaterial(req, res)
 });
 
-router.get('/buscarItensgenda', (req,res) =>{
-    servico25.buscarItensgenda(req,res)
-}); 
+router.get('/buscarItensgenda', (req, res) => {
+    servico25.buscarItensgenda(req, res)
+});
 
-router.post('/atualizarPesos', (req, res) =>{
-    servico25.atualizarPesos(req,res)
+router.post('/atualizarPesos', (req, res) => {
+    servico25.atualizarPesos(req, res)
 });
 
 // ----------------------- Servico26 -------------------//

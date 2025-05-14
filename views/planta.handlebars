@@ -39,7 +39,7 @@
                                 </span>
                                 <h4 class="text-section">Funções Do Sistema</h4>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item active">
                                 <a data-bs-toggle="collapse" href="#cadastro">
                                     <i class="fas fa-user"></i>
                                     <p>Cadastros</p>
@@ -70,7 +70,7 @@
                                     </ul>
                                 </div>
                             </li>
-                            <li class="nav-item active">
+                            <li class="nav-item">
                                 <a data-bs-toggle="collapse" href="#estoque">
                                     <i class="fas fa-th-list"></i>
                                     <p>Estoque</p>
@@ -300,13 +300,6 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="fw-bold">Endereço</label>
-                                                    <input type="text" class="form-control" name="ds_endereco"
-                                                        placeholder="Preencha o endereço" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
                                                     <label class="fw-bold">CEP</label>
                                                     <input type="text" class="form-control" name="nr_cep" id="nr_cep"
                                                         placeholder="Preencha o CEP" required maxlength="9">
@@ -314,23 +307,43 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
+                                                    <label class="fw-bold">Estado (UF)</label>
+                                                    <input type="text" class="form-control" name="uf_estado"
+                                                        id="uf_estado"
+                                                        placeholder="Preencha o CEP para buscar Estado (UF)" readonly
+                                                        required maxlength="2">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
                                                     <label class="fw-bold">Cidade</label>
-                                                    <select class="form-control" name="cd_cidade" id="cd_cidade"
-                                                        required>
-                                                        <option value="">Selecione a cidade</option>
-                                                        {{#each cidades}}
-                                                        <option value="{{cd_cidade}}">{{nm_cidade}}</option>
-                                                        {{/each}}
-                                                    </select>
+                                                    <input type="text" class="form-control" name="nm_cidade"
+                                                        id="nm_cidade" placeholder="Preencha o CEP para buscar Cidade"
+                                                        readonly required>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="fw-bold">Bairro</label>
-                                                    <select class="form-control" name="cd_bairro" id="cd_bairro"
-                                                        required>
-                                                        <option value="">Selecione o bairro</option>
-                                                    </select>
+                                                    <input type="text" class="form-control" name="nm_bairro"
+                                                        id="nm_bairro" placeholder="Preencha o CEP para buscar Bairro"
+                                                        readonly required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Rua do Endereço</label>
+                                                    <input type="text" class="form-control" name="ds_endereco"
+                                                        placeholder="Preencha o CEP para buscar Rua do Endereço"
+                                                        readonly required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Número do Endereço</label>
+                                                    <input type="text" class="form-control" name="nr_endereco"
+                                                        id="ds_endereco" placeholder="Preencha o número do endereço"
+                                                        required maxlength="10">
                                                 </div>
                                             </div>
                                         </div>
@@ -348,100 +361,87 @@
                     </div>
                 </div>
                 <!--end conteudo indiviudual da pagina-->
-                <!-- Script para validação extra no frontend -->
+                <!-- Script para validação e interações do formulário de planta -->
                 <script>
-                    // Validação do formulário no submit
-                    document.getElementById('formCadastroPlanta').addEventListener('submit', function (event) {
+                    const form = document.getElementById('formCadastroPlanta');
+                    const cepInput = document.getElementById('nr_cep');
+                    const situacaoCheckbox = document.getElementById('ie_situacao_checkbox');
+                    const hiddenSituacaoInput = document.getElementById('hidden_ie_situacao');
+                    const capacidadeTotalInput = document.querySelector('[name="qt_capacidade_total_kg"]');
+                    const capacidadeAtualInput = document.getElementById('qt_capacidade_atual_kg');
+
+                    // Máscara visual do CEP
+                    cepInput.addEventListener('input', function () {
+                        let cep = this.value.replace(/\D/g, '');
+                        if (cep.length > 5) {
+                            cep = cep.slice(0, 5) + '-' + cep.slice(5, 8);
+                        }
+                        this.value = cep;
+                    });
+
+                    // Função para buscar o endereço via API ViaCEP ao perder o foco
+                    cepInput.addEventListener('blur', function () {
+                        const rawCep = this.value.replace(/\D/g, '');
+
+                        if (rawCep.length !== 8) return;
+
+                        fetch(`https://viacep.com.br/ws/${rawCep}/json/`)
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.erro) {
+                                    alert('CEP não encontrado.');
+                                    return;
+                                }
+
+                                // Preenchendo os campos com os dados do CEP
+                                document.getElementById('uf_estado').value = data.uf || '';
+                                document.getElementById('nm_cidade').value = data.localidade || '';
+                                document.getElementById('nm_bairro').value = data.bairro || '';
+                                document.querySelector('[name="ds_endereco"]').value = data.logradouro || '';
+                            })
+                            .catch(error => {
+                                console.error('Erro na consulta do CEP:', error);
+                                alert('Erro ao buscar informações do CEP.');
+                            });
+                    });
+
+                    // Atualizar capacidade atual com o valor total automaticamente
+                    capacidadeTotalInput.addEventListener('input', function () {
+                        if (capacidadeAtualInput) {
+                            capacidadeAtualInput.value = this.value;
+                        }
+                    });
+
+                    // Validação e manipulações finais antes do envio do formulário
+                    form.addEventListener('submit', function (event) {
                         let formValid = true;
 
+                        // Validação do nome
                         const nomePlanta = document.getElementsByName('nm_planta')[0].value;
                         if (nomePlanta.trim() === "") {
                             alert('O nome da planta é obrigatório.');
                             formValid = false;
                         }
 
-                        const cepInput = document.getElementById('nr_cep');
-                        const rawCep = cepInput.value.replace(/\D/g, ''); // remove qualquer não-numérico
-
+                        // Validação e formatação do CEP
+                        const rawCep = cepInput.value.replace(/\D/g, '');
                         if (!/^\d{8}$/.test(rawCep)) {
                             alert('O CEP deve conter 8 dígitos numéricos.');
                             formValid = false;
                         }
+                        cepInput.value = rawCep; // remove máscara antes de enviar
 
-                        // Atualiza o campo para enviar ao back-end sem hífen
-                        cepInput.value = rawCep;
+                        // Atualiza o valor do campo oculto com base no checkbox
+                        hiddenSituacaoInput.value = situacaoCheckbox.checked ? 'A' : 'I';
 
+                        // Impede envio se formulário for inválido
                         if (!formValid) {
                             event.preventDefault();
                         }
                     });
-
-                    // Máscara de CEP visual (sem impactar valor real)
-                    document.getElementById('nr_cep').addEventListener('input', function (event) {
-                        let cep = event.target.value.replace(/\D/g, '');
-
-                        if (cep.length > 5) {
-                            cep = cep.slice(0, 5) + '-' + cep.slice(5, 8);
-                        }
-
-                        event.target.value = cep;
-                    });
-
-                    // Atualizar bairros automaticamente quando mudar a cidade
-                    document.getElementById('cd_cidade').addEventListener('change', function () {
-                        const cidadeId = this.value;
-                        const bairroSelect = document.getElementById('cd_bairro');
-
-                        bairroSelect.innerHTML = '<option value="">Selecione o bairro</option>';
-
-                        if (cidadeId) {
-                            fetch(`/bairros/${cidadeId}`)
-                                .then(response => response.json())
-                                .then(data => {
-                                    if (data.length === 0) {
-                                        const option = document.createElement('option');
-                                        option.value = "";
-                                        option.textContent = "Nenhum bairro encontrado";
-                                        bairroSelect.appendChild(option);
-                                    } else {
-                                        data.forEach(bairro => {
-                                            const option = document.createElement('option');
-                                            option.value = bairro.cd_bairro;
-                                            option.textContent = bairro.nm_bairro;
-                                            bairroSelect.appendChild(option);
-                                        });
-                                    }
-                                })
-                                .catch(error => {
-                                    console.error('Erro ao buscar bairros:', error);
-                                    alert('Erro ao carregar bairros.');
-                                });
-                        }
-                    });
-
-                    // Atualizar o valor de 'ie_situacao' antes de enviar o formulário
-                    document.getElementById('formCadastroPlanta').addEventListener('submit', function () {
-                        const checkbox = document.getElementById('ie_situacao_checkbox');
-                        const hiddenInput = document.getElementById('hidden_ie_situacao');
-
-                        // Atualiza o valor do campo hidden com base no estado do checkbox
-                        hiddenInput.value = checkbox.checked ? 'A' : 'I';
-
-                        // Log para depuração
-                        console.log('Checkbox marcado:', checkbox.checked);
-                        console.log('Valor enviado de ie_situacao:', hiddenInput.value);
-                    });
-
-                    // Atualiza o campo "Capacidade Atual (Kg)" automaticamente com base no Total
-                    document.querySelector('[name="qt_capacidade_total_kg"]').addEventListener('input', function () {
-                        const total = this.value;
-                        const atualField = document.getElementById('qt_capacidade_atual_kg');
-                        if (atualField) {
-                            atualField.value = total;
-                        }
-                    });
                 </script>
-                <!-- End Script-->
+                <!-- Fim do script -->
+
                 <footer class="footer">
                     <div class="container-fluid d-flex justify-content-between">
                         <nav class="pull-left">

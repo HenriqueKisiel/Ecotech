@@ -43,104 +43,97 @@ function exibirAgendamento(req, res, mensagem = '') {
 function registrarAgendamento(req, res) {
   console.log("Função registrarAgendamento chamada");
 
-  // Pego os dados enviados pelo formulário
   const {
-    cd_pessoa_fisica,
-    cd_pessoa_juridica,
-    ds_endereco,
-    nr_cep, 
-    cd_cidade,
-    cd_bairro,
-    dt_solicitada,
-    qt_quantidade_prevista_kg
+      cd_pessoa_fisica,
+      cd_pessoa_juridica,
+      ds_endereco,
+      nr_cep,
+      cd_cidade,
+      cd_bairro,
+      dt_solicitada,
+      qt_quantidade_prevista_kg
   } = req.body;
 
   console.log("Dados recebidos:", req.body);
 
+  // Validação da data no back-end
+  const dataAtual = new Date();
+  const dataSolicitada = new Date(dt_solicitada);
+
+  if (dataSolicitada < dataAtual.setHours(0, 0, 0, 0)) {
+      return exibirAgendamento(req, res, `
+          <script>
+              swal({
+                  title: "Data inválida!",
+                  text: "A data solicitada não pode ser inferior à data atual.",
+                  icon: "error",
+                  buttons: {
+                      confirm: {
+                          text: "OK",
+                          className: "btn btn-danger",
+                      },
+                  },
+              });
+          </script>
+      `);
+  }
+
   // Converto o valor recebido como string para número, trocando vírgula por ponto
   const qt_quantidade_prevista_kg_num = parseFloat(qt_quantidade_prevista_kg.replace(',', '.'));
 
-    const insertQuery = `
-        INSERT INTO agendamento 
-        (dt_solicitada, cd_pessoa_fisica, cd_pessoa_juridica, ds_endereco, cd_bairro, cd_cidade, nr_cep, qt_quantidade_prevista_kg)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    `;
+  // Query SQL para inserir o agendamento
+  const query = `
+      INSERT INTO agendamento 
+      (dt_solicitada, cd_pessoa_fisica, cd_pessoa_juridica, ds_endereco, cd_bairro, cd_cidade, nr_cep, qt_quantidade_prevista_kg, status)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
 
-    const valores = [
+  const valores = [
       dt_solicitada,
       cd_pessoa_fisica || null,
       cd_pessoa_juridica || null,
       ds_endereco,
       cd_bairro,
       cd_cidade,
-      nr_cep.replace(/\D/g, ''), // <-- Aqui, removendo caracteres não numéricos
+      nr_cep.replace(/\D/g, ''), // Remove caracteres não numéricos do CEP
       qt_quantidade_prevista_kg_num,
-      'ativo'
-    ];
+      'ativo' // Status padrão do novo agendamento
+  ];
 
-  conexao.query(insertQuery, valores, (erro, resultado) => {
-    if (erro) {
-      console.error("Erro ao registrar agendamento:", erro);
-      // Se ocorrer erro, exibo alerta com erro usando SweetAlert
-      return exibirAgendamento(req, res, `
-        <script>
-          swal("Erro ao finalizar!", "Verifique os dados e tente novamente.", {
-            icon: "error",
-            buttons: {
-              confirm: {
-                text: "OK",
-                className: "btn btn-danger",
-              },
-            },
-          });
-        </script>
-      `);
-    }
-
-    // Recupero o ID do agendamento recém-inserido
-    const novoId = resultado.insertId;
-    console.log("Agendamento inserido com ID:", novoId);
-
-    // Faço uma query para gerar o nome do agendamento com base no ID
-    const gerarNomeQuery = `SELECT gerar_nome_agendamento(?) AS nome`;
-    conexao.query(gerarNomeQuery, [novoId], (erro2, resultado2) => {
-      if (erro2) {
-        console.error("Erro ao gerar nome do agendamento:", erro2);
-        // Se ocorrer erro, exibo aviso simples sem nome gerado
-        return exibirAgendamento(req, res, 'Agendamento registrado, mas houve erro ao gerar o nome.');
+  conexao.query(query, valores, (erro, resultado) => {
+      if (erro) {
+          console.error("Erro ao registrar agendamento:", erro);
+          return exibirAgendamento(req, res, `
+              <script>
+                  swal("Erro ao finalizar!", "Verifique os dados e tente novamente.", {
+                      icon: "error",
+                      buttons: {
+                          confirm: {
+                              text: "OK",
+                              className: "btn btn-danger",
+                          },
+                      },
+                  });
+              </script>
+          `);
       }
 
-      // Pego o nome gerado pela função do banco
-      const nomeGerado = resultado2[0].nome;
-
-      // Atualizo o campo nm_agendamento com o nome gerado
-      const updateQuery = `UPDATE agendamento SET nm_agendamento = ? WHERE cd_agendamento = ?`;
-      conexao.query(updateQuery, [nomeGerado, novoId], (erro3) => {
-        if (erro3) {
-          console.error("Erro ao atualizar nome do agendamento:", erro3);
-          return exibirAgendamento(req, res, 'Agendamento registrado, mas houve erro ao salvar o nome.');
-        }
-
-        console.log("Nome do agendamento atualizado com sucesso!");
-
-        // Exibo mensagem de sucesso usando SweetAlert
-        return exibirAgendamento(req, res, `
+      console.log("Agendamento registrado com sucesso!");
+      return exibirAgendamento(req, res, `
           <script>
-            swal({
-              title: "Agendamento Registrado!",
-              text: "O agendamento foi registrado com sucesso.",
-              icon: "success",
-              buttons: {
-                confirm: {
-                  text: "OK",
-                  className: "btn btn-success",
-                },
-              },
-            });
+              swal({
+                  title: "Agendamento Registrado!",
+                  text: "O agendamento foi registrado com sucesso.",
+                  icon: "success",
+                  buttons: {
+                      confirm: {
+                          text: "OK",
+                          className: "btn btn-success",
+                      },
+                  },
+              });
           </script>
-        `);
-      });
-    });
+      `);
   });
 }
 
