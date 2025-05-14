@@ -349,8 +349,10 @@
 
 
                                     <div class="d-flex justify-content-end">
-                                        <a href="/agendamento" class="btn btn-secondary me-3 shadow-lg">Voltar</a>
-                                        <button type="submit" class="btn btn-success shadow-lg">Salvar</button>
+                                        <a href="/agendamento"
+                                            class="btn btn-secondary me-3 text-white fw-bold shadow-lg">Voltar</a>
+                                        <button type="submit"
+                                            class="btn btn-success text-white fw-bold shadow-lg">Salvar</button>
                                     </div>
                                 </div>
                             </div>
@@ -371,23 +373,30 @@
                                             method="POST">
                                             <input type="hidden" name="itemId"
                                                 value="{{#if editandoItem}}{{item.cd_mat_agenda}}{{/if}}" />
-
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label class="fw-bold">Nome do material</label>
-                                                    <input type="text" class="form-control" name="item_nome"
-                                                        value="{{item.ds_mat_agenda}}" required>
-                                                </div>
-
+                                            <div class="row mb-3">
                                                 <div class="col-md-6">
                                                     <label class="fw-bold">Linha do material</label>
-                                                    <select name="linha_material" class="form-control">
+                                                    <select name="linha_material" id="linha_material"
+                                                        class="form-control">
                                                         <option value="">Selecione a linha</option>
                                                         {{#each linhas}}
                                                         <option value="{{cd_linha}}" {{#if (eq ../item.ie_linha
                                                             cd_linha)}}selected{{/if}}>
                                                             {{nm_linha}}
                                                         </option>
+                                                        {{/each}}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label class="fw-bold">Selecione um material</label>
+                                                    <select name="item_nome" id="item_nome" class="form-control"
+                                                        required data-selected="{{item.ds_mat_agenda}}">
+                                                        <option value="">Selecione um material</option>
+                                                        {{#each materiais}}
+                                                        <option value="{{ds_material}}" data-linha="{{ie_linha}}">
+                                                            {{ds_material}}</option>
                                                         {{/each}}
                                                     </select>
                                                 </div>
@@ -401,17 +410,19 @@
                                             </div>
                                             <div class="d-flex justify-content-end gap-2 mt-3">
                                                 <a href="/agendamentoEditar?id_agendamento={{agendamento.cd_agendamento}}"
-                                                    class="btn btn-secondary">
+                                                    class="btn btn-secondary text-white fw-bold shadow-lg">
                                                     Cancelar
                                                 </a>
 
                                                 <button
                                                     formaction="/agendamentoEditar/{{agendamento.cd_agendamento}}/itens/{{item.cd_mat_agenda}}/editar"
-                                                    class="btn btn-warning">
+                                                    class="btn btn-warning text-white fw-bold shadow-lg">
                                                     Atualizar Item
                                                 </button>
 
-                                                <button type="submit" class="btn btn-success">Adicionar Item</button>
+                                                <button type="submit"
+                                                    class="btn btn-success text-white fw-bold shadow-lg">Adicionar
+                                                    Item</button>
 
                                             </div>
 
@@ -443,14 +454,16 @@
                                                     <td>{{nm_linha}}</td>
                                                     <td>{{qt_peso_material_total_kg}}</td>
                                                     <td>
-                                                        <a href="/agendamentoEditar/{{../agendamento.cd_agendamento}}/itens/{{cd_mat_agenda}}/excluir"
-                                                            class="btn btn-danger me-2"
-                                                            onclick="return confirm('Tem certeza que deseja excluir este item?');">
-                                                            <i class="fa fa-trash"></i> Excluir
+                                                        <a href="#"
+                                                            class="btn btn-danger me-2 text-white fw-bold shadow-lg"
+                                                            onclick="confirmarExclusao('{{../agendamento.cd_agendamento}}', '{{cd_mat_agenda}}')">
+                                                            <i class="fa fa-trash text-white fw-bold shadow-lg"></i>
+                                                            Excluir
                                                         </a>
                                                         <a href="/agendamentoEditar/{{../agendamento.cd_agendamento}}/itens/{{cd_mat_agenda}}/editar"
-                                                            class="btn btn-warning">
-                                                            <i class="fa fa-edit"></i> Editar
+                                                            class="btn btn-warning text-white fw-bold shadow-lg">
+                                                            <i class="fa fa-edit text-white fw-bold shadow-lg"></i>
+                                                            Editar
                                                         </a>
                                                     </td>
                                                 </tr>
@@ -492,11 +505,10 @@
                         }
                     });
                 </script>
-
                 <script>
                     function confirmarExclusao(idAgendamento, itemId) {
                         swal({
-                            title: "Tem certeza?",
+                            title: "Tem certeza que deseja excluir?",
                             text: "Você não poderá desfazer esta ação!",
                             icon: "warning",
                             buttons: {
@@ -521,6 +533,78 @@
                 </script>
             </div>
         </div>
+        <script>
+            window.addEventListener('DOMContentLoaded', function () {
+                const select = document.getElementById('item_nome');
+                const selectedValue = select.getAttribute('data-selected');
+
+                if (selectedValue) {
+                    for (let option of select.options) {
+                        if (option.value === selectedValue) {
+                            option.selected = true;
+                            break;
+                        }
+                    }
+                }
+            });
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const linhaSelect = document.getElementById('linha_material');
+                const materialSelect = document.getElementById('item_nome');
+
+                // Armazena todas as opções de material (menos o primeiro "placeholder")
+                const allOptions = Array.from(materialSelect.options).filter(opt => opt.value !== "");
+
+                linhaSelect.addEventListener('change', function () {
+                    const selectedLinha = this.value;
+
+                    // Limpa os materiais visíveis
+                    materialSelect.innerHTML = '<option value="">Selecione um material</option>';
+
+                    if (selectedLinha === "") {
+                        // Se nenhuma linha for selecionada, exibe todos os materiais
+                        allOptions.forEach(option => {
+                            materialSelect.appendChild(option);
+                        });
+                    } else {
+                        // Adiciona somente os materiais que pertencem à linha selecionada
+                        allOptions.forEach(option => {
+                            if (option.dataset.linha === selectedLinha) {
+                                materialSelect.appendChild(option);
+                            }
+                        });
+                    }
+
+                    // Reseta a seleção do material
+                    materialSelect.value = "";
+                });
+
+                // Atualiza o campo de linha ao selecionar um material
+                materialSelect.addEventListener('change', function () {
+                    const selectedOption = materialSelect.options[materialSelect.selectedIndex];
+                    const linha = selectedOption.getAttribute('data-linha');
+
+                    if (linha) {
+                        linhaSelect.value = linha; // Atualiza a linha correspondente
+                    } else {
+                        linhaSelect.value = ""; // Reseta a linha se nenhum material for selecionado
+                    }
+                });
+
+                // Restaura a seleção ao carregar a página (se estiver editando um item)
+                const selectedMaterial = materialSelect.getAttribute('data-selected');
+                if (selectedMaterial) {
+                    Array.from(materialSelect.options).forEach(option => {
+                        if (option.value === selectedMaterial) {
+                            option.selected = true;
+                            linhaSelect.value = option.getAttribute('data-linha'); // Atualiza a linha correspondente
+                        }
+                    });
+                }
+            });
+        </script>
 
 
         <!--End conteudo indiviudual da pagina-->
