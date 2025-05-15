@@ -88,7 +88,7 @@ async function atualizarStatusRota(req, res) {
            SELECT COUNT(*) AS total 
         FROM vw_pontos_coleta 
         WHERE cd_rota = ? 
-        AND dt_r_iniciada IS NOT NULL 
+        AND dt_r_inciada != '000000'
 
         `;
 

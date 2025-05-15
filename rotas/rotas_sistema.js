@@ -316,6 +316,11 @@ router.post('/rotaEditar/:cd_rota', (req, res) => {
     servico21.adicionarAgendamentoNaRota(req, res);
 });
 
+router.post('/excluirPonto/:id', (req, res) => {
+    servico21.excluirPontoColeta(req, res);
+});
+
+
 // ----------------------- Servico22 -------------------//
 //página para editar pessoa
 router.get('/pessoaEditar/:cd_pessoa_fisica', (req, res) => {
