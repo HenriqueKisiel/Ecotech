@@ -44,14 +44,14 @@ function registrarAgendamento(req, res) {
   console.log("Função registrarAgendamento chamada");
 
   const {
-      cd_pessoa_fisica,
-      cd_pessoa_juridica,
-      ds_endereco,
-      nr_cep,
-      cd_cidade,
-      cd_bairro,
-      dt_solicitada,
-      qt_quantidade_prevista_kg
+    cd_pessoa_fisica,
+    cd_pessoa_juridica,
+    ds_endereco,
+    nr_cep,
+    cd_cidade,
+    cd_bairro,
+    dt_solicitada,
+    qt_quantidade_prevista_kg
   } = req.body;
 
   console.log("Dados recebidos:", req.body);
@@ -60,26 +60,31 @@ function registrarAgendamento(req, res) {
   const dataAtual = new Date();
   const dataSolicitada = new Date(dt_solicitada);
 
-  if (dataSolicitada < dataAtual.setHours(0, 0, 0, 0)) {
-      return exibirAgendamento(req, res, `
-          <script>
-              swal({
-                  title: "Data inválida!",
-                  text: "A data solicitada não pode ser inferior à data atual.",
-                  icon: "error",
-                  buttons: {
-                      confirm: {
-                          text: "OK",
-                          className: "btn btn-danger",
-                      },
-                  },
-              });
-          </script>
-      `);
-  }
+  const enderecoLimpo = ds_endereco.trim().replace(/[^a-zA-Z0-9À-ÿ\s]/g, '').slice(0, 45);
+
+  const cepLimpo = nr_cep.replace(/\D/g, ''); // remove tudo que não é número
 
   // Converto o valor recebido como string para número, trocando vírgula por ponto
   const qt_quantidade_prevista_kg_num = parseFloat(qt_quantidade_prevista_kg.replace(',', '.'));
+
+  // Valida se o CEP tem exatamente 8 dígitos
+  if (!/^\d{8}$/.test(cepLimpo)) {
+    return exibirAgendamento(req, res, `
+    <script>
+      swal({
+        title: "CEP inválido!",
+        text: "O CEP deve conter exatamente 8 dígitos numéricos.",
+        icon: "error",
+        buttons: {
+          confirm: {
+            text: "OK",
+            className: "btn btn-danger",
+          },
+        },
+      });
+    </script>
+  `);
+  }
 
   // Query SQL para inserir o agendamento
   const query = `
@@ -89,21 +94,96 @@ function registrarAgendamento(req, res) {
   `;
 
   const valores = [
-      dt_solicitada,
-      cd_pessoa_fisica || null,
-      cd_pessoa_juridica || null,
-      ds_endereco,
-      cd_bairro,
-      cd_cidade,
-      nr_cep.replace(/\D/g, ''), // Remove caracteres não numéricos do CEP
-      qt_quantidade_prevista_kg_num,
-      'ativo' // Status padrão do novo agendamento
+    dt_solicitada,
+    cd_pessoa_fisica || null,
+    cd_pessoa_juridica || null,
+    enderecoLimpo,
+    cd_bairro,
+    cd_cidade,
+    cepLimpo,
+    qt_quantidade_prevista_kg_num,
+    'ativo' // Status padrão do novo agendamento
   ];
 
+  if (!enderecoLimpo) {
+    return exibirAgendamento(req, res, `
+    <script>
+      swal({
+        title: "Endereço inválido!",
+        text: "O campo de endereço é obrigatório e não pode conter apenas espaços ou caracteres especiais.",
+        icon: "error",
+        buttons: {
+          confirm: {
+            text: "OK",
+            className: "btn btn-danger",
+          },
+        },
+      });
+    </script>
+  `);
+  }
+
+  // Verifica se contém ao menos uma letra (não pode ser só número)
+  if (!/[a-zA-ZÀ-ÿ]/.test(enderecoLimpo)) {
+    return exibirAgendamento(req, res, `
+    <script>
+      swal({
+        title: "Endereço inválido!",
+        text: "Insira o nome do logradouro.",
+        icon: "error",
+        buttons: {
+          confirm: {
+            text: "OK",
+            className: "btn btn-danger",
+          },
+        },
+      });
+    </script>
+  `);
+  }
+
+  if (dataSolicitada < dataAtual.setHours(0, 0, 0, 0)) {
+    return exibirAgendamento(req, res, `
+        <script>
+            swal({
+                title: "Data inválida!",
+                text: "A data solicitada não pode ser inferior à data atual.",
+                icon: "error",
+                buttons: {
+                    confirm: {
+                        text: "OK",
+                        className: "btn btn-danger",
+                    },
+                },
+            });
+        </script>
+    `);
+  }
+
+  // Verifica se o valor é um número válido (sem letras ou caracteres especiais)
+  if (!/^\d+([.,]\d+)?$/.test(qt_quantidade_prevista_kg)) {
+    return exibirAgendamento(req, res, `
+    <script>
+        swal({
+            title: "Peso inválido!",
+            text: "Informe apenas números positivos com ponto ou vírgula (ex: 100,50). Não use sinais ou letras.",
+            icon: "error",
+            buttons: {
+                confirm: {
+                    text: "OK",
+                    className: "btn btn-danger",
+                },
+            },
+        });
+    </script>
+  `);
+  }
+
+
   conexao.query(query, valores, (erro, resultado) => {
-      if (erro) {
-          console.error("Erro ao registrar agendamento:", erro);
-          return exibirAgendamento(req, res, `
+    if (erro) {
+      console.error("Erro ao registrar agendamento:", erro);
+      return exibirAgendamento(req, res, `
               <script>
                   swal("Erro ao finalizar!", "Verifique os dados e tente novamente.", {
                       icon: "error",
@@ -116,10 +196,10 @@ function registrarAgendamento(req, res) {
                   });
               </script>
           `);
-      }
+    }
 
-      console.log("Agendamento registrado com sucesso!");
-      return exibirAgendamento(req, res, `
+    console.log("Agendamento registrado com sucesso!");
+    return exibirAgendamento(req, res, `
           <script>
               swal({
                   title: "Agendamento Registrado!",
@@ -149,7 +229,7 @@ function buscarBairrosPorCidade(req, res) {
     if (erro) {
       return res.status(500).send('Erro ao buscar bairros');
     }
-    
+
     // Retorno os bairros encontrados em formato JSON
     return res.json(bairros);
   });
