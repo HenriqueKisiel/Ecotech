@@ -276,6 +276,8 @@
                                             <div class="form-group">
                                                 <label class="fw-bold">Endereço</label>
                                                 <input type="text" class="form-control" name="ds_endereco"
+                                                    maxlength="45" required pattern=".*\S.*"
+                                                    title="Informe um endereço válido sem apenas espaços em branco"
                                                     placeholder="Informe o endereço">
                                             </div>
                                         </div>
@@ -285,7 +287,7 @@
                                             <div class="form-group">
                                                 <label class="fw-bold">CEP</label>
                                                 <input type="text" class="form-control" name="nr_cep" id="cep"
-                                                    placeholder="Informe o CEP" maxlength="9">
+                                                    placeholder="Informe o CEP" maxlength="9" required>
                                             </div>
                                         </div>
 
@@ -328,18 +330,12 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Peso Previsto (KG)</label>
-                                                <input type="number" class="form-control"
+                                                <input type="text" class="form-control" id="qt_quantidade_prevista_kg"
                                                     name="qt_quantidade_prevista_kg"
-                                                    placeholder="Informe o peso previsto (em KG)" step="0.01">
-                                            </div>
-                                        </div>
-
-                                        <!-- Checkbox para Atividade -->
-                                        <div class="col-md-6">
-                                            <div class="form-group form-check mt-4">
-                                                <input type="checkbox" class="form-check-input" id="statusAtivo"
-                                                    name="status_ativo">
-                                                <label class="form-check-label" for="statusAtivo">Ativo</label>
+                                                    placeholder="Informe o peso previsto (em KG)"
+                                                    pattern="^\d+([.,]?\d+)?$"
+                                                    title="Digite apenas números (ponto ou vírgula são permitidos)"
+                                                    required>
                                             </div>
                                         </div>
 
@@ -406,30 +402,35 @@
                         }
                     });
                 </script>
+
+                <script>
+                    document.getElementById('qt_quantidade_prevista_kg').addEventListener('input', function (e) {
+                        let value = this.value;
+
+                        // Substitui vírgula por ponto para normalizar temporariamente
+                        value = value.replace(',', '.');
+
+                        // Remove tudo que não for número ou ponto
+                        value = value.replace(/[^0-9.]/g, '');
+
+                        // Garante que só tenha um ponto decimal
+                        const parts = value.split('.');
+                        if (parts.length > 2) {
+                            value = parts[0] + '.' + parts[1];
+                        }
+
+                        // Atualiza o valor no campo (com vírgula se usuário digitou vírgula antes)
+                        this.value = value.replace('.', ',');
+                    });
+                </script>
+
                 <script>
                     document.addEventListener('DOMContentLoaded', function () {
-                        const form = document.querySelector('form'); // Seleciona o formulário
-                        const dataSolicitada = document.getElementById('dt_solicitada'); // Campo de data
+                        const enderecoInput = document.querySelector('[name="ds_endereco"]');
 
-                        form.addEventListener('submit', function (e) {
-                            const dataAtual = new Date(); // Data atual
-                            const dataSelecionada = new Date(dataSolicitada.value); // Data selecionada pelo usuário
-
-                            // Verifica se a data selecionada é inferior à data atual
-                            if (dataSelecionada < dataAtual.setHours(0, 0, 0, 0)) {
-                                e.preventDefault(); // Impede o envio do formulário
-                                swal({
-                                    title: "Data inválida!",
-                                    text: "A data solicitada não pode ser inferior à data atual.",
-                                    icon: "error",
-                                    buttons: {
-                                        confirm: {
-                                            text: "OK",
-                                            className: "btn btn-danger",
-                                        },
-                                    },
-                                });
-                            }
+                        enderecoInput.addEventListener('input', function (e) {
+                            // Permite letras, números, espaços e acentos comuns; remove o restante
+                            this.value = this.value.replace(/[^a-zA-Z0-9À-ÿ\s]/g, '');
                         });
                     });
                 </script>
