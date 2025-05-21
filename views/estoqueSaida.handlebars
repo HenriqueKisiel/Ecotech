@@ -233,10 +233,10 @@
                         <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
                             <div class="mb-3 d-flex flex-column">
                                 <span class="fs-2 fw-bold">
-                                    Saída de Material
+                                    Movimentação de Material
                                 </span>
                                 <small class="text-muted">
-                                    Preencha os dados de cadastro e clique em salvar.
+                                    Preencha os dados da movimentação e clique em registrar.
                                 </small>
                             </div>
                         </div>
@@ -247,61 +247,101 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    {{!-- <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold form-label d-flex justify-content-center">
-                                                Selecione a Linha do
-                                                material
-                                            </label>
-                                            <div class="row gutters-xs d-flex justify-content-center">
-                                                <div class="col-auto">
-                                                    <label class="colorinput">
-                                                        <input name="color" type="checkbox" value="primary"
-                                                            class="colorinput-input">
-                                                        <span class="colorinput-color bg-primary"></span>
-                                                    </label>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <label class="colorinput">
-                                                        <input name="color" type="checkbox" value="success"
-                                                            class="colorinput-input">
-                                                        <span class="colorinput-color bg-success"></span>
-                                                    </label>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <label class="colorinput">
-                                                        <input name="color" type="checkbox" value="danger"
-                                                            class="colorinput-input">
-                                                        <span class="colorinput-color bg-danger"></span>
-                                                    </label>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <label class="colorinput">
-                                                        <input name="color" type="checkbox" value="warning"
-                                                            class="colorinput-input">
-                                                        <span class="colorinput-color bg-warning"></span>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> --}}
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="fw-bold">Codigo do Material</label>
-                                            <input type="text" class="form-control form-control" id="defaultInput"
-                                                placeholder="Informe o codigo">
+                                            <label class="fw-bold">Planta</label>
+                                            <select name="planta" class="form-select form-control">
+                                                <option value="">Informe uma planta</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="fw-bold">Data de Cadastro</label>
-                                            <input type="date" class="form-control form-control" id="defaultInput">
+                                            <label class="fw-bold">Estoque</label>
+                                            <select name="estoque" class="form-select form-control">
+                                                <option value="">Informe um estoque</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Material</label>
+                                            <select name="material" class="form-select form-control">
+                                                <option value="">Informe um material</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Movimentação</label>
+                                            <select name="movimentacao" class="form-select form-control">
+                                                <option value="saida">Saída</option>
+                                                <option value="entrada">Entrada</option>
+                                                <option value="venda">Venda</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <hr class="mt-4">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Pessoa</label>
+                                            <select name="pessoa" class="form-select form-control">
+                                                <option value="fisica">Física</option>
+                                                <option value="juridica">Jurídica</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Nome</label>
+                                            <select name="nome" class="form-select form-control">
+                                                <option value="">Selecione o Comprador</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Número</label>
+                                            <input type="text" class="form-control" placeholder="Número do comprador"
+                                                readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">E-mail</label>
+                                            <input type="text" class="form-control" placeholder="E-mail do comprador"
+                                                readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">CPF</label>
+                                            <input type="text" class="form-control" placeholder="CPF do comprador"
+                                                readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">CNPJ</label>
+                                            <input type="text" class="form-control" placeholder="CNPJ do comprador"
+                                                readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">CEP</label>
+                                            <input type="text" class="form-control" placeholder="CEP do comprador"
+                                                readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Motivo</label>
+                                            <input type="text" class="form-control"
+                                                placeholder="Descreva o motivo da movimentação">
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="card-footer d-flex justify-content-end">
-                                <a class="btn btn-primary">Buscar</a>
                             </div>
                         </div>
                         <div class="card">
@@ -313,65 +353,23 @@
                                     <table class="table table-bordered table-head-bg-success">
                                         <thead>
                                             <tr>
-                                                <th>Linha</th>
-                                                <th>Codigo</th>
-                                                <th>Qtd.(Kg)</th>
-                                                <th>Data Entrada</th>
-                                                <th>Quantidade Retirada</th>
-                                                <th>Status</th>
+                                                <th>Quantidade Atual Volume</th>
+                                                <th>Quantidade Atual (KG)</th>
+                                                <th>Quantidade a Movimentar Volume</th>
+                                                <th>Quantidade a Movimentar (KG)</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>Linha Verde</td>
-                                                <td>13213193</td>
-                                                <td>870</td>
-                                                <td>16/06/2024</td>
-                                                <td> <input type="text" class="form-control form-control"
-                                                        id="defaultInput" placeholder="_____"></td>
+                                                <td class="text-center">XXX</td>
+                                                <td class="text-center">XXX</td>
+                                                <td><input type="text" class="form-control" id="defaultInput"
+                                                        placeholder="Digite uma quantidade"></td>
+                                                <td><input type="text" class="form-control" id="defaultInput"
+                                                        placeholder="Digite uma quantidade"></td>
                                                 <td>
-                                                    <select class="form-select form-control" id="defaultSelect">
-                                                        <option>Vendido</option>
-                                                        <option>Descartado</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <a class="btn btn-warning text-white">Registrar Saída</a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Linha Vermelha</td>
-                                                <td>13213193</td>
-                                                <td>240</td>
-                                                <td>16/06/2024</td>
-                                                <td> <input type="text" class="form-control form-control"
-                                                        id="defaultInput" placeholder="_____"></td>
-                                                <td>
-                                                    <select class="form-select form-control" id="defaultSelect">
-                                                        <option>Vendido</option>
-                                                        <option>Descartado</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <a class="btn btn-warning text-white">Registrar Saída</a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Linha Azul</td>
-                                                <td>13213193</td>
-                                                <td>1150</td>
-                                                <td>16/06/2024</td>
-                                                <td> <input type="text" class="form-control form-control"
-                                                        id="defaultInput" placeholder="_____"></td>
-                                                <td>
-                                                    <select class="form-select form-control" id="defaultSelect">
-                                                        <option>Vendido</option>
-                                                        <option>Descartado</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <a class="btn btn-warning text-white">Registrar Saída</a>
+                                                    <a class="btn btn-warning text-white">Registrar</a>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -379,29 +377,96 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        <!--End conteudo indiviudual da pagina-->
+                        <!--Start Script-->
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                const movimentacaoSelect = document.querySelector('select[name="movimentacao"]');
+                                const motivoField = document.querySelector('input[placeholder="Descreva o motivo da movimentação"]')
+                                    .closest('.col-md-6');
 
-                </div>
-            </div>
-            <!--end conteudo indiviudual da pagina-->
-            <footer class="footer">
-                <div class="container-fluid d-flex justify-content-between">
-                    <nav class="pull-left">
-                        <ul class="nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">footer#1</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">footer#2</a>
-                            </li>
-                        </ul>
-                    </nav>
-                    <div class="copyright">
-                        2025 - Autores: Equipe 7
+                                // Campos que devem ser ocultados ao mostrar apenas "Motivo"
+                                const camposOcultos = [
+                                    'select[name="pessoa"]',
+                                    'select[name="nome"]',
+                                    'input[placeholder="Número do comprador"]',
+                                    'input[placeholder="E-mail do comprador"]',
+                                    'input[placeholder="CPF do comprador"]',
+                                    'input[placeholder="CNPJ do comprador"]',
+                                    'input[placeholder="CEP do comprador"]'
+                                ].map(selector => document.querySelector(selector)?.closest('.col-md-6'));
+
+                                // Campos de CPF e CNPJ para alternar na seleção de pessoa
+                                const selectPessoa = document.querySelector('select[name="pessoa"]');
+                                const campoCPF = document.querySelector('input[placeholder="CPF do comprador"]').closest('.col-md-6');
+                                const campoCNPJ = document.querySelector('input[placeholder="CNPJ do comprador"]').closest('.col-md-6');
+
+                                function atualizarCampos() {
+                                    const valorMov = movimentacaoSelect.value;
+
+                                    if (valorMov === 'saida' || valorMov === 'entrada') {
+                                        motivoField.style.display = 'block';
+                                        camposOcultos.forEach(el => {
+                                            if (el) el.style.display = 'none';
+                                        });
+                                    } else {
+                                        motivoField.style.display = 'none';
+                                        camposOcultos.forEach(el => {
+                                            if (el) el.style.display = 'block';
+                                        });
+                                        // Atualiza também a visibilidade do CPF/CNPJ se estiver no modo normal (não "Saída"/"Entrada")
+                                        atualizarCamposPessoa();
+                                    }
+                                }
+
+                                function atualizarCamposPessoa() {
+                                    const valorPessoa = selectPessoa.value;
+
+                                    if (valorPessoa === 'fisica') { // Física
+                                        campoCPF.style.display = 'block';
+                                        campoCNPJ.style.display = 'none';
+                                    } else if (valorPessoa === 'juridica') { // Jurídica
+                                        campoCPF.style.display = 'none';
+                                        campoCNPJ.style.display = 'block';
+                                    } else {
+                                        campoCPF.style.display = 'block';
+                                        campoCNPJ.style.display = 'block';
+                                    }
+                                }
+
+                                movimentacaoSelect.addEventListener('change', atualizarCampos);
+                                selectPessoa.addEventListener('change', () => {
+                                    // Só atualiza se os campos estiverem visíveis (ou seja, movimentação não é "Saída"/"Entrada")
+                                    if (movimentacaoSelect.value !== 'saida' && movimentacaoSelect.value !== 'entrada') {
+                                        atualizarCamposPessoa();
+                                    }
+                                });
+
+                                // Executa ao carregar a página
+                                atualizarCampos();
+                            });
+                        </script>
+                        <!--End Script-->
                     </div>
                 </div>
-            </footer>
-        </div>
+                <footer class="footer">
+                    <div class="container-fluid d-flex justify-content-between">
+                        <nav class="pull-left">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">footer#1</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">footer#2</a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <div class="copyright">
+                            2025 - Autores: Equipe 7
+                        </div>
+                    </div>
+                </footer>
+            </div>
         </div>
     </body>
 </main>

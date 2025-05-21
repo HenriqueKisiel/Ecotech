@@ -43,7 +43,7 @@ const configuracoesPorTipo = {
         colunas: {
             nome: 'nm_planta',
             codigo: 'cd_planta',
-            area_total: 'qt_area_total_m2',
+            area_total: 'qt_capacidade_total_volume',
             capacidade_total: 'qt_capacidade_total_kg',
             capacidade_atual: 'qt_capacidade_atual_kg',
             situacao: 'ie_situacao'

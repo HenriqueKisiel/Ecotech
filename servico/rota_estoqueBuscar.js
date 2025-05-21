@@ -40,8 +40,8 @@ function buscarEstoques(req, res) {
         `;
 
         if (codigoCadastro) {
-            sql += ' AND e.cd_estoque = ?';  // Certifique-se de incluir o filtro aqui
-            params.push(codigoCadastro);  // O parâmetro será adicionado corretamente
+            sql += ' AND e.cd_estoque = ?';
+            params.push(codigoCadastro);
         }
 
         if (nomeCadastro) {
@@ -50,22 +50,24 @@ function buscarEstoques(req, res) {
         }
 
         if (plantaCadastro) {
-            sql += ' AND e.cd_planta = ?';
-            params.push(plantaCadastro);
+            sql += ' AND p.nm_planta LIKE ?';
+            params.push(`%${plantaCadastro}%`);
         }
 
     } else if (tipoCadastro === 'material') {
         sql = `
             SELECT 
                 m.cd_material,
-                m.ds_material,
-                m.vl_valor_por_kg,
-                IFNULL(em.qt_peso, '-') AS qt_peso,  -- Substituindo null por '-'
-                IFNULL(e.nm_estoque, '-') AS nm_estoque  -- Substituindo null por '-'
-            FROM materiais m
-            LEFT JOIN estoque_material em ON m.cd_material = em.cd_material
-            LEFT JOIN estoque e ON em.cd_estoque = e.cd_estoque
-            WHERE 1=1
+        m.ds_material,
+        m.vl_valor_por_kg,
+        IFNULL(em.qt_peso, '-') AS qt_peso,
+        IFNULL(e.nm_estoque, '-') AS nm_estoque,
+        IFNULL(p.nm_planta, '-') AS nm_planta
+    FROM materiais m
+    LEFT JOIN estoque_material em ON m.cd_material = em.cd_material
+    LEFT JOIN estoque e ON em.cd_estoque = e.cd_estoque
+    LEFT JOIN planta p ON e.cd_planta = p.cd_planta
+    WHERE 1=1
         `;
 
         if (codigoCadastro) {
@@ -79,8 +81,8 @@ function buscarEstoques(req, res) {
         }
 
         if (estoqueCadastro) {
-            sql += ' AND e.cd_estoque = ?';
-            params.push(estoqueCadastro);
+            sql += ' AND e.nm_estoque LIKE ?';
+            params.push(`%${estoqueCadastro}%`);
         }
 
     } else {

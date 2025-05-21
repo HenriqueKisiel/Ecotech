@@ -344,9 +344,10 @@
                                     <table class="table table-bordered table-head-bg-success">
                                         <thead>
                                             <tr>
+                                                <th>Código</th>
                                                 <th>Nome</th>
                                                 {{#if (eq tipoCadastro "Planta de Reciclagem")}}
-                                                <th>Área Total (m²)</th>
+                                                <th>Volume Total</th>
                                                 <th>Capacidade Total (Kg)</th>
                                                 <th>Capacidade Atual (Kg)</th>
                                                 {{else}}
@@ -354,7 +355,6 @@
                                                 <th>CPF/CNPJ</th>
                                                 <th>Telefone</th>
                                                 {{/if}}
-                                                <th>Código</th>
                                                 {{#if (or (eq tipoCadastro "Planta de Reciclagem") (eq tipoCadastro
                                                 "Usuário"))}}
                                                 <th>Situação</th>
@@ -366,6 +366,8 @@
                                             {{#if resultados}}
                                             {{#each resultados}}
                                             <tr>
+                                                <td>{{codigo}}</td>
+
                                                 <td>{{nome}}</td>
 
                                                 {{#if (eq ../tipoCadastro "Planta de Reciclagem")}}
@@ -382,23 +384,21 @@
                                                 <td>{{#if telefone}}{{telefone}}{{else}}-{{/if}}</td>
                                                 {{/if}}
 
-                                                <td>{{codigo}}</td>
-
                                                 {{#if (or (eq ../tipoCadastro "Planta de Reciclagem") (eq
                                                 ../tipoCadastro "Usuário"))}}
                                                 <td>{{#if situacao}}{{situacao}}{{else}}-{{/if}}</td>
                                                 {{/if}}
 
                                                 <td>
-                                                    <a href="/editar/{{codigo}}"
-                                                        class="btn btn-primary btn-round btn-border fw-bold shadow-sm btn-editar"
-                                                        data-codigo="{{codigo}}">
-                                                        <span class="btn-label">
-                                                            <i class="fas fa-angle-double-right"></i>
-                                                        </span>
-                                                        Acessar
-                                                    </a>
+                                                    <div class="d-flex justify-content-center align-items-center">
+                                                        <a href="/editar/{{codigo}}"
+                                                            class="btn btn-icon btn-round btn-warning btn-editar"
+                                                            data-codigo="{{codigo}}">
+                                                            <i class="fa fa-edit text-white"></i>
+                                                        </a>
+                                                    </div>
                                                 </td>
+
                                             </tr>
                                             {{/each}}
                                             {{else}}
