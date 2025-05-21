@@ -289,47 +289,11 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <!-- Endereço -->
-                                        <div class="form-group {{#if hasError.endereco}}has-error{{/if}}">
-                                            <label class="fw-bold">Endereço</label>
-                                            <input maxlength="50" type="text" name="endereco" class="form-control"
-                                                placeholder="Preencha o endereço" value="{{dadosForm.endereco}}">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <!-- CEP -->
-                                        <div class="form-group {{#if hasError.cep}}has-error{{/if}}">
-                                            <label class="fw-bold">CEP</label>
-                                            <input maxlength="9" id="cep" type="text" name="cep" class="form-control"
-                                                placeholder="Preencha o CEP" value="{{dadosForm.cep}}">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Cidade</label><br>
-                                            <select class="form-select form-control" name="cidade">
-                                                <option value="1">Curitiba</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Bairro</label><br>
-                                            <select class="form-select form-control" name="bairro">
-                                                <option value="1">Xaxim</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <div class="row">
                                     <div class="col-md-6">
                                         <!-- Data de Nascimento -->
                                         <div class="form-group {{#if hasError.dataNasc}}has-error{{/if}}">
-                                            <label>Data de Nascimento</label>
+                                            <label class="fw-bold">Data de Nascimento</label>
                                             <input type="date" name="dataNasc" class="form-control"
                                                 value="{{dadosForm.dataNasc}}">
                                         </div>
@@ -344,6 +308,53 @@
                                         </div>
                                     </div>
                                 </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group {{#if hasError.cep}}has-error{{/if}}">
+                                            <label class="fw-bold">CEP</label>
+                                            <input maxlength="9" id="cep" type="text" name="cep" class="form-control"
+                                                placeholder="Preencha o CEP" value="{{dadosForm.cep}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Estado (UF)</label>
+                                            <input type="text" class="form-control" name="uf_estado" id="uf_estado"
+                                                placeholder="Preencha o CEP para buscar Estado (UF)" readonly required
+                                                maxlength="2">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Cidade</label>
+                                            <input type="text" class="form-control" name="nm_cidade" id="nm_cidade"
+                                                placeholder="Preencha o CEP para buscar Cidade" readonly required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Bairro</label>
+                                            <input type="text" class="form-control" name="nm_bairro" id="nm_bairro"
+                                                placeholder="Preencha o CEP para buscar Bairro" readonly required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Rua do Endereço</label>
+                                            <input type="text" class="form-control" name="ds_endereco"
+                                                placeholder="Preencha o CEP para buscar Rua do Endereço" readonly
+                                                required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Número do Endereço</label>
+                                            <input type="text" class="form-control" name="nr_endereco" id="ds_endereco"
+                                                placeholder="Preencha o número do endereço" required maxlength="10">
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <div class="d-flex justify-content-end mt-3">
                                     <a href="/cadastros"
@@ -355,6 +366,51 @@
                     </div>
                 </div>
             </div>
+            <script>
+                document.getElementById('cep').addEventListener('blur', function () {
+                    const cep = this.value.replace(/\D/g, '');
+
+                    if (cep.length !== 8) return;
+
+                    fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                        .then(response => {
+                            if (!response.ok) throw new Error('Erro ao buscar CEP');
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.erro) {
+                                swal("CEP não encontrado!", "Verifique o número digitado.", {
+                                    icon: "warning",
+                                    buttons: {
+                                        confirm: {
+                                            text: "OK",
+                                            className: "btn btn-warning",
+                                        },
+                                    },
+                                });
+                                return;
+                            }
+
+                            document.getElementById('uf_estado').value = data.uf || '';
+                            document.getElementById('nm_cidade').value = data.localidade || '';
+                            document.getElementById('nm_bairro').value = data.bairro || '';
+                            document.querySelector('input[name="ds_endereco"]').value = data.logradouro || '';
+                        })
+                        .catch(error => {
+                            console.error('Erro:', error);
+                            swal("Erro!", "Erro ao buscar o endereço pelo CEP.", {
+                                icon: "error",
+                                buttons: {
+                                    confirm: {
+                                        text: "OK",
+                                        className: "btn btn-danger",
+                                    },
+                                },
+                            });
+                        });
+                });
+            </script>
+
             <!--end conteudo indiviudual da pagina-->
             <footer class="footer">
                 <div class="container-fluid d-flex justify-content-between">

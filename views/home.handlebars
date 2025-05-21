@@ -238,30 +238,272 @@
                 <!--End MenuBar-->
                 <!--Start conteudo indiviudual da pagina-->
                 <div class="container">
-                    <iframe class="w-100" height="800"
-                        src="https://lookerstudio.google.com/embed/reporting/47430565-a7d0-4bed-bbca-0665059cd7e1/page/XPMCE"
-                        frameborder="0" style="border:0" allowfullscreen
-                        sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
-                </div>
-                <!--end conteudo indiviudual da pagina-->
-                <footer class="footer">
-                    <div class="container-fluid d-flex justify-content-between">
-                        <nav class="pull-left">
-                            <ul class="nav">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">footer#1</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">footer#2</a>
-                                </li>
-                            </ul>
-                        </nav>
-                        <div class="copyright">
-                            2025 - Autores: Equipe 7
+                    <div class="page-inner">
+                        <div class="row row-card-no-pd mt--2 shadow-lg mb-5">
+                            <div class="col-12 col-sm-6 col-md-6 col-xl-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <h5><b>Capacidade de Processamento</b></h5>
+                                                <p class="text-muted">All Customs Value</p>
+                                            </div>
+                                            <h3 class="text-info fw-bold">$170</h3>
+                                        </div>
+                                        <div class="progress progress-sm">
+                                            <div class="progress-bar bg-info w-75" role="progressbar" aria-valuenow="75"
+                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mt-2">
+                                            <p class="text-muted mb-0">Change</p>
+                                            <p class="text-muted mb-0">75%</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-6 col-xl-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <h5><b>Capacidade de Armazenamento</b></h5>
+                                                <p class="text-muted">All Customs Value</p>
+                                            </div>
+                                            <h3 class="text-success fw-bold">$120</h3>
+                                        </div>
+                                        <div class="progress progress-sm">
+                                            <div class="progress-bar bg-success w-25" role="progressbar"
+                                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mt-2">
+                                            <p class="text-muted mb-0">Change</p>
+                                            <p class="text-muted mb-0">25%</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-6 col-xl-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <h5><b>Número de Funcionários</b></h5>
+                                                <p class="text-muted">Fresh Order Amount</p>
+                                            </div>
+                                            <h3 class="text-danger fw-bold">15</h3>
+                                        </div>
+                                        <div class="progress progress-sm">
+                                            <div class="progress-bar bg-danger w-50" role="progressbar"
+                                                aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mt-2">
+                                            <p class="text-muted mb-0">Change</p>
+                                            <p class="text-muted mb-0">50%</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="card mb-5">
+                                    <div class="card-header">
+                                        <div class="card-title">Volume de Resíduos Processados (ton) - 2025</div>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas height="100" id="grafico1"></canvas>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title">Taxa de devolução em volume - Semestre</div>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas height="100" id="grafico2"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card mb-5">
+                                    <div class="card-header">
+                                        <div class="card-title">title</div>
+                                    </div>
+                                    <div class="card-body d-flex justify-content-center">
+                                        <canvas class="w-75 h-auto" id="grafico3"></canvas>
+                                    </div>
+                                </div>
+                                <div class="card mb-5">
+                                    <div class="card-header">
+                                        <div class="card-title">title</div>
+                                    </div>
+                                    <div class="card-body d-flex justify-content-center">
+                                        <canvas class="w-75 h-auto" id="grafico4"></canvas>
+                                    </div>
+                                </div>
+                                <div class="card mb-5">
+                                    <div class="card-header">
+                                        <div class="card-title">title</div>
+                                    </div>
+                                    <div class="card-body d-flex justify-content-center">
+                                        <canvas class="w-75 h-auto" id="grafico5"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        {{!-- <iframe class="w-100" height="800"
+                            src="https://lookerstudio.google.com/embed/reporting/47430565-a7d0-4bed-bbca-0665059cd7e1/page/XPMCE"
+                            frameborder="0" style="border:0" allowfullscreen
+                            sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+                        --}}
                     </div>
-                </footer>
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                    <script>
+                        //gráfico 1
+                        const ctx = document.getElementById('grafico1');
+
+                        let labelsX = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+                        let valores = [10, 20, 30, 40, 15, 25, 35, 45, 20, 30, 40, 50];
+
+                        new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: labelsX,
+                                datasets: [{
+                                    label: '# of Votes',
+                                    data: valores,
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });                   
+                    </script>
+                    <script>
+                        const labels = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho'];
+
+                        const data = {
+                            labels: labels,
+                            datasets: [{
+                                label: 'My First Dataset',
+                                data: [65, 59, 80, 81, 56, 55, 40],
+                                fill: false,
+                                borderColor: 'rgb(75, 192, 192)',
+                                tension: 0.1
+                            }]
+                        };
+
+                        const config = {
+                            type: 'line',
+                            data: data,
+                        };
+
+                        const myChart = new Chart(
+                            document.getElementById('grafico2'),
+                            config
+                        );
+                    </script>
+                    <script>
+                        const doughnutData = {
+                            labels: ['Red', 'Blue', 'Yellow'],
+                            datasets: [{
+                                label: 'My First Dataset',
+                                data: [300, 50, 100],
+                                backgroundColor: [
+                                    'rgb(255, 99, 132)',
+                                    'rgb(54, 162, 235)',
+                                    'rgb(255, 205, 86)'
+                                ],
+                                hoverOffset: 4
+                            }]
+                        };
+
+                        const doughnutConfig = {
+                            type: 'doughnut',
+                            data: doughnutData,
+                        };
+
+                        const doughnutChart = new Chart(
+                            document.getElementById('grafico3'),
+                            doughnutConfig
+                        );
+                    </script>
+                    <script>
+                        const doughnutData2 = {
+                            labels: ['Orgânico', 'Plástico', 'Metal'],
+                            datasets: [{
+                                label: 'Tipos de Resíduos',
+                                data: [120, 200, 80],
+                                backgroundColor: [
+                                    'rgb(100, 200, 100)',
+                                    'rgb(0, 123, 255)',
+                                    'rgb(255, 193, 7)'
+                                ],
+                                hoverOffset: 4
+                            }]
+                        };
+
+                        const doughnutConfig2 = {
+                            type: 'doughnut',
+                            data: doughnutData2,
+                        };
+
+                        const doughnutChart2 = new Chart(
+                            document.getElementById('grafico4'),
+                            doughnutConfig2
+                        );
+                    </script>
+                    <script>
+                        const doughnutData3 = {
+                            labels: ['Indústria', 'Comércio', 'Residencial'],
+                            datasets: [{
+                                label: 'Origem dos Resíduos',
+                                data: [180, 90, 130],
+                                backgroundColor: [
+                                    'rgb(255, 99, 132)',
+                                    'rgb(54, 162, 235)',
+                                    'rgb(153, 102, 255)'
+                                ],
+                                hoverOffset: 4
+                            }]
+                        };
+
+                        const doughnutConfig3 = {
+                            type: 'doughnut',
+                            data: doughnutData3,
+                        };
+
+                        const doughnutChart3 = new Chart(
+                            document.getElementById('grafico5'),
+                            doughnutConfig3
+                        );
+                    </script>
+                    <!--end conteudo indiviudual da pagina-->
+                    <footer class="footer">
+                        <div class="container-fluid d-flex justify-content-between">
+                            <nav class="pull-left">
+                                <ul class="nav">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">footer#1</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">footer#2</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                            <div class="copyright">
+                                2025 - Autores: Equipe 7
+                            </div>
+                        </div>
+                    </footer>
+                </div>
             </div>
-        </div>
     </body>
 </main>

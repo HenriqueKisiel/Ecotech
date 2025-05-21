@@ -1,22 +1,34 @@
 const conectiondb = require('../bd/conexao_mysql.js');
 
-// Função para abrir a página de edição de pessoa
+// Função para abrir a página de edição
 function exibirPessoaEditar(req, res) {
     let sql = 'SELECT * FROM pessoa_fisica WHERE cd_pessoa_fisica = ?';
 
-    // Executando a consulta no banco de dados
     conectiondb().query(sql, [req.params.cd_pessoa_fisica], function (erro, retorno) {
         if (erro) throw erro;
 
-        // Verifica se a pessoa foi encontrada
         if (retorno.length === 0) {
             return res.status(404).send('Pessoa não encontrada.');
         }
 
-        res.render('pessoaEditar', { pessoa_fisica: retorno[0] });
+        //Isso garante que a data venha no formato que o campo <input type="date"> entende, que é YYYY-MM-DD.
+        const pessoa = retorno[0];
+        pessoa.dt_nascimento = formatarDataInput(pessoa.dt_nascimento);
+
+        res.render('pessoaEditar', { pessoa_fisica: pessoa });
     });
 }
 
+//função para formatar a data e retornar da maneira correta no campo data de nascimento
+function formatarDataInput(data) {
+    const d = new Date(data);
+    const ano = d.getFullYear();
+    const mes = String(d.getMonth() + 1).padStart(2, '0');
+    const dia = String(d.getDate()).padStart(2, '0');
+    return `${ano}-${mes}-${dia}`;
+}
+
+// Função para atualizar os dados da pessoa
 function editarPessoa(req, res) {
     const {
         codigo,
@@ -24,18 +36,18 @@ function editarPessoa(req, res) {
         email,
         cpf,
         telefone,
-        endereco,
+        nr_endereco,
+        ds_endereco,
         cep,
         dataNasc,
         sexo,
-        cidade,
-        bairro,
-        ie_situacao
+        nm_bairro,
+        nm_cidade,
+        uf_estado
     } = req.body;
 
-    // Verificação de ID (importante!)
+    // Validação básica
     if (!codigo || codigo.trim() === '') {
-        console.error('Código da pessoa ausente ou inválido.');
         return res.render('pessoaEditar', {
             pessoa_fisica: req.body,
             script: `
@@ -54,8 +66,6 @@ function editarPessoa(req, res) {
         });
     }
 
-    const situacao = ie_situacao ? 'A' : 'I';
-
     const sql = `
         UPDATE pessoa_fisica 
         SET 
@@ -63,13 +73,15 @@ function editarPessoa(req, res) {
             ds_email = ?, 
             nr_cpf = ?, 
             nr_telefone_celular = ?, 
+            nr_endereco = ?, 
             ds_endereco = ?, 
             nr_cep = ?, 
             dt_nascimento = ?, 
             ie_sexo = ?, 
-            cd_cidade = ?, 
-            cd_bairro = ?, 
-            ie_situacao = ?
+            nm_bairro = ?, 
+            nm_cidade = ?, 
+            uf_estado = ?,
+            dt_atualizacao = NOW()
         WHERE cd_pessoa_fisica = ?
     `;
 
@@ -78,18 +90,16 @@ function editarPessoa(req, res) {
         email,
         cpf,
         telefone,
-        endereco,
+        nr_endereco,
+        ds_endereco,
         cep,
         dataNasc,
         sexo,
-        cidade,
-        bairro,
-        situacao,
+        nm_bairro,
+        nm_cidade,
+        uf_estado,
         codigo
     ];
-
-    // Log para depuração
-    console.log('Tentando atualizar com os valores:', valores);
 
     conectiondb().query(sql, valores, function (erro) {
         if (erro) {
@@ -112,9 +122,7 @@ function editarPessoa(req, res) {
             });
         }
 
-        console.log('Pessoa atualizada com sucesso!');
-
-        // Renderiza a mesma tela com alerta de sucesso
+        // Sucesso
         res.render('pessoaEditar', {
             pessoa_fisica: {
                 cd_pessoa_fisica: codigo,
@@ -122,13 +130,15 @@ function editarPessoa(req, res) {
                 ds_email: email,
                 nr_cpf: cpf,
                 nr_telefone_celular: telefone,
-                ds_endereco: endereco,
+                nr_endereco,
+                ds_endereco,
                 nr_cep: cep,
-                dt_nascimento: dataNasc,
+                dt_nascimento: formatarDataInput(dataNasc),
                 ie_sexo: sexo,
-                cd_cidade: cidade,
-                cd_bairro: bairro,
-                ie_situacao: situacao
+                nm_bairro,
+                nm_cidade,
+                uf_estado,
+                dt_atualizacao: new Date().toISOString().slice(0, 19).replace('T', ' ')
             },
             script: `
                 <script>
@@ -139,10 +149,7 @@ function editarPessoa(req, res) {
                         buttons: {
                             confirm: {
                                 text: "OK",
-                                value: true,
-                                visible: true,
                                 className: "btn btn-success",
-                                closeModal: true,
                             },
                         },
                     });
@@ -152,34 +159,7 @@ function editarPessoa(req, res) {
     });
 }
 
-// function excluirPessoaFisica(req, res) {
-//     const { codigo } = req.body;
-
-//     if (!codigo || codigo.trim() === '') {
-//         return res.status(400).json({ success: false, message: 'Código da pessoa ausente ou inválido.' });
-//     }
-
-//     const sql = 'UPDATE pessoa_fisica SET ie_situacao = 0 WHERE cd_pessoa_fisica = ?';
-
-//     conectiondb().query(sql, [codigo], function (erro, resultado) {
-//         if (erro) {
-//             console.error('Erro ao excluir pessoa física:', erro.sqlMessage);
-//             return res.status(500).json({ success: false, message: 'Erro ao excluir pessoa física no banco de dados.' });
-//         }
-
-//         if (resultado.affectedRows > 0) {
-//             console.log(`Pessoa física com código ${codigo} desativada com sucesso.`);
-//             return res.json({ success: true });
-//         } else {
-//             console.log(`Nenhuma pessoa física encontrada com o código ${codigo}.`);
-//             return res.status(404).json({ success: false, message: 'Nenhuma pessoa física encontrada com o código informado.' });
-//         }
-//     });
-// }
-
-
 module.exports = {
     exibirPessoaEditar,
     editarPessoa,
-    // excluirPessoaFisica
 };
