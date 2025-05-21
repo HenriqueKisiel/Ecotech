@@ -248,26 +248,26 @@
                                         <!-- Pessoa Física -->
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="fw-bold">Nome Pessoa Física</label>
-                                                <select class="form-control" name="cd_pessoa_fisica">
-                                                    <option value="">Selecione uma pessoa física</option>
-                                                    {{#each pessoasFisicas}}
-                                                    <option value="{{cd_pessoa_fisica}}">{{nm_pessoa_fisica}}</option>
-                                                    {{/each}}
-                                                </select>
+                                                <label for="cd_pessoa_fisica">Pessoa Física</label>
+                                                <input type="text" id="pessoa_fisica_input" class="form-control"
+                                                    placeholder="Digite o nome da pessoa física" autocomplete="off">
+                                                <input type="hidden" name="cd_pessoa_fisica" id="cd_pessoa_fisica">
+                                                <div id="lista_pessoas_fisicas" class="dropdown-menu"
+                                                    style="width: 45%; max-height: 200px; overflow-y: auto;"></div>
                                             </div>
                                         </div>
+
+
 
                                         <!-- Pessoa Jurídica -->
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="fw-bold">Nome Fantasia</label>
-                                                <select class="form-control" name="cd_pessoa_juridica">
-                                                    <option value="">Selecione uma pessoa jurídica</option>
-                                                    {{#each pessoasJuridicas}}
-                                                    <option value="{{cd_pessoa_juridica}}">{{nm_fantasia}}</option>
-                                                    {{/each}}
-                                                </select>
+                                                <label for="cd_pessoa_juridica">Pessoa Jurídica</label>
+                                                <input type="text" id="pessoa_juridica_input" class="form-control"
+                                                    placeholder="Digite o nome da pessoa jurídica" autocomplete="off">
+                                                <input type="hidden" name="cd_pessoa_juridica" id="cd_pessoa_juridica">
+                                                <div id="lista_pessoas_juridicas" class="dropdown-menu"
+                                                    style="width: 45%; max-height: 200px; overflow-y: auto;"></div>
                                             </div>
                                         </div>
 
@@ -350,6 +350,101 @@
                         </div>
                     </form>
                 </div>
+                <script>
+                    $(document).ready(function () {
+                        // Pessoa Física
+                        $('#pessoa_fisica_input').on('input', function () {
+                            const termo = $(this).val();
+                            $('#cd_pessoa_fisica').val(''); // Limpa o hidden
+
+                            if (termo.length < 2) {
+                                $('#lista_pessoas_fisicas').hide();
+                                return;
+                            }
+
+                            $.ajax({
+                                url: '/pessoas-fisicas-busca?term=' + encodeURIComponent(termo),
+                                method: 'GET',
+                                success: function (data) {
+                                    if (data.length === 0) {
+                                        $('#lista_pessoas_fisicas').hide();
+                                        return;
+                                    }
+
+                                    let lista = '';
+                                    data.forEach(function (item) {
+                                        lista += `<a href="#" class="dropdown-item" data-id="${item.cd_pessoa_fisica}">${item.nm_pessoa_fisica}</a>`;
+                                    });
+
+                                    $('#lista_pessoas_fisicas').html(lista).show();
+                                },
+                                error: function () {
+                                    $('#lista_pessoas_fisicas').hide();
+                                }
+                            });
+                        });
+
+                        $('#lista_pessoas_fisicas').on('click', 'a', function (e) {
+                            e.preventDefault();
+                            const nome = $(this).text();
+                            const id = $(this).data('id');
+                            $('#pessoa_fisica_input').val(nome);
+                            $('#cd_pessoa_fisica').val(id);
+                            $('#lista_pessoas_fisicas').hide();
+                        });
+
+                        // Pessoa Jurídica
+                        $('#pessoa_juridica_input').on('input', function () {
+                            const termo = $(this).val();
+                            $('#cd_pessoa_juridica').val(''); // Limpa o hidden
+
+                            if (termo.length < 2) {
+                                $('#lista_pessoas_juridicas').hide();
+                                return;
+                            }
+
+                            $.ajax({
+                                url: '/pessoas-juridicas-busca?term=' + encodeURIComponent(termo),
+                                method: 'GET',
+                                success: function (data) {
+                                    if (data.length === 0) {
+                                        $('#lista_pessoas_juridicas').hide();
+                                        return;
+                                    }
+
+                                    let lista = '';
+                                    data.forEach(function (item) {
+                                        lista += `<a href="#" class="dropdown-item" data-id="${item.cd_pessoa_juridica}">${item.nm_fantasia}</a>`;
+                                    });
+
+                                    $('#lista_pessoas_juridicas').html(lista).show();
+                                },
+                                error: function () {
+                                    $('#lista_pessoas_juridicas').hide();
+                                }
+                            });
+                        });
+
+                        $('#lista_pessoas_juridicas').on('click', 'a', function (e) {
+                            e.preventDefault();
+                            const nome = $(this).text();
+                            const id = $(this).data('id');
+                            $('#pessoa_juridica_input').val(nome);
+                            $('#cd_pessoa_juridica').val(id);
+                            $('#lista_pessoas_juridicas').hide();
+                        });
+
+                        // Fecha as listas ao clicar fora
+                        $(document).click(function (e) {
+                            if (!$(e.target).closest('#pessoa_fisica_input, #lista_pessoas_fisicas').length) {
+                                $('#lista_pessoas_fisicas').hide();
+                            }
+                            if (!$(e.target).closest('#pessoa_juridica_input, #lista_pessoas_juridicas').length) {
+                                $('#lista_pessoas_juridicas').hide();
+                            }
+                        });
+                    });
+                </script>
 
 
                 <!-- Script de máscara para CEP -->

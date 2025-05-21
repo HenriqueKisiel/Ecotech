@@ -264,6 +264,16 @@ router.post('/agendamentoAdd', (req, res) => {
     servico19.registrarAgendamento(req, res);
 });
 
+// Rota para buscar pessoas físicas para autocomplete (GET)
+router.get('/pessoas-fisicas-busca', (req, res) => {
+  servico19.buscarPessoaFisica(req, res);
+});
+
+// Rota para buscar pessoas juridicas para autocomplete (GET)
+router.get('/pessoas-juridicas-busca', (req, res) => {
+  servico19.buscarPessoaJuridica(req, res);
+});
+
 // Rota para buscar bairros por cidade (GET)
 router.get('/agendamento/bairros/:cd_cidade', (req, res) => {
     servico19.buscarBairrosPorCidade(req, res);
