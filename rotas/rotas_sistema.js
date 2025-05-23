@@ -31,6 +31,8 @@ const servico23 = require('../servico/rota_juridicaEditar.js');
 const servico24 = require('../servico/rota_plantaEditar.js');
 const servico25 = require('../servico/rota_novoMaterial.js');
 const servico26 = require('../servico/rota_novoMaterial2.js');
+const servico27 = require('../servico/rota_motorista.js');
+const servico28 = require('../servico/rota_caminhao.js');
 
 
 
@@ -266,12 +268,12 @@ router.post('/agendamentoAdd', (req, res) => {
 
 // Rota para buscar pessoas físicas para autocomplete (GET)
 router.get('/pessoas-fisicas-busca', (req, res) => {
-  servico19.buscarPessoaFisica(req, res);
+    servico19.buscarPessoaFisica(req, res);
 });
 
 // Rota para buscar pessoas juridicas para autocomplete (GET)
 router.get('/pessoas-juridicas-busca', (req, res) => {
-  servico19.buscarPessoaJuridica(req, res);
+    servico19.buscarPessoaJuridica(req, res);
 });
 
 // Rota para buscar bairros por cidade (GET)
@@ -389,6 +391,16 @@ router.post('/atualizarPesos', (req, res) => {
 // ----------------------- Servico26 -------------------//
 router.get('/novoMaterial2', (req, res) => {
     servico26.exibirNovoMaterial2(req, res);
+});
+
+// ----------------------- Servico27 -------------------//
+router.get('/motorista', (req, res) => {
+    servico27.exibirMotorista(req, res);
+});
+
+// ----------------------- Servico28 -------------------//
+router.get('/caminhao', (req, res) => {
+    servico28.exibirCaminhao(req, res);
 });
 
 //==================== END ROTAS ====================
