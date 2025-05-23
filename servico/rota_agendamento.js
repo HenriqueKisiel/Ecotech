@@ -8,11 +8,11 @@ const conexao = conectiondb();
 function exibirAgendamento(req, res) {
     // Consultas para buscar os dados dos filtros
     const queryPessoasFisicas = 'SELECT cd_pessoa_fisica, nm_pessoa_fisica FROM pessoa_fisica';
-    const queryPessoasJuridicas = 'SELECT cd_pessoa_juridica, nm_fantasia FROM pessoa_juridica'; // nome fantasia para jurídicas
-    const queryCidades = 'SELECT cd_cidade, nm_cidade FROM cidade';
-    const queryBairros = 'SELECT cd_bairro, nm_bairro FROM bairro';
+    const queryPessoasJuridicas = 'SELECT cd_pessoa_juridica, nm_fantasia FROM pessoa_juridica';
+    const queryCidades = 'SELECT DISTINCT nm_cidade FROM agendamento WHERE nm_cidade IS NOT NULL AND nm_cidade <> ""';
+    const queryBairros = 'SELECT DISTINCT nm_bairro FROM agendamento WHERE nm_bairro IS NOT NULL AND nm_bairro <> ""';
 
-    // Executa em sequência as queries e envia os dados para a view
+
     conexao.query(queryPessoasFisicas, (err1, pessoasFisicas) => {
         if (err1) return res.status(500).send('Erro ao buscar pessoas físicas');
 
@@ -32,7 +32,7 @@ function exibirAgendamento(req, res) {
                         pessoasJuridicas,
                         cidades,
                         bairros,
-                        agendamentos: []  // Nenhum resultado ainda, pois não houve busca
+                        agendamentos: []
                     });
                 });
             });
@@ -47,26 +47,23 @@ function buscarAgendamentos(req, res) {
     console.log("Função buscarAgendamentos chamada");
 
     // Captura os filtros do corpo do formulário
-    const { nome, endereco, cd_cidade, cd_bairro, dt_solicitada, status } = req.body;
+    const { nome, endereco, nm_cidade, nm_bairro, dt_solicitada, status } = req.body;
 
-    // Monta a query principal com os JOINs para buscar dados relacionados
+    // Monta a query principal 
     let query = ` 
         SELECT 
             a.cd_agendamento, 
             a.ds_endereco AS endereco, 
-            c.nm_cidade AS cidade, 
-            b.nm_bairro AS bairro, 
+            a.nm_cidade AS cidade, 
+            a.nm_bairro AS bairro, 
             a.dt_solicitada,
-            COALESCE(pf.nm_pessoa_fisica, pj.nm_fantasia) AS nome  -- Exibe o nome da pessoa física ou fantasia da jurídica
+            COALESCE(pf.nm_pessoa_fisica, pj.nm_fantasia) AS nome
         FROM agendamento a
-        LEFT JOIN cidade c ON a.cd_cidade = c.cd_cidade
-        LEFT JOIN bairro b ON a.cd_bairro = b.cd_bairro
         LEFT JOIN pessoa_fisica pf ON a.cd_pessoa_fisica = pf.cd_pessoa_fisica
         LEFT JOIN pessoa_juridica pj ON a.cd_pessoa_juridica = pj.cd_pessoa_juridica
         WHERE 1=1
     `;
 
-    // Vetor que armazenará os valores para a consulta
     const valores = [];
 
     // Adiciona condições à query conforme os filtros informados
@@ -78,13 +75,13 @@ function buscarAgendamentos(req, res) {
         query += " AND a.ds_endereco LIKE ?";
         valores.push(`%${endereco}%`);
     }
-    if (cd_cidade) {
-        query += " AND a.cd_cidade = ?";
-        valores.push(cd_cidade);
+    if (nm_cidade) {
+        query += " AND a.nm_cidade LIKE ?";
+        valores.push(`%${nm_cidade}%`);
     }
-    if (cd_bairro) {
-        query += " AND a.cd_bairro = ?";
-        valores.push(cd_bairro);
+    if (nm_bairro) {
+        query += " AND a.nm_bairro LIKE ?";
+        valores.push(`%${nm_bairro}%`);
     }
     if (dt_solicitada) {
         query += " AND a.dt_solicitada = ?";
@@ -98,8 +95,8 @@ function buscarAgendamentos(req, res) {
     // Consultas auxiliares para recarregar os filtros depois da busca
     const queryPessoasFisicas = 'SELECT cd_pessoa_fisica, nm_pessoa_fisica FROM pessoa_fisica';
     const queryPessoasJuridicas = 'SELECT cd_pessoa_juridica, nm_fantasia FROM pessoa_juridica';
-    const queryCidades = 'SELECT cd_cidade, nm_cidade FROM cidade';
-    const queryBairros = 'SELECT cd_bairro, nm_bairro FROM bairro';
+    const queryCidades = 'SELECT DISTINCT nm_cidade FROM agendamento WHERE nm_cidade IS NOT NULL AND nm_cidade <> ""';
+    const queryBairros = 'SELECT DISTINCT nm_bairro FROM agendamento WHERE nm_bairro IS NOT NULL AND nm_bairro <> ""';
 
     // Executa a query principal com os filtros
     conexao.query(query, valores, (erro, resultados) => {
@@ -107,6 +104,12 @@ function buscarAgendamentos(req, res) {
             console.error("Erro na consulta de agendamentos:", erro);
             return res.status(500).send('Erro ao buscar agendamentos');
         }
+
+        // Antes de renderizar:
+        resultados.forEach(agendamento => {
+            agendamento.dt_solicitada = formatarDataBR(agendamento.dt_solicitada);
+        });
+
 
         // Recarrega os dados dos filtros
         conexao.query(queryPessoasFisicas, (err1, pessoasFisicas) => {
@@ -137,25 +140,18 @@ function buscarAgendamentos(req, res) {
     });
 }
 
-// Função que retorna os bairros com base em uma cidade selecionada
-function buscarBairrosPorCidade(req, res) {
-  const cd_cidade = req.params.cd_cidade; // Recebo o código da cidade por parâmetro na URL
-
-  // Faço a consulta SQL para buscar os bairros que pertencem a essa cidade
-  const query = 'SELECT cd_bairro, nm_bairro FROM bairro WHERE cd_cidade = ?';
-
-  conexao.query(query, [cd_cidade], (erro, bairros) => {
-    if (erro) {
-      return res.status(500).send('Erro ao buscar bairros');
-    }
-    
-    // Retorno os bairros encontrados em formato JSON
-    return res.json(bairros);
-  });
+function formatarDataBR(data) {
+    if (!data) return '';
+    const d = new Date(data);
+    if (isNaN(d.getTime())) return data;
+    const dia = String(d.getDate()).padStart(2, '0');
+    const mes = String(d.getMonth() + 1).padStart(2, '0');
+    const ano = d.getFullYear();
+    return `${dia}/${mes}/${ano}`;
 }
+
 
 module.exports = {
     exibirAgendamento,
     buscarAgendamentos,
-    buscarBairrosPorCidade
 };
