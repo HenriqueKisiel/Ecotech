@@ -1,16 +1,18 @@
 const conectiondb = require('../bd/conexao_mysql.js');
-// conexão com o banco de dados para exibir a pagina e os dados no frontend
+const { calcularEDistanciaRotaCompleta } = require('./distanciaTotal');
+
+// ========================
+// Exibir a página de edição da rota
+// ========================
 function exibirrotaeditar(req, res) {
     const cd_rota = req.params.cd_rota;
-
     const connection = conectiondb();
 
     const query1 = `
-        SELECT cd_rota, nm_rota, nr_distancia_km, qt_peso_total_kg, 
-               DATE_FORMAT(dt_agendada, '%d/%m/%Y') AS dt_agendada  
-        FROM rota_coleta WHERE cd_rota = ?`;
+        SELECT * FROM vw_rotas_coleta WHERE cd_rota = ?`;
 
     const query2 = `SELECT * FROM vw_pontos_coleta WHERE cd_rota = ?`;
+
 
     connection.query(query1, [cd_rota], function (erro1, resultado1) {
         if (erro1) throw erro1;
@@ -33,6 +35,8 @@ function editarRota(req, res) {
     const nm_rota = req.body.nome;
     const dt_agendada = req.body.data;
     const action = req.body.action;
+    const cd_motorista = req.body.Motorista;
+    const cd_caminhao = req.body.caminhao;
 
     if (!cd_rota) {
         return res.status(400).send('ID da rota é obrigatório.');
@@ -41,18 +45,18 @@ function editarRota(req, res) {
 
     // função para realizar a edicação
     if (action == 'editar') {
-        const sqlrota = `
-        UPDATE rota_coleta 
-        SET nm_rota = ?, dt_agendada = ?
+        const sqlrota =
+            `UPDATE rota_coleta 
+        SET nm_rota = ?, dt_agendada = ?, ie_motorista = ?, ie_caminhao = ?
         WHERE cd_rota = ?`;
 
-        conectiondb().query(sqlrota, [nm_rota, dt_agendada, cd_rota], function (errorota) {
+        conectiondb().query(sqlrota, [nm_rota, dt_agendada,cd_motorista, cd_caminhao, cd_rota], function (errorota) {
             if (errorota) {
                 console.error('Erro ao atualizar Rota:', errorota);
                 return res.render('rotaEditar', {
-                    rota: { cd_rota, nm_rota, dt_agendada },
-                    script: `
-                    <script>
+                    rota: { cd_rota, nm_rota, dt_agendada, cd_motorista, cd_caminhao },
+                    script:
+                        `<script>
                     swal("Erro ao editar!", "Verifique os dados e tente novamente.", {
                         icon: "error",
                         buttons: {
@@ -62,16 +66,16 @@ function editarRota(req, res) {
                             },
                         },
                     });
-                    </script>
-                `
+                    </script>`
+
                 });
             }
 
             // Sucesso: exibe o modal e depois redireciona
             res.render('rotaEditar', {
                 rota: { cd_rota, nm_rota, dt_agendada },
-                script: `
-                <script>
+                script:
+                    `<script>
                 swal("Editado com sucesso!", "", {
                     icon: "success",
                     buttons: {
@@ -83,26 +87,26 @@ function editarRota(req, res) {
                 }).then(() => {
                     window.location.href = "/rotaEditar/${cd_rota}"; // Redireciona para a rota editada
                 });
-                </script>
-            `
+                </script>`
+
             });
         });
         // função para excluir/inativar uma rota
     } else if (action == 'excluir') {
         // Primeiro, verifica se existem pontos de coleta vinculados
-        const sqlVerificaPonto = `
-        SELECT COUNT(*) AS total
+        const sqlVerificaPonto =
+            `SELECT COUNT(*) AS total
         FROM pontos_coleta
-        WHERE ie_rota = ?
-    `;
+        WHERE ie_rota = ?`
+            ;
 
         conectiondb().query(sqlVerificaPonto, [cd_rota], function (erroVerifica, resultado) {
             if (erroVerifica) {
                 console.error('Erro ao verificar pontos vinculados:', erroVerifica);
                 return res.render('rotaEditar/', {
                     rota: { cd_rota, nm_rota, dt_agendada },
-                    script: `
-                <script>
+                    script:
+                        `<script>
                 swal("Erro!", "Erro ao verificar pontos vinculados à rota.", {
                     icon: "error",
                     buttons: {
@@ -114,8 +118,8 @@ function editarRota(req, res) {
                     }).then(() => {
                     window.location.href = "/rotaEditar/${cd_rota}"; // Redireciona para a rota editada
                 });
-                </script>
-                `
+                </script>`
+
                 });
             }
 
@@ -125,8 +129,8 @@ function editarRota(req, res) {
                 // Existem pontos vinculados — não pode excluir
                 return res.render('rotaEditar', {
                     rota: { cd_rota, nm_rota, dt_agendada },
-                    script: `
-                <script>
+                    script:
+                        `<script>
                 swal("Não é possível excluir!", "Remova os ${totalPontos} ponto(s) de coleta vinculados à rota antes de excluir.", {
                     icon: "warning",
                     buttons: {
@@ -138,25 +142,25 @@ function editarRota(req, res) {
                     }).then(() => {
                     window.location.href = "/rotaEditar/${cd_rota}"; // Redireciona para a rota editada
                 });
-                </script>
-                `
+                </script>`
+
                 });
             }
 
             // Se não houver pontos vinculados, pode excluir
-            const sqlrota = `
-            UPDATE rota_coleta 
+            const sqlrota =
+                ` UPDATE rota_coleta 
             SET ie_situacao = 'I'
             WHERE cd_rota = ?
-        `;
+        ;`
 
             conectiondb().query(sqlrota, [cd_rota], function (errorota) {
                 if (errorota) {
                     console.error('Erro ao excluir Rota:', errorota);
                     return res.render('rotaEditar', {
                         rota: { cd_rota, nm_rota, dt_agendada },
-                        script: `
-                    <script>
+                        script:
+                            `<script>
                     swal("Erro ao excluir!", "Verifique os dados e tente novamente.", {
                         icon: "error",
                         buttons: {
@@ -166,16 +170,16 @@ function editarRota(req, res) {
                             },
                         },
                     });
-                    </script>
-                    `
+                    </script>`
+
                     });
                 }
 
                 // Sucesso na exclusão
                 res.render('rotaEditar', {
-                    rota: { cd_rota, nm_rota, dt_agendada },
-                    script: `
-                <script>
+                    rota: { cd_rota, nm_rota, dt_agendada, cd_motorista},
+                    script:
+                        ` <script>
                 swal("Rota excluída com sucesso!", "", {
                     icon: "success",
                     buttons: {
@@ -187,8 +191,8 @@ function editarRota(req, res) {
                 }).then(() => {
                     window.location.href = "/rotas";
                 });
-                </script>
-                `
+                </script>`
+
                 });
             });
         });
@@ -196,10 +200,8 @@ function editarRota(req, res) {
 
 }
 
-
-// Função Select de Agendamentos
+// Busca agendamentos
 function buscarAgendamento(req, res) {
-
     const sql = `
         SELECT a.cd_agendamento, a.nm_agendamento, a.ds_endereco, a.qt_quantidade_prevista_kg, a.status
         FROM agendamento a
@@ -220,82 +222,125 @@ function buscarAgendamento(req, res) {
     });
 }
 
-// Adiciona um novo item na rota
+function buscarMotoristas(req, res) {
+    const sql = `
+        SELECT m.*, 
+    pf.nm_pessoa_fisica AS nm_motorista 
+    FROM motorista m 
+    JOIN pessoa_fisica pf 
+    ON m.ie_pessoa = pf.cd_pessoa_fisica
+    WHERE 
+    m.vencimento_cnh >= CURDATE() AND situacao = 'A'
+    `;
+
+    conectiondb().query(sql, (erro, resultados) => {
+        if (erro) {
+            console.error('Erro ao buscar motoristas:', erro);
+            return res.status(500).send('Erro ao buscar motoristas.');
+        }
+        res.json(resultados);
+    });
+}
+
+function buscarCaminhao(req, res) {
+    const sql = `
+        SELECT * FROM caminhao
+    `;
+
+    conectiondb().query(sql, (erro, resultados) => {
+        if (erro) {
+            console.error('Erro ao buscar Caminhões:', erro);
+            return res.status(500).send('Erro ao buscar Caminhoões.');
+        }
+        res.json(resultados);
+    });
+}
+
+// Adiciona ponto de coleta
 function adicionarAgendamentoNaRota(req, res) {
-    const { cd_agendamento, agendamento } = req.body; // vem do formulário
-    const { cd_rota } = req.params;// vem da URL
+    const { cd_agendamento, agendamento } = req.body;
+    const { cd_rota } = req.params;
 
     const connection = conectiondb();
 
-    const query = `
-        INSERT INTO pontos_coleta (cd_ponto_coleta,ie_rota,nm_ponto,ds_endereco,cd_bairro,cd_cidade,nr_cep, cd_planta, cd_agendamento)
-        VALUES (NULL,?,'','','','','',NULL,?)
+    const queryInsert = `
+         INSERT INTO pontos_coleta (cd_ponto_coleta,ie_rota,nm_ponto,cd_bairro,cd_cidade,nr_cep, cd_planta, cd_agendamento)
+        VALUES (NULL,?,'','','','',NULL,?)
+    ;
     `;
 
-    connection.query(query, [cd_rota, agendamento, cd_agendamento], (err, result) => {
+    connection.query(queryInsert, [cd_rota, agendamento, cd_agendamento], (err) => {
         if (err) {
             console.error("Erro ao adicionar agendamento à rota:", err);
             return res.status(500).send('Erro ao adicionar agendamento à rota');
         }
 
-        res.redirect(`/rotaEditar/${cd_rota}`);
+        // Após inserir, recalcular distância total
+        calcularEDistanciaRotaCompleta(cd_rota)
+            .then(() => res.redirect(`/rotaEditar/${cd_rota}`))
+            .catch((error) => {
+                console.error('Erro ao recalcular distância:', error);
+                res.status(500).send('Erro ao recalcular distância da rota.');
+            });
     });
 }
 
+// Exclui ponto de coleta
 function excluirPontoColeta(req, res) {
-    console.log('Iniciando exclusão...'); // Log 1
-    console.log('Params recebidos:', req.params); // Log 2
-    
     const id = req.params.id;
     if (!id) {
-        console.error('ID não recebido!'); // Log de erro
+        console.error('ID não recebido!');
         return res.status(400).send('ID do ponto é obrigatório.');
     }
 
-    console.log('ID do ponto a excluir:', id); // Log 3
-
     const sqlBusca = `SELECT ie_rota FROM pontos_coleta WHERE cd_ponto_coleta = ?`;
-    console.log('SQL Busca:', sqlBusca); // Log 4
 
     conectiondb().query(sqlBusca, [id], (err, resultado) => {
         if (err) {
-            console.error('Erro na busca:', err); // Log erro
+            console.error('Erro na busca:', err);
             return res.status(500).json({ error: 'Erro ao buscar ponto.' });
         }
 
-        console.log('Resultado da busca:', resultado); // Log 5
-
         if (resultado.length === 0) {
-            console.warn('Ponto não encontrado para ID:', id); // Log aviso
+            console.warn('Ponto não encontrado para ID:', id);
             return res.status(404).json({ error: 'Ponto não encontrado.' });
         }
 
         const cd_rota = resultado[0].ie_rota;
-        console.log('Rota encontrada:', cd_rota); // Log 6
 
         const sqlDelete = `DELETE FROM pontos_coleta WHERE cd_ponto_coleta = ?`;
-        console.log('SQL Delete:', sqlDelete); // Log 7
 
         conectiondb().query(sqlDelete, [id], (err2) => {
             if (err2) {
-                console.error('Erro na exclusão:', err2); // Log erro
+                console.error('Erro na exclusão:', err2);
                 return res.status(500).json({ error: 'Erro ao excluir ponto.' });
             }
 
-            console.log('Ponto excluído com sucesso!'); // Log sucesso
-            return res.json({ 
-                success: true,
-                redirectUrl: `/rotaEditar/${cd_rota}`
-            });
+            // Após excluir, recalcula distância
+            calcularEDistanciaRotaCompleta(cd_rota)
+                .then(() => {
+                    return res.json({
+                        success: true,
+                        redirectUrl: `/rotaEditar/${cd_rota}`
+                    });
+                })
+                .catch((error) => {
+                    console.error('Erro ao recalcular distância após excluir ponto:', error);
+                    return res.status(500).json({ error: 'Erro ao recalcular distância.' });
+                });
         });
     });
 }
 
 
+
+// envia minhas funções
 module.exports = {
     exibirrotaeditar,
     editarRota,
     buscarAgendamento,
+    buscarMotoristas,
+    buscarCaminhao,
     adicionarAgendamentoNaRota,
     excluirPontoColeta
-}
+};

@@ -271,83 +271,88 @@
                                             </div>
                                         </div>
 
-                                        <!-- Endereço -->
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Endereço</label>
-                                                <input type="text" class="form-control" name="ds_endereco"
-                                                    maxlength="45" required pattern=".*\S.*"
-                                                    title="Informe um endereço válido sem apenas espaços em branco"
-                                                    placeholder="Informe o endereço">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">CEP</label>
+                                                    <input type="text" class="form-control" name="nr_cep" id="nr_cep"
+                                                        placeholder="Preencha o CEP" required maxlength="9">
+                                                </div>
                                             </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Estado (UF)</label>
+                                                    <input type="text" class="form-control" name="uf_estado"
+                                                        id="uf_estado"
+                                                        placeholder="Preencha o CEP para buscar Estado (UF)" readonly
+                                                        required maxlength="2">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Cidade</label>
+                                                    <input type="text" class="form-control" name="nm_cidade"
+                                                        id="nm_cidade" placeholder="Preencha o CEP para buscar Cidade"
+                                                        readonly required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Bairro</label>
+                                                    <input type="text" class="form-control" name="nm_bairro"
+                                                        id="nm_bairro" placeholder="Preencha o CEP para buscar Bairro"
+                                                        readonly required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Logradouro</label>
+                                                    <input type="text" class="form-control" name="ds_endereco"
+                                                        id="ds_endereco"
+                                                        placeholder="Preencha o CEP para buscar Rua do Endereço"
+                                                        readonly required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Número do Endereço</label>
+                                                    <input type="number" class="form-control" name="nr_endereco" min="1"
+                                                        max="9999999" maxlength="7" required
+                                                        placeholder="Preencha o número do endereço">
+                                                </div>
+                                            </div>
+
+                                            <!-- Data Solicitada -->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Data Solicitada</label>
+                                                    <input type="date" class="form-control" id="dt_solicitada"
+                                                        name="dt_solicitada" required>
+                                                </div>
+                                            </div>
+
+                                            <!-- Peso Previsto -->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Peso Previsto (KG)</label>
+                                                    <input type="text" class="form-control"
+                                                        id="qt_quantidade_prevista_kg" name="qt_quantidade_prevista_kg"
+                                                        placeholder="Informe o peso previsto (em KG)"
+                                                        pattern="^\d+([.,]?\d+)?$"
+                                                        title="Digite apenas números (ponto ou vírgula são permitidos)"
+                                                        required>
+                                                </div>
+                                            </div>
+
                                         </div>
 
-                                        <!-- CEP -->
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">CEP</label>
-                                                <input type="text" class="form-control" name="nr_cep" id="cep"
-                                                    placeholder="Informe o CEP" maxlength="9" required>
-                                            </div>
+                                        <div class="d-flex justify-content-end flex-wrap mt-3">
+                                            <a href="/agendamento" class="btn btn-secondary me-3 shadow-lg">Voltar</a>
+                                            <button type="submit" class="btn btn-success shadow-lg">Salvar</button>
                                         </div>
-
-                                        <!-- Cidade -->
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Cidade</label>
-                                                <select class="form-control" name="cd_cidade">
-                                                    <option value="">Selecione uma cidade</option>
-                                                    {{#each cidades}}
-                                                    <option value="{{cd_cidade}}">{{nm_cidade}}</option>
-                                                    {{/each}}
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <!-- Bairro -->
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Bairro</label>
-                                                <select class="form-control" name="cd_bairro">
-                                                    <option value="">Selecione um bairro</option>
-                                                    {{#each bairros}}
-                                                    <option value="{{cd_bairro}}">{{nm_bairro}}</option>
-                                                    {{/each}}
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <!-- Data Solicitada -->
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Data Solicitada</label>
-                                                <input type="date" class="form-control" id="dt_solicitada"
-                                                    name="dt_solicitada" required>
-                                            </div>
-                                        </div>
-
-                                        <!-- Peso Previsto -->
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Peso Previsto (KG)</label>
-                                                <input type="text" class="form-control" id="qt_quantidade_prevista_kg"
-                                                    name="qt_quantidade_prevista_kg"
-                                                    placeholder="Informe o peso previsto (em KG)"
-                                                    pattern="^\d+([.,]?\d+)?$"
-                                                    title="Digite apenas números (ponto ou vírgula são permitidos)"
-                                                    required>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="d-flex justify-content-end flex-wrap mt-3">
-                                        <a href="/agendamento" class="btn btn-secondary me-3 shadow-lg">Voltar</a>
-                                        <button type="submit" class="btn btn-success shadow-lg">Salvar</button>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                     </form>
                 </div>
                 <script>
@@ -465,39 +470,7 @@
                             cepInput.value = cepInput.value.replace(/\D/g, '');
                         });
                     });
-
-                    // Função para atualizar os bairros com base na cidade selecionada
-                    document.querySelector('[name="cd_cidade"]').addEventListener('change', function () {
-                        const cidadeId = this.value;  // Obtém o ID da cidade selecionada
-
-                        // Verifica se uma cidade foi selecionada
-                        if (cidadeId) {
-                            // Realiza uma requisição Ajax para buscar os bairros
-                            fetch(`/agendamento/bairros/${cidadeId}`)
-                                .then(response => response.json())
-                                .then(bairros => {
-                                    const bairroSelect = document.querySelector('[name="cd_bairro"]');
-                                    bairroSelect.innerHTML = '<option value="">Selecione um bairro</option>';  // Limpa a lista de bairros antes de adicionar os novos
-
-                                    // Preenche a lista de bairros com os dados recebidos
-                                    bairros.forEach(bairro => {
-                                        const option = document.createElement('option');
-                                        option.value = bairro.cd_bairro;
-                                        option.textContent = bairro.nm_bairro;
-                                        bairroSelect.appendChild(option);
-                                    });
-                                })
-                                .catch(error => {
-                                    console.error('Erro ao buscar os bairros:', error);
-                                    alert('Erro ao carregar os bairros. Tente novamente mais tarde.');
-                                });
-                        } else {
-                            // Se não houver cidade selecionada, limpa os bairros
-                            document.querySelector('[name="cd_bairro"]').innerHTML = '<option value="">Selecione um bairro</option>';
-                        }
-                    });
                 </script>
-
                 <script>
                     document.getElementById('qt_quantidade_prevista_kg').addEventListener('input', function (e) {
                         let value = this.value;
@@ -519,16 +492,42 @@
                     });
                 </script>
 
+                <script>// Função para buscar o endereço via API ViaCEP ao perder o foco
+                    const cepInput = document.getElementById('nr_cep');
+                    cepInput.addEventListener('blur', function () {
+                        const rawCep = this.value.replace(/\D/g, '');
+                        if (rawCep.length !== 8) return;
+
+                        fetch(`https://viacep.com.br/ws/${rawCep}/json/`)
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.erro) {
+                                    alert('CEP não encontrado.');
+                                    return;
+                                }
+                                document.getElementById('uf_estado').value = data.uf || '';
+                                document.getElementById('nm_cidade').value = data.localidade || '';
+                                document.getElementById('nm_bairro').value = data.bairro || '';
+                                document.getElementById('ds_endereco').value = data.logradouro || '';
+                            })
+                            .catch(error => {
+                                console.error('Erro na consulta do CEP:', error);
+                                alert('Erro ao buscar informações do CEP.');
+                            });
+                    });
+                </script>
+
                 <script>
                     document.addEventListener('DOMContentLoaded', function () {
-                        const enderecoInput = document.querySelector('[name="ds_endereco"]');
-
-                        enderecoInput.addEventListener('input', function (e) {
-                            // Permite letras, números, espaços e acentos comuns; remove o restante
-                            this.value = this.value.replace(/[^a-zA-Z0-9À-ÿ\s]/g, '');
+                        const nrEndereco = document.querySelector('[name="nr_endereco"]');
+                        nrEndereco.addEventListener('input', function () {
+                            // Remove tudo que não for número e limita a 7 dígitos
+                            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 7);
                         });
                     });
                 </script>
+
+                
                 <!--End conteudo indiviudual da pagina-->
             </div>
         </div>

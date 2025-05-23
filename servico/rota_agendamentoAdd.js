@@ -47,9 +47,11 @@ function registrarAgendamento(req, res) {
     cd_pessoa_fisica,
     cd_pessoa_juridica,
     ds_endereco,
+    nr_endereco,
     nr_cep,
-    cd_cidade,
-    cd_bairro,
+    uf_estado,
+    nm_cidade,
+    nm_bairro,
     dt_solicitada,
     qt_quantidade_prevista_kg
   } = req.body;
@@ -77,7 +79,6 @@ function registrarAgendamento(req, res) {
 
   // Validação da data no back-end
   const dataAtual = new Date();
-  const dataSolicitada = new Date(dt_solicitada);
 
   const enderecoLimpo = ds_endereco.trim().replace(/[^a-zA-Z0-9À-ÿ\s]/g, '').slice(0, 45);
 
@@ -141,23 +142,29 @@ function registrarAgendamento(req, res) {
       </script>
     `);
   }
-
-  if (dataSolicitada < dataAtual.setHours(0, 0, 0, 0)) {
+  const hoje = new Date();
+  hoje.setHours(0, 0, 0, 0); // Zera horas, minutos, segundos e ms
+  
+  // Garante que a data solicitada é criada no fuso local, sem risco de UTC
+  const [ano, mes, dia] = dt_solicitada.split('-');
+  let dataSolicitada = new Date(ano, mes - 1, dia); // mês começa em 0
+  dataSolicitada.setHours(0, 0, 0, 0);
+  if (dataSolicitada < hoje) {
     return exibirAgendamento(req, res, `
-      <script>
-        swal({
-          title: "Data inválida!",
-          text: "A data solicitada não pode ser inferior à data atual.",
-          icon: "error",
-          buttons: {
-            confirm: {
-              text: "OK",
-              className: "btn btn-danger",
-            },
+    <script>
+      swal({
+        title: "Data inválida!",
+        text: "A data solicitada não pode ser inferior à data atual.",
+        icon: "error",
+        buttons: {
+          confirm: {
+            text: "OK",
+            className: "btn btn-danger",
           },
-        });
-      </script>
-    `);
+        },
+      });
+    </script>
+  `);
   }
 
   // Verifica se o valor é um número válido (sem letras ou caracteres especiais)
@@ -179,22 +186,44 @@ function registrarAgendamento(req, res) {
     `);
   }
 
+  const nr_endereco_num = parseInt(nr_endereco, 10);
+
+  if (!Number.isInteger(nr_endereco_num) || nr_endereco_num <= 0) {
+    return exibirAgendamento(req, res, `
+    <script>
+      swal({
+        title: "Número inválido!",
+        text: "O número do endereço deve ser um número inteiro positivo.",
+        icon: "error",
+        buttons: {
+          confirm: {
+            text: "OK",
+            className: "btn btn-danger",
+          },
+        },
+      });
+    </script>
+  `);
+  }
+
   const query = `
-    INSERT INTO agendamento 
-    (dt_solicitada, cd_pessoa_fisica, cd_pessoa_juridica, ds_endereco, cd_bairro, cd_cidade, nr_cep, qt_quantidade_prevista_kg, status)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `;
+  INSERT INTO agendamento 
+  (dt_solicitada, cd_pessoa_fisica, cd_pessoa_juridica, ds_endereco, nm_bairro, nm_cidade, uf_estado, nr_cep, nr_resid, qt_quantidade_prevista_kg, status)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+`;
 
   const valores = [
     dt_solicitada,
     cd_pessoa_fisica || null,
     cd_pessoa_juridica || null,
     enderecoLimpo,
-    cd_bairro,
-    cd_cidade,
+    nm_bairro,
+    nm_cidade,
+    uf_estado,
     cepLimpo,
+    nr_endereco_num,
     qt_quantidade_prevista_kg_num,
-    'ativo' // Status padrão do novo agendamento
+    'ativo'
   ];
 
   conexao.query(query, valores, (erro, resultado) => {

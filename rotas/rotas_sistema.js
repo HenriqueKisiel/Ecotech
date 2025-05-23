@@ -31,6 +31,8 @@ const servico23 = require('../servico/rota_juridicaEditar.js');
 const servico24 = require('../servico/rota_plantaEditar.js');
 const servico25 = require('../servico/rota_novoMaterial.js');
 const servico26 = require('../servico/rota_novoMaterial2.js');
+const servico27 = require('../servico/rota_motorista.js');
+const servico28 = require('../servico/rota_caminhao.js');
 
 
 
@@ -308,10 +310,6 @@ router.get('/pessoas-juridicas-busca', (req, res) => {
     servico19.buscarPessoaJuridica(req, res);
 });
 
-// Rota para buscar bairros por cidade (GET)
-router.get('/agendamento/bairros/:cd_cidade', (req, res) => {
-    servico19.buscarBairrosPorCidade(req, res);
-});
 //----------------------- Servico20 -------------------//
 // Rota GET principal que exibe a tela de edição do agendamento.
 // Esta tela inclui os dados do agendamento e a lista de itens associados.
@@ -353,6 +351,16 @@ router.post('/rotaEditar', (req, res) => {
 // Buscar agendamentos (para preencher o select)
 router.get('/buscarAgendamentos', (req, res) => {
     servico21.buscarAgendamento(req, res);
+});
+
+// Buscar Motorista
+router.get('/buscarMotoristas', (req, res) => {
+    servico21.buscarMotoristas(req, res);
+});
+
+// Buscar acaminhao
+router.get('/buscarCaminhao', (req, res) => {
+    servico21.buscarCaminhao(req, res);
 });
 
 // Adicionar Agendamento em uma rota
@@ -423,6 +431,16 @@ router.post('/atualizarPesos', (req, res) => {
 // ----------------------- Servico26 -------------------//
 router.get('/novoMaterial2', (req, res) => {
     servico26.exibirNovoMaterial2(req, res);
+});
+
+// ----------------------- Servico27 -------------------//
+router.get('/motorista', (req, res) => {
+    servico27.exibirMotorista(req, res);
+});
+
+// ----------------------- Servico28 -------------------//
+router.get('/caminhao', (req, res) => {
+    servico28.exibirCaminhao(req, res);
 });
 
 //==================== END ROTAS ====================

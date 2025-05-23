@@ -228,9 +228,9 @@
                 </div>
                 <!--End MenuBar-->
                 <!--Start conteudo indiviudual da pagina-->
-                {{{mensagem}}}
                 <div class="container">
                     <div class="page-inner">
+                        {{{mensagem}}}
 
                         <!-- ===== Formulário de Edição de Agendamento ===== -->
                         <form action="/agendamentoEditar/{{agendamento.cd_agendamento}}" method="POST">
@@ -245,114 +245,118 @@
                                 <div class="card-body">
                                     <input type="hidden" name="id_agendamento" value="{{agendamento.cd_agendamento}}">
 
-                                    <div class="row">
-                                        <!-- Pessoa Física -->
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Nome Pessoa Física</label>
-                                                <select class="form-control" name="cd_pessoa_fisica">
-                                                    <option value="">Selecione uma pessoa física</option>
-                                                    {{#each pessoasFisicas}}
-                                                    <option value="{{this.cd_pessoa_fisica}}" {{#if (eq
-                                                        this.cd_pessoa_fisica
-                                                        ../agendamento.cd_pessoa_fisica)}}selected{{/if}}>
-                                                        {{this.nm_pessoa_fisica}}
-                                                    </option>
-                                                    {{/each}}
-                                                </select>
+                                    <fieldset {{#if somenteVisualizacao}}disabled{{/if}}>
+                                        <div class="row">
+                                            <!-- Pessoa Física -->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Pessoa Física</label>
+                                                    <input type="text" class="form-control"
+                                                        value="{{agendamento.nm_pessoa_fisica}}" readonly>
+                                                    <input type="hidden" name="cd_pessoa_fisica"
+                                                        value="{{agendamento.cd_pessoa_fisica}}">
+                                                </div>
+                                            </div>
+                                            <!-- Pessoa Jurídica -->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Pessoa Jurídica</label>
+                                                    <input type="text" class="form-control"
+                                                        value="{{agendamento.nm_pessoa_juridica_fantasia}}" readonly>
+                                                    <input type="hidden" name="cd_pessoa_juridica"
+                                                        value="{{agendamento.cd_pessoa_juridica}}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">CEP</label>
+                                                    <input type="text" class="form-control" name="nr_cep" id="nr_cep"
+                                                        value="{{agendamento.nr_cep}}" placeholder="Preencha o CEP"
+                                                        required maxlength="9">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Estado (UF)</label>
+                                                    <input type="text" class="form-control" name="uf_estado"
+                                                        id="uf_estado" value="{{agendamento.uf_estado}}"
+                                                        placeholder="Preencha o CEP para buscar Estado (UF)" readonly
+                                                        required maxlength="2">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Cidade</label>
+                                                    <input type="text" class="form-control" name="nm_cidade"
+                                                        id="nm_cidade" value="{{agendamento.nm_cidade}}"
+                                                        placeholder="Preencha o CEP para buscar Cidade" readonly
+                                                        required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Bairro</label>
+                                                    <input type="text" class="form-control" name="nm_bairro"
+                                                        id="nm_bairro" value="{{agendamento.nm_bairro}}"
+                                                        placeholder="Preencha o CEP para buscar Bairro" readonly
+                                                        required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Logradouro</label>
+                                                    <input type="text" class="form-control" name="ds_endereco"
+                                                        value="{{agendamento.ds_endereco}}" id="ds_endereco"
+                                                        placeholder="Preencha o CEP para buscar Rua do Endereço"
+                                                        readonly required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Número do Endereço</label>
+                                                    <input type="text" class="form-control" name="nr_endereco"
+                                                        value="{{agendamento.nr_resid}}"
+                                                        placeholder="Preencha o número do endereço" required
+                                                        maxlength="10">
+                                                </div>
+                                            </div>
+                                            <!-- Data Solicitada / Peso Previsto -->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Data Solicitada</label>
+                                                    <input type="text" class="form-control" readonly
+                                                        name="dt_solicitada" id="dt_solicitada"
+                                                        value="{{agendamento.dt_solicitada}}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Peso previsto (KG)</label>
+                                                    <input type="text" class="form-control" readonly
+                                                        name="qt_quantidade_prevista_kg"
+                                                        value="{{agendamento.qt_quantidade_prevista_kg}}">
+                                                </div>
+                                            </div>
+                                            <!-- Status -->
+                                            <div class="col-md-6">
+                                                <div class="form-group form-check mt-4">
+                                                    <input type="hidden" name="status" value="cancelado">
+                                                    <input type="checkbox" class="form-check-input" id="status_checkbox"
+                                                        name="status" value="ativo" {{#if (eq agendamento.status "ativo"
+                                                        )}}checked{{/if}}>
+                                                    <label class="form-check-label fw-bold"
+                                                        for="status_checkbox">Agendamento Ativo</label>
+                                                </div>
                                             </div>
                                         </div>
-
-                                        <!-- Pessoa Jurídica -->
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Nome Fantasia (Pessoa Jurídica)</label>
-                                                <select class="form-control" name="cd_pessoa_juridica">
-                                                    <option value="">Selecione uma pessoa jurídica</option>
-                                                    {{#each pessoasJuridicas}}
-                                                    <option value="{{this.cd_pessoa_juridica}}" {{#if (eq
-                                                        this.cd_pessoa_juridica
-                                                        ../agendamento.cd_pessoa_juridica)}}selected{{/if}}>
-                                                        {{this.nm_fantasia}}
-                                                    </option>
-                                                    {{/each}}
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <!-- Endereço -->
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Endereço</label>
-                                                <input type="text" class="form-control" name="endereco"
-                                                    value="{{agendamento.ds_endereco}}">
-                                            </div>
-                                        </div>
-
-                                        <!-- CEP -->
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">CEP</label>
-                                                <input type="text" class="form-control" name="nr_cep"
-                                                    value="{{agendamento.nr_cep}}" placeholder="Informe o CEP"
-                                                    maxlength="9">
-                                            </div>
-                                        </div>
-
-
-                                        <!-- Cidade / Bairro -->
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Cidade</label>
-                                                <input type="text" class="form-control" readonly
-                                                    value="{{agendamento.nm_cidade}}">
-                                                <input type="hidden" name="cd_cidade" value="{{agendamento.cd_cidade}}">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Bairro</label>
-                                                <input type="text" class="form-control" readonly
-                                                    value="{{agendamento.nm_bairro}}">
-                                                <input type="hidden" name="cd_bairro" value="{{agendamento.cd_bairro}}">
-                                            </div>
-                                        </div>
-
-                                        <!-- Data Solicitada / Peso Previsto -->
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Data Solicitada</label>
-                                                <input type="text" class="form-control" readonly name="dt_solicitada"
-                                                    value="{{agendamento.dt_solicitada}}">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Peso previsto (KG)</label>
-                                                <input type="text" class="form-control" readonly name="peso_previsto"
-                                                    value="{{agendamento.qt_quantidade_prevista_kg}}">
-                                            </div>
-                                        </div>
-
-                                        <!-- Status -->
-                                        <div class="col-md-6">
-                                            <div class="form-group form-check mt-4">
-                                                <input type="hidden" name="status" value="cancelado">
-                                                <input type="checkbox" class="form-check-input" id="status_checkbox"
-                                                    name="status" value="ativo" {{#if (eq agendamento.status "ativo"
-                                                    )}}checked{{/if}}>
-                                                <label class="form-check-label fw-bold"
-                                                    for="status_checkbox">Agendamento Ativo</label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
+                                    </fieldset>
                                     <div class="d-flex justify-content-end">
                                         <a href="/agendamento"
                                             class="btn btn-secondary me-3 text-white fw-bold shadow-lg">Voltar</a>
+                                        {{#unless somenteVisualizacao}}
                                         <button type="submit"
                                             class="btn btn-success text-white fw-bold shadow-lg">Salvar</button>
+                                        {{/unless}}
                                     </div>
                                 </div>
                             </div>
@@ -360,255 +364,370 @@
                         <!-- ===== Fim do form de Agendamento ===== -->
 
 
-                        <div class="row">
-                            <!-- ===== Formulário de Inserção/Edição de Itens ===== -->
-                            <div class="col-md-6">
-                                <div class="card shadow-lg mb-5">
-                                    <div class="card-header">
-                                        <div class="card-title">{{#if editandoItem}}Editar Item{{else}}Adicionar
-                                            Item{{/if}}</div>
+                        {{#if somenteVisualizacao}}
+                        <fieldset disabled>
+                            {{/if}}
+                            <div class="row">
+                                <!-- ===== Formulário de Inserção/Edição de Itens ===== -->
+                                <div class="col-md-6">
+                                    <div class="card shadow-lg mb-5">
+                                        <div class="card-header">
+                                            <div class="card-title">{{#if editandoItem}}Editar Item{{else}}Adicionar
+                                                Item{{/if}}</div>
+                                        </div>
+                                        <div class="card-body">
+                                            <form
+                                                action="/agendamentoEditar/{{agendamento.cd_agendamento}}/adicionarItem"
+                                                method="POST">
+                                                <input type="hidden" name="itemId"
+                                                    value="{{#if editandoItem}}{{item.cd_mat_agenda}}{{/if}}" />
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="fw-bold">Linha do material</label>
+                                                        <select name="linha_material" id="linha_material"
+                                                            class="form-control">
+                                                            <option value="">Selecione a linha</option>
+                                                            {{#each linhas}}
+                                                            <option value="{{cd_linha}}" {{#if (eq ../item.ie_linha
+                                                                cd_linha)}}selected{{/if}}>
+                                                                {{nm_linha}}
+                                                            </option>
+                                                            {{/each}}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label class="fw-bold">Selecione um material</label>
+                                                        <select name="item_nome" id="item_nome" class="form-control"
+                                                            required data-selected="{{item.ds_mat_agenda}}">
+                                                            <option value="">Selecione um material</option>
+                                                            {{#each materiais}}
+                                                            <option value="{{ds_material}}" data-linha="{{ie_linha}}">
+                                                                {{ds_material}}</option>
+                                                            {{/each}}
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-md-6 ">
+                                                        <label class="fw-bold">Peso do material (KG)</label>
+                                                        <input type="text" class="form-control"
+                                                            id="qt_quantidade_prevista_kg" name="item_peso"
+                                                            pattern="^\d+([.,]\d+)?$"
+                                                            title="Digite apenas números positivos. Use vírgula ou ponto para decimais."
+                                                            required>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex justify-content-end gap-2 mt-3">
+                                                    <a href="/agendamentoEditar?id_agendamento={{agendamento.cd_agendamento}}"
+                                                        class="btn btn-secondary text-white fw-bold shadow-lg">
+                                                        Cancelar
+                                                    </a>
+
+                                                    <button
+                                                        formaction="/agendamentoEditar/{{agendamento.cd_agendamento}}/itens/{{item.cd_mat_agenda}}/editar"
+                                                        class="btn btn-warning text-white fw-bold shadow-lg">
+                                                        Atualizar Item
+                                                    </button>
+
+                                                    <button type="submit"
+                                                        class="btn btn-success text-white fw-bold shadow-lg">Adicionar
+                                                        Item</button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
-                                    <div class="card-body">
-                                        <form action="/agendamentoEditar/{{agendamento.cd_agendamento}}/adicionarItem"
-                                            method="POST">
-                                            <input type="hidden" name="itemId"
-                                                value="{{#if editandoItem}}{{item.cd_mat_agenda}}{{/if}}" />
-                                            <div class="row mb-3">
-                                                <div class="col-md-6">
-                                                    <label class="fw-bold">Linha do material</label>
-                                                    <select name="linha_material" id="linha_material"
-                                                        class="form-control">
-                                                        <option value="">Selecione a linha</option>
-                                                        {{#each linhas}}
-                                                        <option value="{{cd_linha}}" {{#if (eq ../item.ie_linha
-                                                            cd_linha)}}selected{{/if}}>
-                                                            {{nm_linha}}
-                                                        </option>
-                                                        {{/each}}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label class="fw-bold">Selecione um material</label>
-                                                    <select name="item_nome" id="item_nome" class="form-control"
-                                                        required data-selected="{{item.ds_mat_agenda}}">
-                                                        <option value="">Selecione um material</option>
-                                                        {{#each materiais}}
-                                                        <option value="{{ds_material}}" data-linha="{{ie_linha}}">
-                                                            {{ds_material}}</option>
-                                                        {{/each}}
-                                                    </select>
-                                                </div>
+                                </div>
 
-                                                <div class="col-md-6 ">
-                                                    <label class="fw-bold">Peso do material (KG)</label>
-                                                    <input type="number" step="0.01" class="form-control"
-                                                        name="item_peso" value="{{item.qt_peso_material_total_kg}}"
-                                                        required>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex justify-content-end gap-2 mt-3">
-                                                <a href="/agendamentoEditar?id_agendamento={{agendamento.cd_agendamento}}"
-                                                    class="btn btn-secondary text-white fw-bold shadow-lg">
-                                                    Cancelar
-                                                </a>
-
-                                                <button
-                                                    formaction="/agendamentoEditar/{{agendamento.cd_agendamento}}/itens/{{item.cd_mat_agenda}}/editar"
-                                                    class="btn btn-warning text-white fw-bold shadow-lg">
-                                                    Atualizar Item
-                                                </button>
-
-                                                <button type="submit"
-                                                    class="btn btn-success text-white fw-bold shadow-lg">Adicionar
-                                                    Item</button>
-
-                                            </div>
-
-                                        </form>
+                                <!-- ===== Lista de Itens ===== -->
+                                <div class="col-md-6">
+                                    <div class="card shadow-lg mb-5">
+                                        <div class="card-header">
+                                            <div class="card-title">Lista de Itens</div>
+                                        </div>
+                                        <div class="card-body p-0">
+                                            <table class="table table-head-bg-success">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Material</th>
+                                                        <th>Linha</th>
+                                                        <th>Peso</th>
+                                                        <th>Ações</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {{#each itens}}
+                                                    <tr>
+                                                        <td>{{ds_mat_agenda}}</td>
+                                                        <td>{{nm_linha}}</td>
+                                                        <td>{{qt_peso_material_total_kg}}</td>
+                                                        <td>
+                                                            <a href="#"
+                                                                class="btn btn-danger me-2 text-white fw-bold shadow-lg"
+                                                                onclick="confirmarExclusao('{{../agendamento.cd_agendamento}}', '{{cd_mat_agenda}}')">
+                                                                <i class="fa fa-trash text-white fw-bold shadow-lg"></i>
+                                                                Excluir
+                                                            </a>
+                                                            <a href="/agendamentoEditar/{{../agendamento.cd_agendamento}}/itens/{{cd_mat_agenda}}/editar"
+                                                                class="btn btn-warning text-white fw-bold shadow-lg">
+                                                                <i class="fa fa-edit text-white fw-bold shadow-lg"></i>
+                                                                Editar
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                    {{/each}}
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            {{#if somenteVisualizacao}}
+                        </fieldset>
+                        {{/if}}
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                const cepInput = document.getElementById('nr_cep');
+                                const form = cepInput.closest('form');
 
-                            <!-- ===== Lista de Itens ===== -->
-                            <div class="col-md-6">
-                                <div class="card shadow-lg mb-5">
-                                    <div class="card-header">
-                                        <div class="card-title">Lista de Itens</div>
-                                    </div>
-                                    <div class="card-body p-0">
-                                        <table class="table table-head-bg-success">
-                                            <thead>
-                                                <tr>
-                                                    <th>Material</th>
-                                                    <th>Linha</th>
-                                                    <th>Peso</th>
-                                                    <th>Ações</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {{#each itens}}
-                                                <tr>
-                                                    <td>{{ds_mat_agenda}}</td>
-                                                    <td>{{nm_linha}}</td>
-                                                    <td>{{qt_peso_material_total_kg}}</td>
-                                                    <td>
-                                                        <a href="#"
-                                                            class="btn btn-danger me-2 text-white fw-bold shadow-lg"
-                                                            onclick="confirmarExclusao('{{../agendamento.cd_agendamento}}', '{{cd_mat_agenda}}')">
-                                                            <i class="fa fa-trash text-white fw-bold shadow-lg"></i>
-                                                            Excluir
-                                                        </a>
-                                                        <a href="/agendamentoEditar/{{../agendamento.cd_agendamento}}/itens/{{cd_mat_agenda}}/editar"
-                                                            class="btn btn-warning text-white fw-bold shadow-lg">
-                                                            <i class="fa fa-edit text-white fw-bold shadow-lg"></i>
-                                                            Editar
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                {{/each}}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                // Máscara ao digitar
+                                cepInput.addEventListener('input', function (e) {
+                                    let cep = e.target.value.replace(/\D/g, '');
+                                    if (cep.length > 5) {
+                                        cep = cep.slice(0, 5) + '-' + cep.slice(5, 8);
+                                    }
+                                    e.target.value = cep;
+                                });
+
+                                // Remove o hífen antes de enviar
+                                form.addEventListener('submit', function () {
+                                    cepInput.value = cepInput.value.replace(/\D/g, '');
+                                });
+                            });
+                        </script>
+
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                const cepInput = document.getElementById('nr_cep');
+                                if (cepInput && cepInput.value.length === 8 && cepInput.value.indexOf('-') === -1) {
+                                    cepInput.value = cepInput.value.slice(0, 5) + '-' + cepInput.value.slice(5);
+                                }
+                            });
+                        </script>
+
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                const botaoAtualizar = document.getElementById("btnAtualizarItem");
+                                const urlAtual = window.location.href;
+
+                                if (!urlAtual.includes("formation")) {
+                                    botaoAtualizar.style.display = "none";
+                                }
+                            });
+                        </script>
+                        <script>
+                            function confirmarExclusao(idAgendamento, itemId) {
+                                swal({
+                                    title: "Tem certeza que deseja excluir?",
+                                    text: "Você não poderá desfazer esta ação!",
+                                    icon: "warning",
+                                    buttons: {
+                                        cancel: {
+                                            text: "Cancelar",
+                                            visible: true,
+                                            className: "btn btn-secondary",
+                                        },
+                                        confirm: {
+                                            text: "Excluir",
+                                            className: "btn btn-danger",
+                                        },
+                                    },
+                                    dangerMode: true,
+                                }).then((willDelete) => {
+                                    if (willDelete) {
+                                        // Redireciona para a rota de exclusão no back-end
+                                        window.location.href = `/agendamentoEditar/${idAgendamento}/itens/${itemId}/excluir`;
+                                    }
+                                });
+                            }
+                        </script>
                     </div>
                 </div>
-                <!-- Script de máscara para CEP -->
+                <script>
+                    window.addEventListener('DOMContentLoaded', function () {
+                        const select = document.getElementById('item_nome');
+                        const selectedValue = select.getAttribute('data-selected');
+
+                        if (selectedValue) {
+                            for (let option of select.options) {
+                                if (option.value === selectedValue) {
+                                    option.selected = true;
+                                    break;
+                                }
+                            }
+                        }
+                    });
+                </script>
+
                 <script>
                     document.addEventListener('DOMContentLoaded', function () {
-                        const cepInput = document.getElementById('cep');
-                        const form = document.querySelector('form');
+                        const linhaSelect = document.getElementById('linha_material');
+                        const materialSelect = document.getElementById('item_nome');
 
-                        cepInput.addEventListener('input', function (e) {
-                            let cep = e.target.value.replace(/\D/g, '');
-                            if (cep.length > 5) {
-                                cep = cep.slice(0, 5) + '-' + cep.slice(5, 8);
+                        // Armazena todas as opções de material (menos o primeiro "placeholder")
+                        const allOptions = Array.from(materialSelect.options).filter(opt => opt.value !== "");
+
+                        linhaSelect.addEventListener('change', function () {
+                            const selectedLinha = this.value;
+
+                            // Limpa os materiais visíveis
+                            materialSelect.innerHTML = '<option value="">Selecione um material</option>';
+
+                            if (selectedLinha === "") {
+                                // Se nenhuma linha for selecionada, exibe todos os materiais
+                                allOptions.forEach(option => {
+                                    materialSelect.appendChild(option);
+                                });
+                            } else {
+                                // Adiciona somente os materiais que pertencem à linha selecionada
+                                allOptions.forEach(option => {
+                                    if (option.dataset.linha === selectedLinha) {
+                                        materialSelect.appendChild(option);
+                                    }
+                                });
                             }
-                            e.target.value = cep;
+
+                            // Reseta a seleção do material
+                            materialSelect.value = "";
                         });
 
-                        form.addEventListener('submit', function () {
-                            cepInput.value = cepInput.value.replace(/\D/g, '');
-                        });
-                    });
-                </script>
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        const botaoAtualizar = document.getElementById("btnAtualizarItem");
-                        const urlAtual = window.location.href;
+                        // Atualiza o campo de linha ao selecionar um material
+                        materialSelect.addEventListener('change', function () {
+                            const selectedOption = materialSelect.options[materialSelect.selectedIndex];
+                            const linha = selectedOption.getAttribute('data-linha');
 
-                        if (!urlAtual.includes("formation")) {
-                            botaoAtualizar.style.display = "none";
+                            if (linha) {
+                                linhaSelect.value = linha; // Atualiza a linha correspondente
+                            } else {
+                                linhaSelect.value = ""; // Reseta a linha se nenhum material for selecionado
+                            }
+                        });
+
+                        // Restaura a seleção ao carregar a página (se estiver editando um item)
+                        const selectedMaterial = materialSelect.getAttribute('data-selected');
+                        if (selectedMaterial) {
+                            Array.from(materialSelect.options).forEach(option => {
+                                if (option.value === selectedMaterial) {
+                                    option.selected = true;
+                                    linhaSelect.value = option.getAttribute('data-linha'); // Atualiza a linha correspondente
+                                }
+                            });
                         }
                     });
                 </script>
                 <script>
-                    function confirmarExclusao(idAgendamento, itemId) {
-                        swal({
-                            title: "Tem certeza que deseja excluir?",
-                            text: "Você não poderá desfazer esta ação!",
-                            icon: "warning",
-                            buttons: {
-                                cancel: {
-                                    text: "Cancelar",
-                                    visible: true,
-                                    className: "btn btn-secondary",
-                                },
-                                confirm: {
-                                    text: "Excluir",
-                                    className: "btn btn-danger",
-                                },
-                            },
-                            dangerMode: true,
-                        }).then((willDelete) => {
-                            if (willDelete) {
-                                // Redireciona para a rota de exclusão no back-end
-                                window.location.href = `/agendamentoEditar/${idAgendamento}/itens/${itemId}/excluir`;
-                            }
-                        });
-                    }
-                </script>
-            </div>
-        </div>
-        <script>
-            window.addEventListener('DOMContentLoaded', function () {
-                const select = document.getElementById('item_nome');
-                const selectedValue = select.getAttribute('data-selected');
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const form = document.querySelector('form[action^="/agendamentoEditar"][method="POST"]');
+                        const pesoInput = document.getElementById('qt_quantidade_prevista_kg');
 
-                if (selectedValue) {
-                    for (let option of select.options) {
-                        if (option.value === selectedValue) {
-                            option.selected = true;
-                            break;
-                        }
-                    }
-                }
-            });
-        </script>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const linhaSelect = document.getElementById('linha_material');
-                const materialSelect = document.getElementById('item_nome');
-
-                // Armazena todas as opções de material (menos o primeiro "placeholder")
-                const allOptions = Array.from(materialSelect.options).filter(opt => opt.value !== "");
-
-                linhaSelect.addEventListener('change', function () {
-                    const selectedLinha = this.value;
-
-                    // Limpa os materiais visíveis
-                    materialSelect.innerHTML = '<option value="">Selecione um material</option>';
-
-                    if (selectedLinha === "") {
-                        // Se nenhuma linha for selecionada, exibe todos os materiais
-                        allOptions.forEach(option => {
-                            materialSelect.appendChild(option);
-                        });
-                    } else {
-                        // Adiciona somente os materiais que pertencem à linha selecionada
-                        allOptions.forEach(option => {
-                            if (option.dataset.linha === selectedLinha) {
-                                materialSelect.appendChild(option);
-                            }
-                        });
-                    }
-
-                    // Reseta a seleção do material
-                    materialSelect.value = "";
-                });
-
-                // Atualiza o campo de linha ao selecionar um material
-                materialSelect.addEventListener('change', function () {
-                    const selectedOption = materialSelect.options[materialSelect.selectedIndex];
-                    const linha = selectedOption.getAttribute('data-linha');
-
-                    if (linha) {
-                        linhaSelect.value = linha; // Atualiza a linha correspondente
-                    } else {
-                        linhaSelect.value = ""; // Reseta a linha se nenhum material for selecionado
-                    }
-                });
-
-                // Restaura a seleção ao carregar a página (se estiver editando um item)
-                const selectedMaterial = materialSelect.getAttribute('data-selected');
-                if (selectedMaterial) {
-                    Array.from(materialSelect.options).forEach(option => {
-                        if (option.value === selectedMaterial) {
-                            option.selected = true;
-                            linhaSelect.value = option.getAttribute('data-linha'); // Atualiza a linha correspondente
+                        if (form && pesoInput) {
+                            form.addEventListener('submit', function () {
+                                // Troca vírgula por ponto antes de enviar
+                                pesoInput.value = pesoInput.value.replace(',', '.');
+                            });
                         }
                     });
-                }
-            });
-        </script>
+                </script>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const pesoInput = document.getElementById('qt_quantidade_prevista_kg');
+                        pesoInput.addEventListener('input', function () {
+                            // Remove tudo que não for número, vírgula ou ponto
+                            this.value = this.value.replace(/[^0-9.,]/g, '');
+                            // Remove sinais negativos
+                            this.value = this.value.replace(/-/g, '');
+                        });
+                    });
+                </script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const pesoInput = document.getElementById('qt_quantidade_prevista_kg');
+                        pesoInput.addEventListener('input', function () {
+                            // Remove tudo que não for número, vírgula ou ponto
+                            this.value = this.value.replace(/[^0-9.,]/g, '');
+                            // Remove sinais negativos
+                            this.value = this.value.replace(/-/g, '');
+                            // Limita a 6 dígitos antes do separador decimal
+                            const partes = this.value.split(/[.,]/);
+                            if (partes[0].length > 6) {
+                                partes[0] = partes[0].slice(0, 6);
+                                this.value = partes.join(this.value.includes(',') ? ',' : (this.value.includes('.') ? '.' : ''));
+                            }
+                        });
+                    });
+                </script>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const cepInput = document.getElementById('nr_cep');
+                        const ufInput = document.getElementById('uf_estado');
+                        const cidadeInput = document.getElementById('nm_cidade');
+                        const bairroInput = document.getElementById('nm_bairro');
+                        const enderecoInput = document.getElementById('ds_endereco');
+
+                        cepInput.addEventListener('blur', function () {
+                            const cep = cepInput.value.replace(/\D/g, '');
+                            if (cep.length === 8) {
+                                fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.erro) {
+                                            alert('CEP não encontrado.');
+                                            return;
+                                        }
+                                        ufInput.value = data.uf || '';
+                                        cidadeInput.value = data.localidade || '';
+                                        bairroInput.value = data.bairro || '';
+                                        enderecoInput.value = data.logradouro || '';
+                                    })
+                                    .catch(() => alert('Erro ao buscar informações do CEP.'));
+                            }
+                        });
+                    });
+                </script>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const dataInput = document.getElementById('dt_solicitada');
+                        if (dataInput && dataInput.value) {
+                            let valor = dataInput.value;
+
+                            // Se vier no formato Date string (ex: Sun May 04 2025 00:00:00 GMT-0300 ...)
+                            if (isNaN(valor) && valor.match(/^[A-Za-z]{3} /)) {
+                                const data = new Date(valor);
+                                if (!isNaN(data.getTime())) {
+                                    const dia = String(data.getDate()).padStart(2, '0');
+                                    const mes = String(data.getMonth() + 1).padStart(2, '0');
+                                    const ano = data.getFullYear();
+                                    dataInput.value = `${dia}/${mes}/${ano}`;
+                                }
+                            }
+                            // Se vier yyyy-mm-dd ou yyyy-mm-ddTHH:mm:ss
+                            else if (/^\d{4}-\d{2}-\d{2}/.test(valor)) {
+                                const partes = valor.split('T')[0].split('-');
+                                if (partes.length === 3) {
+                                    dataInput.value = `${partes[2]}/${partes[1]}/${partes[0]}`;
+                                }
+                            }
+                        }
+                    });
+                </script>
 
 
-        <!--End conteudo indiviudual da pagina-->
-        <!--start modal-- >
+
+                <!--End conteudo indiviudual da pagina-->
+                <!--start modal-- >
         <div class="modal fade" id="excluir" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered p-5">
                 <div class="modal-content">

@@ -7,6 +7,10 @@ function exibirRotas(req, res) {
     //Executando a consulta no banco de dados
     conectiondb().query(sql, function (erro, retorno) {
         res.render('rotas', { rotas: retorno });
+        if (erro) {
+          console.error('Erro ao buscar as rotas:', erro);
+          return res.status(500).send('Erro ao buscar rotas');
+        }
     });
 };
 
