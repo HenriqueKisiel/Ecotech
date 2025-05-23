@@ -1,9 +1,8 @@
 const conectiondb = require('../bd/conexao_mysql.js');
 
-//Função para pagina Atualizar status
+// Função para página Atualizar status
 function exibirAtualizarRotas(req, res) {
     const cd_rota = req.params.cd_rota;
-
     const connection = conectiondb();
 
     const query1 = `
@@ -15,24 +14,24 @@ function exibirAtualizarRotas(req, res) {
     const query2 = `
         SELECT * FROM vw_pontos_coleta WHERE cd_rota = ?`;
 
+    const query3 = `
+        SELECT * FROM vw_rotas_coleta WHERE cd_rota = ?`;
+
     connection.query(query1, [cd_rota], function (erro1, resultado1) {
         if (erro1) throw erro1;
 
         connection.query(query2, [cd_rota], function (erro2, resultado2) {
             if (erro2) throw erro2;
 
+            connection.query(query3, [cd_rota], function (erro3, resultado3) {
+                if (erro3) throw erro3;
 
-            // Verifica se a data de início é inválida
-            const isDateValid = resultado1[0].dt_iniciado !== '0000-00-00 00:00:00';
-            const isColetaValid = resultado2.dt_coleta !== '000000';
+                res.render('attStatus', {
+                    rotas: resultado1[0],
+                    pontos: resultado2,
+                    dadosRota: resultado3[0]
 
-
-            res.render('attStatus', {
-                rotas: resultado1[0],
-                pontos: resultado2,
-                naoIniciou: isDateValid, // Passa a variável para o front
-                naoColetou: isColetaValid // Passa coleta para o front
-
+                });
             });
         });
     });

@@ -321,6 +321,16 @@ router.get('/buscarAgendamentos', (req, res) => {
     servico21.buscarAgendamento(req, res);
 });
 
+// Buscar Motorista
+router.get('/buscarMotoristas', (req, res) => {
+    servico21.buscarMotoristas(req, res);
+});
+
+// Buscar acaminhao
+router.get('/buscarCaminhao', (req, res) => {
+    servico21.buscarCaminhao(req, res);
+});
+
 // Adicionar Agendamento em uma rota
 router.post('/rotaEditar/:cd_rota', (req, res) => {
     servico21.adicionarAgendamentoNaRota(req, res);

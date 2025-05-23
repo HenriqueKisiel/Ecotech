@@ -243,12 +243,12 @@
                             <div class="card shadow-lg mb-5">
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-2">
                                             <div class="form-group">
                                                 {{!-- Nome Rota --}}
                                                 <label class="fw-bold">Código Rota</label>
                                                 <input type="text" class="form-control" name="codigo"
-                                                    value="{{rotas.cd_rota}}">
+                                                    value="{{rotas.cd_rota}}" readonly>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -259,21 +259,21 @@
                                                     value="{{rotas.nm_rota}}" placeholder="informe o nome da rota">
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-2">
                                             <div class="form-group">
                                                 <label class="fw-bold">Distancia (KM)</label>
                                                 <input type="text" value="{{rotas.nr_distancia_km}}"
                                                     class="form-control" placeholder="___" disabled>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-2">
                                             <div class="form-group">
                                                 <label class="fw-bold">Peso previsto (KG)</label>
                                                 <input type="text" value="{{rotas.qt_peso_total_kg}}"
                                                     class="form-control" placeholder="___" disabled>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-2">
                                             <div class="form-group">
                                                 <label class="fw-bold">Data agendada</label>
                                                 <input type="date" name="data" id="dataAgendada" class="form-control">
@@ -283,6 +283,43 @@
                                                     const formatada = `${partes[2]}-${partes[1]}-${partes[0]}`; // yyyy-mm-dd
                                                     document.getElementById('dataAgendada').value = formatada;
                                                 </script>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Motorista Atual</label>
+                                                <input type="text" value="{{rotas.nm_motorista}}" class="form-control"
+                                                    placeholder="___" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Caminão Atual Atual</label>
+                                                <input type="text" value="{{rotas.nm_modelo}}" class="form-control"
+                                                    placeholder="___" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Capacidade KG Caminhão</label>
+                                                <input type="text" value="{{rotas.capacidade_kg}}" class="form-control"
+                                                    placeholder="___" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Nome do Novo Motorista</label>
+                                                <select id="Motorista" name="Motorista" class="form-control">
+                                                    <option value="">Selecione um Motorista</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Nome do Novo Caminhao</label>
+                                                <select id="caminhao" name="caminhao" class="form-control">
+                                                    <option value="">Selecione um caminhao</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -316,8 +353,8 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="fw-bold">Nome do Agendamento</label>
-                                                        <select id="agendamento" name="agendamento"
-                                                            class="form-control" required>
+                                                        <select id="agendamento" name="agendamento" class="form-control"
+                                                            required>
                                                             <option value="">Selecione um agendamento</option>
                                                         </select>
                                                     </div>
@@ -412,8 +449,38 @@
                             .catch(error => console.error('Erro ao carregar agendamentos:', error));
                     });
 
-                </script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        fetch('/buscarMotoristas')
+                            .then(response => response.json())
+                            .then(motoristas => {  // Corrigido o nome da variável
+                                const selectMotorista = document.getElementById('Motorista'); // Corrigido o ID para maiúsculo
 
+                                motoristas.forEach(motorista => {  // Corrigido o loop
+                                    const option = document.createElement('option');
+                                    option.value = motorista.id_motorista;
+                                    option.textContent = motorista.nm_motorista;
+                                    selectMotorista.appendChild(option);
+                                });
+                            })
+                            .catch(error => console.error('Erro ao carregar motoristas:', error));
+                    });
+
+                    document.addEventListener("DOMContentLoaded", function () {
+                        fetch('/buscarCaminhao')
+                            .then(response => response.json())
+                            .then(caminhao => {  // Corrigido o nome da variável
+                                const selectCaminhao = document.getElementById('caminhao'); // Corrigido o ID para maiúsculo
+
+                                caminhao.forEach(caminhao => {  // Corrigido o loop
+                                    const option = document.createElement('option');
+                                    option.value = caminhao.id_caminhao;
+                                    option.textContent = caminhao.nm_modelo;
+                                    selectCaminhao.appendChild(option);
+                                });
+                            })
+                            .catch(error => console.error('Erro ao carregar motoristas:', error));
+                    });
+                </script>
             </div>
         </div>
         <!--start modal-->
