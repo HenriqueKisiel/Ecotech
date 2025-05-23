@@ -246,11 +246,45 @@ router.get('/estoqueEntrada', (req, res) => {
     servico17.exibirestoqueEntrada(req, res);
 });
 
-
 //------------------------ Servico18 -------------------//
-// Rota para a página de saida de material
+// Rota para a página de saída de material
 router.get('/estoqueSaida', (req, res) => {
     servico18.exibirestoqueSaida(req, res);
+});
+
+// Rota para buscar estoques por planta
+router.get('/estoquePorPlanta/:cd_planta', (req, res) => {
+    servico18.obterEstoquesPorPlanta(req, res);
+});
+
+// Rota para buscar materiais por estoque e tipo de movimentação
+router.get('/materiaisPorEstoque/:estoqueId/:movimentacao', (req, res) => {
+    servico18.obterMateriaisPorEstoque(req, res);
+});
+
+// Rota para buscar todos os materiais (usada apenas em entrada, se necessário)
+router.get('/todosMateriais', (req, res) => {
+    servico18.obterTodosMateriais(req, res);
+});
+
+// Buscar pessoas físicas para o estoqueSaida
+router.get('/compradores/fisica', (req, res) => {
+    servico18.obterPessoasFisicas(req, res);
+});
+
+// Buscar pessoas jurídicas para o estoqueSaida
+router.get('/compradores/juridica', (req, res) => {
+    servico18.obterPessoasJuridicas(req, res);
+});
+
+// Buscar dados do material saída e venda
+router.get('/dadosMaterialEstoque/:cd_estoque/:cd_material', (req, res) => {
+    servico18.obterDadosMaterialEstoque(req, res);
+});
+
+// Buscar dados do material entrada
+router.get('/dadosMaterialEntrada/:cd_estoque/:cd_material', (req, res) => {
+    servico18.obterDadosMaterialEntrada(req, res);
 });
 
 //----------------------- Servico19 -------------------//
@@ -266,12 +300,12 @@ router.post('/agendamentoAdd', (req, res) => {
 
 // Rota para buscar pessoas físicas para autocomplete (GET)
 router.get('/pessoas-fisicas-busca', (req, res) => {
-  servico19.buscarPessoaFisica(req, res);
+    servico19.buscarPessoaFisica(req, res);
 });
 
 // Rota para buscar pessoas juridicas para autocomplete (GET)
 router.get('/pessoas-juridicas-busca', (req, res) => {
-  servico19.buscarPessoaJuridica(req, res);
+    servico19.buscarPessoaJuridica(req, res);
 });
 
 // Rota para buscar bairros por cidade (GET)

@@ -249,9 +249,22 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
+                                            <label class="fw-bold">Movimentação</label>
+                                            <select name="movimentacao" class="form-select form-control">
+                                                <option value="saida">Saída</option>
+                                                <option value="entrada">Entrada</option>
+                                                <option value="venda">Venda</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
                                             <label class="fw-bold">Planta</label>
                                             <select name="planta" class="form-select form-control">
                                                 <option value="">Informe uma planta</option>
+                                                {{#each plantas}}
+                                                <option value="{{cd_planta}}">{{nm_planta}}</option>
+                                                {{/each}}
                                             </select>
                                         </div>
                                     </div>
@@ -268,16 +281,6 @@
                                             <label class="fw-bold">Material</label>
                                             <select name="material" class="form-select form-control">
                                                 <option value="">Informe um material</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Movimentação</label>
-                                            <select name="movimentacao" class="form-select form-control">
-                                                <option value="saida">Saída</option>
-                                                <option value="entrada">Entrada</option>
-                                                <option value="venda">Venda</option>
                                             </select>
                                         </div>
                                     </div>
@@ -353,6 +356,7 @@
                                     <table class="table table-bordered table-head-bg-success">
                                         <thead>
                                             <tr>
+                                                <th>Material</th>
                                                 <th>Quantidade Atual Volume</th>
                                                 <th>Quantidade Atual (KG)</th>
                                                 <th>Quantidade a Movimentar Volume</th>
@@ -360,18 +364,7 @@
                                                 <th></th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td class="text-center">XXX</td>
-                                                <td class="text-center">XXX</td>
-                                                <td><input type="text" class="form-control" id="defaultInput"
-                                                        placeholder="Digite uma quantidade"></td>
-                                                <td><input type="text" class="form-control" id="defaultInput"
-                                                        placeholder="Digite uma quantidade"></td>
-                                                <td>
-                                                    <a class="btn btn-warning text-white">Registrar</a>
-                                                </td>
-                                            </tr>
+                                        <tbody id="tbody-resultado-material">
                                         </tbody>
                                     </table>
                                 </div>
@@ -382,11 +375,15 @@
                         <script>
                             document.addEventListener('DOMContentLoaded', function () {
                                 const movimentacaoSelect = document.querySelector('select[name="movimentacao"]');
-                                const motivoField = document.querySelector('input[placeholder="Descreva o motivo da movimentação"]')
-                                    .closest('.col-md-6');
+                                if (!movimentacaoSelect) {
+                                    console.error('select[name="movimentacao"] não encontrado no DOM');
+                                    return;
+                                }
 
-                                // Campos que devem ser ocultados ao mostrar apenas "Motivo"
-                                const camposOcultos = [
+                                const motivoInput = document.querySelector('input[placeholder="Descreva o motivo da movimentação"]');
+                                const motivoField = motivoInput ? motivoInput.closest('.col-md-6') : null;
+
+                                const camposOcultosSelectors = [
                                     'select[name="pessoa"]',
                                     'select[name="nome"]',
                                     'input[placeholder="Número do comprador"]',
@@ -394,56 +391,304 @@
                                     'input[placeholder="CPF do comprador"]',
                                     'input[placeholder="CNPJ do comprador"]',
                                     'input[placeholder="CEP do comprador"]'
-                                ].map(selector => document.querySelector(selector)?.closest('.col-md-6'));
+                                ];
 
-                                // Campos de CPF e CNPJ para alternar na seleção de pessoa
+                                const camposOcultos = camposOcultosSelectors.map(selector => {
+                                    const el = document.querySelector(selector);
+                                    return el ? el.closest('.col-md-6') : null;
+                                });
+
                                 const selectPessoa = document.querySelector('select[name="pessoa"]');
-                                const campoCPF = document.querySelector('input[placeholder="CPF do comprador"]').closest('.col-md-6');
-                                const campoCNPJ = document.querySelector('input[placeholder="CNPJ do comprador"]').closest('.col-md-6');
+                                const selectNome = document.querySelector('select[name="nome"]');
+                                const inputNumero = document.querySelector('input[placeholder="Número do comprador"]');
+                                const inputEmail = document.querySelector('input[placeholder="E-mail do comprador"]');
+                                const inputCPF = document.querySelector('input[placeholder="CPF do comprador"]');
+                                const inputCNPJ = document.querySelector('input[placeholder="CNPJ do comprador"]');
+                                const inputCEP = document.querySelector('input[placeholder="CEP do comprador"]');
+                                const cpfInput = inputCPF;
+                                const campoCPF = cpfInput ? cpfInput.closest('.col-md-6') : null;
+                                const cnpjInput = inputCNPJ;
+                                const campoCNPJ = cnpjInput ? cnpjInput.closest('.col-md-6') : null;
+
+                                const selectPlanta = document.querySelector('select[name="planta"]');
+                                const selectEstoque = document.querySelector('select[name="estoque"]');
+                                const selectMaterial = document.querySelector('select[name="material"]');
+                                const tbodyResultado = document.getElementById('tbody-resultado-material');
+
+                                function mostrarMensagemSelecioneMaterial() {
+                                    if (tbodyResultado) {
+                                        tbodyResultado.innerHTML = `
+                <tr>
+                    <td colspan="6" class="text-center text-muted">Selecione os dados do Material</td>
+                </tr>
+            `;
+                                    }
+                                }
+
+                                function mostrarLinhaMaterial(dados) {
+                                    if (tbodyResultado) {
+                                        tbodyResultado.innerHTML = `
+                <tr>
+                    <td class="text-center" id="td-material">${dados.ds_material || ''}</td>
+                    <td class="text-center" id="td-volume">${dados.qt_volume != null ? dados.qt_volume : ''}</td>
+                    <td class="text-center" id="td-peso">${dados.qt_peso != null ? dados.qt_peso : ''}</td>
+                    <td><input type="text" class="form-control" id="input-volume" placeholder="Digite uma quantidade"></td>
+                    <td><input type="text" class="form-control" id="input-peso" placeholder="Digite uma quantidade"></td>
+                    <td>
+                        <a class="btn btn-warning text-white">Registrar</a>
+                    </td>
+                </tr>
+            `;
+                                    }
+                                }
 
                                 function atualizarCampos() {
                                     const valorMov = movimentacaoSelect.value;
 
                                     if (valorMov === 'saida' || valorMov === 'entrada') {
-                                        motivoField.style.display = 'block';
-                                        camposOcultos.forEach(el => {
-                                            if (el) el.style.display = 'none';
-                                        });
+                                        if (motivoField) motivoField.style.display = 'block';
+                                        camposOcultos.forEach(el => { if (el) el.style.display = 'none'; });
                                     } else {
-                                        motivoField.style.display = 'none';
-                                        camposOcultos.forEach(el => {
-                                            if (el) el.style.display = 'block';
-                                        });
-                                        // Atualiza também a visibilidade do CPF/CNPJ se estiver no modo normal (não "Saída"/"Entrada")
+                                        if (motivoField) motivoField.style.display = 'none';
+                                        camposOcultos.forEach(el => { if (el) el.style.display = 'block'; });
                                         atualizarCamposPessoa();
+                                        carregarNomesComprador();
                                     }
+
+                                    if (selectEstoque && selectEstoque.value) {
+                                        carregarMateriaisPorEstoque(selectEstoque.value);
+                                    }
+                                    mostrarMensagemSelecioneMaterial();
                                 }
 
                                 function atualizarCamposPessoa() {
+                                    if (!selectPessoa) return;
                                     const valorPessoa = selectPessoa.value;
 
-                                    if (valorPessoa === 'fisica') { // Física
-                                        campoCPF.style.display = 'block';
-                                        campoCNPJ.style.display = 'none';
-                                    } else if (valorPessoa === 'juridica') { // Jurídica
-                                        campoCPF.style.display = 'none';
-                                        campoCNPJ.style.display = 'block';
+                                    if (valorPessoa === 'fisica') {
+                                        if (campoCPF) campoCPF.style.display = 'block';
+                                        if (campoCNPJ) campoCNPJ.style.display = 'none';
+                                    } else if (valorPessoa === 'juridica') {
+                                        if (campoCPF) campoCPF.style.display = 'none';
+                                        if (campoCNPJ) campoCNPJ.style.display = 'block';
                                     } else {
-                                        campoCPF.style.display = 'block';
-                                        campoCNPJ.style.display = 'block';
+                                        if (campoCPF) campoCPF.style.display = 'block';
+                                        if (campoCNPJ) campoCNPJ.style.display = 'block';
+                                    }
+                                    carregarNomesComprador();
+                                    limparCamposComprador();
+                                }
+
+                                function carregarNomesComprador() {
+                                    if (!selectPessoa || !selectNome) return;
+                                    const tipoPessoa = selectPessoa.value;
+                                    let url = '';
+                                    if (tipoPessoa === 'fisica') {
+                                        url = '/compradores/fisica';
+                                    } else if (tipoPessoa === 'juridica') {
+                                        url = '/compradores/juridica';
+                                    } else {
+                                        selectNome.innerHTML = '<option value="">Selecione o Comprador</option>';
+                                        return;
+                                    }
+
+                                    fetch(url)
+                                        .then(res => res.json())
+                                        .then(lista => {
+                                            selectNome.innerHTML = '<option value="">Selecione o Comprador</option>';
+                                            lista.forEach(pessoa => {
+                                                const option = document.createElement('option');
+                                                option.value = tipoPessoa === 'fisica' ? pessoa.cd_pessoa_fisica : pessoa.cd_pessoa_juridica;
+                                                option.textContent = tipoPessoa === 'fisica' ? pessoa.nm_pessoa_fisica : pessoa.nm_fantasia;
+                                                option.dataset.info = JSON.stringify(pessoa);
+                                                selectNome.appendChild(option);
+                                            });
+                                        });
+                                }
+
+                                function limparCamposComprador() {
+                                    if (inputNumero) inputNumero.value = '';
+                                    if (inputEmail) inputEmail.value = '';
+                                    if (inputCPF) inputCPF.value = '';
+                                    if (inputCNPJ) inputCNPJ.value = '';
+                                    if (inputCEP) inputCEP.value = '';
+                                }
+
+                                function preencherCamposComprador() {
+                                    const tipoPessoa = selectPessoa.value;
+                                    const selectedOption = selectNome.options[selectNome.selectedIndex];
+                                    if (!selectedOption || !selectedOption.dataset.info) {
+                                        limparCamposComprador();
+                                        return;
+                                    }
+                                    const dados = JSON.parse(selectedOption.dataset.info);
+
+                                    if (tipoPessoa === 'fisica') {
+                                        if (inputNumero) inputNumero.value = dados.nr_telefone_celular || '';
+                                        if (inputEmail) inputEmail.value = dados.ds_email || '';
+                                        if (inputCPF) inputCPF.value = dados.nr_cpf || '';
+                                        if (inputCNPJ) inputCNPJ.value = '';
+                                        if (inputCEP) inputCEP.value = dados.nr_cep || '';
+                                    } else if (tipoPessoa === 'juridica') {
+                                        if (inputNumero) inputNumero.value = dados.nr_telefone || '';
+                                        if (inputEmail) inputEmail.value = dados.ds_email || '';
+                                        if (inputCPF) inputCPF.value = '';
+                                        if (inputCNPJ) inputCNPJ.value = dados.nr_cnpj || '';
+                                        if (inputCEP) inputCEP.value = dados.nr_cep || '';
                                     }
                                 }
 
-                                movimentacaoSelect.addEventListener('change', atualizarCampos);
-                                selectPessoa.addEventListener('change', () => {
-                                    // Só atualiza se os campos estiverem visíveis (ou seja, movimentação não é "Saída"/"Entrada")
-                                    if (movimentacaoSelect.value !== 'saida' && movimentacaoSelect.value !== 'entrada') {
-                                        atualizarCamposPessoa();
-                                    }
-                                });
+                                function carregarEstoquesPorPlanta(cd_planta) {
+                                    if (!selectEstoque || !selectMaterial) return;
 
-                                // Executa ao carregar a página
+                                    if (!cd_planta) {
+                                        selectEstoque.innerHTML = '<option value="">Informe um estoque</option>';
+                                        selectMaterial.innerHTML = '<option value="">Informe um material</option>';
+                                        return;
+                                    }
+
+                                    fetch(`/estoquePorPlanta/${cd_planta}`)
+                                        .then(response => {
+                                            if (!response.ok) throw new Error('Erro ao buscar estoques');
+                                            return response.json();
+                                        })
+                                        .then(estoques => {
+                                            selectEstoque.innerHTML = '<option value="">Informe um estoque</option>';
+                                            selectMaterial.innerHTML = '<option value="">Informe um material</option>';
+
+                                            estoques.forEach(estoque => {
+                                                const option = document.createElement('option');
+                                                option.value = estoque.cd_estoque;
+                                                option.textContent = estoque.nm_estoque;
+                                                selectEstoque.appendChild(option);
+                                            });
+                                        })
+                                        .catch(error => {
+                                            console.error('Erro:', error);
+                                            selectEstoque.innerHTML = '<option value="">Informe um estoque</option>';
+                                            selectMaterial.innerHTML = '<option value="">Informe um material</option>';
+                                        });
+                                }
+
+                                function carregarMateriaisPorEstoque(estoqueId) {
+                                    if (!selectMaterial) return;
+
+                                    if (!estoqueId) {
+                                        selectMaterial.innerHTML = '<option value="">Informe um material</option>';
+                                        return;
+                                    }
+
+                                    const movimentacao = movimentacaoSelect.value;
+
+                                    if (movimentacao === 'entrada') {
+                                        fetch(`/todosMateriais`)
+                                            .then(response => {
+                                                if (!response.ok) throw new Error('Erro ao buscar todos os materiais');
+                                                return response.json();
+                                            })
+                                            .then(materiais => {
+                                                selectMaterial.innerHTML = '<option value="">Informe um material</option>';
+                                                materiais.forEach(material => {
+                                                    const option = document.createElement('option');
+                                                    option.value = material.cd_material;
+                                                    option.textContent = material.ds_material;
+                                                    selectMaterial.appendChild(option);
+                                                });
+                                            })
+                                            .catch(error => {
+                                                console.error('Erro:', error);
+                                                selectMaterial.innerHTML = '<option value="">Informe um material</option>';
+                                            });
+
+                                    } else {
+                                        fetch(`/materiaisPorEstoque/${estoqueId}/${movimentacao}`)
+                                            .then(response => {
+                                                if (!response.ok) throw new Error('Erro ao buscar materiais no estoque');
+                                                return response.json();
+                                            })
+                                            .then(materiais => {
+                                                selectMaterial.innerHTML = '<option value="">Informe um material</option>';
+                                                materiais.forEach(material => {
+                                                    const option = document.createElement('option');
+                                                    option.value = material.cd_material;
+                                                    option.textContent = material.ds_material;
+                                                    selectMaterial.appendChild(option);
+                                                });
+                                            })
+                                            .catch(error => {
+                                                console.error('Erro:', error);
+                                                selectMaterial.innerHTML = '<option value="">Informe um material</option>';
+                                            });
+                                    }
+                                    mostrarMensagemSelecioneMaterial();
+                                }
+
+                                // Mostra mensagem ao carregar a página
+                                mostrarMensagemSelecioneMaterial();
+
+                                if (selectPlanta) {
+                                    selectPlanta.addEventListener('change', function () {
+                                        carregarEstoquesPorPlanta(this.value);
+                                        mostrarMensagemSelecioneMaterial();
+                                    });
+                                }
+
+                                if (selectEstoque) {
+                                    selectEstoque.addEventListener('change', function () {
+                                        carregarMateriaisPorEstoque(this.value);
+                                        mostrarMensagemSelecioneMaterial();
+                                    });
+                                }
+
+                                movimentacaoSelect.addEventListener('change', atualizarCampos);
+
+                                if (selectPessoa) {
+                                    selectPessoa.addEventListener('change', () => {
+                                        if (movimentacaoSelect.value !== 'saida' && movimentacaoSelect.value !== 'entrada') {
+                                            atualizarCamposPessoa();
+                                        }
+                                    });
+                                }
+
+                                if (selectNome) {
+                                    selectNome.addEventListener('change', preencherCamposComprador);
+                                }
+
+                                if (selectMaterial) {
+                                    selectMaterial.addEventListener('change', function () {
+                                        const cd_material = this.value;
+                                        const cd_estoque = selectEstoque ? selectEstoque.value : '';
+                                        if (!cd_material || !cd_estoque) {
+                                            mostrarMensagemSelecioneMaterial();
+                                            return;
+                                        }
+                                        const movimentacao = movimentacaoSelect.value;
+                                        let url = '';
+                                        if (movimentacao === 'entrada') {
+                                            url = `/dadosMaterialEntrada/${cd_estoque}/${cd_material}`;
+                                        } else {
+                                            url = `/dadosMaterialEstoque/${cd_estoque}/${cd_material}`;
+                                        }
+                                        fetch(url)
+                                            .then(res => res.json())
+                                            .then(dados => {
+                                                mostrarLinhaMaterial(dados);
+                                            })
+                                            .catch(() => {
+                                                mostrarMensagemSelecioneMaterial();
+                                            });
+                                    });
+                                }
+
                                 atualizarCampos();
+
+                                if (selectPlanta && selectPlanta.value) {
+                                    carregarEstoquesPorPlanta(selectPlanta.value);
+                                }
+
+                                if (selectEstoque && selectEstoque.value) {
+                                    carregarMateriaisPorEstoque(selectEstoque.value);
+                                }
                             });
                         </script>
                         <!--End Script-->
