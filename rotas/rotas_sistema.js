@@ -428,6 +428,11 @@ router.post('/atualizarPesos', (req, res) => {
     servico25.atualizarPesos(req, res)
 });
 
+router.post('/concluirPesagem', (req, res) => {
+    servico25.concluirPesagem(req, res);
+});
+
+
 // ----------------------- Servico26 -------------------//
 router.get('/novoMaterial2', (req, res) => {
     servico26.exibirNovoMaterial2(req, res);

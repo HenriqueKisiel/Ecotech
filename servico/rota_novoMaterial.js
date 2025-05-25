@@ -93,36 +93,57 @@ function atualizarPesos(req, res) {
 
         Promise.all(updates)
             .then(() => {
-                // Atualizar o campo dt_pesagem na tabela agendamento
-                // Pegue o ie_agenda do primeiro material atualizado
-                const cd_mat_agenda = Object.keys(pesoFinal)[0];
-                const sqlBuscaAgenda = `SELECT ie_agenda FROM materiais_agenda WHERE cd_mat_agenda = ? LIMIT 1`;
-                conectiondb().query(sqlBuscaAgenda, [cd_mat_agenda], (erro, resultado) => {
-                    if (erro || !resultado.length) {
-                        return res.json({ mensagem: 'Pesos atualizados, mas não foi possível atualizar a data de pesagem.' });
-                    }
-                    const ie_agenda = resultado[0].ie_agenda;
-                    const sqlUpdateAgendamento = `UPDATE agendamento SET dt_pesagem = SYSDATE() WHERE cd_agendamento = ?`;
-                    conectiondb().query(sqlUpdateAgendamento, [ie_agenda], (erro2) => {
-                        if (erro2) {
-                            return res.json({ mensagem: 'Pesos atualizados, mas não foi possível atualizar a data de pesagem.' });
-                        }
-                        res.json({ mensagem: 'Pesos e data de pesagem atualizados com sucesso!' });
-                    });
-                });
+                res.json({ mensagem: 'Pesos atualizados com sucesso!' });
             })
             .catch(erro => {
                 console.error('Erro ao atualizar os pesos:', erro);
-                res.status(500).send('Erro ao atualizar os pesos.');
+                // Só envia resposta se ainda não foi enviada
+                if (!res.headersSent) {
+                    res.status(500).send('Erro ao atualizar os pesos.');
+                }
             });
     });
 }
 
+
+function concluirPesagem(req, res) {
+    const { ie_agenda } = req.body;
+    if (!ie_agenda) {
+        return res.status(400).json({ mensagem: 'Agendamento não informado.' });
+    }
+
+    // 1. Verificar se todos os itens têm qt_peso_final preenchido
+    const sqlVerifica = `
+        SELECT cd_mat_agenda 
+        FROM materiais_agenda 
+        WHERE ie_agenda = ? AND (qt_peso_final IS NULL OR qt_peso_final = '')
+    `;
+    conectiondb().query(sqlVerifica, [ie_agenda], (erro, resultados) => {
+        if (erro) {
+            console.error('Erro ao verificar pesos finais:', erro);
+            return res.status(500).json({ mensagem: 'Erro ao verificar pesos finais.' });
+        }
+        if (resultados.length > 0) {
+            return res.status(400).json({ mensagem: 'Todos os itens devem ter o peso final preenchido antes de concluir a pesagem.' });
+        }
+
+        // 2. Se todos preenchidos, atualizar dt_pesagem
+        const sql = `UPDATE agendamento SET dt_pesagem = SYSDATE() WHERE cd_agendamento = ?`;
+        conectiondb().query(sql, [ie_agenda], (erro2, resultado) => {
+            if (erro2) {
+                console.error('Erro ao concluir pesagem:', erro2);
+                return res.status(500).json({ mensagem: 'Erro ao concluir pesagem.' });
+            }
+            res.json({ mensagem: 'Pesagem concluída com sucesso!' });
+        });
+    });
+}
 
 //exportando a função 
 module.exports = {
     exibirNovoMaterial,
     buscarAgendamentoMaterial,
     buscarItensgenda,
-    atualizarPesos    
+    atualizarPesos,
+    concluirPesagem
 }

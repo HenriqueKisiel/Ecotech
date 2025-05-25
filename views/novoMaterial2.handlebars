@@ -232,113 +232,141 @@
                     <div class="page-inner">
                         <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
                             <div class="mb-3 d-flex flex-column">
-                                <span class="fs-2 fw-bold">Cadastro de Material</span>
+                                <span class="fs-2 fw-bold">Separação de Materiais</span>
                                 <small class="text-muted">Preencha os dados de cadastro e clique em continuar.</small>
                             </div>
-                            <a href="/novoMaterial" class="btn btn-secondary">
-                                Voltar
-                            </a>
+                            <a href="/estoqueBuscar" class="btn btn-secondary fw-bold shadow-lg me-3 mt-2">
+                                Voltar</a>
                         </div>
                         <div class="card">
-                            <div class="card-header">
-                                <div class="card-title">Linha: <span
-                                        class="badge badge-primary fs-5 fw-bold">Azul</span>
-                                    <span class="badge badge-success fs-5 fw-bold">Verde</span>
-                                    <span class="badge badge-warning fs-5 fw-bold">Laranja</span>
-                                    <span class="badge badge-danger fs-5 fw-bold">Vermelha</span>
+                            <div class="card-body">
+                                <div class="row mb-5">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Nome do Agendamento</label>
+                                            <select id="agendamento" name="agendamento" class="form-control">
+                                                <option value="">Selecione um agendamento</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Peso previsto no agendamento (KG)</label>
+                                            <input type="text" id="peso" name="peso" class="form-control"
+                                                placeholder="___" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Peso real (KG)</label>
+                                            <input type="number" step="0.01" id="pesoReal" name="pesoReal"
+                                                class="form-control" placeholder="___" readonly>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="card-body p-0">
-
-                                <table class="table table-bordered table-head-bg-black table-bordered-bd-black mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Matéria Prima</th>
-                                            <th scope="col">Peso (Kg)</th>
-                                            <th scope="col">Volume (m³)</th>
-                                            <th scope="col">Destino</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><span class="fs-5">Plástico</span></td>
-                                            <td><input class="form-control" placeholder="Informe a quantidade"></td>
-                                            <td><input class="form-control" placeholder="Informe o volume"></td>
-                                            <td><input class="form-control" placeholder="Informe o estoque destino">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="fs-5">Ferro/aço</span></td>
-                                            <td><input class="form-control" placeholder="Informe a quantidade"></td>
-                                            <td><input class="form-control" placeholder="Informe o volume"></td>
-                                            <td><input class="form-control" placeholder="Informe o estoque destino">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="fs-5">Alumínio</span></td>
-                                            <td><input class="form-control" placeholder="Informe a quantidade"></td>
-                                            <td><input class="form-control" placeholder="Informe o volume"></td>
-                                            <td><input class="form-control" placeholder="Informe o estoque destino">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="fs-5">Cobre</span></td>
-                                            <td><input class="form-control" placeholder="Informe a quantidade"></td>
-                                            <td><input class="form-control" placeholder="Informe o volume"></td>
-                                            <td><input class="form-control" placeholder="Informe o estoque destino">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="fs-5">Ouro/prata</span></td>
-                                            <td><input class="form-control" placeholder="Informe a quantidade"></td>
-                                            <td><input class="form-control" placeholder="Informe o volume"></td>
-                                            <td><input class="form-control" placeholder="Informe o estoque destino">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="fs-5">Vidro</span></td>
-                                            <td><input class="form-control" placeholder="Informe a quantidade"></td>
-                                            <td><input class="form-control" placeholder="Informe o volume"></td>
-                                            <td><input class="form-control" placeholder="Informe o estoque destino">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="fs-5">Descarte</span></td>
-                                            <td><input class="form-control" placeholder="Informe a quantidade"></td>
-                                            <td><input class="form-control" placeholder="Informe o volume"></td>
-                                            <td><input class="form-control" placeholder="Informe o estoque destino">
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="card-footer d-flex justify-content-end">
-                                <button type="submit" class="btn btn-success fs-5 shadow-lg">
-                                    Salvar
-                                </button>
-                            </div>
                         </div>
 
+                        <fieldset>
+                            <div class="row">
+                                <!-- ===== Formulário de Inserção/Edição de Itens ===== -->
+                                <div class="col-md-6">
+                                    <div class="card shadow-lg mb-5">
+                                        <div class="card-header">
+                                            <div class="card-title">Adicionar Item</div>
+                                        </div>
+                                        <div class="card-body">
+                                            <form
+                                                action="/novoMaterial2/{{agendamento.cd_agendamento}}/adicionarItem"
+                                                method="POST">
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="fw-bold">Materia Prima</label>
+                                                        <select name="linha_material" id="linha_material"
+                                                            class="form-control">
+                                                            <option value="0">Selecione a linha</option>
+                                                            <option value="2">selected </option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="fw-bold">Estoque</label>
+                                                        <select name="linha_material" id="linha_material"
+                                                            class="form-control">
+                                                            <option value="0">Estoque 1</option>
+                                                            <option value="2">Estoue 2 </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6 ">
+                                                        <label class="fw-bold">Peso do material (KG)</label>
+                                                        <input type="text" class="form-control"
+                                                            id="qt_quantidade_prevista_kg" name="item_peso"
+                                                            pattern="^\d+([.,]\d+)?$"required>
+                                                    </div>
+
+                                                    <div class="col-md-6 ">
+                                                        <label class="fw-bold">Volume (m³)</label>
+                                                        <input type="text" class="form-control"
+                                                            id="qt_quantidade_prevista_kg" name="item_peso"
+                                                            pattern="^\d+([.,]\d+)?$"required>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex justify-content-end gap-2 mt-3">
+                                                    <a href="/novoMaterial2?id_agendamento={{agendamento.cd_agendamento}}"
+                                                        class="btn btn-secondary text-white fw-bold shadow-lg">
+                                                        Cancelar
+                                                    </a>
+
+                                                    <button
+                                                        formaction="/novoMaterial2/{{agendamento.cd_agendamento}}/itens/{{item.cd_mat_agenda}}/editar"
+                                                        class="btn btn-warning text-white fw-bold shadow-lg">
+                                                        Atualizar Item
+                                                    </button>
+
+                                                    <button type="submit"
+                                                        class="btn btn-success text-white fw-bold shadow-lg">Adicionar
+                                                        Item</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ===== Lista de Itens ===== -->
+                                <div class="col-md-6">
+                                    <div class="card shadow-lg mb-5">
+                                        <div class="card-header">
+                                            <div class="card-title">Lista de Itens</div>
+                                        </div>
+                                        <div class="card-body p-0">
+                                            <table class="table table-head-bg-success">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Material</th>
+                                                        <th>Estoque</th>
+                                                        <th>Peso</th>
+                                                        <th>Volume</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {{#each itens}}
+                                                    <tr>
+                                                        <td>{{ds_mat_agenda}}</td>
+                                                        <td>{{nm_linha}}</td>
+                                                        <td>{{qt_peso_material_total_kg}}</td>
+                                                        <td> Volume</td>
+                                                    </tr>
+                                                    {{/each}}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
                     </div>
                 </div>
-
-                <footer class="footer">
-                    <div class="container-fluid d-flex justify-content-between">
-                        <nav class="pull-left">
-                            <ul class="nav">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">footer#1</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">footer#2</a>
-                                </li>
-                            </ul>
-                        </nav>
-                        <div class="copyright">
-                            2025 - Autores: Equipe 7
-                        </div>
-                    </div>
-                </footer>
             </div>
         </div>
     </body>
