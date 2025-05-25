@@ -259,8 +259,8 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Peso real (KG)</label>
-                                            <input type="text" id="pesoReal" name="pesoReal" class="form-control"
-                                                placeholder="___" readonly>
+                                            <input type="number" step="0.01" id="pesoReal" name="pesoReal"
+                                                class="form-control" placeholder="___" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -309,13 +309,20 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer d-flex justify-content-end">
+                            
+                            <div class="d-flex justify-content-end gap-2 mt-3">
+                                <div class="card-footer d-flex justify-content-end"> 
+                                <button type="submit" class="btn btn-primary"> Concluir 
+                                Pesagem</button>
+                                </div>
+                                <div class="card-footer d-flex justify-content-end">
                                 <a href="/novoMaterial2" class="btn btn-primary fs-5">
                                     <span class="btn-label">
                                         <i class="fas fa-angle-double-right"></i>
                                     </span>
-                                    Continuar
+                                    Separação
                                 </a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -399,7 +406,7 @@
                                                     <td>${item.ds_mat_agenda}</td>
                                                     <td>${item.qt_peso_material_total_kg}</td>
                                                     <td>
-                                                        <input type="number" name="pesoFinal[${item.cd_mat_agenda}]" class="form-control" value="${item.qt_peso_final || ''}" />
+                                                        <input type="number" step="0.01" name="pesoFinal[${item.cd_mat_agenda}]" class="form-control" value="${item.qt_peso_final || ''}" />
                                                     </td>
                                                 `;
                                                 tableBody.appendChild(row);
@@ -412,8 +419,6 @@
 
                         formUpdate.addEventListener('submit', function (event) {
                             event.preventDefault();
-
-                            const formData = new FormData(formUpdate);
 
                             const ie_agenda = selectAgendamento.value;
                             const ie_linha = document.querySelector('.btn-linha.active')?.getAttribute('data-linha');
@@ -444,6 +449,34 @@
                                 return;
                             }
 
+                            // Validação de número negativo nos inputs de peso final
+                            const camposNegativos = [];
+                            tableBody.querySelectorAll('input[name^="pesoFinal"]').forEach(input => {
+                                if (Number(input.value) < 0) {
+                                    camposNegativos.push(input);
+                                }
+                            });
+
+                            if (camposNegativos.length > 0) {
+                                swal("Atenção!", "Peso final não pode ser negativo.", {
+                                    icon: "error",
+                                    buttons: {
+                                        confirm: {
+                                            text: "OK",
+                                            className: "btn btn-danger",
+                                        },
+                                    },
+                                });
+                                // Opcional: destacar os campos inválidos
+                                camposNegativos.forEach(input => input.classList.add('is-invalid'));
+                                return;
+                            } else {
+                                // Remove destaque se estava inválido antes
+                                tableBody.querySelectorAll('input[name^="pesoFinal"]').forEach(input => input.classList.remove('is-invalid'));
+                            }
+
+                            const formData = new FormData(formUpdate);
+
                             fetch('/atualizarPesos', {
                                 method: 'POST',
                                 body: formData
@@ -467,7 +500,17 @@
                                         window.location.href = `/novoMaterial?ie_agenda=${ie_agenda}&ie_linha=${ie_linha}`;
                                     });
                                 })
-                                .catch(error => console.error('Erro ao atualizar os pesos:', error));
+                                .catch(error => {
+                                    swal("Erro!", "Erro ao atualizar os pesos.", {
+                                        icon: "error",
+                                        buttons: {
+                                            confirm: {
+                                                text: "OK",
+                                                className: "btn btn-danger",
+                                            },
+                                        },
+                                    });
+                                });
                         });
 
                         carregarAgendamentos();

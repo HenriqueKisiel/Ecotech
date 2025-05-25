@@ -9,7 +9,7 @@ function exibirNovoMaterial(req, res) {
 
 
 function buscarAgendamentoMaterial(req, res) {
-    const sql = 'SELECT cd_agendamento, nm_agendamento, ds_endereco, qt_quantidade_prevista_kg, qt_peso_real,status FROM agendamento WHERE dt_coleta <> "0000-00-00" AND dt_separacao IS NULL';
+    const sql = 'SELECT cd_agendamento, nm_agendamento, ds_endereco, qt_quantidade_prevista_kg, qt_peso_real,status FROM agendamento WHERE dt_coleta IS NOT NULL AND dt_pesagem IS NULL AND dt_separacao IS NULL';
     conectiondb().query(sql, (erro, resultados) => {
         if (erro) {
             console.error('Erro ao buscar Agendamentos:', erro);
@@ -64,12 +64,7 @@ function atualizarPesos(req, res) {
             return res.status(500).send('Erro ao processar o formulário.');
         }
 
-        const dados = req.body; // Capturar os dados enviados pelo formulário
-
-        // Log para depuração
-        console.log('Dados recebidos no backend:', dados);
-
-        // Verificar se os dados foram recebidos
+        const dados = req.body;
         if (!dados || !dados.pesoFinal) {
             console.error('Nenhum dado enviado ou pesoFinal está ausente:', dados);
             return res.status(400).send('Nenhum dado enviado ou pesoFinal está ausente.');
@@ -77,12 +72,11 @@ function atualizarPesos(req, res) {
 
         // Transformar os dados de pesoFinal em um objeto utilizável
         const pesoFinal = Object.entries(dados.pesoFinal).reduce((acc, [key, value]) => {
-            if (value) {
-                acc[key] = value;
-            }
+            if (value) acc[key] = value;
             return acc;
         }, {});
 
+        // Atualizar os pesos dos materiais
         const updates = Object.entries(pesoFinal).map(([cd_mat_agenda, qt_peso_final]) => {
             return new Promise((resolve, reject) => {
                 const sql = `
@@ -91,16 +85,32 @@ function atualizarPesos(req, res) {
                     WHERE cd_mat_agenda = ?
                 `;
                 conectiondb().query(sql, [qt_peso_final, cd_mat_agenda], (erro, resultados) => {
-                    if (erro) {
-                        return reject(erro);
-                    }
+                    if (erro) return reject(erro);
                     resolve(resultados);
                 });
             });
         });
 
         Promise.all(updates)
-            .then(() => res.json({ mensagem: 'Pesos atualizados com sucesso!' }))
+            .then(() => {
+                // Atualizar o campo dt_pesagem na tabela agendamento
+                // Pegue o ie_agenda do primeiro material atualizado
+                const cd_mat_agenda = Object.keys(pesoFinal)[0];
+                const sqlBuscaAgenda = `SELECT ie_agenda FROM materiais_agenda WHERE cd_mat_agenda = ? LIMIT 1`;
+                conectiondb().query(sqlBuscaAgenda, [cd_mat_agenda], (erro, resultado) => {
+                    if (erro || !resultado.length) {
+                        return res.json({ mensagem: 'Pesos atualizados, mas não foi possível atualizar a data de pesagem.' });
+                    }
+                    const ie_agenda = resultado[0].ie_agenda;
+                    const sqlUpdateAgendamento = `UPDATE agendamento SET dt_pesagem = SYSDATE() WHERE cd_agendamento = ?`;
+                    conectiondb().query(sqlUpdateAgendamento, [ie_agenda], (erro2) => {
+                        if (erro2) {
+                            return res.json({ mensagem: 'Pesos atualizados, mas não foi possível atualizar a data de pesagem.' });
+                        }
+                        res.json({ mensagem: 'Pesos e data de pesagem atualizados com sucesso!' });
+                    });
+                });
+            })
             .catch(erro => {
                 console.error('Erro ao atualizar os pesos:', erro);
                 res.status(500).send('Erro ao atualizar os pesos.');
