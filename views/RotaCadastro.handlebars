@@ -256,27 +256,35 @@
                                             <div class="form-group">
                                                 <label class="fw-bold">Nome da Rota</label>
                                                 <input type="text" name="nomeRota" class="form-control"
-                                                    placeholder="Insira o nome ">
+                                                    placeholder="Insira o nome " required>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Data Agendada</label>
-                                                <input type="date" name="dataAgendaRota" class="form-control">
+                                                <input type="date" name="dataAgendaRota" class="form-control" required>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="fw-bold">Peso total (Kg)</label>
+                                                <label class="fw-bold">Peso inicial (Kg)</label>
                                                 <input type="text" name="pesoTotalRota" class="form-control"
                                                     placeholder="Kg">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="fw-bold">KM Total (KM)</label>
+                                                <label class="fw-bold">KM inicial (KM)</label>
                                                 <input type="text" name="quilometroTotalRota" class="form-control"
                                                     placeholder="Km">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Planta</label>
+                                                <select id="Planta" name="Planta" class="form-control" required>
+                                                    <option value="">Selecione uma Planta</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -290,6 +298,25 @@
 
                     </div>
                 </div>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        fetch('/buscarPlanta')
+                            .then(response => response.json())
+                            .then(planta => {  // Corrigido o nome da variável
+                                const selectPlanta = document.getElementById('Planta'); // Corrigido o ID para maiúsculo
+
+                                planta.forEach(planta => {  // Corrigido o loop
+                                    const option = document.createElement('option');
+                                    option.value = planta.cd_planta;
+                                    option.textContent = planta.nm_planta;
+                                    selectPlanta.appendChild(option);
+                                });
+                            })
+                            .catch(error => console.error('Erro ao carregar Plata:', error));
+                    });
+
+                </script>
+
                 <!--end conteudo indiviudual da pagina-->
             </div>
         </div>

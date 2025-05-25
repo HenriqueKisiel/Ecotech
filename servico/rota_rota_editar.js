@@ -258,13 +258,13 @@ function buscarCaminhao(req, res) {
 
 // Adiciona ponto de coleta
 function adicionarAgendamentoNaRota(req, res) {
-    const { cd_agendamento, agendamento } = req.body;
+    const { cd_agendamento, agendamento,  } = req.body;
     const { cd_rota } = req.params;
 
     const connection = conectiondb();
 
     const queryInsert = `
-         INSERT INTO pontos_coleta (cd_ponto_coleta,ie_rota,nm_ponto,cd_bairro,cd_cidade,nr_cep, cd_planta, cd_agendamento)
+         INSERT INTO pontos_coleta (cd_ponto_coleta,ie_rota,nm_ponto,nm_bairro,nm_cidade,nr_cep, cd_planta, cd_agendamento)
         VALUES (NULL,?,'','','','',NULL,?)
     ;
     `;

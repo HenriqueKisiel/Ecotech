@@ -233,7 +233,8 @@
                         {{{mensagem}}}
 
                         <!-- ===== Formulário de Edição de Agendamento ===== -->
-                        <form action="/agendamentoEditar/{{agendamento.cd_agendamento}}" method="POST">
+                        <form action="/agendamentoEditar/{{agendamento.cd_agendamento}}/adicionarItem" method="POST">
+                            <input type="hidden" name="id_agendamento" value="{{agendamento.cd_agendamento}}" />
                             <div
                                 class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
                                 <div class="mb-3 d-flex flex-column">
@@ -379,6 +380,8 @@
                                             <form
                                                 action="/agendamentoEditar/{{agendamento.cd_agendamento}}/adicionarItem"
                                                 method="POST">
+                                                <input type="hidden" name="id_agendamento"
+                                                    value="{{agendamento.cd_agendamento}}" />
                                                 <input type="hidden" name="itemId"
                                                     value="{{#if editandoItem}}{{item.cd_mat_agenda}}{{/if}}" />
                                                 <div class="row mb-3">
@@ -400,22 +403,24 @@
                                                     <div class="col-md-6">
                                                         <label class="fw-bold">Selecione um material</label>
                                                         <select name="item_nome" id="item_nome" class="form-control"
-                                                            required data-selected="{{item.ds_mat_agenda}}">
+                                                            required>
                                                             <option value="">Selecione um material</option>
                                                             {{#each materiais}}
-                                                            <option value="{{ds_material}}" data-linha="{{ie_linha}}">
-                                                                {{ds_material}}</option>
+                                                            <option value="{{ds_material}}"
+                                                                data-cd-material="{{cd_material}}"
+                                                                data-linha="{{ie_linha}}">
+                                                                {{ds_material}}
+                                                            </option>
                                                             {{/each}}
                                                         </select>
-                                                    </div>
+                                                        <input type="hidden" name="ie_material" id="ie_material" />
 
-                                                    <div class="col-md-6 ">
-                                                        <label class="fw-bold">Peso do material (KG)</label>
-                                                        <input type="text" class="form-control"
-                                                            id="qt_quantidade_prevista_kg" name="item_peso"
-                                                            pattern="^\d+([.,]\d+)?$"
-                                                            title="Digite apenas números positivos. Use vírgula ou ponto para decimais."
-                                                            required>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label class="fw-bold">Quantidade</label>
+                                                        <input type="number" class="form-control" id="qtde_material"
+                                                            name="item_qtde" min="1" step="1" pattern="\d*"
+                                                            title="Digite apenas números inteiros positivos.">
                                                     </div>
                                                 </div>
                                                 <div class="d-flex justify-content-end gap-2 mt-3">
@@ -445,13 +450,14 @@
                                         <div class="card-header">
                                             <div class="card-title">Lista de Itens</div>
                                         </div>
-                                        <div class="card-body p-0">
+                                        <div class="card-body p-0" style="max-height: 270px; overflow-y: auto;">
                                             <table class="table table-head-bg-success">
                                                 <thead>
                                                     <tr>
                                                         <th>Material</th>
                                                         <th>Linha</th>
                                                         <th>Peso</th>
+                                                        <th>Qtde</th>
                                                         <th>Ações</th>
                                                     </tr>
                                                 </thead>
@@ -460,18 +466,17 @@
                                                     <tr>
                                                         <td>{{ds_mat_agenda}}</td>
                                                         <td>{{nm_linha}}</td>
+                                                        <td>{{qtde_material}}</td>
                                                         <td>{{qt_peso_material_total_kg}}</td>
                                                         <td>
                                                             <a href="#"
-                                                                class="btn btn-danger me-2 text-white fw-bold shadow-lg"
+                                                                class="btn btn-danger btn-sm me-2 text-white"
                                                                 onclick="confirmarExclusao('{{../agendamento.cd_agendamento}}', '{{cd_mat_agenda}}')">
-                                                                <i class="fa fa-trash text-white fw-bold shadow-lg"></i>
-                                                                Excluir
+                                                                <i class="fa fa-trash text-white"></i> Excluir
                                                             </a>
                                                             <a href="/agendamentoEditar/{{../agendamento.cd_agendamento}}/itens/{{cd_mat_agenda}}/editar"
-                                                                class="btn btn-warning text-white fw-bold shadow-lg">
-                                                                <i class="fa fa-edit text-white fw-bold shadow-lg"></i>
-                                                                Editar
+                                                                class="btn btn-warning btn-sm text-white">
+                                                                <i class="fa fa-edit text-white"></i> Editar
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -568,6 +573,19 @@
                         }
                     });
                 </script>
+
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const materialSelect = document.getElementById('item_nome');
+                        const materialHidden = document.getElementById('ie_material');
+                        materialSelect.addEventListener('change', function () {
+                            const selected = materialSelect.options[materialSelect.selectedIndex];
+                            materialHidden.value = selected.getAttribute('data-cd-material') || '';
+                        });
+                    });
+                </script>
+
 
                 <script>
                     document.addEventListener('DOMContentLoaded', function () {

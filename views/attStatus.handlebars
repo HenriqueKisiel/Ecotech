@@ -260,47 +260,52 @@
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <label class="fs-6 fw-bold">Data da Rota</label>
-                                            <input value="{{rotas.dt_agendada}}" type="text" class="form-control"disabled>
+                                            <input value="{{rotas.dt_agendada}}" type="text" class="form-control"
+                                                disabled>
                                         </div>
                                     </div>
                                     <div class="col-md-1">
                                         <div class="form-group">
                                             <label class="fs-6 fw-bold">Km</label>
-                                            <input value="{{rotas.nr_distancia_km}}" type="text" class="form-control" disabled
-                                                placeholder="____">
+                                            <input value="{{rotas.nr_distancia_km}}" type="text" class="form-control"
+                                                disabled placeholder="____">
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
-                                            <label class="fs-6 fw-bold">Peso (Kg)</label >
-                                            <input type="text" value="{{rotas.qt_peso_total_kg}}" class="form-control" disabled
-                                                placeholder="____">
+                                            <label class="fs-6 fw-bold">Peso (Kg)</label>
+                                            <input type="text" value="{{rotas.qt_peso_total_kg}}" class="form-control"
+                                                disabled placeholder="____">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label class="fs-6 fw-bold">Motorista</label >
-                                            <input type="text" value="{{dadosRota.nm_motorista}}" class="form-control" disabled
-                                                placeholder="____">
+                                            <label class="fs-6 fw-bold">Motorista</label>
+                                            <input type="text" value="{{dadosRota.nm_motorista}}" class="form-control"
+                                                disabled placeholder="____">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label class="fs-6 fw-bold">Caminhão</label >
-                                            <input type="text" value="{{dadosRota.nm_modelo}}" class="form-control" disabled
-                                                placeholder="____">
+                                            <label class="fs-6 fw-bold">Caminhão</label>
+                                            <input type="text" value="{{dadosRota.nm_modelo}}" class="form-control"
+                                                disabled placeholder="____">
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <label class="fs-6 fw-bold">Data inicio </label>
-                                            <input type="text" name="dt_inicio" value="{{rotas.dt_iniciado}}" class="form-control" disabled>
+                                            <input type="text" name="dt_inicio"
+                                                value="{{#if rotas.dt_iniciado}}{{rotas.dt_iniciado}}{{else}}_____{{/if}}"
+                                                class="form-control" disabled>
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <label class="fs-6 fw-bold">Data Fim </label>
-                                            <input type="text" name="dt_fim" value="{{rotas.dt_fim}}" class="form-control" disabled>
+                                            <input type="text" name="dt_fim"
+                                                value="{{#if rotas.dt_fim}}{{rotas.dt_fim}}{{else}}_____{{/if}}"
+                                                class="form-control" disabled>
                                         </div>
                                     </div>
                                     <div class="col-md-2 d-flex flex-row">
@@ -385,7 +390,7 @@
             <!--end conteudo indiviudual da pagina-->
             <script>
                 document.getElementById('btn-iniciar').addEventListener('click', async () => {
-                    const cdRota = {{ rotas.cd_rota }};
+                    const cdRota = {{rotas.cd_rota}};
                 try {
                     const response = await fetch(`/attStatus/${cdRota}`, {
                         method: 'POST',
@@ -408,7 +413,17 @@
                         }).then(() => {
                             window.location.href = `/attStatus/${cdRota}`;
                         });
-                        } else if (result.iniciado) {
+                    } else if (result.motoristaCaminhao) {
+                        swal("Atenção!", "É necessário vincular um motorista e um caminhão à rota antes de iniciar.", {
+                            icon: "warning",
+                            buttons: {
+                                confirm: {
+                                    text: "Entendi",
+                                    className: "btn btn-warning",
+                                },
+                            },
+                        });
+                    } else if (result.iniciado) {
                         swal("Atenção!", "Não é possível iniciar a rota pois ela já iniciou.", {
                             icon: "warning",
                             buttons: {
@@ -417,7 +432,7 @@
                                     className: "btn btn-warning",
                                 },
                             },
-                        });               
+                        });
                     } else {
                         swal("Erro!", "Não foi possível registrar o início.", {
                             icon: "error",
@@ -446,7 +461,7 @@
 
             <script>
                 document.getElementById('btn-finalizar').addEventListener('click', async () => {
-                    const cdRota = {{ rotas.cd_rota }};
+                    const cdRota = {{rotas.cd_rota}};
                 try {
                     const response = await fetch(`/attStatus/${cdRota}`, {
                         method: 'POST',
@@ -470,7 +485,7 @@
                             window.location.href = `/attStatus/${cdRota}`;
                         });
                     } else if (result.coletado) {
-                        swal("Atenção!", "Não é possível finalizar a rota pois existem agendamentos já coletados.", {
+                        swal("Atenção!", "Não é possível finalizar a rota pois existem agendamentos a serem coletados.", {
                             icon: "warning",
                             buttons: {
                                 confirm: {
@@ -536,6 +551,16 @@
                                 }).then(() => {
                                     window.location.href = `/attStatus/${cdRota}`;
                                 });
+                            } else if (result.rotaNaoIniciada) {
+                                swal("Atenção!", "A rota precisa estar iniciada para coletar.", {
+                                    icon: "warning",
+                                    buttons: {
+                                        confirm: {
+                                            text: "Entendi",
+                                            className: "btn btn-warning",
+                                        },
+                                    },
+                                });
                             } else {
                                 throw new Error("Erro no servidor");
                             }
@@ -582,6 +607,16 @@
                                 }).then(() => {
                                     window.location.href = `/attStatus/${cdRota}`;
                                 });
+                            } else if (result.jaColetado) {
+                                swal("Atenção!", "Não é possível cancelar um ponto já coletado.", {
+                                    icon: "warning",
+                                    buttons: {
+                                        confirm: {
+                                            text: "Entendi",
+                                            className: "btn btn-warning",
+                                        },
+                                    },
+                                });
                             } else {
                                 throw new Error("Erro no servidor");
                             }
@@ -606,7 +641,9 @@
             <script>
                 document.addEventListener("DOMContentLoaded", function () {
                     const formatarData = (dataString) => {
+                        if (!dataString || dataString === "_____" || dataString === "Na/Na/Na") return "_____";
                         const data = new Date(dataString);
+                        if (isNaN(data)) return "_____";
                         const dia = String(data.getDate()).padStart(2, '0');
                         const mes = String(data.getMonth() + 1).padStart(2, '0');
                         const ano = String(data.getFullYear()).slice(-2);
