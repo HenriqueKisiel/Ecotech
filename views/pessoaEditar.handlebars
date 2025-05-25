@@ -249,10 +249,10 @@
                         </div>
                         <div class="card-body">
                             <form id="formPessoaFisicaEditar" action="/pessoaEditar" method="POST">
-                                <div class="form-group">
-                                    <input type="hidden" name="codigo" value="{{pessoa_fisica.cd_pessoa_fisica}}">
-                                </div>
+                                <input type="hidden" name="codigo" value="{{pessoa_fisica.cd_pessoa_fisica}}">
+
                                 <div class="row">
+                                    <!-- Nome -->
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Nome Completo</label>
@@ -261,6 +261,8 @@
                                                 placeholder="Insira o nome completo" required>
                                         </div>
                                     </div>
+
+                                    <!-- Email -->
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">E-mail</label>
@@ -269,6 +271,8 @@
                                                 placeholder="Insira o E-mail" required>
                                         </div>
                                     </div>
+
+                                    <!-- CPF -->
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">CPF</label>
@@ -277,66 +281,30 @@
                                             <small class="form-text text-muted">Em caso de pessoa física.</small>
                                         </div>
                                     </div>
+
+                                    <!-- Telefone -->
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Telefone</label>
                                             <input maxlength="18" id="telefone" name="telefone"
                                                 value="{{pessoa_fisica.nr_telefone_celular}}" class="form-control"
-                                                placeholder="Nr de telefone">
+                                                placeholder="Nr de telefone" required>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="row">
+                                    <!-- Data de Nascimento -->
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="fw-bold">Endereço</label>
-                                            <input maxlength="50" type="text" name="endereco"
-                                                value="{{pessoa_fisica.ds_endereco}}" class="form-control"
-                                                placeholder="Preencha o endereço">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="fw-bold">CEP</label>
-                                            <input maxlength="9" id="cep" type="text" name="cep"
-                                                value="{{pessoa_fisica.nr_cep}}" class="form-control"
-                                                placeholder="Preencha o CEP">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Cidade</label><br>
-                                            <select class="form-select form-control" name="cidade">
-                                                <option value="1" {{#if (eq pessoa_fisica.cd_cidade "1"
-                                                    )}}selected{{/if}}>Curitiba</option>
-                                                <!-- Adicione mais cidades conforme necessário -->
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Bairro</label><br>
-                                            <select class="form-select form-control" name="bairro">
-                                                <option value="1" {{#if (eq pessoa_fisica.cd_bairro "1"
-                                                    )}}selected{{/if}}>Xaxim</option>
-                                                <!-- Adicione mais bairros conforme necessário -->
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Data de Nascimento</label>
+                                            <label class="fw-bold">Data de Nascimento</label>
                                             <input type="date" name="dataNasc" value="{{pessoa_fisica.dt_nascimento}}"
-                                                class="form-control">
+                                                class="form-control" required>
                                         </div>
                                     </div>
+
+                                    <!-- Sexo -->
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="fw-bold">Sexo</label><br>
+                                            <label class="fw-bold">Sexo</label>
                                             <select class="form-select form-control" name="sexo">
                                                 <option value="m" {{#if (eq pessoa_fisica.ie_sexo "m"
                                                     )}}selected{{/if}}>Masculino</option>
@@ -345,29 +313,79 @@
                                             </select>
                                         </div>
                                     </div>
-                                    {{!-- <div class="col-md-6">
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="ie_situacao"
-                                                name="ie_situacao" value="A" {{#if (eq pessoa_fisica.ie_situacao "A"
-                                                )}}checked{{/if}}>
-                                            <label class="form-check-label fw-bold fs-6" for="ie_situacao">Ativo</label>
-                                        </div>
-                                    </div> --}}
                                 </div>
 
+                                <!-- Endereço -->
+                                <div class="row">
+                                    <!-- CEP -->
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="fw-bold">CEP</label>
+                                            <input maxlength="9" id="cep" type="text" name="cep"
+                                                value="{{pessoa_fisica.nr_cep}}" class="form-control"
+                                                placeholder="Digite o CEP" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Número -->
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Número</label>
+                                            <input type="text" name="nr_endereco" value="{{pessoa_fisica.nr_endereco}}"
+                                                class="form-control" placeholder="Número da casa" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Logradouro (readonly) -->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Endereço</label>
+                                            <input type="text" name="ds_endereco" id="logradouro"
+                                                value="{{pessoa_fisica.ds_endereco}}" class="form-control" readonly>
+                                        </div>
+                                    </div>
+
+                                    <!-- Bairro (readonly) -->
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Bairro</label>
+                                            <input type="text" name="nm_bairro" id="bairro"
+                                                value="{{pessoa_fisica.nm_bairro}}" class="form-control" readonly>
+                                        </div>
+                                    </div>
+
+                                    <!-- Cidade (readonly) -->
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Cidade</label>
+                                            <input type="text" name="nm_cidade" id="cidade"
+                                                value="{{pessoa_fisica.nm_cidade}}" class="form-control" readonly>
+                                        </div>
+                                    </div>
+
+                                    <!-- Estado (readonly) -->
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="fw-bold">UF</label>
+                                            <input type="text" name="uf_estado" id="estado"
+                                                value="{{pessoa_fisica.uf_estado}}" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Atualização -->
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Última Atualização</label>
                                             <input type="text" name="Dt_atualizacao"
-                                                value="{{pessoa_fisica.dt_atualizacao}}" class="form-control"
-                                                placeholder="25/12/2025" readonly>
+                                                value="{{pessoa_fisica.dt_atualizacao}}" class="form-control" readonly>
                                         </div>
                                     </div>
                                 </div>
 
+                                <!-- Botão -->
                                 <div class="d-flex justify-content-end mt-3">
-                                    {{!-- <button type="button" class="btn btn-danger shadow-lg">Excluir</button> --}}
                                     <button type="submit" class="btn btn-success shadow-lg">Salvar</button>
                                 </div>
                             </form>
@@ -377,87 +395,28 @@
                 </div>
             </div>
             <!--end conteudo indiviudual da pagina-->
-
             <script>
-                $(document).ready(function () {
-                    $(".btn-danger").click(function (e) {
-                        e.preventDefault(); // Impede o comportamento padrão do botão (submit do formulário)
+                document.getElementById("cep").addEventListener("blur", function () {
+                    const cep = this.value.replace(/\D/g, "");
 
-                        const codigoPessoaFisica = $(this).closest('form').find('input[name="codigo"]').val();
-
-                        swal({
-                            title: "Tem certeza?",
-                            text: "Você não poderá reverter isso!",
-                            icon: "warning",
-                            buttons: {
-                                cancel: {
-                                    text: "Não, cancelar!",
-                                    visible: true,
-                                    className: "btn btn-danger",
-                                },
-                                confirm: {
-                                    text: "Sim, excluir!",
-                                    className: "btn btn-success",
-                                },
-                            },
-                        }).then((willDelete) => {
-                            if (willDelete) {
-                                // Envia a requisição POST para o servidor para desativar a pessoa física
-                                $.ajax({
-                                    url: '/pessoaExcluir',
-                                    method: 'POST',
-                                    dataType: 'json',
-                                    data: { codigo: codigoPessoaFisica },
-                                    success: function (data) {
-                                        if (data.success) {
-                                            swal("Desativado!", "O registro foi desativado com sucesso!", {
-                                                icon: "success",
-                                                buttons: {
-                                                    confirm: {
-                                                        className: "btn btn-success",
-                                                    },
-                                                },
-                                            }).then(() => {
-                                                // redireciona no ok
-                                                window.location.href = '/cadastros';
-                                            });
-                                        } else {
-                                            swal("Erro!", data.message || "Ocorreu um erro ao desativar o registro.", {
-                                                icon: "error",
-                                                buttons: {
-                                                    confirm: {
-                                                        className: "btn btn-danger",
-                                                    },
-                                                },
-                                            });
-                                        }
-                                    },
-                                    error: function (error) {
-                                        console.error("Erro ao enviar requisição de exclusão:", error);
-                                        swal("Erro!", "Ocorreu um erro ao tentar desativar o registro.", {
-                                            icon: "error",
-                                            buttons: {
-                                                confirm: {
-                                                    className: "btn btn-danger",
-                                                },
-                                            },
-                                        });
-                                    }
-                                });
-                            } else {
-                                swal("Cancelado!", "O registro permanece ativo!", {
-                                    icon: "info",
-                                    buttons: {
-                                        confirm: {
-                                            className: "btn btn-success",
-                                        },
-                                    },
-                                });
-                            }
-                        });
-                    });
+                    if (cep.length === 8) {
+                        fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                            .then((res) => res.json())
+                            .then((data) => {
+                                if (!data.erro) {
+                                    document.getElementById("logradouro").value = data.logradouro;
+                                    document.getElementById("bairro").value = data.bairro;
+                                    document.getElementById("cidade").value = data.localidade;
+                                    document.getElementById("estado").value = data.uf;
+                                } else {
+                                    alert("CEP não encontrado.");
+                                }
+                            })
+                            .catch(() => alert("Erro ao consultar o CEP."));
+                    }
                 });
             </script>
+
             <footer class="footer">
                 <div class="container-fluid d-flex justify-content-between">
                     <nav class="pull-left">

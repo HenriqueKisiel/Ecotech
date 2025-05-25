@@ -15,9 +15,10 @@
   "author": "Henrique",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.9.0",
     "body-parser": "^1.20.3",
     "bootstrap": "^5.3.3",
-    "dotenv": "^16.4.7",
+    "dotenv": "^16.5.0",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
     "express-handlebars": "^8.0.1",

@@ -38,11 +38,14 @@ function insertPessoa(req, res) {
     cpf,
     telefone,
     email,
-    endereco,
-    bairro,
-    cidade,
+    ds_endereco,
+    nr_endereco,
+    nm_bairro,
+    nm_cidade,
+    uf_estado,
     cep
   } = req.body;
+
 
   const erros = {};
   if (!nomeFisico || nomeFisico.trim() === '') erros.nomeFisico = true;
@@ -51,9 +54,6 @@ function insertPessoa(req, res) {
   if (!cpf || cpf.trim() === '') erros.cpf = true;
   if (!telefone || telefone.trim() === '') erros.telefone = true;
   if (!email || email.trim() === '') erros.email = true;
-  if (!endereco || endereco.trim() === '') erros.endereco = true;
-  if (!bairro || bairro.trim() === '') erros.bairro = true;
-  if (!cidade || cidade.trim() === '') erros.cidade = true;
   if (!cep || cep.trim() === '') erros.cep = true;
 
   if (Object.keys(erros).length > 0) {
@@ -168,10 +168,11 @@ function insertPessoa(req, res) {
     }
 
     const sql = `
-      INSERT INTO pessoa_fisica 
-      (nm_pessoa_fisica, dt_nascimento, ie_sexo, nr_cpf, nr_telefone_celular, ds_email, ds_endereco, cd_bairro, cd_cidade, nr_cep, dt_atualizacao) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
-    `;
+    INSERT INTO pessoa_fisica 
+    (nm_pessoa_fisica, dt_nascimento, ie_sexo, nr_cpf, nr_telefone_celular, ds_email, ds_endereco, nr_endereco, nm_bairro, nm_cidade, uf_estado, nr_cep, dt_atualizacao) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+  `;
+
 
     const values = [
       nomeFisico,
@@ -180,11 +181,14 @@ function insertPessoa(req, res) {
       cpfLimpo,
       telefone,
       email,
-      endereco,
-      bairro,
-      cidade,
+      ds_endereco,
+      nr_endereco,
+      nm_bairro,
+      nm_cidade,
+      uf_estado,
       cepLimpo
     ];
+
 
     conectiondb().query(sql, values, (error, results) => {
       if (error) {

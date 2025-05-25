@@ -50,10 +50,14 @@ function insertPessoaJuridica(req, res) {
     email,
     telefone,
     endereco,
+    numero_endereco,
     bairro,
     cidade,
+    uf,
     cep
   } = req.body;
+
+
 
   const erros = {};
   if (!razaoSocial || razaoSocial.trim() === '') erros.razaoSocial = true;
@@ -85,6 +89,9 @@ function insertPessoaJuridica(req, res) {
   }
 
   const cnpjSemMascara = cnpj.replace(/[^\d]+/g, '');
+  const telefoneSemMascara = telefone.replace(/[^\d]+/g, '');
+  const cepSemMascara = cep.replace(/[^\d]+/g, '');
+
 
   if (!validarCNPJ(cnpjSemMascara)) {
     return res.render('juridica', {
@@ -141,8 +148,8 @@ function insertPessoaJuridica(req, res) {
 
     const sql = `
       INSERT INTO pessoa_juridica
-      (nm_razao_social, nm_fantasia, nr_cnpj, ds_email, nr_telefone, ds_endereco, cd_bairro, cd_cidade, nr_cep, dt_atualizacao)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+(nm_razao_social, nm_fantasia, nr_cnpj, ds_email, nr_telefone, ds_endereco, nr_endereco, nm_bairro, nm_cidade, uf_estado, nr_cep, dt_atualizacao)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
     `;
 
     const valores = [
@@ -150,12 +157,16 @@ function insertPessoaJuridica(req, res) {
       nomeFantasia,
       cnpjSemMascara,
       email,
-      telefone,
+      telefoneSemMascara,
       endereco,
+      numero_endereco,
       bairro,
       cidade,
-      cep
+      uf,
+      cepSemMascara
     ];
+
+
 
     conectiondb().query(sql, valores, (error, results) => {
       if (error) {
