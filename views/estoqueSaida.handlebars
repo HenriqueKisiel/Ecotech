@@ -361,6 +361,7 @@
                                                 <th>Quantidade Atual (KG)</th>
                                                 <th>Quantidade a Movimentar Volume</th>
                                                 <th>Quantidade a Movimentar (KG)</th>
+                                                <th>Valor a Pagar</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -414,36 +415,196 @@
                                 const selectEstoque = document.querySelector('select[name="estoque"]');
                                 const selectMaterial = document.querySelector('select[name="material"]');
                                 const tbodyResultado = document.getElementById('tbody-resultado-material');
+                                const thValorPagar = document.querySelector('th:nth-child(6)');
 
                                 function mostrarMensagemSelecioneMaterial() {
                                     if (tbodyResultado) {
                                         tbodyResultado.innerHTML = `
                 <tr>
-                    <td colspan="6" class="text-center text-muted">Selecione os dados do Material</td>
+                    <td colspan="7" class="text-center text-muted">Selecione os dados do Material</td>
                 </tr>
             `;
                                     }
                                 }
 
                                 function mostrarLinhaMaterial(dados) {
-                                    if (tbodyResultado) {
-                                        tbodyResultado.innerHTML = `
-                <tr>
-                    <td class="text-center" id="td-material">${dados.ds_material || ''}</td>
-                    <td class="text-center" id="td-volume">${dados.qt_volume != null ? dados.qt_volume : ''}</td>
-                    <td class="text-center" id="td-peso">${dados.qt_peso != null ? dados.qt_peso : ''}</td>
-                    <td><input type="text" class="form-control" id="input-volume" placeholder="Digite uma quantidade"></td>
-                    <td><input type="text" class="form-control" id="input-peso" placeholder="Digite uma quantidade"></td>
-                    <td>
-                        <a class="btn btn-warning text-white">Registrar</a>
-                    </td>
-                </tr>
+                                    if (!tbodyResultado) return;
+
+                                    const isVenda = movimentacaoSelect.value === 'venda';
+                                    let campoValorCompra = '';
+                                    if (isVenda) {
+                                        campoValorCompra = `
+                <td>
+                    <input type="text" class="form-control" id="input-valor-compra" readonly style="font-weight:bold; color:green;"/>
+                    <div id="valor-compra-exibicao" style="font-size:0.9em; color:#555;"></div>
+                </td>
             `;
+                                    } else {
+                                        campoValorCompra = `<td style="display:none"></td>`;
                                     }
+
+                                    tbodyResultado.innerHTML = `
+            <tr>
+                <td class="text-center" id="td-material">${dados.ds_material || ''}</td>
+                <td class="text-center" id="td-volume">${dados.qt_volume != null ? dados.qt_volume : ''}</td>
+                <td class="text-center" id="td-peso">${dados.qt_peso != null ? dados.qt_peso : ''}</td>
+                <td><input type="number" class="form-control" id="input-volume" placeholder="Digite uma quantidade"></td>
+                <td><input type="number" class="form-control" id="input-peso" placeholder="Digite uma quantidade"></td>
+                ${campoValorCompra}
+                <td>
+                    <a class="btn btn-warning text-white w-100" id="btn-registrar">Registrar</a>
+                </td>
+            </tr>
+        `;
+
+                                    // Lógica do valor da compra para venda
+                                    let valorPorKg = 0;
+                                    if (isVenda) {
+                                        const inputPeso = document.getElementById('input-peso');
+                                        const inputValorCompra = document.getElementById('input-valor-compra');
+                                        const valorCompraExibicao = document.getElementById('valor-compra-exibicao');
+
+                                        fetch(`/valorPorKgMaterial/${selectMaterial.value}`)
+                                            .then(res => res.json())
+                                            .then(data => {
+                                                valorPorKg = Number(data.valorPorKg) || 0;
+                                                inputValorCompra.dataset.valorPorKg = valorPorKg;
+                                                atualizarValorCompra();
+                                            });
+
+                                        function atualizarValorCompra() {
+                                            const qtdKg = Number(inputPeso.value) || 0;
+                                            const valor = qtdKg * valorPorKg;
+                                            inputValorCompra.value = valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                                            valorCompraExibicao.innerText = valor > 0
+                                                ? `R$ ${valorPorKg.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} por KG`
+                                                : '';
+                                        }
+
+                                        inputPeso.addEventListener('input', atualizarValorCompra);
+                                    }
+
+                                    // Evento do botão Registrar
+                                    const btnRegistrar = document.getElementById('btn-registrar');
+                                    btnRegistrar.addEventListener('click', function () {
+                                        const qt_volume = Number(document.getElementById('input-volume').value) || 0;
+                                        const qt_peso = Number(document.getElementById('input-peso').value) || 0;
+                                        const cd_estoque = selectEstoque.value;
+                                        const cd_material = selectMaterial.value;
+                                        const movimentacao = movimentacaoSelect.value;
+                                        const motivo = motivoInput ? motivoInput.value : '';
+
+                                        // Pessoa física/jurídica para venda
+                                        let cd_pessoa_fisica = null;
+                                        let cd_pessoa_juridica = null;
+                                        let vl_valor_por_kg = null;
+
+                                        if (movimentacao === 'venda') {
+                                            const tipoPessoa = selectPessoa ? selectPessoa.value : '';
+                                            const nomeComprador = selectNome ? selectNome.value : '';
+                                            if (tipoPessoa === 'fisica') cd_pessoa_fisica = nomeComprador;
+                                            if (tipoPessoa === 'juridica') cd_pessoa_juridica = nomeComprador;
+                                            const inputValorCompra = document.getElementById('input-valor-compra');
+                                            vl_valor_por_kg = inputValorCompra ? Number(inputValorCompra.dataset.valorPorKg) || 0 : 0;
+                                        }
+
+                                        if (movimentacao === 'venda') {
+                                            const volumeAtual = Number(document.getElementById('td-volume').textContent) || 0;
+                                            const pesoAtual = Number(document.getElementById('td-peso').textContent) || 0;
+
+                                            const vendendoTodoVolume = qt_volume === volumeAtual && qt_volume > 0;
+                                            const vendendoTodoPeso = qt_peso === pesoAtual && qt_peso > 0;
+
+                                            if ((vendendoTodoVolume && !vendendoTodoPeso) || (vendendoTodoPeso && !vendendoTodoVolume)) {
+                                                swal("Erro ao registrar!", "Para vender toda a quantidade de volume ou peso, ambos os campos devem ser iguais à quantidade atual.", {
+                                                    icon: "error",
+                                                    buttons: {
+                                                        confirm: {
+                                                            text: "OK",
+                                                            className: "btn btn-danger",
+                                                        },
+                                                    },
+                                                });
+                                                return;
+                                            }
+                                        }
+
+                                        if (!cd_estoque || !cd_material) {
+                                            alert('Selecione estoque e material.');
+                                            return;
+                                        }
+                                        if (qt_volume <= 0 && qt_peso <= 0) {
+                                            swal("Erro ao registrar!", "Informe ao menos um valor para movimentar.", {
+                                                icon: "error",
+                                                buttons: {
+                                                    confirm: {
+                                                        text: "OK",
+                                                        className: "btn btn-danger",
+                                                    },
+                                                },
+                                            });
+                                            return;
+                                        }
+
+                                        fetch('/atualizarEstoqueMaterial', {
+                                            method: 'POST',
+                                            headers: { 'Content-Type': 'application/json' },
+                                            body: JSON.stringify({
+                                                cd_estoque,
+                                                cd_material,
+                                                qt_volume,
+                                                qt_peso,
+                                                movimentacao,
+                                                ds_motivo: motivo,
+                                                cd_pessoa_fisica,
+                                                cd_pessoa_juridica,
+                                                vl_valor_por_kg
+                                            })
+                                        })
+                                            .then(res => res.json())
+                                            .then(resp => {
+                                                if (resp.sucesso) {
+                                                    if (resp.script) {
+                                                        const match = resp.script.match(/<script>([\s\S]*)<\/script>/i);
+                                                        if (match && match[1]) {
+                                                            eval(match[1]);
+                                                        }
+                                                    } else {
+                                                        alert('Movimentação registrada com sucesso!');
+                                                    }
+
+                                                    mostrarLinhaMaterial({
+                                                        ds_material: dados.ds_material,
+                                                        qt_volume: resp.novoVolume,
+                                                        qt_peso: resp.novoPeso
+                                                    });
+
+                                                    // Limpa campos após registrar
+                                                    if (motivoInput) motivoInput.value = '';
+                                                    if (selectNome) selectNome.selectedIndex = 0;
+                                                } else {
+                                                    // Executa o script de erro vindo do backend, se existir
+                                                    if (resp.script) {
+                                                        const match = resp.script.match(/<script>([\s\S]*)<\/script>/i);
+                                                        if (match && match[1]) {
+                                                            eval(match[1]);
+                                                        }
+                                                    } else {
+                                                        alert(resp.erro || 'Erro ao registrar movimentação!');
+                                                    }
+                                                }
+                                            })
+                                            .catch(() => alert('Erro ao registrar movimentação!'));
+                                    });
                                 }
 
                                 function atualizarCampos() {
                                     const valorMov = movimentacaoSelect.value;
+
+                                    // Mostra ou esconde a coluna "Valor a Pagar"
+                                    if (thValorPagar) {
+                                        thValorPagar.style.display = valorMov === 'venda' ? '' : 'none';
+                                    }
 
                                     if (valorMov === 'saida' || valorMov === 'entrada') {
                                         if (motivoField) motivoField.style.display = 'block';

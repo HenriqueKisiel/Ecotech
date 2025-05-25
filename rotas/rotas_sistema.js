@@ -175,6 +175,12 @@ router.post('/agendamento', (req, res) => {
 router.get('/rotas', (req, res) => {
     servico11.exibirRotas(req, res);
 });
+
+// Buscar Motorista
+router.get('/buscarPlanta', (req, res) => {
+    servico11.buscarPlanta(req, res);
+});
+
 router.post('/RotaCadastro', (req, res) => {
     servico11.insertRota(req, res);
 });
@@ -287,6 +293,16 @@ router.get('/dadosMaterialEstoque/:cd_estoque/:cd_material', (req, res) => {
 // Buscar dados do material entrada
 router.get('/dadosMaterialEntrada/:cd_estoque/:cd_material', (req, res) => {
     servico18.obterDadosMaterialEntrada(req, res);
+});
+
+// Atualizar estoque do material (entrada/saída/venda)
+router.post('/atualizarEstoqueMaterial', (req, res) => {
+    servico18.atualizarEstoqueMaterial(req, res);
+});
+
+// Busca o valor por kg do material pela venda
+router.get('/valorPorKgMaterial/:cd_material', (req, res) => {
+    servico18.obterValorPorKgMaterial(req, res);
 });
 
 //----------------------- Servico19 -------------------//
