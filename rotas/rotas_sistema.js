@@ -289,6 +289,16 @@ router.get('/dadosMaterialEntrada/:cd_estoque/:cd_material', (req, res) => {
     servico18.obterDadosMaterialEntrada(req, res);
 });
 
+// Atualizar estoque do material (entrada/saída/venda)
+router.post('/atualizarEstoqueMaterial', (req, res) => {
+    servico18.atualizarEstoqueMaterial(req, res);
+});
+
+// Busca o valor por kg do material pela venda
+router.get('/valorPorKgMaterial/:cd_material', (req, res) => {
+    servico18.obterValorPorKgMaterial(req, res);
+});
+
 //----------------------- Servico19 -------------------//
 // Rota para exibir o formulário de novo agendamento (GET)
 router.get('/agendamentoAdd', (req, res) => {
