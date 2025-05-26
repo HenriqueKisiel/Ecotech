@@ -2,7 +2,32 @@ const conectiondb = require('../bd/conexao_mysql.js');
 
 
 // Exibe a tela de edição com os dados do agendamento e seus itens
-function exibirEditarAgendamento(req, res, itemEmEdicao = null) {
+function exibirEditarAgendamento(req, res, itemEmEdicao = null) {function adicionarItem(req, res) {
+    const { item_nome, linha_material, item_qtde } = req.body;
+    const { id_agendamento } = req.params;
+
+    if (!item_nome || !linha_material || !item_qtde) {
+        return res.status(400).send('Todos os campos são obrigatórios');
+    }
+
+    const qtde = parseInt(item_qtde, 10);
+
+    const connection = conectiondb();
+
+    const query = `
+        INSERT INTO materiais_agenda (ie_agenda, ds_mat_agenda, ie_linha, qtde_material)
+        VALUES (?, ?, ?, ?)
+    `;
+
+    connection.query(query, [id_agendamento, item_nome, linha_material, qtde], (err, result) => {
+        if (err) {
+            console.log("Erro ao adicionar item:", err);
+            return res.status(500).send('Erro ao adicionar item');
+        }
+
+        res.redirect(`/agendamentoEditar?id_agendamento=${id_agendamento}`);
+    });
+}
     const idAgendamento = req.query.id_agendamento || req.params.id_agendamento;
     if (!idAgendamento) {
         console.log('ID do agendamento não fornecido');
@@ -320,31 +345,30 @@ function atualizarAgendamento(req, res) {
 
 // Adiciona um novo item ao agendamento
 function adicionarItem(req, res) {
-    const { item_nome, linha_material, item_peso } = req.body;
-    const { id_agendamento } = req.params;
+    console.log('BODY:', req.body);
+    console.log('PARAMS:', req.params);
 
-    if (!item_nome || !linha_material || !item_peso) {
+    const { item_nome, linha_material, item_qtde, id_agendamento, ie_material } = req.body;
+    const idAgendamento = id_agendamento || req.params.id_agendamento;
+
+    if (!item_nome || !linha_material || !item_qtde || !idAgendamento || !ie_material) {
         return res.status(400).send('Todos os campos são obrigatórios');
     }
 
-    const item_peso_formatado = (item_peso || '').replace(',', '.');
-    const pesoFloat = parseFloat(item_peso_formatado);
-
+    const qtde = parseInt(item_qtde, 10);
     const connection = conectiondb();
-
     const query = `
-        INSERT INTO materiais_agenda (ie_agenda, ds_mat_agenda, ie_linha, qt_peso_material_total_kg)
-        VALUES (?, ?, ?, ?)
+        INSERT INTO materiais_agenda (ie_agenda, ds_mat_agenda, ie_linha, qtde_material, ie_material)
+        VALUES (?, ?, ?, ?, ?)
     `;
 
-    connection.query(query, [id_agendamento, item_nome, linha_material, item_peso_formatado], (err, result) => {
+    connection.query(query, [idAgendamento, item_nome, linha_material, qtde, ie_material], (err, result) => {
         if (err) {
             console.log("Erro ao adicionar item:", err);
             return res.status(500).send('Erro ao adicionar item');
         }
 
-        // Redireciona para a tela de edição com os dados atualizados
-        res.redirect(`/agendamentoEditar?id_agendamento=${id_agendamento}`);
+        res.redirect(`/agendamentoEditar?id_agendamento=${idAgendamento}`);
     });
 }
 
@@ -391,35 +415,32 @@ function exibirEditarItem(req, res) {
 
 // Atualiza os dados de um item existente
 function atualizarItem(req, res) {
-    const { item_nome, linha_material, item_peso } = req.body;
+    const { item_nome, linha_material, item_qtde } = req.body;
     const { id_agendamento, itemId } = req.params;
 
-    if (!item_nome || !linha_material || !item_peso) {
+    if (!item_nome || !linha_material || !item_qtde) {
         return res.status(400).send('Todos os campos são obrigatórios');
     }
 
-    const item_peso_formatado = (item_peso || '').replace(',', '.');
-    const pesoFloat = parseFloat(item_peso_formatado);
+    const qtde = parseInt(item_qtde, 10);
 
     const connection = conectiondb();
 
     const query = `
         UPDATE materiais_agenda
-        SET ds_mat_agenda = ?, ie_linha = ?, qt_peso_material_total_kg = ?
+        SET ds_mat_agenda = ?, ie_linha = ?, qtde_material = ?
         WHERE cd_mat_agenda = ?
     `;
 
-    connection.query(query, [item_nome, linha_material, item_peso_formatado, itemId], (err) => {
+    connection.query(query, [item_nome, linha_material, qtde, itemId], (err) => {
         if (err) {
             console.log("Erro ao atualizar item:", err);
             return res.status(500).send('Erro ao atualizar item');
         }
 
-        // Redireciona para a tela principal com os dados atualizados
         res.redirect(`/agendamentoEditar?id_agendamento=${id_agendamento}`);
     });
 }
-
 
 // Exclui um item
 function excluirItem(req, res) {

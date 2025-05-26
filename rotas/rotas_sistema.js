@@ -189,6 +189,12 @@ router.post('/agendamento', (req, res) => {
 router.get('/rotas', (req, res) => {
     servico11.exibirRotas(req, res);
 });
+
+// Buscar Motorista
+router.get('/buscarPlanta', (req, res) => {
+    servico11.buscarPlanta(req, res);
+});
+
 router.post('/RotaCadastro', (req, res) => {
     servico11.insertRota(req, res);
 });

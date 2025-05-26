@@ -24,25 +24,41 @@ function exibirCadastrarRotas(req, res) {
     res.render('rotasCadastrar');
 };
 
+function buscarPlanta(req, res) {
+    const sql = `
+        SELECT * FROM planta WHERE ie_situacao = 'A'
+    `;
+
+    conectiondb().query(sql, (erro, resultados) => {
+        if (erro) {
+            console.error('Erro ao buscar Planta:', erro);
+            return res.status(500).send('Erro ao buscar Planta.');
+        }
+        res.json(resultados);
+    });
+}
+
 // Função cadastrar uma Rota
 function insertRota(req, res){
     const{
         nomeRota,
         dataAgendaRota,
         pesoTotalRota,
-        quilometroTotalRota
+        quilometroTotalRota,
+        Planta
     } = req.body;
 
     const sql = `
     INSERT INTO rota_coleta
-    (nm_rota, dt_agendada, nr_distancia_km, qt_peso_total_kg) VALUES (?, ?, ?, ?)
+    (nm_rota, dt_agendada, nr_distancia_km, qt_peso_total_kg, ie_planta) VALUES (?, ?, ?, ?, ?)
     `;
 
     const values = [
         nomeRota,
         dataAgendaRota,
         pesoTotalRota,
-        quilometroTotalRota
+        quilometroTotalRota,
+        Planta
     ];
 
     conectiondb().query(sql, values, (error, results) => {
@@ -131,6 +147,7 @@ module.exports = {
     exibirAtualizarRotas,
     exibirCadastrarRotas,
     buscarRota,
+    buscarPlanta,
     insertRota
 }
 
