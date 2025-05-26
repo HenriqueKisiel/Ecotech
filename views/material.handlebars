@@ -236,118 +236,134 @@
                                 <small class="text-muted">Preencha os dados de cadastro e clique em salvar.</small>
                             </div>
                         </div>
-
+                        <!-- Formulário -->
                         <div class="row">
-                            <!-- Formulário -->
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <div class="card shadow-lg">
                                     <div class="card-body">
-                                        <form action="/material" method="POST" id="form-material">
-                                            <input type="hidden" name="linha" id="linhaSelecionada" value="1">
+                                        <form method="POST" id="form-material">
                                             <div class="row">
-                                                <div class="col-md-12">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="fw-bold">Descrição do Material</label>
                                                         <input type="text" class="form-control" name="descricao"
-                                                            placeholder="Informe a descrição" required>
+                                                            placeholder="Informe a descrição">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="fw-bold">Valor por Kg</label>
                                                         <input type="number" step="0.01" class="form-control"
-                                                            name="valor_kg" placeholder="R$" required>
+                                                            name="valor_kg" placeholder="R$">
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="d-flex justify-content-end mt-3">
-                                                <a href="/home" class="btn btn-secondary me-3">
-                                                    Voltar
-                                                </a>
-                                                <button type="submit" class="btn btn-success">Salvar</button>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Peso Padrão (Kg)</label>
+                                                        <input type="number" step="0.001" class="form-control"
+                                                            name="peso_padrao" placeholder="Informe um peso">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Volume cúbico (m³) por Kg</label>
+                                                        <input type="number" step="0.00001" class="form-control"
+                                                            name="volume_m3" placeholder="Informe um volume">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group mb-3">
+                                                        <label class="fw-bold mb-2">Linha do Material</label>
+                                                        <input type="hidden" name="linha" id="linhaSelecionada"
+                                                            value="">
+                                                        <div class="nav nav-pills nav-pills-no-bd nav-pills-icons d-flex flex-row gap-2"
+                                                            id="v-pills-tab-with-icon" role="tablist"
+                                                            aria-orientation="horizontal">
+                                                            <a class="nav-link flex-fill text-center text-primary bg-light"
+                                                                href="#" role="tab" data-linha="1">
+                                                                <i class="fas fa-trash text-primary"></i> Linha Azul
+                                                            </a>
+                                                            <a class="nav-link flex-fill text-center text-success bg-light"
+                                                                href="#" role="tab" data-linha="2">
+                                                                <i class="fas fa-trash text-success"></i> Linha Verde
+                                                            </a>
+                                                            <a class="nav-link flex-fill text-center text-warning bg-light"
+                                                                href="#" role="tab" data-linha="3">
+                                                                <i class="fas fa-trash text-warning"></i> Linha Laranja
+                                                            </a>
+                                                            <a class="nav-link flex-fill text-center text-danger bg-light"
+                                                                href="#" role="tab" data-linha="4">
+                                                                <i class="fas fa-trash text-danger"></i> Linha Vermelha
+                                                            </a>
+                                                            <a class="nav-link flex-fill text-center text-dark bg-light"
+                                                                href="#" role="tab" data-linha="5">
+                                                                <i class="fas fa-trash text-black"></i> Matéria Prima
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex justify-content-end">
+                                                    <a href="/home" class="btn btn-secondary me-3">
+                                                        Voltar
+                                                    </a>
+                                                    <button type="submit" class="btn btn-success">Salvar</button>
+                                                </div>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
-
                             <!-- Abas laterais -->
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="card shadow-lg">
                                     <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-5 col-md-4">
-                                                <div class="nav flex-column nav-pills nav-pills-no-bd nav-pills-icons"
-                                                    id="v-pills-tab-with-icon" role="tablist"
-                                                    aria-orientation="vertical">
-                                                    <a class="nav-link active text-primary" data-bs-toggle="pill"
-                                                        href="#v-pills-home-icons" role="tab" data-linha="1">
-                                                        <i class="fas fa-trash text-primary"></i> Linha Azul
-                                                    </a>
-                                                    <a class="nav-link text-success" data-bs-toggle="pill"
-                                                        href="#v-pills-profile-icons" role="tab" data-linha="2">
-                                                        <i class="fas fa-trash text-success"></i> Linha Verde
-                                                    </a>
-                                                    <a class="nav-link text-warning" data-bs-toggle="pill"
-                                                        href="#v-pills-profile-icons2" role="tab" data-linha="3">
-                                                        <i class="fas fa-trash text-warning"></i> Linha Laranja
-                                                    </a>
-                                                    <a class="nav-link text-danger" data-bs-toggle="pill"
-                                                        href="#v-pills-profile-icons3" role="tab" data-linha="4">
-                                                        <i class="fas fa-trash text-danger"></i> Linha Vermelha
-                                                    </a>
-                                                </div>
+                                        <div id="materiaisPorLinha">
+                                            <div id="mensagemSelecioneLinha"
+                                                class="text-center text-muted fs-4 fw-bold">
+                                                Selecione uma linha de material
                                             </div>
-                                            <div class="col-7 col-md-8">
-                                                <div class="tab-content" id="v-pills-with-icon-tabContent">
-                                                    <div class="tab-pane fade show active bg-primary rounded opacity-75"
-                                                        id="v-pills-home-icons" role="tabpanel">
-                                                        <div class="d-flex flex-column p-4 text-white">
-                                                            <span class="fs-4">- Batedeiras</span>
-                                                            <span class="fs-4">- Centrífugas</span>
-                                                            <span class="fs-4">- Torradeiras</span>
-                                                            <span class="fs-4">- Secadores de Cabelo</span>
-                                                            <span class="fs-4">- Máquina de Costura</span>
-                                                            <span class="fs-4">- Ferramentas</span>
-                                                            <span class="fs-4">- Liquidificadores</span>
-                                                            <span class="fs-4">- Máquina de Escrever</span>
-                                                            <span class="fs-4">- Brinquedos</span>
-                                                            <span class="fs-4">- Entre Outros</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="tab-pane fade bg-success rounded opacity-75"
-                                                        id="v-pills-profile-icons" role="tabpanel">
-                                                        <div class="d-flex flex-column p-4 text-white">
-                                                            <span class="fs-4">- Computadores desktops</span>
-                                                            <span class="fs-4">- Notebooks</span>
-                                                            <span class="fs-4">- Fax</span>
-                                                            <span class="fs-4">- Tablets</span>
-                                                            <span class="fs-4">- Impressoras</span>
-                                                            <span class="fs-4">- IPods</span>
-                                                            <span class="fs-4">- Celulares</span>
-                                                            <span class="fs-4">- Copiadoras</span>
-                                                            <span class="fs-4">- Entre Outros</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="tab-pane fade bg-warning rounded opacity-75"
-                                                        id="v-pills-profile-icons2" role="tabpanel">
-                                                        <div class="d-flex flex-column p-4 text-white">
-                                                            <span class="fs-4">- Componentes de Áudio</span>
-                                                            <span class="fs-4">- Aparelhos de Som</span>
-                                                            <span class="fs-4">- Projetores</span>
-                                                            <span class="fs-4">- Home Theaters</span>
-                                                            <span class="fs-4">- Filmadoras</span>
-                                                            <span class="fs-4">- Entre Outros</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="tab-pane fade bg-danger rounded opacity-75"
-                                                        id="v-pills-profile-icons3" role="tabpanel">
-                                                        <div class="d-flex flex-column p-4 text-white">
-                                                            <span class="fs-4">- Geladeira</span>
-                                                            <span class="fs-4">- Freezer</span>
-                                                            <span class="fs-4">- Máquina de Lavar</span>
-                                                            <span class="fs-4">- Micro-ondas</span>
-                                                            <span class="fs-4">- Entre Outros</span>
+                                            {{#each linhas}}
+                                            {{#if (eq nm_linha "Linha Azul")}}
+                                            <div class="materiais-linha d-none bg-primary text-white rounded p-2 mb-3 shadow-sm"
+                                                data-linha="{{cd_linha}}">
+                                                {{else}}
+                                                {{#if (eq nm_linha "Linha Verde")}}
+                                                <div class="materiais-linha d-none bg-success text-white rounded p-2 mb-3 shadow-sm"
+                                                    data-linha="{{cd_linha}}">
+                                                    {{else}}
+                                                    {{#if (eq nm_linha "Linha Laranja")}}
+                                                    <div class="materiais-linha d-none bg-warning text-white rounded p-2 mb-3 shadow-sm"
+                                                        data-linha="{{cd_linha}}">
+                                                        {{else}}
+                                                        {{#if (eq nm_linha "Linha Vermelha")}}
+                                                        <div class="materiais-linha d-none bg-danger text-white rounded p-2 mb-3 shadow-sm"
+                                                            data-linha="{{cd_linha}}">
+                                                            {{else}}
+                                                            {{#if (eq nm_linha "Matéria Prima")}}
+                                                            <div class="materiais-linha d-none bg-light rounded p-2 mb-3 shadow-sm"
+                                                                data-linha="{{cd_linha}}">
+                                                                {{else}}
+                                                                <div class="materiais-linha d-none bg-light text-black rounded p-2 mb-3 shadow-sm"
+                                                                    data-linha="{{cd_linha}}">
+                                                                    {{/if}}
+                                                                    {{/if}}
+                                                                    {{/if}}
+                                                                    {{/if}}
+                                                                    {{/if}}
+                                                                    <h5 class="fw-bold fs-3 mb-3">{{nm_linha}}</h5>
+                                                                    {{#if materiais.length}}
+                                                                    <div>
+                                                                        {{#each materiais}}
+                                                                        <div class="py-1 fs-4">{{this}}</div>
+                                                                        {{/each}}
+                                                                    </div>
+                                                                    {{else}}
+                                                                    <div class="text-muted">Nenhum material cadastrado
+                                                                        nesta linha.</div>
+                                                                    {{/if}}
+                                                                </div>
+                                                                {{/each}}
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -356,21 +372,103 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- End laterais -->
                         </div>
+                        <!-- End Formulário -->
                     </div>
                 </div>
-
                 <!-- Script para atualizar o valor da linha -->
                 <script>
-                    document.querySelectorAll('[data-linha]').forEach(item => {
-                        item.addEventListener('click', () => {
-                            const linhaSelecionada = item.getAttribute('data-linha');
-                            document.getElementById('linhaSelecionada').value = linhaSelecionada;
+                    // Atualiza seleção visual e mostra materiais da linha escolhida
+                    function mostrarMateriaisPorLinha(linha) {
+                        // Esconde todos os blocos de materiais
+                        document.querySelectorAll('.materiais-linha').forEach(div => div.classList.add('d-none'));
+                        // Esconde mensagem
+                        document.getElementById('mensagemSelecioneLinha').style.display = 'none';
+
+                        // Mostra só a linha selecionada
+                        if (linha) {
+                            const div = document.querySelector('.materiais-linha[data-linha="' + linha + '"]');
+                            if (div) div.classList.remove('d-none');
+                        } else {
+                            document.getElementById('mensagemSelecioneLinha').style.display = 'block';
+                        }
+                    }
+
+                    // Inicializa com mensagem
+                    mostrarMateriaisPorLinha();
+
+                    // Seleção visual e exibição dos materiais
+                    document.querySelectorAll('.nav-pills [data-linha]').forEach(link => {
+                        link.addEventListener('click', function (e) {
+                            e.preventDefault();
+                            document.getElementById('linhaSelecionada').value = this.getAttribute('data-linha');
+                            // Remove active e borda preta de todos, garante bg-light
+                            this.parentElement.querySelectorAll('.nav-link').forEach(a => {
+                                a.classList.remove('active', 'border', 'border-dark');
+                                a.classList.add('bg-light');
+                            });
+                            // Adiciona active e borda preta ao selecionado, mantém bg-light
+                            this.classList.add('active', 'border', 'border-dark', 'bg-light');
+                            // Mostra materiais da linha selecionada
+                            mostrarMateriaisPorLinha(this.getAttribute('data-linha'));
                         });
                     });
-                </script>
-                <!--End conteúdo individual da página-->
 
+                    // Envio do formulário via AJAX/fetch para exibir swal sem recarregar a tela
+                    document.getElementById('form-material').addEventListener('submit', function (e) {
+                        e.preventDefault();
+                        const form = this;
+                        const data = new FormData(form);
+
+                        fetch('/material', {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json'
+                            },
+                            body: new URLSearchParams(data)
+                        })
+                            .then(async res => {
+                                const json = await res.json();
+                                if (!res.ok) {
+                                    swal("Erro ao registrar!", json.erro || "Erro desconhecido!", {
+                                        icon: "error",
+                                        buttons: {
+                                            confirm: {
+                                                text: "OK",
+                                                className: "btn btn-danger",
+                                            },
+                                        },
+                                    });
+                                } else {
+                                    swal("Sucesso!", json.mensagem || "Material cadastrado com sucesso!", {
+                                        icon: "success",
+                                        buttons: {
+                                            confirm: {
+                                                text: "OK",
+                                                className: "btn btn-success",
+                                            },
+                                        },
+                                    }).then(() => {
+                                        location.reload();
+                                    });
+                                }
+                            })
+                            .catch(() => {
+                                swal("Erro ao registrar!", "Erro inesperado!", {
+                                    icon: "error",
+                                    buttons: {
+                                        confirm: {
+                                            text: "OK",
+                                            className: "btn btn-danger",
+                                        },
+                                    },
+                                });
+                            });
+                    });
+                </script>
+                <!-- End Script -->
+                <!-- End conteúdo individual da página-->
                 <footer class="footer">
                     <div class="container-fluid d-flex justify-content-between">
                         <nav class="pull-left">
@@ -390,5 +488,6 @@
                 </footer>
             </div>
         </div>
+        {{{script}}}
     </body>
 </main>
