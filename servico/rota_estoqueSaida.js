@@ -1,5 +1,10 @@
 const conectiondb = require('../bd/conexao_mysql.js');
 
+// Função utilitária para arredondar para 8 casas decimais
+function round8(num) {
+    return Number(Number(num).toFixed(8));
+}
+
 // Renderiza a tela estoqueSaida com as plantas carregadas
 function exibirestoqueSaida(req, res) {
     const conexao = conectiondb();
@@ -184,11 +189,11 @@ function obterDadosMaterialEstoque(req, res) {
     const conexao = conectiondb();
 
     const query = `
-        SELECT m.ds_material, em.qt_volume, em.qt_peso
-        FROM estoque_material em
-        INNER JOIN materiais m ON m.cd_material = em.cd_material
-        WHERE em.cd_estoque = ? AND em.cd_material = ?
-        LIMIT 1
+    SELECT m.ds_material, em.qt_volume, em.qt_peso, m.volume_m3
+    FROM estoque_material em
+    INNER JOIN materiais m ON m.cd_material = em.cd_material
+    WHERE em.cd_estoque = ? AND em.cd_material = ?
+    LIMIT 1
     `;
 
     conexao.query(query, [cd_estoque, cd_material], (err, results) => {
@@ -209,6 +214,10 @@ function obterDadosMaterialEstoque(req, res) {
                 </script>`
             });
         }
+        // Retorne qt_volume já arredondado para 8 casas
+        if (results[0]) {
+            results[0].qt_volume = round8(results[0].qt_volume);
+        }
         res.json(results[0] || {});
     });
 }
@@ -220,14 +229,15 @@ function obterDadosMaterialEntrada(req, res) {
     const conexao = conectiondb();
 
     const query = `
-        SELECT m.ds_material,
-               IFNULL(em.qt_volume, 0) as qt_volume,
-               IFNULL(em.qt_peso, 0) as qt_peso
-        FROM materiais m
-        LEFT JOIN estoque_material em
-            ON m.cd_material = em.cd_material AND em.cd_estoque = ?
-        WHERE m.cd_material = ?
-        LIMIT 1
+    SELECT m.ds_material,
+           IFNULL(em.qt_volume, 0) as qt_volume,
+           IFNULL(em.qt_peso, 0) as qt_peso,
+           m.volume_m3
+    FROM materiais m
+    LEFT JOIN estoque_material em
+        ON m.cd_material = em.cd_material AND em.cd_estoque = ?
+    WHERE m.cd_material = ?
+    LIMIT 1
     `;
 
     conexao.query(query, [cd_estoque, cd_material], (err, results) => {
@@ -247,6 +257,9 @@ function obterDadosMaterialEntrada(req, res) {
                     });
                 </script>`
             });
+        }
+        if (results[0]) {
+            results[0].qt_volume = round8(results[0].qt_volume);
         }
         res.json(results[0] || {});
     });
@@ -285,7 +298,7 @@ function atualizarEstoqueMaterial(req, res) {
     const conexao = conectiondb();
 
     // --- Validações ---
-    const volume = Number(qt_volume);
+    const volume = round8(Number(qt_volume));
     const peso = Number(qt_peso);
 
     // Validação do motivo
@@ -383,51 +396,77 @@ function atualizarEstoqueMaterial(req, res) {
         }
     }
 
-    // Não permitir registrar se ambos forem vazios ou zero
-    if ((!volume && !peso) || (isNaN(volume) && isNaN(peso))) {
+    // Não permitir registrar se peso for vazio, zero ou negativo
+    if (!peso || isNaN(peso) || peso <= 0) {
         return res.status(400).json({
-            erro: 'Informe ao menos um valor para movimentar.',
+            erro: 'Informe um valor de peso válido para movimentar.',
             script: `<script>
-                swal("Erro ao registrar!", "Informe ao menos um valor para movimentar.", {
-                    icon: "error",
-                    buttons: {
-                        confirm: {
-                            text: "OK",
-                            className: "btn btn-danger",
-                        },
+            swal("Erro ao registrar!", "Informe um valor de peso válido para movimentar.", {
+                icon: "error",
+                buttons: {
+                    confirm: {
+                        text: "OK",
+                        className: "btn btn-danger",
                     },
-                });
-            </script>`
+                },
+            });
+        </script>`
         });
     }
 
-    // Não permitir negativos, pontos ou vírgulas (apenas inteiros positivos)
-    if (
-        !Number.isInteger(volume) || !Number.isInteger(peso) ||
-        volume < 0 || peso < 0
-    ) {
+    // Validação matemática para até 3 casas decimais no peso
+    let pesoStr = String(qt_peso).replace(/,/g, '.');
+
+    // Remove ponto final, ex: "10." ou "10,"
+    if (pesoStr.endsWith('.') || pesoStr.endsWith(',')) {
+        pesoStr = pesoStr.slice(0, -1);
+    }
+
+    let pesoNum = Number(pesoStr);
+
+    if (isNaN(pesoNum)) {
         return res.status(400).json({
-            erro: 'Digite apenas números inteiros positivos para as quantidades.',
+            erro: 'O valor de peso informado é inválido.',
             script: `<script>
-                swal("Erro ao registrar!", "Digite apenas números inteiros positivos para as quantidades.", {
-                    icon: "error",
-                    buttons: {
-                        confirm: {
-                            text: "OK",
-                            className: "btn btn-danger",
-                        },
+            swal("Erro ao registrar!", "O valor de peso informado é inválido.", {
+                icon: "error",
+                buttons: {
+                    confirm: {
+                        text: "OK",
+                        className: "btn btn-danger",
                     },
-                });
-            </script>`
+                },
+            });
+        </script>`
         });
     }
 
-    // Venda: só pode registrar se ambos os campos forem maiores que zero
-    if (movimentacao === 'venda' && (volume <= 0 || peso <= 0)) {
+    // Aceita: 10, 10.0, 10., 10,123, 10.123, 10, 10,0
+    // Bloqueia: 10.1234, 10,1234
+    const partes = pesoStr.split('.');
+    if (partes.length === 2 && partes[1].length > 3) {
         return res.status(400).json({
-            erro: 'Para venda, informe valores maiores que zero em volume e peso.',
+            erro: 'O valor de peso só pode ter até 3 casas decimais.',
             script: `<script>
-                swal("Erro ao registrar!", "Para venda, informe valores maiores que zero em volume e peso.", {
+            swal("Erro ao registrar!", "O valor de peso só pode ter até 3 casas decimais.", {
+                icon: "error",
+                buttons: {
+                    confirm: {
+                        text: "OK",
+                        className: "btn btn-danger",
+                    },
+                },
+            });
+        </script>`
+        });
+    }
+
+    // Venda: só pode registrar se peso for maior que zero
+    if (movimentacao === 'venda' && peso <= 0) {
+        return res.status(400).json({
+            erro: 'Para venda, informe um valor maior que zero em peso.',
+            script: `<script>
+                swal("Erro ao registrar!", "Para venda, informe um valor maior que zero em peso.", {
                     icon: "error",
                     buttons: {
                         confirm: {
@@ -503,8 +542,8 @@ function atualizarEstoqueMaterial(req, res) {
             [
                 cd_estoque,
                 cd_material,
-                qt_volume,
-                qt_peso,
+                round8(qt_volume),
+                Number(qt_peso),
                 movimentacao,
                 ds_motivo || null,
                 cd_pessoa_fisica || null,
@@ -566,7 +605,7 @@ function atualizarEstoqueMaterial(req, res) {
                     INSERT INTO estoque_material (cd_material, ds_material, cd_estoque, qt_volume, qt_peso)
                     VALUES (?, ?, ?, ?, ?)
                 `;
-                conexao.query(queryInsert, [cd_material, ds_material, cd_estoque, novoVolume, novoPeso], (errIns) => {
+                conexao.query(queryInsert, [cd_material, ds_material, cd_estoque, round8(novoVolume), Number(novoPeso)], (errIns) => {
                     if (errIns) return res.status(500).json({
                         erro: 'Erro ao inserir material no estoque',
                         script: `<script>
@@ -584,8 +623,8 @@ function atualizarEstoqueMaterial(req, res) {
                     registrarMovimentacao(novoPeso);
                     res.json({
                         sucesso: true,
-                        novoVolume,
-                        novoPeso,
+                        novoVolume: round8(novoVolume),
+                        novoPeso: Number(novoPeso),
                         script: `
                             <script>
                                 swal({
@@ -610,15 +649,15 @@ function atualizarEstoqueMaterial(req, res) {
         } else {
             // Já existe no estoque
             const atual = results[0];
-            let atualVolume = Number(atual.qt_volume) || 0;
+            let atualVolume = round8(Number(atual.qt_volume) || 0);
             let atualPeso = Number(atual.qt_peso) || 0;
 
             if (movimentacao === 'entrada') {
-                novoVolume = atualVolume + volume;
-                novoPeso = atualPeso + peso;
+                novoVolume = round8(atualVolume + volume);
+                novoPeso = Number((atualPeso + peso).toFixed(3));
             } else {
-                novoVolume = atualVolume - volume;
-                novoPeso = atualPeso - peso;
+                novoVolume = round8(atualVolume - volume);
+                novoPeso = Number((atualPeso - peso).toFixed(3));
 
                 // Não permitir estoque negativo
                 if (novoVolume < 0 || novoPeso < 0) {
@@ -639,7 +678,9 @@ function atualizarEstoqueMaterial(req, res) {
                 }
             }
 
-            if (novoVolume === 0 && novoPeso === 0) {
+            // Permitir zerar estoque se ambos forem praticamente zero (tolerância)
+            const epsilon = 0.00000001;
+            if (Math.abs(novoVolume) < epsilon && Math.abs(novoPeso) < 0.001) {
                 // Remove do estoque
                 conexao.query(queryDelete, [cd_estoque, cd_material], (errDel) => {
                     if (errDel) return res.status(500).json({
@@ -684,7 +725,7 @@ function atualizarEstoqueMaterial(req, res) {
                 });
             } else {
                 // Atualiza estoque
-                conexao.query(queryUpdate, [novoVolume, novoPeso, cd_estoque, cd_material], (err2) => {
+                conexao.query(queryUpdate, [round8(novoVolume), Number(novoPeso), cd_estoque, cd_material], (err2) => {
                     if (err2) return res.status(500).json({
                         erro: 'Erro ao atualizar estoque',
                         script: `<script>
@@ -702,8 +743,8 @@ function atualizarEstoqueMaterial(req, res) {
                     registrarMovimentacao(novoPeso);
                     res.json({
                         sucesso: true,
-                        novoVolume,
-                        novoPeso,
+                        novoVolume: round8(novoVolume),
+                        novoPeso: Number(novoPeso),
                         script: `
                             <script>
                                 swal({

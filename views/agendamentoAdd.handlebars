@@ -452,25 +452,7 @@
                 </script>
 
 
-                <!-- Script de máscara para CEP -->
-                <script>
-                    document.addEventListener('DOMContentLoaded', function () {
-                        const cepInput = document.getElementById('cep');
-                        const form = document.querySelector('form');
-
-                        cepInput.addEventListener('input', function (e) {
-                            let cep = e.target.value.replace(/\D/g, '');
-                            if (cep.length > 5) {
-                                cep = cep.slice(0, 5) + '-' + cep.slice(5, 8);
-                            }
-                            e.target.value = cep;
-                        });
-
-                        form.addEventListener('submit', function () {
-                            cepInput.value = cepInput.value.replace(/\D/g, '');
-                        });
-                    });
-                </script>
+        
                 <script>
                     document.getElementById('qt_quantidade_prevista_kg').addEventListener('input', function (e) {
                         let value = this.value;
@@ -527,7 +509,26 @@
                     });
                 </script>
 
-                
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const cepInput = document.getElementById('nr_cep');
+                        const form = document.querySelector('form');
+
+                        cepInput.addEventListener('input', function (e) {
+                            let cep = e.target.value.replace(/\D/g, '').slice(0, 8);
+                            if (cep.length > 5) {
+                                cep = cep.slice(0, 5) + '-' + cep.slice(5);
+                            }
+                            e.target.value = cep;
+                        });
+
+                        form.addEventListener('submit', function () {
+                            cepInput.value = cepInput.value.replace(/\D/g, '');
+                        });
+                    });
+                </script>
+
+
                 <!--End conteudo indiviudual da pagina-->
             </div>
         </div>

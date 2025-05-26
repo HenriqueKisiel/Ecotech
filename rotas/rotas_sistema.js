@@ -66,6 +66,20 @@ router.get('/home', (req, res) => {
     servico2.exibirHome(req, res);
 });
 
+// Filtrar estoque por planta no dashboard (AJAX)
+router.get('/home/:cd_planta', (req, res) => {
+    servico2.dadosDashboard(req, res); // certifique-se que está chamando a função certa
+});
+
+// Rota para retornar o total de coletas realizadas na planta
+router.get('/home/totalColetas/:cd_planta', (req, res) => {
+    servico2.totalColetasPlanta(req, res);
+});
+
+router.get('/home/graficos/:cd_planta', (req, res) => {
+    servico2.graficosDashboard(req, res);
+});
+
 //-------------------- Servico3 -------------------//
 // Rota para a página cadastro de pessoa
 router.get('/pessoa', (req, res) => {
