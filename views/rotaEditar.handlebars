@@ -225,8 +225,7 @@
                         </div>
                     </nav>
                     <!-- End Navbar -->
-                </div>
-                <!--End MenuBar-->
+                </div <!--End MenuBar-->
                 <!--Start conteudo indiviudual da pagina-->
                 <div class="container">
                     <div class="page-inner">
@@ -239,7 +238,7 @@
                                 <a href="/rotas" class="btn btn-secondary me-3 shadow-lg">Voltar</a>
                             </div>
                         </div>
-                        <form method="POST" action="/rotaEditar">
+                        <form method="POST" action="/rotaEditar" {{#if rotaBloqueada}}style="pointer-events:none;opacity:0.6;"{{/if}}>
                             <div class="card shadow-lg mb-5">
                                 <div class="card-body">
                                     <div class="row">
@@ -271,6 +270,13 @@
                                                 <label class="fw-bold">Peso previsto (KG)</label>
                                                 <input type="text" value="{{rotas.qt_peso_total_kg}}"
                                                     class="form-control" placeholder="___" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Volume previsto (M3)</label>
+                                                <input type="text" value="{{rotas.volume_rota}}" class="form-control"
+                                                    placeholder="___" disabled>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
@@ -325,13 +331,18 @@
                                     </div>
                                     <div class="d-flex justify-content-end flex-wrap">
                                         <button type="submit" name="action" value="editar"
-                                            class="btn btn-success shadow-lg me-3">Salvar</button>
+                                            class="btn btn-success shadow-lg me-3" {{#if rotaBloqueada}}disabled{{/if}}>Salvar</button>
                                         <button type="submit" name="action" value="excluir"
-                                            class="btn btn-danger shadow-lg">Excluir</button>
+                                            class="btn btn-danger shadow-lg" {{#if rotaBloqueada}}disabled{{/if}}>Excluir</button>
                                     </div>
                                 </div>
                             </div>
                         </form>
+                        {{#if rotaBloqueada}}
+                        <div class="alert alert-warning mt-3">
+                            Não é possível editar esta rota pois já foi iniciada.
+                        </div>
+                        {{/if}}
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="card shadow-lg mb-5">
@@ -371,6 +382,13 @@
                                                         <label class="fw-bold">Peso do material (KG)</label>
                                                         <input type="text" id="peso" name="peso" class="form-control"
                                                             placeholder="___">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Peso do Volume (M3)</label>
+                                                        <input type="text" id="volume" name="volume"
+                                                            class="form-control" placeholder="___">
                                                     </div>
                                                 </div>
                                             </div>
@@ -436,6 +454,7 @@
                                     option.textContent = agendamento.nm_agendamento;  // Corrigido
                                     option.dataset.endereco = agendamento.ds_endereco;
                                     option.dataset.peso = agendamento.qt_quantidade_prevista_kg;
+                                    option.dataset.volume = agendamento.volume_agendamento;
                                     selectAgendamento.appendChild(option);
                                 });
 
@@ -443,6 +462,7 @@
                                     const selectedOption = this.options[this.selectedIndex];
                                     document.getElementById('endereco').value = selectedOption.dataset.endereco || '';
                                     document.getElementById('peso').value = selectedOption.dataset.peso || '';
+                                    document.getElementById('volume').value = selectedOption.dataset.volume || ''
                                     document.getElementById('codigo_agendamento').value = selectedOption.value;
                                 });
                             })
@@ -502,7 +522,26 @@
                 </div>
             </div>
         </div>
+        <!-- Modal de Aviso -->
+        <div class="modal fade" id="modalAviso" tabindex="-1" aria-labelledby="modalAvisoLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-warning">
+                        <h5 class="modal-title" id="modalAvisoLabel">Atenção</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                    </div>
+                    <div class="modal-body" id="modalAvisoMensagem">
+                        <!-- Mensagem será inserida via JS -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!--end modal-->
+
         <script>
             let pontoId = null;
             let rotaId = null;
@@ -537,6 +576,36 @@
                             console.error(err);
                             alert('Erro na requisição!');
                         });
+                });
+            });
+
+            // filepath: c:\Users\NICO\Desktop\PROJETOECOTH_GIT\Ecotech\views\rotaEditar.handlebars
+            document.addEventListener('DOMContentLoaded', function () {
+                const form = document.querySelector('form[action^="/rotaEditar/"]');
+                if (!form) return;
+
+                form.addEventListener('submit', function (e) {
+                    const pesoAtual = parseFloat((document.querySelector('input[value="{{rotas.qt_peso_total_kg}}"]')?.value || '0').replace(',', '.')) || 0;
+                    const volumeAtual = parseFloat((document.querySelector('input[value="{{rotas.volume_rota}}"]')?.value || '0').replace(',', '.')) || 0;
+                    const capacidade = parseFloat((document.querySelector('input[value="{{rotas.capacidade_kg}}"]')?.value || '0').replace(',', '.')) || 0;
+
+                    const pesoNovo = parseFloat((document.getElementById('peso')?.value || '0').replace(',', '.')) || 0;
+                    const volumeNovo = parseFloat((document.getElementById('volume')?.value || '0').replace(',', '.')) || 0;
+
+                    let mensagem = '';
+                    if ((pesoAtual + pesoNovo) > capacidade) {
+                        mensagem = 'O peso total da rota excede a capacidade do caminhão!';
+                    } else if ((volumeAtual + volumeNovo) > capacidade) {
+                        mensagem = 'O volume total da rota excede a capacidade do caminhão!';
+                    }
+
+                    if (mensagem) {
+                        e.preventDefault();
+                        document.getElementById('modalAvisoMensagem').textContent = mensagem;
+                        const avisoModal = new bootstrap.Modal(document.getElementById('modalAviso'));
+                        avisoModal.show();
+                        return false;
+                    }
                 });
             });
         </script>

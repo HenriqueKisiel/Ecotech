@@ -247,44 +247,18 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="disableinput">Código</label>
-                                            <input type="text" class="form-control" placeholder="Insira o código">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="disableinput">Descrição</label>
-                                            <textarea class="form-control" id="comment"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="exampleFormControlSelect1">Tipo</label>
-                                            <select class="form-select" id="exampleFormControlSelect1">
-                                                <option>Excel</option>
-                                                <option>PDF</option>
-                                                <option>Dashboard</option>
-                                                <option>Word</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-flex justify-content-end">
-                                    <a class="btn btn-info me-3">Limpar Filtros</a>
-                                    <a class="btn btn-primary">Buscar</a>
-                                </div>
+                                <form method="POST" action="/relatorios" class="mb-3 d-flex">
+                                    <input type="text" name="filtro" class="form-control me-2"
+                                        placeholder="Buscar relatório..." value="{{filtro}}">
+                                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                                </form>
                             </div>
                         </div>
                         <div class="d-flex justify-content-end mb-3">
                             <a href="/relatoriosNovo" class="btn btn-success me-3">Adicionar</a>
-                            <a href="/relatoriosNovo" class="btn btn-secondary me-3">Ver</a>
-                            <button type="button" class="btn btn-sm btn-danger fs-6" id="alert_demo_7">
-                                Excluir
-                            </button>
                         </div>
+
+
                         <div class="card shadow-lg card-flush">
                             <div class="card-header d-none">
                                 <card class="card-title">
@@ -298,76 +272,26 @@
                                             <tr>
                                                 <th>Código</th>
                                                 <th>Descrição/Nome</th>
-                                                <th>Data Criação</th>
-                                                <th>Tipo</th>
-                                                <th></th>
+                                                <th>Exportar</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {{#each relatorios}}
                                             <tr>
-                                                <td>#102</td>
-                                                <td>Relatório de vendas mensais</td>
-                                                <td>21/11/2024 10:15:43</td>
-                                                <td>PDF</td>
-                                                <td><a href="#" class="hover-primary fs-2"><i
-                                                            class="icon-cloud-download"></i></a></td>
+                                                <td>{{cd_rel}}</td>
+                                                <td>{{ds_relatório}}</td>
+                                                <td>
+                                                    <a href="/exportarRelatorio/{{cd_rel}}"
+                                                        class="btn btn-success btn-sm">
+                                                        <i class="fa fa-file-excel"></i> Exportar Excel
+                                                    </a>
+                                                    <a href="/relatoriosNovo?cd_rel={{cd_rel}}"
+                                                        class="btn btn-warning btn-sm">
+                                                        <i class="fa fa-edit"></i> Editar
+                                                    </a>
+                                                </td>
                                             </tr>
-                                            <tr>
-                                                <td>#103</td>
-                                                <td>Relatório de inventário</td>
-                                                <td>21/11/2024 14:22:37</td>
-                                                <td>Excel</td>
-                                                <td><a href="#" class="hover-primary fs-2"><i
-                                                            class="icon-cloud-download"></i></a></td>
-                                            </tr>
-                                            <tr>
-                                                <td>#104</td>
-                                                <td>Relatório de desempenho anual</td>
-                                                <td>22/11/2024 09:50:12</td>
-                                                <td>PDF</td>
-                                                <td><a href="#" class="hover-primary fs-2"><i
-                                                            class="icon-cloud-download"></i></a></td>
-                                            </tr>
-                                            <tr>
-                                                <td>#105</td>
-                                                <td>Relatório de fluxo de caixa</td>
-                                                <td>22/11/2024 11:30:58</td>
-                                                <td>Excel</td>
-                                                <td><a href="#" class="hover-primary fs-2"><i
-                                                            class="icon-cloud-download"></i></a></td>
-                                            </tr>
-                                            <tr>
-                                                <td>#106</td>
-                                                <td>Relatório de projetos em andamento</td>
-                                                <td>23/11/2024 08:45:29</td>
-                                                <td>Word</td>
-                                                <td><a href="#" class="hover-primary fs-2"><i
-                                                            class="icon-cloud-download"></i></a></td>
-                                            </tr>
-                                            <tr>
-                                                <td>#107</td>
-                                                <td>Relatório de auditoria interna</td>
-                                                <td>23/11/2024 15:20:44</td>
-                                                <td>PDF</td>
-                                                <td><a href="#" class="hover-primary fs-2"><i
-                                                            class="icon-cloud-download"></i></a></td>
-                                            </tr>
-                                            <tr>
-                                                <td>#108</td>
-                                                <td>Relatório de satisfação do cliente</td>
-                                                <td>24/11/2024 13:55:12</td>
-                                                <td>Excel</td>
-                                                <td><a href="#" class="hover-primary fs-2"><i
-                                                            class="icon-cloud-download"></i></a></td>
-                                            </tr>
-                                            <tr>
-                                                <td>#109</td>
-                                                <td>Relatório de manutenção de equipamentos</td>
-                                                <td>24/11/2024 16:18:09</td>
-                                                <td>Word</td>
-                                                <td><a href="#" class="hover-primary fs-2"><i
-                                                            class="icon-cloud-download"></i></a></td>
-                                            </tr>
+                                            {{/each}}
                                         </tbody>
                                     </table>
                                 </div>

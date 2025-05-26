@@ -33,6 +33,7 @@ const servico25 = require('../servico/rota_novoMaterial.js');
 const servico26 = require('../servico/rota_novoMaterial2.js');
 const servico27 = require('../servico/rota_motorista.js');
 const servico28 = require('../servico/rota_caminhao.js');
+const servico29 = require('../servico/rota_relatoriosNovo.js')
 
 
 
@@ -191,13 +192,14 @@ router.post('/rotas', (req, res) => {
 
 //----------------------- Servico12 -------------------//
 // Rota para a página de relatorios
+// Listar relatórios
 router.get('/relatorios', (req, res) => {
     servico12.exibirRelatorios(req, res);
 });
 
-// Rota para a página de cadastrar relatorios
-router.get('/relatoriosNovo', (req, res) => {
-    servico12.exibirCadastrarRelatorios(req, res);
+// Exportar relatório
+router.get('/exportarRelatorio/:cd_rel', (req, res) => {
+    servico12.exportarRelatorio(req, res);
 });
 
 //------------------------ Servico13 -------------------//
@@ -457,6 +459,16 @@ router.get('/motorista', (req, res) => {
 // ----------------------- Servico28 -------------------//
 router.get('/caminhao', (req, res) => {
     servico28.exibirCaminhao(req, res);
+});
+
+// Filtro de relatórios
+router.post('/relatorios', (req, res) => {
+    servico12.filtrarRelatorios(req, res);
+});
+
+// ----------------------- Servico29 -------------------//
+router.get('/relatoriosNovo', (req, res) => {
+    servico29.exibirRelatorioNovo(req, res);
 });
 
 //==================== END ROTAS ====================
