@@ -79,6 +79,21 @@ router.get('/home/graficos/:cd_planta', (req, res) => {
     servico2.graficosDashboard(req, res);
 });
 
+// Rota para faturamento mensal por planta
+router.get('/home/faturamento/:cd_planta', (req, res) => {
+    servico2.faturamentoMensalPlanta(req, res);
+});
+
+// Rota para peso coletado mensal por planta
+router.get('/home/pesoColetado/:cd_planta', (req, res) => {
+    servico2.pesoColetadoMensalPlanta(req, res);
+});
+
+// Rota para proporção de movimentações por planta
+router.get('/home/proporcaoMovimentacoes/:cd_planta', (req, res) => {
+    servico2.proporcaoMovimentacoesPlanta(req, res);
+});
+
 //-------------------- Servico3 -------------------//
 // Rota para a página cadastro de pessoa
 router.get('/pessoa', (req, res) => {
