@@ -174,6 +174,11 @@ router.get('/estoqueNovo', (req, res) => {
     servico9.exibirestoqueNovo(req, res);
 });
 
+// Rota para cadastrar novo estoque (POST)
+router.post('/estoque/cadastrar', (req, res) => {
+    servico9.cadastrarEstoque(req, res);
+});
+
 //----------------------- Servico10 -------------------//
 // Rota GET para exibir a lista de agendamentos
 router.get('/agendamento', (req, res) => {
