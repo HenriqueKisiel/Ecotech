@@ -175,6 +175,11 @@ router.get('/estoqueNovo', (req, res) => {
     servico9.exibirestoqueNovo(req, res);
 });
 
+// Rota para cadastrar novo estoque (POST)
+router.post('/estoque/cadastrar', (req, res) => {
+    servico9.cadastrarEstoque(req, res);
+});
+
 //----------------------- Servico10 -------------------//
 // Rota GET para exibir a lista de agendamentos
 router.get('/agendamento', (req, res) => {
@@ -184,6 +189,11 @@ router.get('/agendamento', (req, res) => {
 // Rota POST para realizar a busca de agendamentos
 router.post('/agendamento', (req, res) => {
     servico10.buscarAgendamentos(req, res);
+});
+
+// Buscar bairros por nome da cidade para filtro dinâmico de agendamento
+router.get('/agendamento/bairrosPorNome/:nm_cidade?', (req, res) => {
+    servico10.buscarBairrosPorNomeCidade(req, res);
 });
 //---------------------- Servico11 -------------------//
 // Rota para a página de rotas programadas

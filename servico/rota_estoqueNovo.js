@@ -20,16 +20,16 @@ function exibirestoqueNovo(req, res) {
 function cadastrarEstoque(req, res) {
     const conexao = conectiondb();
     console.log("Body recebido:", req.body);
-    const { cd_planta, nm_estoque, qt_capacidade_maxima } = req.body;
+    const { cd_planta, nm_estoque, qt_volume_total } = req.body;
 
     console.log("Dados recebidos no servidor:", {
         cd_planta,
         nm_estoque,
-        qt_capacidade_maxima
+        qt_volume_total
     });
 
     // Validação dos campos
-    if (!cd_planta || !nm_estoque || !qt_capacidade_maxima) {
+    if (!cd_planta || !nm_estoque || !qt_volume_total) {
         conexao.query('SELECT cd_planta, nm_planta FROM planta', (err, resultados) => {
             if (err) {
                 console.error('Erro ao buscar plantas:', err);
@@ -47,10 +47,10 @@ function cadastrarEstoque(req, res) {
 
     // Inserção do estoque no banco
     const query = `
-        INSERT INTO estoque (cd_planta, nm_estoque, qt_capacidade_maxima, dt_atualizacao)
+        INSERT INTO estoque (cd_planta, nm_estoque, qt_volume_total, dt_atualizacao)
         VALUES (?, ?, ?, NOW())
     `;
-    const valores = [cd_planta, nm_estoque, qt_capacidade_maxima];
+    const valores = [cd_planta, nm_estoque, qt_volume_total];
 
     console.log("Consulta SQL:", query);
     console.log("Valores a serem inseridos:", valores);
@@ -81,7 +81,7 @@ function cadastrarEstoque(req, res) {
             cd_estoque: codigoGerado,
             cd_planta,
             nm_estoque,
-            qt_capacidade_maxima
+            qt_volume_total
         });
 
         // Buscar as plantas novamente para mostrar no formulário após o cadastro

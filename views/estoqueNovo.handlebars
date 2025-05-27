@@ -240,7 +240,7 @@
                     </div>
 
                     <!-- Card do Formulário -->
-                    <div class="card shadow-lg h-100">
+                    <div class="card shadow-lg h-100 col-md-12 mx-auto">
                         <div class="card-header d-none">
                             <div class="card-title">
                                 <span class="fs-2 fw-bold"></span>
@@ -288,60 +288,13 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="fw-bold" for="input">Capacidade Máxima do Estoque (Kg)</label>
-                                            <input type="text" class="form-control" name="qt_capacidade_maxima"
+                                            <label class="fw-bold" for="input">Capacidade Máxima do Estoque em volume cúbico (m³)</label>
+                                            <input type="text" class="form-control" name="qt_volume_total"
                                                 placeholder="Insira a capacidade">
                                         </div>
                                     </div>
-                                    <!--<div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold" for="input">Linha do Estoque</label>
-                                            <div class="d-flex flex-row flex-wrap mt-2">
-                                                <div class="d-flex align-items-center me-5 mb-2">
-                                                    <span class="me-3">Linha Azul</span>
-                                                    <label class="colorinput mb-0">
-                                                        <input name="cd_linha" type="radio" value="1"
-                                                            class="colorinput-input">
-                                                        <span class="colorinput-color bg-primary"></span>
-                                                    </label>
-                                                </div>
-                                                <div class="d-flex align-items-center me-5 mb-2">
-                                                    <span class="me-3">Linha Verde</span>
-                                                    <label class="colorinput mb-0">
-                                                        <input name="cd_linha" type="radio" value="2"
-                                                            class="colorinput-input">
-                                                        <span class="colorinput-color bg-success"></span>
-                                                    </label>
-                                                </div>
-                                                <div class="d-flex align-items-center me-5 mb-2">
-                                                    <span class="me-3">Linha Laranja</span>
-                                                    <label class="colorinput mb-0">
-                                                        <input name="cd_linha" type="radio" value="3"
-                                                            class="colorinput-input">
-                                                        <span class="colorinput-color bg-warning"></span>
-                                                    </label>
-                                                </div>
-                                                <div class="d-flex align-items-center mb-2">
-                                                    <span class="me-3">Linha Vermelha</span>
-                                                    <label class="colorinput mb-0">
-                                                        <input name="cd_linha" type="radio" value="4"
-                                                            class="colorinput-input">
-                                                        <span class="colorinput-color bg-danger"></span>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>-->
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="fw-bold">Código do Estoque</label>
-                                            <input type="text" class="form-control" value="{{codigoEstoque}}"
-                                                placeholder="Gerado automaticamente" disabled>
-                                        </div>
-                                    </div>
                                 </div>
-                                <!-- Botão de salvar -->
-                                <div class="card-footer d-flex justify-content-end mt-2">
+                                <div class="card-footer d-flex justify-content-end mt-4">
                                     <a href="/home" class="btn btn-secondary me-3">Voltar</a>
                                     <button type="submit" class="btn btn-success">Salvar</button>
                                 </div>
