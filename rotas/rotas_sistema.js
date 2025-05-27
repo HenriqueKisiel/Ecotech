@@ -33,6 +33,7 @@ const servico25 = require('../servico/rota_novoMaterial.js');
 const servico26 = require('../servico/rota_novoMaterial2.js');
 const servico27 = require('../servico/rota_motorista.js');
 const servico28 = require('../servico/rota_caminhao.js');
+const servico29 = require('../servico/rota_relatoriosNovo.js')
 
 
 
@@ -77,6 +78,21 @@ router.get('/home/totalColetas/:cd_planta', (req, res) => {
 
 router.get('/home/graficos/:cd_planta', (req, res) => {
     servico2.graficosDashboard(req, res);
+});
+
+// Rota para faturamento mensal por planta
+router.get('/home/faturamento/:cd_planta', (req, res) => {
+    servico2.faturamentoMensalPlanta(req, res);
+});
+
+// Rota para peso coletado mensal por planta
+router.get('/home/pesoColetado/:cd_planta', (req, res) => {
+    servico2.pesoColetadoMensalPlanta(req, res);
+});
+
+// Rota para proporção de movimentações por planta
+router.get('/home/proporcaoMovimentacoes/:cd_planta', (req, res) => {
+    servico2.proporcaoMovimentacoesPlanta(req, res);
 });
 
 //-------------------- Servico3 -------------------//
@@ -184,6 +200,11 @@ router.get('/agendamento', (req, res) => {
 router.post('/agendamento', (req, res) => {
     servico10.buscarAgendamentos(req, res);
 });
+
+// Buscar bairros por nome da cidade para filtro dinâmico de agendamento
+router.get('/agendamento/bairrosPorNome/:nm_cidade?', (req, res) => {
+    servico10.buscarBairrosPorNomeCidade(req, res);
+});
 //---------------------- Servico11 -------------------//
 // Rota para a página de rotas programadas
 router.get('/rotas', (req, res) => {
@@ -205,13 +226,14 @@ router.post('/rotas', (req, res) => {
 
 //----------------------- Servico12 -------------------//
 // Rota para a página de relatorios
+// Listar relatórios
 router.get('/relatorios', (req, res) => {
     servico12.exibirRelatorios(req, res);
 });
 
-// Rota para a página de cadastrar relatorios
-router.get('/relatoriosNovo', (req, res) => {
-    servico12.exibirCadastrarRelatorios(req, res);
+// Exportar relatório
+router.get('/exportarRelatorio/:cd_rel', (req, res) => {
+    servico12.exportarRelatorio(req, res);
 });
 
 //------------------------ Servico13 -------------------//
@@ -467,6 +489,20 @@ router.get('/motorista', (req, res) => {
 // ----------------------- Servico28 -------------------//
 router.get('/caminhao', (req, res) => {
     servico28.exibirCaminhao(req, res);
+});
+
+// Filtro de relatórios
+router.post('/relatorios', (req, res) => {
+    servico12.filtrarRelatorios(req, res);
+});
+
+// ----------------------- Servico29 -------------------//
+router.get('/relatoriosNovo', (req, res) => {
+    servico29.exibirRelatorioNovo(req, res);
+});
+
+router.post('/relatoriosNovo', (req, res) => {
+    servico29.salvarRelatorioNovo(req, res);
 });
 
 //==================== END ROTAS ====================

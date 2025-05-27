@@ -35,6 +35,11 @@ function exibirEditarAgendamento(req, res, itemEmEdicao = null) {
         connection.query(linhasQuery, (err, linhas) => {
             if (err) return res.status(500).send('Erro ao buscar as linhas');
 
+        // Filtra para remover "Materia Prima"
+        const linhasFiltradas = linhas.filter(linha =>
+                linha.nm_linha && linha.nm_linha.toLowerCase() !== "materia prima"
+            );
+
             // Consulta para pegar os itens associados ao agendamento
             const itensQuery = `
                 SELECT a.*, l.nm_linha

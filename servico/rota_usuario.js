@@ -42,7 +42,7 @@ function adicionarUsuario(req, res) {
 
 //função para cadastrar usuario
 function cadastrarUsuario(req, res) {
-  const { nome, email, telefone, usuario, senha, ie_situacao } = req.body;
+  const { nome, email, telefone, usuario, senha } = req.body; // Removido ie_situacao do destructuring
 
   const erros = {};
   if (!nome || nome.trim() === '') erros.nome = true;
@@ -151,7 +151,8 @@ function cadastrarUsuario(req, res) {
         VALUES (?, ?, ?, ?)
       `;
 
-      connection.query(sql, [nome, usuario, senha, ie_situacao], (erro, resultado) => {
+      // Sempre cadastra como ativo ('A')
+      connection.query(sql, [nome, usuario, senha, 'A'], (erro, resultado) => {
         if (erro) {
           console.error('Erro ao adicionar usuário:', erro);
           return res.render('usuarioAdicionar', {
