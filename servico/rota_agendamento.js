@@ -150,8 +150,44 @@ function formatarDataBR(data) {
     return `${dia}/${mes}/${ano}`;
 }
 
+function buscarBairrosPorNomeCidade(req, res) {
+    const nm_cidade = req.params.nm_cidade;
+
+    let query;
+    let params = [];
+
+    if (!nm_cidade || nm_cidade === 'undefined' || nm_cidade.trim() === '') {
+        // Se não foi passada cidade, retorna todos os bairros distintos
+        query = `
+            SELECT DISTINCT nm_bairro 
+            FROM agendamento 
+            WHERE nm_bairro IS NOT NULL AND nm_bairro <> ''
+            ORDER BY nm_bairro
+        `;
+    } else {
+        // Se cidade foi passada, filtra por cidade
+        query = `
+            SELECT DISTINCT nm_bairro 
+            FROM agendamento 
+            WHERE nm_cidade = ? AND nm_bairro IS NOT NULL AND nm_bairro <> ''
+            ORDER BY nm_bairro
+        `;
+        params = [nm_cidade];
+    }
+
+    conexao.query(query, params, (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar bairros:', err);
+            return res.status(500).json([]);
+        }
+        res.json(results);
+    });
+}
+
+
 
 module.exports = {
     exibirAgendamento,
     buscarAgendamentos,
+    buscarBairrosPorNomeCidade
 };

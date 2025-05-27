@@ -2,7 +2,7 @@ const conectiondb = require('../bd/conexao_mysql.js');
 
 //Função para exibir pagina rotas programadas
 function exibirRotas(req, res) {
-  let sql = `SELECT cd_rota, nm_rota, nr_distancia_km, qt_peso_total_kg, DATE_FORMAT(dt_agendada, '%d/%m/%Y') AS dt_agendada, ie_situacao  FROM rota_coleta`;
+  let sql = `SELECT cd_rota, nm_rota, nr_distancia_km, qt_peso_total_kg, DATE_FORMAT(dt_agendada, '%d/%m/%Y') AS dt_agendada, ie_situacao, volume_rota  FROM rota_coleta`;
 
     //Executando a consulta no banco de dados
     conectiondb().query(sql, function (erro, retorno) {
@@ -106,7 +106,7 @@ function insertRota(req, res){
 function buscarRota(req, res) {
   console.log("Função buscarRotas chamada");
 
-  const { nome_rota, dt_rota } = req.body;
+  const { nome_rota, dt_rota, ie_situacao } = req.body;
 
   let query = `
     SELECT 
@@ -114,7 +114,8 @@ function buscarRota(req, res) {
       nm_rota,
       nr_distancia_km,
       qt_peso_total_kg,
-      DATE_FORMAT(dt_agendada, '%d/%m/%Y') AS dt_agendada
+      DATE_FORMAT(dt_agendada, '%d/%m/%Y') AS dt_agendada,
+      ie_situacao
     FROM rota_coleta
     WHERE 1=1
   `;
@@ -129,6 +130,11 @@ function buscarRota(req, res) {
   if (dt_rota) {
     query += " AND DATE_FORMAT(dt_agendada, '%Y-%m-%d') = ?";
     valores.push(dt_rota);
+  }
+
+  if (ie_situacao) {
+    query += " AND ie_situacao LIKE ?";
+    valores.push(ie_situacao);
   }
 
   conectiondb().query(query, valores, function (err, results) {

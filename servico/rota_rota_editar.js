@@ -8,11 +8,8 @@ function exibirrotaeditar(req, res) {
     const cd_rota = req.params.cd_rota;
     const connection = conectiondb();
 
-    const query1 = `
-        SELECT * FROM vw_rotas_coleta WHERE cd_rota = ?`;
-
+    const query1 = `SELECT * FROM vw_rotas_coleta WHERE cd_rota = ?`;
     const query2 = `SELECT * FROM vw_pontos_coleta WHERE cd_rota = ?`;
-
 
     connection.query(query1, [cd_rota], function (erro1, resultado1) {
         if (erro1) throw erro1;
@@ -20,9 +17,13 @@ function exibirrotaeditar(req, res) {
         connection.query(query2, [cd_rota], function (erro2, resultado2) {
             if (erro2) throw erro2;
 
+            // Verifica se algum ponto tem dt_r_iniciada preenchido
+            const rotaBloqueada = resultado2.some(p => p.dt_r_iniciada);
+
             res.render('rotaEditar', {
                 rotas: resultado1[0],
-                pontos: resultado2
+                pontos: resultado2,
+                rotaBloqueada // true ou false
             });
         });
     });
@@ -42,22 +43,95 @@ function editarRota(req, res) {
         return res.status(400).send('ID da rota é obrigatório.');
     }
 
+    // NOVO: Verifica se existe ponto iniciado
+    const sqlBloqueio = `
+        SELECT 1 FROM vw_pontos_coleta
+        WHERE cd_rota = ? AND dt_r_inciada IS NOT NULL LIMIT 1
+    `;
+    conectiondb().query(sqlBloqueio, [cd_rota], function (erro, resultado) {
+        if (erro) {
+            console.error('Erro ao verificar bloqueio da rota:', erro);
+            return res.status(500).send('Erro ao verificar bloqueio da rota.');
+        }
+        if (resultado.length > 0) {
+            // Já iniciada, bloqueia edição
+            return res.render('rotaEditar', {
+                rota: { cd_rota, nm_rota, dt_agendada, cd_motorista, cd_caminhao },
+                script: `<script>
+                    swal("Não é possível editar!", "Esta rota já foi iniciada e não pode ser editada.", {
+                        icon: "warning",
+                        buttons: {
+                            confirm: {
+                                text: "OK",
+                                className: "btn btn-warning",
+                            },
+                        },
+                    });
+                </script>`
+            });
+        }
 
-    // função para realizar a edicação
-    if (action == 'editar') {
-        const sqlrota =
-            `UPDATE rota_coleta 
-        SET nm_rota = ?, dt_agendada = ?, ie_motorista = ?, ie_caminhao = ?
-        WHERE cd_rota = ?`;
+        // função para realizar a edição
+        if (action == 'editar') {
+            const sqlrota =
+                `UPDATE rota_coleta 
+            SET nm_rota = ?, dt_agendada = ?, ie_motorista = ?, ie_caminhao = ?
+            WHERE cd_rota = ?`;
 
-        conectiondb().query(sqlrota, [nm_rota, dt_agendada,cd_motorista, cd_caminhao, cd_rota], function (errorota) {
-            if (errorota) {
-                console.error('Erro ao atualizar Rota:', errorota);
-                return res.render('rotaEditar', {
-                    rota: { cd_rota, nm_rota, dt_agendada, cd_motorista, cd_caminhao },
+            conectiondb().query(sqlrota, [nm_rota, dt_agendada, cd_motorista, cd_caminhao, cd_rota], function (errorota) {
+                if (errorota) {
+                    console.error('Erro ao atualizar Rota:', errorota);
+                    return res.render('rotaEditar', {
+                        rota: { cd_rota, nm_rota, dt_agendada, cd_motorista, cd_caminhao },
+                        script:
+                            `<script>
+                        swal("Erro ao editar!", "Verifique os dados e tente novamente.", {
+                            icon: "error",
+                            buttons: {
+                                confirm: {
+                                    text: "OK",
+                                    className: "btn btn-danger",
+                                },
+                            },
+                        });
+                        </script>`
+                    });
+                }
+
+                // Sucesso: exibe o modal e depois redireciona
+                res.render('rotaEditar', {
+                    rota: { cd_rota, nm_rota, dt_agendada },
                     script:
                         `<script>
-                    swal("Erro ao editar!", "Verifique os dados e tente novamente.", {
+                    swal("Editado com sucesso!", "", {
+                        icon: "success",
+                        buttons: {
+                            confirm: {
+                                text: "OK",
+                                className: "btn btn-success",
+                            },
+                        },
+                    }).then(() => {
+                        window.location.href = "/rotaEditar/${cd_rota}";
+                    });
+                    </script>`
+                });
+            });
+        } else if (action == 'excluir') {
+            // Primeiro, verifica se existem pontos de coleta vinculados
+            const sqlVerificaPonto =
+                `SELECT COUNT(*) AS total
+            FROM pontos_coleta
+            WHERE ie_rota = ?`;
+
+            conectiondb().query(sqlVerificaPonto, [cd_rota], function (erroVerifica, resultado) {
+                if (erroVerifica) {
+                    console.error('Erro ao verificar pontos vinculados:', erroVerifica);
+                    return res.render('rotaEditar/', {
+                        rota: { cd_rota, nm_rota, dt_agendada },
+                        script:
+                            `<script>
+                    swal("Erro!", "Erro ao verificar pontos vinculados à rota.", {
                         icon: "error",
                         buttons: {
                             confirm: {
@@ -65,145 +139,91 @@ function editarRota(req, res) {
                                 className: "btn btn-danger",
                             },
                         },
+                        }).then(() => {
+                        window.location.href = "/rotaEditar/${cd_rota}";
                     });
                     </script>`
+                    });
+                }
 
-                });
-            }
+                const totalPontos = resultado[0].total;
 
-            // Sucesso: exibe o modal e depois redireciona
-            res.render('rotaEditar', {
-                rota: { cd_rota, nm_rota, dt_agendada },
-                script:
-                    `<script>
-                swal("Editado com sucesso!", "", {
-                    icon: "success",
-                    buttons: {
-                        confirm: {
-                            text: "OK",
-                            className: "btn btn-success",
-                        },
-                    },
-                }).then(() => {
-                    window.location.href = "/rotaEditar/${cd_rota}"; // Redireciona para a rota editada
-                });
-                </script>`
-
-            });
-        });
-        // função para excluir/inativar uma rota
-    } else if (action == 'excluir') {
-        // Primeiro, verifica se existem pontos de coleta vinculados
-        const sqlVerificaPonto =
-            `SELECT COUNT(*) AS total
-        FROM pontos_coleta
-        WHERE ie_rota = ?`
-            ;
-
-        conectiondb().query(sqlVerificaPonto, [cd_rota], function (erroVerifica, resultado) {
-            if (erroVerifica) {
-                console.error('Erro ao verificar pontos vinculados:', erroVerifica);
-                return res.render('rotaEditar/', {
-                    rota: { cd_rota, nm_rota, dt_agendada },
-                    script:
-                        `<script>
-                swal("Erro!", "Erro ao verificar pontos vinculados à rota.", {
-                    icon: "error",
-                    buttons: {
-                        confirm: {
-                            text: "OK",
-                            className: "btn btn-danger",
-                        },
-                    },
-                    }).then(() => {
-                    window.location.href = "/rotaEditar/${cd_rota}"; // Redireciona para a rota editada
-                });
-                </script>`
-
-                });
-            }
-
-            const totalPontos = resultado[0].total;
-
-            if (totalPontos > 0) {
-                // Existem pontos vinculados — não pode excluir
-                return res.render('rotaEditar', {
-                    rota: { cd_rota, nm_rota, dt_agendada },
-                    script:
-                        `<script>
-                swal("Não é possível excluir!", "Remova os ${totalPontos} ponto(s) de coleta vinculados à rota antes de excluir.", {
-                    icon: "warning",
-                    buttons: {
-                        confirm: {
-                            text: "OK",
-                            className: "btn btn-warning",
-                        },
-                    },
-                    }).then(() => {
-                    window.location.href = "/rotaEditar/${cd_rota}"; // Redireciona para a rota editada
-                });
-                </script>`
-
-                });
-            }
-
-            // Se não houver pontos vinculados, pode excluir
-            const sqlrota =
-                ` UPDATE rota_coleta 
-            SET ie_situacao = 'I'
-            WHERE cd_rota = ?
-        ;`
-
-            conectiondb().query(sqlrota, [cd_rota], function (errorota) {
-                if (errorota) {
-                    console.error('Erro ao excluir Rota:', errorota);
+                if (totalPontos > 0) {
+                    // Existem pontos vinculados — não pode excluir
                     return res.render('rotaEditar', {
                         rota: { cd_rota, nm_rota, dt_agendada },
                         script:
                             `<script>
-                    swal("Erro ao excluir!", "Verifique os dados e tente novamente.", {
-                        icon: "error",
+                    swal("Não é possível excluir!", "Remova os ${totalPontos} ponto(s) de coleta vinculados à rota antes de excluir.", {
+                        icon: "warning",
                         buttons: {
                             confirm: {
                                 text: "OK",
-                                className: "btn btn-danger",
+                                className: "btn btn-warning",
                             },
                         },
+                        }).then(() => {
+                        window.location.href = "/rotaEditar/${cd_rota}";
                     });
                     </script>`
-
                     });
                 }
 
-                // Sucesso na exclusão
-                res.render('rotaEditar', {
-                    rota: { cd_rota, nm_rota, dt_agendada, cd_motorista},
-                    script:
-                        ` <script>
-                swal("Rota excluída com sucesso!", "", {
-                    icon: "success",
-                    buttons: {
-                        confirm: {
-                            text: "OK",
-                            className: "btn btn-success",
-                        },
-                    },
-                }).then(() => {
-                    window.location.href = "/rotas";
-                });
-                </script>`
+                // Se não houver pontos vinculados, pode excluir
+                const sqlrota =
+                    ` UPDATE rota_coleta 
+                SET ie_situacao = 'I'
+                WHERE cd_rota = ?
+            ;`;
 
+                conectiondb().query(sqlrota, [cd_rota], function (errorota) {
+                    if (errorota) {
+                        console.error('Erro ao excluir Rota:', errorota);
+                        return res.render('rotaEditar', {
+                            rota: { cd_rota, nm_rota, dt_agendada },
+                            script:
+                                `<script>
+                        swal("Erro ao excluir!", "Verifique os dados e tente novamente.", {
+                            icon: "error",
+                            buttons: {
+                                confirm: {
+                                    text: "OK",
+                                    className: "btn btn-danger",
+                                },
+                            },
+                        });
+                        </script>`
+                        });
+                    }
+
+                    // Sucesso na exclusão
+                    res.render('rotaEditar', {
+                        rota: { cd_rota, nm_rota, dt_agendada, cd_motorista },
+                        script:
+                            ` <script>
+                    swal("Rota excluída com sucesso!", "", {
+                        icon: "success",
+                        buttons: {
+                            confirm: {
+                                text: "OK",
+                                className: "btn btn-success",
+                            },
+                        },
+                    }).then(() => {
+                        window.location.href = "/rotas";
+                    });
+                    </script>`
+                    });
                 });
             });
-        });
-    }
-
+        }
+    });
 }
 
 // Busca agendamentos
 function buscarAgendamento(req, res) {
     const sql = `
-        SELECT a.cd_agendamento, a.nm_agendamento, a.ds_endereco, a.qt_quantidade_prevista_kg, a.status
+        SELECT a.cd_agendamento, a.nm_agendamento, a.ds_endereco, a.qt_quantidade_prevista_kg, a.status, volume_agendamento
         FROM agendamento a
         WHERE a.status = 'ativo'
         AND NOT EXISTS (

@@ -33,6 +33,7 @@ const servico25 = require('../servico/rota_novoMaterial.js');
 const servico26 = require('../servico/rota_novoMaterial2.js');
 const servico27 = require('../servico/rota_motorista.js');
 const servico28 = require('../servico/rota_caminhao.js');
+const servico29 = require('../servico/rota_relatoriosNovo.js')
 
 
 
@@ -189,6 +190,11 @@ router.get('/estoqueNovo', (req, res) => {
     servico9.exibirestoqueNovo(req, res);
 });
 
+// Rota para cadastrar novo estoque (POST)
+router.post('/estoque/cadastrar', (req, res) => {
+    servico9.cadastrarEstoque(req, res);
+});
+
 //----------------------- Servico10 -------------------//
 // Rota GET para exibir a lista de agendamentos
 router.get('/agendamento', (req, res) => {
@@ -198,6 +204,11 @@ router.get('/agendamento', (req, res) => {
 // Rota POST para realizar a busca de agendamentos
 router.post('/agendamento', (req, res) => {
     servico10.buscarAgendamentos(req, res);
+});
+
+// Buscar bairros por nome da cidade para filtro dinâmico de agendamento
+router.get('/agendamento/bairrosPorNome/:nm_cidade?', (req, res) => {
+    servico10.buscarBairrosPorNomeCidade(req, res);
 });
 //---------------------- Servico11 -------------------//
 // Rota para a página de rotas programadas
@@ -220,13 +231,14 @@ router.post('/rotas', (req, res) => {
 
 //----------------------- Servico12 -------------------//
 // Rota para a página de relatorios
+// Listar relatórios
 router.get('/relatorios', (req, res) => {
     servico12.exibirRelatorios(req, res);
 });
 
-// Rota para a página de cadastrar relatorios
-router.get('/relatoriosNovo', (req, res) => {
-    servico12.exibirCadastrarRelatorios(req, res);
+// Exportar relatório
+router.get('/exportarRelatorio/:cd_rel', (req, res) => {
+    servico12.exportarRelatorio(req, res);
 });
 
 //------------------------ Servico13 -------------------//
@@ -486,6 +498,20 @@ router.get('/motorista', (req, res) => {
 // ----------------------- Servico28 -------------------//
 router.get('/caminhao', (req, res) => {
     servico28.exibirCaminhao(req, res);
+});
+
+// Filtro de relatórios
+router.post('/relatorios', (req, res) => {
+    servico12.filtrarRelatorios(req, res);
+});
+
+// ----------------------- Servico29 -------------------//
+router.get('/relatoriosNovo', (req, res) => {
+    servico29.exibirRelatorioNovo(req, res);
+});
+
+router.post('/relatoriosNovo', (req, res) => {
+    servico29.salvarRelatorioNovo(req, res);
 });
 
 //==================== END ROTAS ====================

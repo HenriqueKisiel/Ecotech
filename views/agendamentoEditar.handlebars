@@ -233,7 +233,7 @@
                         {{{mensagem}}}
 
                         <!-- ===== Formulário de Edição de Agendamento ===== -->
-                        <form action="/agendamentoEditar/{{agendamento.cd_agendamento}}/adicionarItem" method="POST">
+                        <form action="/agendamentoEditar/{{agendamento.cd_agendamento}}" method="POST">
                             <input type="hidden" name="id_agendamento" value="{{agendamento.cd_agendamento}}" />
                             <div
                                 class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
@@ -244,8 +244,6 @@
                             </div>
                             <div class="card shadow-lg mb-5">
                                 <div class="card-body">
-                                    <input type="hidden" name="id_agendamento" value="{{agendamento.cd_agendamento}}">
-
                                     <fieldset {{#if somenteVisualizacao}}disabled{{/if}}>
                                         <div class="row">
                                             <!-- Pessoa Física -->
@@ -316,7 +314,7 @@
                                                 <div class="form-group">
                                                     <label class="fw-bold">Número do Endereço</label>
                                                     <input type="text" class="form-control" name="nr_endereco"
-                                                        value="{{agendamento.nr_resid}}"
+                                                        id="nr_endereco" value="{{agendamento.nr_resid}}"
                                                         placeholder="Preencha o número do endereço" required
                                                         maxlength="10">
                                                 </div>
@@ -341,15 +339,20 @@
                                             <!-- Status -->
                                             <div class="col-md-6">
                                                 <div class="form-group form-check mt-4">
-                                                    <input type="hidden" name="status" value="cancelado">
                                                     <input type="checkbox" class="form-check-input" id="status_checkbox"
                                                         name="status" value="ativo" {{#if (eq agendamento.status "ativo"
                                                         )}}checked{{/if}}>
-                                                    <label class="form-check-label fw-bold"
-                                                        for="status_checkbox">Agendamento Ativo</label>
+                                                    <label class="form-check-label fw-bold" for="status_checkbox">
+                                                        <span id="status_label_text">
+                                                            {{#if (eq agendamento.status "ativo")}}
+                                                            Agendamento Ativo
+                                                            {{else}}
+                                                            Agendamento Cancelado
+                                                            {{/if}}
+                                                        </span>
+                                                    </label>
                                                 </div>
                                             </div>
-                                        </div>
                                     </fieldset>
                                     <div class="d-flex justify-content-end">
                                         <a href="/agendamento"
@@ -403,7 +406,7 @@
                                                     <div class="col-md-6">
                                                         <label class="fw-bold">Selecione um material</label>
                                                         <select name="item_nome" id="item_nome" class="form-control"
-                                                            required>
+                                                            required data-selected="{{item.ds_mat_agenda}}">
                                                             <option value="">Selecione um material</option>
                                                             {{#each materiais}}
                                                             <option value="{{ds_material}}"
@@ -420,6 +423,7 @@
                                                         <label class="fw-bold">Quantidade</label>
                                                         <input type="number" class="form-control" id="qtde_material"
                                                             name="item_qtde" min="1" step="1" pattern="\d*"
+                                                            value="{{#if editandoItem}}{{item.qtde_material}}{{/if}}"
                                                             title="Digite apenas números inteiros positivos.">
                                                     </div>
                                                 </div>
@@ -456,8 +460,8 @@
                                                     <tr>
                                                         <th>Material</th>
                                                         <th>Linha</th>
-                                                        <th>Peso</th>
                                                         <th>Qtde</th>
+                                                        <th>Peso</th>
                                                         <th>Ações</th>
                                                     </tr>
                                                 </thead>
@@ -469,8 +473,7 @@
                                                         <td>{{qtde_material}}</td>
                                                         <td>{{qt_peso_material_total_kg}}</td>
                                                         <td>
-                                                            <a href="#"
-                                                                class="btn btn-danger btn-sm me-2 text-white"
+                                                            <a href="#" class="btn btn-danger btn-sm me-1 text-white"
                                                                 onclick="confirmarExclusao('{{../agendamento.cd_agendamento}}', '{{cd_mat_agenda}}')">
                                                                 <i class="fa fa-trash text-white"></i> Excluir
                                                             </a>
@@ -504,7 +507,7 @@
                                     e.target.value = cep;
                                 });
 
-                                // Remove o hífen antes de enviar
+                                // Remove a máscara antes de enviar
                                 form.addEventListener('submit', function () {
                                     cepInput.value = cepInput.value.replace(/\D/g, '');
                                 });
@@ -693,6 +696,28 @@
                         const cidadeInput = document.getElementById('nm_cidade');
                         const bairroInput = document.getElementById('nm_bairro');
                         const enderecoInput = document.getElementById('ds_endereco');
+                        const form = cepInput.closest('form');
+
+                        let cepValido = false;
+
+                        // NOVO: Se já está preenchido, considera válido
+                        if (
+                            cepInput.value.replace(/\D/g, '').length === 8 &&
+                            ufInput.value.trim() &&
+                            cidadeInput.value.trim() &&
+                            bairroInput.value.trim() &&
+                            enderecoInput.value.trim()
+                        ) {
+                            cepValido = true;
+                        }
+
+                        function limparEndereco() {
+                            ufInput.value = '';
+                            cidadeInput.value = '';
+                            bairroInput.value = '';
+                            enderecoInput.value = '';
+                            cepValido = false;
+                        }
 
                         cepInput.addEventListener('blur', function () {
                             const cep = cepInput.value.replace(/\D/g, '');
@@ -701,15 +726,39 @@
                                     .then(response => response.json())
                                     .then(data => {
                                         if (data.erro) {
-                                            alert('CEP não encontrado.');
-                                            return;
+                                            swal("CEP não encontrado!", "Por favor, digite um CEP válido.", "error");
+                                            limparEndereco();
+                                        } else {
+                                            ufInput.value = data.uf || '';
+                                            cidadeInput.value = data.localidade || '';
+                                            bairroInput.value = data.bairro || '';
+                                            enderecoInput.value = data.logradouro || '';
+                                            cepValido = true;
                                         }
-                                        ufInput.value = data.uf || '';
-                                        cidadeInput.value = data.localidade || '';
-                                        bairroInput.value = data.bairro || '';
-                                        enderecoInput.value = data.logradouro || '';
                                     })
-                                    .catch(() => alert('Erro ao buscar informações do CEP.'));
+                                    .catch(() => {
+                                        swal("Erro ao buscar CEP!", "Tente novamente mais tarde.", "error");
+                                        limparEndereco();
+                                    });
+                            } else {
+                                limparEndereco();
+                            }
+                        });
+
+                        form.addEventListener('submit', function (e) {
+                            cepInput.value = cepInput.value.replace(/\D/g, '');
+
+                            if (
+                                !cepValido ||
+                                !ufInput.value.trim() ||
+                                !cidadeInput.value.trim() ||
+                                !bairroInput.value.trim() ||
+                                !enderecoInput.value.trim()
+                            ) {
+                                swal("Endereço inválido!", "Preencha um CEP válido para buscar e preencher o endereço corretamente.", "warning");
+                                cepInput.focus();
+                                e.preventDefault();
+                                return false;
                             }
                         });
                     });
@@ -742,6 +791,122 @@
                     });
                 </script>
 
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        var select = document.getElementById('item_nome');
+                        var selectedValue = select.getAttribute('data-selected');
+                        if (selectedValue) {
+                            for (var i = 0; i < select.options.length; i++) {
+                                if (select.options[i].value === selectedValue) {
+                                    select.selectedIndex = i;
+                                    break
+
+                                    ;
+                                }
+                            }
+                        }
+                    });
+                </script>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const form = document.querySelector('form[action^="/agendamentoEditar"][method="POST"]');
+                        const cepInput = document.getElementById('nr_cep');
+
+                        if (form && cepInput) {
+                            form.addEventListener('submit', function (e) {
+                                const cepNumerico = cepInput.value.replace(/\D/g, '');
+                                if (cepNumerico.length < 8) {
+                                    alert('O CEP deve conter 8 dígitos numéricos.');
+                                    cepInput.focus();
+                                    e.preventDefault();
+                                    return false;
+                                }
+                            });
+                        }
+                    });
+                </script>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const form = document.querySelector('form[action^="/agendamentoEditar"][method="POST"]');
+                        const numeroInput = document.getElementById('nr_endereco');
+
+                        if (form && numeroInput) {
+                            // Impede digitação de caracteres não numéricos
+                            numeroInput.addEventListener('input', function () {
+                                this.value = this.value.replace(/[^0-9]/g, '');
+                            });
+
+                            // Validação antes de enviar o formulário
+                            form.addEventListener('submit', function (e) {
+                                if (!numeroInput.value || isNaN(numeroInput.value) || parseInt(numeroInput.value, 10) <= 0) {
+                                    alert('O número do endereço deve ser um número positivo.');
+                                    numeroInput.focus();
+                                    e.preventDefault();
+                                    return false;
+                                }
+                            });
+                        }
+                    });
+                </script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const form = document.querySelector('form[action*="adicionarItem"]');
+                        const qtdeInput = document.getElementById('qtde_material');
+
+                        if (form && qtdeInput) {
+                            // Impede digitação de caracteres não numéricos
+                            qtdeInput.addEventListener('input', function () {
+                                this.value = this.value.replace(/[^0-9]/g, '');
+                            });
+
+                            // Validação antes de enviar o formulário
+                            form.addEventListener('submit', function (e) {
+                                if (!qtdeInput.value || isNaN(qtdeInput.value) || parseInt(qtdeInput.value, 10) <= 0) {
+                                    alert('A quantidade deve ser um número positivo.');
+                                    qtdeInput.focus();
+                                    e.preventDefault();
+                                    return false;
+                                }
+                            });
+                        }
+                    });
+                </script>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const form = document.querySelector('form[action^="/agendamentoEditar"][method="POST"]');
+                        const statusCheckbox = document.getElementById('status_checkbox');
+
+                        if (form && statusCheckbox) {
+                            form.addEventListener('submit', function () {
+                                // Se o checkbox NÃO estiver marcado, adiciona um campo oculto com status cancelado
+                                if (!statusCheckbox.checked) {
+                                    let hidden = document.createElement('input');
+                                    hidden.type = 'hidden';
+                                    hidden.name = 'status';
+                                    hidden.value = 'cancelado';
+                                    form.appendChild(hidden);
+                                }
+                            });
+                        }
+                    });
+                </script>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const statusCheckbox = document.getElementById('status_checkbox');
+                        const statusLabel = document.getElementById('status_label_text');
+                        if (statusCheckbox && statusLabel) {
+                            function atualizarTexto() {
+                                statusLabel.textContent = statusCheckbox.checked ? 'Agendamento Ativo' : 'Agendamento Cancelado';
+                            }
+                            statusCheckbox.addEventListener('change', atualizarTexto);
+                            atualizarTexto(); // Garante o texto correto ao carregar
+                        }
+                    });
+                </script>
 
 
                 <!--End conteudo indiviudual da pagina-->

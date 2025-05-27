@@ -260,6 +260,15 @@
                                                 <input type="date" name="dt_rota" class="form-control">
                                             </div>
                                         </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <select name="ie_situacao" class="form-select form-control">
+                                                    <option value="">Selecione</option>
+                                                    <option value="A">Ativa</option>
+                                                    <option value="I">Inativa</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="d-flex justify-content-end flex-wrap">
                                         <button type="submit" class="btn btn-primary shadow-lg">Buscar</button>
@@ -280,7 +289,9 @@
                                                     <th>Rota</th>
                                                     <th>Km</th>
                                                     <th>Peso</th>
+                                                    <th>Volume</th>
                                                     <th>Data</th>
+                                                    <th>Situação</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
@@ -290,7 +301,9 @@
                                                     <td>{{nm_rota}}</td>
                                                     <td>{{nr_distancia_km}}</td>
                                                     <td>{{qt_peso_total_kg}}</td>
+                                                    <td>{{volume_rota}}</td>
                                                     <td>{{dt_agendada}}</td>
+                                                    <td>{{ie_situacao}}</td>
                                                     <td class="text-end">
                                                         <a href="/rotaEditar/{{cd_rota}}"
                                                             class="btn btn-icon btn-round btn-warning me-3">

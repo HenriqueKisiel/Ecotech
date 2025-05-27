@@ -250,7 +250,8 @@
                                             <div class="form-group">
                                                 <label for="cd_pessoa_fisica">Pessoa Física</label>
                                                 <input type="text" id="pessoa_fisica_input" class="form-control"
-                                                    placeholder="Digite o nome da pessoa física" autocomplete="off">
+                                                    placeholder="Digite o nome da pessoa física" autocomplete="off"
+                                                    maxlength="60">
                                                 <input type="hidden" name="cd_pessoa_fisica" id="cd_pessoa_fisica">
                                                 <div id="lista_pessoas_fisicas" class="dropdown-menu"
                                                     style="width: 45%; max-height: 200px; overflow-y: auto;"></div>
@@ -264,7 +265,8 @@
                                             <div class="form-group">
                                                 <label for="cd_pessoa_juridica">Pessoa Jurídica</label>
                                                 <input type="text" id="pessoa_juridica_input" class="form-control"
-                                                    placeholder="Digite o nome da pessoa jurídica" autocomplete="off">
+                                                    placeholder="Digite o nome da pessoa jurídica" autocomplete="off"
+                                                    maxlength="60">
                                                 <input type="hidden" name="cd_pessoa_juridica" id="cd_pessoa_juridica">
                                                 <div id="lista_pessoas_juridicas" class="dropdown-menu"
                                                     style="width: 45%; max-height: 200px; overflow-y: auto;"></div>
@@ -317,7 +319,7 @@
                                                 <div class="form-group">
                                                     <label class="fw-bold">Número do Endereço</label>
                                                     <input type="number" class="form-control" name="nr_endereco" min="1"
-                                                        max="9999999" maxlength="7" required
+                                                        max="99999" maxlength="7" required
                                                         placeholder="Preencha o número do endereço">
                                                 </div>
                                             </div>
@@ -452,25 +454,7 @@
                 </script>
 
 
-                <!-- Script de máscara para CEP -->
-                <script>
-                    document.addEventListener('DOMContentLoaded', function () {
-                        const cepInput = document.getElementById('cep');
-                        const form = document.querySelector('form');
 
-                        cepInput.addEventListener('input', function (e) {
-                            let cep = e.target.value.replace(/\D/g, '');
-                            if (cep.length > 5) {
-                                cep = cep.slice(0, 5) + '-' + cep.slice(5, 8);
-                            }
-                            e.target.value = cep;
-                        });
-
-                        form.addEventListener('submit', function () {
-                            cepInput.value = cepInput.value.replace(/\D/g, '');
-                        });
-                    });
-                </script>
                 <script>
                     document.getElementById('qt_quantidade_prevista_kg').addEventListener('input', function (e) {
                         let value = this.value;
@@ -527,7 +511,63 @@
                     });
                 </script>
 
-                
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const cepInput = document.getElementById('nr_cep');
+                        const form = document.querySelector('form');
+
+                        cepInput.addEventListener('input', function (e) {
+                            let cep = e.target.value.replace(/\D/g, '').slice(0, 8);
+                            if (cep.length > 5) {
+                                cep = cep.slice(0, 5) + '-' + cep.slice(5);
+                            }
+                            e.target.value = cep;
+                        });
+
+                        form.addEventListener('submit', function () {
+                            cepInput.value = cepInput.value.replace(/\D/g, '');
+                        });
+                    });
+                </script>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const dataInput = document.getElementById('dt_solicitada');
+                        if (!dataInput) return;
+
+                        dataInput.addEventListener('input', function (e) {
+                            let valor = dataInput.value;
+
+                            // Para o formato yyyy-mm-dd
+                            let match = valor.match(/^(\d{4,})-(\d{2})-(\d{2})$/);
+                            if (match && match[1].length > 4) {
+                                // Limita o ano aos 4 primeiros dígitos
+                                let anoCorrigido = match[1].slice(0, 4);
+                                dataInput.value = `${anoCorrigido}-${match[2]}-${match[3]}`;
+                            }
+                        });
+                    });
+                </script>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const pesoInput = document.getElementById('qt_quantidade_prevista_kg');
+                        pesoInput.addEventListener('input', function () {
+                            let valor = this.value.replace(',', '.');
+                            // Divide em parte inteira e decimal
+                            let partes = valor.split('.');
+                            // Limita a parte inteira a 5 dígitos
+                            partes[0] = partes[0].slice(0, 5);
+                            // Limita a parte decimal a 2 dígitos (opcional)
+                            if (partes[1]) partes[1] = partes[1].slice(0, 2);
+                            // Remonta o valor
+                            let novoValor = partes[0];
+                            if (partes[1] !== undefined) novoValor += ',' + partes[1];
+                            this.value = novoValor;
+                        });
+                    });
+                </script>
+
                 <!--End conteudo indiviudual da pagina-->
             </div>
         </div>
