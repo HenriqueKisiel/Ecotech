@@ -17,213 +17,437 @@ function exibirPlanta(req, res) {
     });
 }
 
-// Função para buscar bairros de uma cidade específica
-function buscarBairrosPorCidade(req, res) {
-    const cd_cidade = req.params.cd_cidade;
-
-    if (!cd_cidade) {
-        return res.status(400).json({ error: 'ID da cidade não informado.' });
-    }
-
-    const sql = 'SELECT cd_bairro, nm_bairro FROM bairro WHERE cd_cidade = ? ORDER BY nm_bairro';
-
-    db.query(sql, [cd_cidade], function (err, resultados) {
-        if (err) {
-            console.error('Erro ao buscar bairros:', err);
-            return res.status(500).json({ error: 'Erro ao buscar bairros.' });
-        }
-
-        res.json(resultados);
-    });
-}
-
-// Função para validar campos obrigatórios
-function validarCampos(req, res) {
-    const {
-        nm_planta,
-        qt_area_total_m2,
-        qt_capacidade_total_kg,
-        ds_endereco,
-        cd_bairro,
-        cd_cidade,
-        nr_cep
-    } = req.body;
-
-    //if (!nm_planta || !qt_area_total_m2 || !ds_endereco || !cd_bairro || !cd_cidade || !nr_cep) {
-        //return res.status(400).send("Todos os campos obrigatórios devem ser preenchidos.");
-    //}
-
-    if (isNaN(qt_area_total_m2) || qt_area_total_m2 <= 0) {
-        return res.status(400).send("A área total deve ser um número positivo.");
-    }
-
-    if (qt_capacidade_total_kg && (isNaN(qt_capacidade_total_kg) || qt_capacidade_total_kg <= 0)) {
-        return res.status(400).send("A capacidade total deve ser um número positivo.");
-    }
-
-    return true;
-}
-
-// Função para verificar e criar cidade e bairro
-async function verificarECriarCidadeEBairro(nm_cidade, nm_bairro, uf_estado) {
-    // Verificar se a cidade existe
-    let cidade = await new Promise((resolve, reject) => {
-        db.query('SELECT cd_cidade FROM cidade WHERE nm_cidade = ? AND uf_estado = ?', [nm_cidade, uf_estado], (err, results) => {
-            if (err) return reject(err);
-            resolve(results);
-        });
-    });
-
-    // Se a cidade não existir, cria a cidade
-    if (cidade.length === 0) {
-        const resultCidade = await new Promise((resolve, reject) => {
-            db.query('INSERT INTO cidade (nm_cidade, uf_estado) VALUES (?, ?)', [nm_cidade, uf_estado], (err, results) => {
-                if (err) return reject(err);
-                resolve(results);
-            });
-        });
-        cidade = [{ cd_cidade: resultCidade.insertId }]; // A cidade criada
-    }
-
-    // Verificar se o bairro existe
-    let bairro = await new Promise((resolve, reject) => {
-        db.query('SELECT cd_bairro FROM bairro WHERE nm_bairro = ? AND cd_cidade = ?', [nm_bairro, cidade[0].cd_cidade], (err, results) => {
-            if (err) return reject(err);
-            resolve(results);
-        });
-    });
-
-    // Se o bairro não existir, cria o bairro
-    if (bairro.length === 0) {
-        const resultBairro = await new Promise((resolve, reject) => {
-            db.query('INSERT INTO bairro (nm_bairro, cd_cidade) VALUES (?, ?)', [nm_bairro, cidade[0].cd_cidade], (err, results) => {
-                if (err) return reject(err);
-                resolve(results);
-            });
-        });
-        bairro = [{ cd_bairro: resultBairro.insertId }]; // O bairro criado
-    }
-
-    return { cidade: cidade[0], bairro: bairro[0] };
-}
-
 // Função para cadastrar uma nova planta no banco de dados
-async function cadastrarPlanta(req, res) {
+function cadastrarPlanta(req, res) {
     let {
         nm_planta,
-        qt_area_total_m2,
-        qt_capacidade_total_kg,
-        qt_capacidade_atual_kg,
-        ie_situacao,
-        ds_endereco,
-        cd_bairro,
-        cd_cidade,
+        qt_capacidade_total_volume,
         nr_cep,
-        nm_cidade,
+        nr_endereco,
+        ds_endereco,
         nm_bairro,
+        nm_cidade,
         uf_estado
     } = req.body;
 
-    qt_capacidade_atual_kg = qt_capacidade_total_kg;
+    const ie_situacao = "A";
+    nr_cep = nr_cep ? nr_cep.replace(/\D/g, '') : '';
 
-    // Validação dos campos obrigatórios
-    if (validarCampos(req, res) !== true) return;
-
-    ie_situacao = Array.isArray(ie_situacao) ? ie_situacao[ie_situacao.length - 1] : ie_situacao;
-    ie_situacao = (typeof ie_situacao === "string" && ie_situacao.trim().toUpperCase() === "A") ? "A" : "I";
-
-    // Verificar e criar cidade e bairro, se necessário
-    try {
-        const { cidade, bairro } = await verificarECriarCidadeEBairro(nm_cidade, nm_bairro, uf_estado);
-
-        // Usar os IDs gerados ou existentes para cadastrar a planta
-        const sql = `
-            INSERT INTO planta (
-                nm_planta,
-                qt_area_total_m2,
-                qt_capacidade_total_kg,
-                qt_capacidade_atual_kg,
-                ie_situacao,
-                ds_endereco,
-                cd_bairro,
-                cd_cidade,
-                nr_cep
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `;
-
-        const valores = [
-            nm_planta,
-            qt_area_total_m2,
-            qt_capacidade_total_kg || null,
-            qt_capacidade_atual_kg || null,
-            ie_situacao,
-            ds_endereco,
-            bairro.cd_bairro,
-            cidade.cd_cidade,
-            nr_cep
-        ];
-
-        db.query(sql, valores, function (err, result) {
-            if (err) {
-                console.error('Erro ao cadastrar planta:', err);
-                return res.status(500).send('Erro ao cadastrar planta.');
-            }
-
-            console.log('Planta cadastrada com sucesso!');
-
-            res.render('planta', {
-                planta: {
-                    nm_planta,
-                    qt_area_total_m2,
-                    qt_capacidade_total_kg,
-                    qt_capacidade_atual_kg,
-                    ie_situacao,
-                    ds_endereco,
-                    nr_cep,
-                    cd_cidade,
-                    cd_bairro
-                },
-                script: `
-                    <script>
-                        swal({
-                            title: "Cadastro realizado!",
-                            text: "Planta cadastrada com sucesso!",
-                            icon: "success",
-                            buttons: {
-                                confirm: {
-                                    text: "OK",
-                                    value: true,
-                                    visible: true,
-                                    className: "btn btn-success",
-                                    closeModal: true
-                                }
-                            }
-                        });
-                    </script>
-                `
-            });
-
-            console.log('Dados cadastrados:', {
-                nm_planta,
-                qt_area_total_m2,
-                qt_capacidade_total_kg,
-                qt_capacidade_atual_kg,
-                ie_situacao,
-                ds_endereco,
-                cd_bairro,
-                cd_cidade,
-                nr_cep
-            });
+    // --- Validações Nome da Planta (mensagens separadas) ---
+    if (!nm_planta || nm_planta.trim().length === 0) {
+        return res.status(400).json({
+            erro: "O nome da planta é obrigatório.",
+            script: `<script>
+                swal("Erro!", "O nome da planta é obrigatório.", {
+                    icon: "error",
+                    buttons: {
+                        confirm: {
+                            text: "OK",
+                            className: "btn btn-danger",
+                        },
+                    },
+                });
+            </script>`
         });
-
-    } catch (error) {
-        console.error('Erro ao verificar/criar cidade e bairro:', error);
-        return res.status(500).send('Erro ao verificar ou criar cidade e bairro.');
     }
+    if (nm_planta.trim().length < 10) {
+        return res.status(400).json({
+            erro: "O nome da planta deve ter pelo menos 10 caracteres.",
+            script: `<script>
+                swal("Erro!", "O nome da planta deve ter pelo menos 10 caracteres.", {
+                    icon: "error",
+                    buttons: {
+                        confirm: {
+                            text: "OK",
+                            className: "btn btn-danger",
+                        },
+                    },
+                });
+            </script>`
+        });
+    }
+    if (nm_planta.trim().length > 100) {
+        return res.status(400).json({
+            erro: "O nome da planta deve ter no máximo 100 caracteres.",
+            script: `<script>
+                swal("Erro!", "O nome da planta deve ter no máximo 100 caracteres.", {
+                    icon: "error",
+                    buttons: {
+                        confirm: {
+                            text: "OK",
+                            className: "btn btn-danger",
+                        },
+                    },
+                });
+            </script>`
+        });
+    }
+    if (/^\d+$/.test(nm_planta)) {
+        return res.status(400).json({
+            erro: "O nome da planta não pode ser apenas números.",
+            script: `<script>
+                swal("Erro!", "O nome da planta não pode ser apenas números.", {
+                    icon: "error",
+                    buttons: {
+                        confirm: {
+                            text: "OK",
+                            className: "btn btn-danger",
+                        },
+                    },
+                });
+            </script>`
+        });
+    }
+    if (/[^a-zA-Z0-9 ]/.test(nm_planta)) {
+        return res.status(400).json({
+            erro: "O nome da planta só pode conter letras, números e espaços.",
+            script: `<script>
+                swal("Erro!", "O nome da planta só pode conter letras, números e espaços.", {
+                    icon: "error",
+                    buttons: {
+                        confirm: {
+                            text: "OK",
+                            className: "btn btn-danger",
+                        },
+                    },
+                });
+            </script>`
+        });
+    }
+    if (/\s{2,}/.test(nm_planta)) {
+        return res.status(400).json({
+            erro: "O nome da planta não pode conter espaços duplos.",
+            script: `<script>
+                swal("Erro!", "O nome da planta não pode conter espaços duplos.", {
+                    icon: "error",
+                    buttons: {
+                        confirm: {
+                            text: "OK",
+                            className: "btn btn-danger",
+                        },
+                    },
+                });
+            </script>`
+        });
+    }
+
+    // --- Validações Capacidade Máxima de volume cúbico (m³) ---
+    if (
+        qt_capacidade_total_volume === undefined ||
+        qt_capacidade_total_volume === null ||
+        qt_capacidade_total_volume === ''
+    ) {
+        return res.status(400).json({
+            erro: "A capacidade máxima é obrigatória.",
+            script: `<script>
+                swal("Erro!", "A capacidade máxima de volume é obrigatória.", {
+                    icon: "error",
+                    buttons: {
+                        confirm: {
+                            text: "OK",
+                            className: "btn btn-danger",
+                        },
+                    },
+                });
+            </script>`
+        });
+    }
+    if (isNaN(Number(qt_capacidade_total_volume))) {
+        return res.status(400).json({
+            erro: "A capacidade máxima deve ser um número.",
+            script: `<script>
+                swal("Erro!", "A capacidade máxima deve ser um número.", {
+                    icon: "error",
+                    buttons: {
+                        confirm: {
+                            text: "OK",
+                            className: "btn btn-danger",
+                        },
+                    },
+                });
+            </script>`
+        });
+    }
+    const capacidade = Number(qt_capacidade_total_volume);
+    const capacidadeMin = 99.99999999;
+    const capacidadeMax = 999999999999.99999999;
+    const casasDecimais = qt_capacidade_total_volume.includes('.') ? qt_capacidade_total_volume.split('.')[1].length : 0;
+
+    if (capacidade <= 0) {
+        return res.status(400).json({
+            erro: "A capacidade máxima deve ser um número positivo.",
+            script: `<script>
+                swal("Erro!", "A capacidade máxima deve ser um número positivo.", {
+                    icon: "error",
+                    buttons: {
+                        confirm: {
+                            text: "OK",
+                            className: "btn btn-danger",
+                        },
+                    },
+                });
+            </script>`
+        });
+    }
+    if (capacidade < capacidadeMin) {
+        return res.status(400).json({
+            erro: `A capacidade máxima deve ser no mínimo ${capacidadeMin}.`,
+            script: `<script>
+                swal("Erro!", "A capacidade máxima deve ser no mínimo ${capacidadeMin}.", {
+                    icon: "error",
+                    buttons: {
+                        confirm: {
+                            text: "OK",
+                            className: "btn btn-danger",
+                        },
+                    },
+                });
+            </script>`
+        });
+    }
+    if (capacidade > capacidadeMax) {
+        return res.status(400).json({
+            erro: `A capacidade máxima deve ser no máximo ${capacidadeMax}.`,
+            script: `<script>
+                swal("Erro!", "A capacidade máxima deve ser no máximo ${capacidadeMax}.", {
+                    icon: "error",
+                    buttons: {
+                        confirm: {
+                            text: "OK",
+                            className: "btn btn-danger",
+                        },
+                    },
+                });
+            </script>`
+        });
+    }
+    if (casasDecimais > 8) {
+        return res.status(400).json({
+            erro: "A capacidade máxima deve ter no máximo 8 casas decimais.",
+            script: `<script>
+                swal("Erro!", "A capacidade máxima deve ter no máximo 8 casas decimais.", {
+                    icon: "error",
+                    buttons: {
+                        confirm: {
+                            text: "OK",
+                            className: "btn btn-danger",
+                        },
+                    },
+                });
+            </script>`
+        });
+    }
+
+    // --- Validações CEP ---
+    if (!nr_cep || nr_cep.length === 0) {
+        return res.status(400).json({
+            erro: "O CEP é obrigatório.",
+            script: `<script>
+                swal("Erro!", "O CEP é obrigatório.", {
+                    icon: "error",
+                    buttons: {
+                        confirm: {
+                            text: "OK",
+                            className: "btn btn-danger",
+                        },
+                    },
+                });
+            </script>`
+        });
+    }
+    if (!/^\d{8}$/.test(nr_cep)) {
+        return res.status(400).json({
+            erro: "CEP inválido.",
+            script: `<script>
+                swal("Erro!", "CEP inválido.", {
+                    icon: "error",
+                    buttons: {
+                        confirm: {
+                            text: "OK",
+                            className: "btn btn-danger",
+                        },
+                    },
+                });
+            </script>`
+        });
+    }
+
+    // --- Validações Número do Endereço ---
+    if (
+        !nr_endereco ||
+        typeof nr_endereco !== 'string' ||
+        nr_endereco.trim().length === 0
+    ) {
+        return res.status(400).json({
+            erro: "O número do endereço é obrigatório.",
+            script: `<script>
+                swal("Erro!", "O número do endereço é obrigatório.", {
+                    icon: "error",
+                    buttons: {
+                        confirm: {
+                            text: "OK",
+                            className: "btn btn-danger",
+                        },
+                    },
+                });
+            </script>`
+        });
+    }
+    if (nr_endereco.trim().length > 10) {
+        return res.status(400).json({
+            erro: "O número do endereço deve ter no máximo 10 caracteres.",
+            script: `<script>
+                swal("Erro!", "O número do endereço deve ter no máximo 10 caracteres.", {
+                    icon: "error",
+                    buttons: {
+                        confirm: {
+                            text: "OK",
+                            className: "btn btn-danger",
+                        },
+                    },
+                });
+            </script>`
+        });
+    }
+    if (!/[a-zA-Z0-9]/.test(nr_endereco)) {
+        return res.status(400).json({
+            erro: "O número do endereço deve conter pelo menos uma letra ou número.",
+            script: `<script>
+                swal("Erro!", "O número do endereço deve conter pelo menos uma letra ou número.", {
+                    icon: "error",
+                    buttons: {
+                        confirm: {
+                            text: "OK",
+                            className: "btn btn-danger",
+                        },
+                    },
+                });
+            </script>`
+        });
+    }
+    if (!/^[a-zA-Z0-9\-\/ ]+$/.test(nr_endereco)) {
+        return res.status(400).json({
+            erro: "O número do endereço só pode conter letras, números, hífen, barra e espaço.",
+            script: `<script>
+                swal("Erro!", "O número do endereço só pode conter letras, números, hífen, barra e espaço.", {
+                    icon: "error",
+                    buttons: {
+                        confirm: {
+                            text: "OK",
+                            className: "btn btn-danger",
+                        },
+                    },
+                });
+            </script>`
+        });
+    }
+
+    // --- Validação dos campos automáticos obrigatórios ---
+    if (
+        !ds_endereco || ds_endereco.trim().length === 0 ||
+        !nm_bairro || nm_bairro.trim().length === 0 ||
+        !nm_cidade || nm_cidade.trim().length === 0 ||
+        !uf_estado || uf_estado.trim().length === 0
+    ) {
+        return res.status(400).json({
+            erro: "Todos os campos de endereço (rua, bairro, cidade e UF) devem estar preenchidos pelo CEP.",
+            script: `<script>
+                swal("Erro!", "CEP inválido.", {
+                    icon: "error",
+                    buttons: {
+                        confirm: {
+                            text: "OK",
+                            className: "btn btn-danger",
+                        },
+                    },
+                });
+            </script>`
+        });
+    }
+
+    // --- Fim das validações ---
+
+    const sql = `
+        INSERT INTO planta (
+            nm_planta,
+            qt_capacidade_total_volume,
+            nr_cep,
+            nr_endereco,
+            ds_endereco,
+            nm_bairro,
+            nm_cidade,
+            uf_estado,
+            ie_situacao
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    const valores = [
+        nm_planta.trim(),
+        capacidade,
+        nr_cep,
+        nr_endereco.trim(),
+        ds_endereco,
+        nm_bairro,
+        nm_cidade,
+        uf_estado,
+        ie_situacao
+    ];
+
+    db.query(sql, valores, function (err, result) {
+        if (err) {
+            console.error('Erro ao cadastrar planta:', err);
+            return res.status(500).json({
+                erro: 'Erro ao cadastrar planta.',
+                script: `<script>
+                    swal("Erro!", "Erro ao cadastrar planta.", {
+                        icon: "error",
+                        buttons: {
+                            confirm: {
+                                text: "OK",
+                                className: "btn btn-danger",
+                            },
+                        },
+                    });
+                </script>`
+            });
+        }
+
+        res.json({
+            sucesso: true,
+            planta: {
+                nm_planta,
+                qt_capacidade_total_volume,
+                nr_cep,
+                nr_endereco,
+                ds_endereco,
+                nm_bairro,
+                nm_cidade,
+                uf_estado,
+                ie_situacao
+            },
+            script: `
+                <script>
+                    swal({
+                        title: "Cadastro realizado!",
+                        text: "Planta cadastrada com sucesso!",
+                        icon: "success",
+                        buttons: {
+                            confirm: {
+                                text: "OK",
+                                value: true,
+                                visible: true,
+                                className: "btn btn-success",
+                                closeModal: true
+                            }
+                        }
+                    });
+                </script>
+            `
+        });
+    });
 }
 
 module.exports = {
     exibirPlanta,
-    cadastrarPlanta,
-    buscarBairrosPorCidade
+    cadastrarPlanta
 };

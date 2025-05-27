@@ -45,95 +45,126 @@ async function atualizarStatusRota(req, res) {
     const { acao } = req.body;
     const dataHoraAtual = new Date();
 
-    if (acao === 'finalizar') {
-        // Verifica se existe algum agendamento com dt_coleta preenchida
-        const verificarAgendamentos = `
-           SELECT COUNT(*) AS total 
-        FROM vw_pontos_coleta 
-        WHERE cd_rota = ? 
-        AND dt_coleta IS NULL 
-
-        `;
-
-        connection.query(verificarAgendamentos, [cd_rota], (erroVerificacao, resultadoVerificacao) => {
-            if (erroVerificacao) {
-                console.error("Erro ao verificar agendamentos:", erroVerificacao);
-                return res.status(500).json({ success: false });
-            }
-
-            const faltamcoletar = resultadoVerificacao[0].total;
-
-            if (faltamcoletar > 0) {
-                return res.json({ success: false, coletado: true, message: 'Existem agendamentos para serem coletados para esta rota. Não é possível finalizar.' });
-            }
-
-            // Se nenhum agendamento coletado, prossegue com o update
-            const query = `UPDATE rota_coleta SET dt_fim = ? WHERE cd_rota = ?`;
-            connection.query(query, [dataHoraAtual, cd_rota], (erro, resultado) => {
-                if (erro) {
-                    console.error(`Erro ao atualizar dt_fim:`, erro);
-                    return res.json({ success: false });
+    const queryPontos = `SELECT COUNT(*) AS total FROM vw_pontos_coleta WHERE cd_rota = ?`;
+    connection.query(queryPontos, [cd_rota], (erroPontos, resultadoPontos) => {
+        if (erroPontos) {
+            console.error("Erro ao verificar pontos vinculados:", erroPontos);
+            return res.status(500).json({ success: false });
+        }
+        if (resultadoPontos[0].total === 0) {
+            return res.json({ success: false, semPontos: true, message: 'Não é possível iniciar/finalizar uma rota sem pontos vinculados.' });
+        }
+        if (acao === 'finalizar') {
+            // Verifica se a rota já foi finalizada
+            const queryCheckFim = `SELECT dt_fim, dt_iniciado, ie_motorista, ie_caminhao FROM rota_coleta WHERE cd_rota = ?`;
+            connection.query(queryCheckFim, [cd_rota], (erroFim, resultadoFim) => {
+                if (erroFim) {
+                    console.error("Erro ao verificar finalização da rota:", erroFim);
+                    return res.status(500).json({ success: false });
+                }
+                if (resultadoFim[0] && resultadoFim[0].dt_fim) {
+                    return res.json({ success: false, jaFinalizada: true, message: 'Esta rota já foi finalizada.' });
+                }
+                if (!resultadoFim[0] || !resultadoFim[0].dt_iniciado || resultadoFim[0].dt_iniciado === '000000') {
+                    return res.json({ success: false, naoIniciada: true, message: 'Não é possível finalizar uma rota que não foi iniciada.' });
+                }
+                if (!resultadoFim[0].ie_motorista || !resultadoFim[0].ie_caminhao) {
+                return res.json({ success: false, motoristaCaminhao: true, message: 'É necessário vincular um motorista e um caminhão à rota para finalizar.' });
                 }
 
-                return res.json({ success: true });
-            });
-        });
+                // Verifica se existe algum agendamento com dt_coleta preenchida
+                const verificarAgendamentos = `
+                SELECT COUNT(*) AS total 
+                FROM vw_pontos_coleta 
+                WHERE cd_rota = ? 
+                AND dt_coleta IS NULL
+                AND DT_cancelado IS NULL
+            `;
+                connection.query(verificarAgendamentos, [cd_rota], (erroVerificacao, resultadoVerificacao) => {
+                    if (erroVerificacao) {
+                        console.error("Erro ao verificar agendamentos:", erroVerificacao);
+                        return res.status(500).json({ success: false });
+                    }
 
-    } else if (acao === 'iniciar') {
-        // Verifica se a rota já foi iniciada
-        const verificaRota = `
+                    const faltamcoletar = resultadoVerificacao[0].total;
+
+                    if (faltamcoletar > 0) {
+                        return res.json({ success: false, coletado: true, message: 'Existem agendamentos para serem coletados para esta rota. Não é possível finalizar.' });
+                    }
+
+                    // Se nenhum agendamento coletado, prossegue com o update
+                    const query = `UPDATE rota_coleta SET dt_fim = ? WHERE cd_rota = ?`;
+                    connection.query(query, [dataHoraAtual, cd_rota], (erro, resultado) => {
+                        if (erro) {
+                            console.error(`Erro ao atualizar dt_fim:`, erro);
+                            return res.json({ success: false });
+                        }
+
+                        return res.json({ success: true });
+                    });
+                });
+            });
+
+        } else if (acao === 'iniciar') {
+            // Verifica se a rota já foi iniciada
+            const verificaRota = `
            SELECT COUNT(*) AS total 
            FROM vw_pontos_coleta 
            WHERE cd_rota = ? 
            AND dt_r_inciada != '000000'
         `;
 
-        // NOVA VALIDAÇÃO: Verifica se motorista e caminhão estão vinculados
-        const verificaMotoristaCaminhao = `
+            // NOVA VALIDAÇÃO: Verifica se motorista e caminhão estão vinculados
+            const verificaMotoristaCaminhao = `
             SELECT ie_motorista, ie_caminhao 
             FROM rota_coleta 
             WHERE cd_rota = ?
         `;
 
-        connection.query(verificaMotoristaCaminhao, [cd_rota], (erroMC, resultadoMC) => {
-            if (erroMC) {
-                console.error("Erro ao verificar motorista/caminhão:", erroMC);
-                return res.status(500).json({ success: false });
-            }
-
-            const rota = resultadoMC[0];
-            if (!rota || !rota.ie_motorista || !rota.ie_caminhao) {
-                return res.json({ success: false, motoristaCaminhao: true, message: 'É necessário vincular um motorista e um caminhão à rota antes de iniciar.' });
-            }
-
-            // Se motorista e caminhão existem, segue a validação normal
-            connection.query(verificaRota, [cd_rota], (erroVerificacao, resultadoVerificacao) => {
-                if (erroVerificacao) {
-                    console.error("Erro ao verificar agendamentos:", erroVerificacao);
+            connection.query(verificaMotoristaCaminhao, [cd_rota], (erroMC, resultadoMC) => {
+                if (erroMC) {
+                    console.error("Erro ao verificar motorista/caminhão:", erroMC);
                     return res.status(500).json({ success: false });
                 }
 
-                const faltamcoletar = resultadoVerificacao[0].total;
-
-                if (faltamcoletar > 0) {
-                    return res.json({ success: false, iniciado: true, message: 'A Rota já foi iniciada.' });
+                const rota = resultadoMC[0];
+                if (!rota || !rota.ie_motorista || !rota.ie_caminhao) {
+                    return res.json({ success: false, motoristaCaminhao: true, message: 'É necessário vincular um motorista e um caminhão à rota antes de iniciar.' });
                 }
 
-                // inicia uma rota
-                const query = `UPDATE rota_coleta SET dt_iniciado = ? WHERE cd_rota = ?`;
-                connection.query(query, [dataHoraAtual, cd_rota], (erro, resultado) => {
-                    if (erro) {
-                        console.error(`Erro ao atualizar dt_iniciado:`, erro);
-                        return res.json({ success: false });
+                // Se motorista e caminhão existem, segue a validação normal
+                connection.query(verificaRota, [cd_rota], (erroVerificacao, resultadoVerificacao) => {
+                    if (erroVerificacao) {
+                        console.error("Erro ao verificar agendamentos:", erroVerificacao);
+                        return res.status(500).json({ success: false });
                     }
 
-                    return res.json({ success: true });
+                    const faltamcoletar = resultadoVerificacao[0].total;
+
+                    if (faltamcoletar > 0) {
+                        return res.json({ success: false, iniciado: true, message: 'A Rota já foi iniciada.' });
+                    }
+
+                    // inicia uma rota
+                    const query = `UPDATE rota_coleta SET dt_iniciado = ? WHERE cd_rota = ?`;
+                    connection.query(query, [dataHoraAtual, cd_rota], (erro, resultado) => {
+                        if (erro) {
+                            console.error(`Erro ao atualizar dt_iniciado:`, erro);
+                            return res.json({ success: false });
+                        }
+
+                        return res.json({ success: true });
+                    });
                 });
             });
-        });
-    } else {
-        return res.status(400).json({ success: false, message: 'Ação inválida' });
-    }
+        } else {
+            return res.status(400).json({ success: false, message: 'Ação inválida' });
+        }
+    });
+
+
+
+
 }
 
 
@@ -145,8 +176,8 @@ async function atualizarDataColeta(req, res) {
 
     if (acao === 'coletar') {
         const queryRota = `
-        SELECT dt_r_inciada FROM vw_pontos_coleta WHERE cd_agendamento = ?
-         `;
+            SELECT dt_r_inciada, dt_coleta, dt_cancelado FROM vw_pontos_coleta WHERE cd_agendamento = ?
+        `;
         connection.query(queryRota, [cd_agendamento], (erro, resultado) => {
             if (erro) {
                 console.error("Erro ao verificar status da rota:", erro);
@@ -155,6 +186,12 @@ async function atualizarDataColeta(req, res) {
             const rota = resultado[0];
             if (!rota || !rota.dt_r_inciada || rota.dt_r_inciada === '000000' || rota.dt_r_inciada === null) {
                 return res.json({ success: false, rotaNaoIniciada: true, message: 'A rota precisa estar iniciada para coletar.' });
+            }
+            if (rota.dt_coleta) {
+                return res.json({ success: false, jaColetado: true, message: 'Este ponto já foi coletado.' });
+            }
+            if (rota.dt_cancelado) {
+                return res.json({ success: false, pontoCancelado: true, message: 'Não é possível coletar um ponto cancelado.' });
             }
 
             // Prossegue com a coleta
@@ -168,16 +205,27 @@ async function atualizarDataColeta(req, res) {
             });
         });
     } else if (acao === 'cancelar') {
-        // Verifica se o ponto já foi coletado
-        const queryCheck = `SELECT dt_coleta FROM agendamento WHERE cd_agendamento = ?`;
+        // Verifica se o ponto já foi coletado ou cancelado
+        const queryCheck = `
+            SELECT a.dt_coleta, a.dt_cancelado, v.dt_r_inciada
+            FROM agendamento a
+            JOIN vw_pontos_coleta v ON a.cd_agendamento = v.cd_agendamento
+            WHERE a.cd_agendamento = ?
+        `;
         connection.query(queryCheck, [cd_agendamento], (erro, resultado) => {
             if (erro) {
                 console.error("Erro ao verificar coleta:", erro);
                 return res.json({ success: false });
             }
             const agendamento = resultado[0];
-            if (agendamento && agendamento.dt_coleta) {
+            if (!agendamento || !agendamento.dt_r_inciada || agendamento.dt_r_inciada === '000000' || agendamento.dt_r_inciada === null) {
+                return res.json({ success: false, rotaNaoIniciada: true, message: 'A rota precisa estar iniciada para cancelar um ponto.' });
+            }
+            if (agendamento.dt_coleta) {
                 return res.json({ success: false, jaColetado: true, message: 'Não é possível cancelar um ponto já coletado.' });
+            }
+            if (agendamento.dt_cancelado && agendamento.dt_cancelado !== '0000-00-00 00:00:00' && agendamento.dt_cancelado !== '000000') {
+                return res.json({ success: false, jaCancelado: true, message: 'Este ponto já foi cancelado.' });
             }
 
             // Prossegue com o cancelamento

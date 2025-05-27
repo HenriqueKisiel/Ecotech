@@ -43,9 +43,10 @@ const configuracoesPorTipo = {
         colunas: {
             nome: 'nm_planta',
             codigo: 'cd_planta',
-            area_total: 'qt_capacidade_total_volume',
-            capacidade_total: 'qt_capacidade_total_kg',
-            capacidade_atual: 'qt_capacidade_atual_kg',
+            kg_atual: 'qt_capacidade_atual_kg',
+            volume_total: 'qt_capacidade_total_volume',
+            volume_atual: 'qt_capacidade_atual_volume',
+            volume_disponivel: 'qt_disponivel_volume',
             situacao: 'ie_situacao'
         }
     }
@@ -112,9 +113,10 @@ function buscarCadastros(req, res) {
             };
 
             if (tipoCadastroCorrigido === 'Planta de Reciclagem') {
-                resultado.area_total = item[colunas.area_total] || '-';
-                resultado.capacidade_total = item[colunas.capacidade_total] || '-';
-                resultado.capacidade_atual = item[colunas.capacidade_atual] || '-';
+                resultado.kg_atual = item[colunas.kg_atual] || '-';
+                resultado.volume_total = item[colunas.volume_total] || '-';
+                resultado.volume_atual = item[colunas.volume_atual] || '-';
+                resultado.volume_disponivel = item[colunas.volume_disponivel] || '-';
                 resultado.situacao = item[colunas.situacao] === 'A' ? 'Ativo' : 'Inativo';
             } else if (tipoCadastroCorrigido === 'Usuário') {
                 resultado.situacao = item[colunas.situacao] === 'A' ? 'Ativo' : 'Inativo'; 

@@ -347,9 +347,10 @@
                                                 <th>Código</th>
                                                 <th>Nome</th>
                                                 {{#if (eq tipoCadastro "Planta de Reciclagem")}}
-                                                <th>Volume Total</th>
-                                                <th>Capacidade Total (Kg)</th>
-                                                <th>Capacidade Atual (Kg)</th>
+                                                <th>KG Atual</th>
+                                                <th>Volume Total (m³)</th>
+                                                <th>Volume Atual (m³)</th>
+                                                <th>Volume Disponível (m³)</th>
                                                 {{else}}
                                                 <th>Email</th>
                                                 <th>CPF/CNPJ</th>
@@ -371,9 +372,10 @@
                                                 <td>{{nome}}</td>
 
                                                 {{#if (eq ../tipoCadastro "Planta de Reciclagem")}}
-                                                <td>{{area_total}}</td>
-                                                <td>{{capacidade_total}}</td>
-                                                <td>{{capacidade_atual}}</td>
+                                                <td>{{kg_atual}}</td>
+                                                <td>{{volume_total}}</td>
+                                                <td>{{volume_atual}}</td>
+                                                <td>{{volume_disponivel}}</td>
                                                 {{else}}
                                                 <td>{{#if email}}{{email}}{{else}}-{{/if}}</td>
                                                 <td>

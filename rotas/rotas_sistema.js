@@ -33,6 +33,7 @@ const servico25 = require('../servico/rota_novoMaterial.js');
 const servico26 = require('../servico/rota_novoMaterial2.js');
 const servico27 = require('../servico/rota_motorista.js');
 const servico28 = require('../servico/rota_caminhao.js');
+const servico29 = require('../servico/rota_relatoriosNovo.js')
 
 
 
@@ -63,6 +64,35 @@ router.post('/recuperar-senha', (req, res) => {
 // Rota para a página home
 router.get('/home', (req, res) => {
     servico2.exibirHome(req, res);
+});
+
+// Filtrar estoque por planta no dashboard (AJAX)
+router.get('/home/:cd_planta', (req, res) => {
+    servico2.dadosDashboard(req, res); // certifique-se que está chamando a função certa
+});
+
+// Rota para retornar o total de coletas realizadas na planta
+router.get('/home/totalColetas/:cd_planta', (req, res) => {
+    servico2.totalColetasPlanta(req, res);
+});
+
+router.get('/home/graficos/:cd_planta', (req, res) => {
+    servico2.graficosDashboard(req, res);
+});
+
+// Rota para faturamento mensal por planta
+router.get('/home/faturamento/:cd_planta', (req, res) => {
+    servico2.faturamentoMensalPlanta(req, res);
+});
+
+// Rota para peso coletado mensal por planta
+router.get('/home/pesoColetado/:cd_planta', (req, res) => {
+    servico2.pesoColetadoMensalPlanta(req, res);
+});
+
+// Rota para proporção de movimentações por planta
+router.get('/home/proporcaoMovimentacoes/:cd_planta', (req, res) => {
+    servico2.proporcaoMovimentacoesPlanta(req, res);
 });
 
 //-------------------- Servico3 -------------------//
@@ -131,11 +161,6 @@ router.post('/planta', (req, res) => {
     servico6.cadastrarPlanta(req, res);
 });
 
-// Rota para buscar bairros filtrando pela cidade selecionada
-router.get('/bairros/:cd_cidade', (req, res) => {
-    servico6.buscarBairrosPorCidade(req, res);
-});
-
 //---------------------- Servico7 -------------------//
 
 // Rota para a página de cadastrar rota
@@ -160,6 +185,11 @@ router.get('/estoqueNovo', (req, res) => {
     servico9.exibirestoqueNovo(req, res);
 });
 
+// Rota para cadastrar novo estoque (POST)
+router.post('/estoque/cadastrar', (req, res) => {
+    servico9.cadastrarEstoque(req, res);
+});
+
 //----------------------- Servico10 -------------------//
 // Rota GET para exibir a lista de agendamentos
 router.get('/agendamento', (req, res) => {
@@ -169,6 +199,11 @@ router.get('/agendamento', (req, res) => {
 // Rota POST para realizar a busca de agendamentos
 router.post('/agendamento', (req, res) => {
     servico10.buscarAgendamentos(req, res);
+});
+
+// Buscar bairros por nome da cidade para filtro dinâmico de agendamento
+router.get('/agendamento/bairrosPorNome/:nm_cidade?', (req, res) => {
+    servico10.buscarBairrosPorNomeCidade(req, res);
 });
 //---------------------- Servico11 -------------------//
 // Rota para a página de rotas programadas
@@ -191,13 +226,14 @@ router.post('/rotas', (req, res) => {
 
 //----------------------- Servico12 -------------------//
 // Rota para a página de relatorios
+// Listar relatórios
 router.get('/relatorios', (req, res) => {
     servico12.exibirRelatorios(req, res);
 });
 
-// Rota para a página de cadastrar relatorios
-router.get('/relatoriosNovo', (req, res) => {
-    servico12.exibirCadastrarRelatorios(req, res);
+// Exportar relatório
+router.get('/exportarRelatorio/:cd_rel', (req, res) => {
+    servico12.exportarRelatorio(req, res);
 });
 
 //------------------------ Servico13 -------------------//
@@ -414,17 +450,13 @@ router.post('/juridicaEditar', (req, res) => {
 });
 
 // ----------------------- Servico24 -------------------//
-//página para editar pessoa juridica
+//página para editar planta
 router.get('/plantaEditar/:cd_planta', (req, res) => {
     servico24.exibirPlantaEditar(req, res);
 });
 
 router.post('/plantaEditar', (req, res) => {
     servico24.editarPlanta(req, res);
-});
-
-router.get('/planta/bairros/:cd_cidade', (req, res) => {
-    servico24.buscarBairrosPorCidade(req, res);
 });
 
 // ----------------------- Servico25 -------------------//
@@ -479,6 +511,20 @@ router.get('/motorista', (req, res) => {
 // ----------------------- Servico28 -------------------//
 router.get('/caminhao', (req, res) => {
     servico28.exibirCaminhao(req, res);
+});
+
+// Filtro de relatórios
+router.post('/relatorios', (req, res) => {
+    servico12.filtrarRelatorios(req, res);
+});
+
+// ----------------------- Servico29 -------------------//
+router.get('/relatoriosNovo', (req, res) => {
+    servico29.exibirRelatorioNovo(req, res);
+});
+
+router.post('/relatoriosNovo', (req, res) => {
+    servico29.salvarRelatorioNovo(req, res);
 });
 
 //==================== END ROTAS ====================
