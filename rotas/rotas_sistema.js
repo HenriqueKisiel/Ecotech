@@ -184,6 +184,11 @@ router.get('/agendamento', (req, res) => {
 router.post('/agendamento', (req, res) => {
     servico10.buscarAgendamentos(req, res);
 });
+
+// Buscar bairros por nome da cidade para filtro dinâmico de agendamento
+router.get('/agendamento/bairrosPorNome/:nm_cidade?', (req, res) => {
+    servico10.buscarBairrosPorNomeCidade(req, res);
+});
 //---------------------- Servico11 -------------------//
 // Rota para a página de rotas programadas
 router.get('/rotas', (req, res) => {
