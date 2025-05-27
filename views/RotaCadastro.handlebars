@@ -262,21 +262,22 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Data Agendada</label>
-                                                <input type="date" name="dataAgendaRota" class="form-control" required>
+                                                <input type="date" name="dataAgendaRota" id="dataAgendaRota"
+                                                    class="form-control" required>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Peso inicial (Kg)</label>
                                                 <input type="text" name="pesoTotalRota" class="form-control"
-                                                    placeholder="Kg">
+                                                    placeholder="0" readonly>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">KM inicial (KM)</label>
                                                 <input type="text" name="quilometroTotalRota" class="form-control"
-                                                    placeholder="Km">
+                                                    placeholder="0" readonly>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -300,6 +301,23 @@
                 </div>
                 <script>
                     document.addEventListener("DOMContentLoaded", function () {
+                        // Definir o mínimo da data para hoje
+                        const inputData = document.getElementById('dataAgendaRota');
+                        const hoje = new Date();
+                        const yyyy = hoje.getFullYear();
+                        const mm = String(hoje.getMonth() + 1).padStart(2, '0');
+                        const dd = String(hoje.getDate()).padStart(2, '0');
+                        const dataMin = `${yyyy}-${mm}-${dd}`;
+                        inputData.min = dataMin;
+
+                        // Validação extra no submit
+                        document.getElementById('formRotaCadastro').addEventListener('submit', function (e) {
+                            if (inputData.value < dataMin) {
+                                alert('A Data Agendada não pode ser anterior a hoje.');
+                                e.preventDefault();
+                            }
+                        });
+
                         fetch('/buscarPlanta')
                             .then(response => response.json())
                             .then(planta => {  // Corrigido o nome da variável
@@ -313,8 +331,15 @@
                                 });
                             })
                             .catch(error => console.error('Erro ao carregar Plata:', error));
-                    });
+                        const nomeRotaInput = document.querySelector('input[name="nomeRota"]');
+                        if (nomeRotaInput) {
+                            nomeRotaInput.addEventListener('input', function () {
+                                // Aceita apenas letras, números e hífen
+                                this.value = this.value.replace(/[^a-zA-Z0-9\-]/g, '');
+                            });
+                        }
 
+                    });
                 </script>
 
                 <!--end conteudo indiviudual da pagina-->

@@ -485,6 +485,10 @@ router.get('/relatoriosNovo', (req, res) => {
     servico29.exibirRelatorioNovo(req, res);
 });
 
+router.post('/relatoriosNovo', (req, res) => {
+    servico29.salvarRelatorioNovo(req, res);
+});
+
 //==================== END ROTAS ====================
 
 module.exports = router;

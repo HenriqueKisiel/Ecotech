@@ -3,7 +3,7 @@ const exceljs = require('exceljs');
 
 //Função para pagina relatorios
 function exibirRelatorios(req, res) {
-    const sql = 'SELECT cd_rel, ds_relatório FROM Relatorios';
+    const sql = 'SELECT cd_rel, ds_relatorio FROM Relatorios';
     conectiondb().query(sql, (err, relatorios) => {
         if (err) return res.status(500).send('Erro ao buscar relatórios');
         res.render('relatorios', { relatorios });
@@ -18,7 +18,7 @@ function exibirCadastrarRelatorios(req, res) {
 // Exportar relatório para Excel
 function exportarRelatorio(req, res) {
     const cd_rel = req.params.cd_rel;
-    const sqlBusca = 'SELECT query_sql, ds_relatório FROM Relatorios WHERE cd_rel = ?';
+    const sqlBusca = 'SELECT query_sql, ds_relatorio FROM Relatorios WHERE cd_rel = ?';
     conectiondb().query(sqlBusca, [cd_rel], (err, results) => {
         if (err || results.length === 0) return res.status(404).send('Relatório não encontrado');
         const query = results[0].query_sql;
@@ -44,9 +44,9 @@ function exportarRelatorio(req, res) {
 function filtrarRelatorios(req, res) {
     const filtro = req.body.filtro || '';
     const sql = `
-        SELECT cd_rel, ds_relatório 
+        SELECT cd_rel, ds_relatorio 
         FROM Relatorios 
-        WHERE ds_relatório LIKE ? OR cd_rel LIKE ?
+        WHERE ds_relatorio LIKE ? OR cd_rel LIKE ?
     `;
     const param = `%${filtro}%`;
     conectiondb().query(sql, [param, param], (err, relatorios) => {

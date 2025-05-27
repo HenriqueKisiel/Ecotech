@@ -246,147 +246,43 @@
                                     <span class="fs-2 fw-bold">Filtro</span>
                                 </div>
                             </div>
+                            {{!-- filepath:
+                            c:\Users\NICO\Desktop\PROJETOECOTH_GIT\Ecotech\views\relatoriosNovo.handlebars --}}
+                            <!-- ...existing code... -->
                             <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="disableinput">Código</label>
-                                            <input type="text" class="form-control" placeholder="Insira o código">
+                                {{#if erro}}
+                                <div class="alert alert-danger">{{erro}}</div>
+                                {{/if}}
+                                <form method="POST" action="/relatoriosNovo">
+                                    <input type="text" class="form-control" id="cd_rel" name="cd_rel" value="{{relatorio.cd_rel}}" readonly>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="cd_rel">Código</label>
+                                                <input type="text" class="form-control" id="cd_rel" name="cd_rel"
+                                                    value="{{relatorio.cd_rel}}" {{#if relatorio}}{{/if}} readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label for="ds_relatorio">Descrição</label>
+                                                <input type="text" class="form-control" id="ds_relatorio"
+                                                    name="ds_relatorio" value="{{relatorio.ds_relatorio}}">
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="disableinput">Descrição</label>
-                                            <textarea class="form-control" id="comment"></textarea>
-                                        </div>
+                                    <div class="form-group mt-3">
+                                        <label for="query_sql">Insira o comando SQL para filtrar seu relatório:</label>
+                                        <textarea class="form-control" id="query_sql" name="query_sql"
+                                            rows="10">{{relatorio.query_sql}}</textarea>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="exampleFormControlSelect1">Tipo</label>
-                                            <select class="form-select" id="exampleFormControlSelect1">
-                                                <option>Excel</option>
-                                                <option>PDF</option>
-                                                <option>Dashboard</option>
-                                                <option>Word</option>
-                                            </select>
-                                        </div>
+                                    <div class="d-flex justify-content-end mt-3">
+                                        <a href="/relatorios" class="btn btn-secondary me-2">Cancelar</a>
+                                        <button type="submit" class="btn btn-success">Salvar</button>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="exampleFormControlSelect1">Formato da Página</label>
-                                            <select class="form-select" id="exampleFormControlSelect1">
-                                                <option>Paisagem</option>
-                                                <option>Retrato</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="comment">Insira o comando SQL para filtrar seu relatório:</label>
-                                    <textarea class="form-control" id="comment" rows="5">  SELECT 
-    a.nr_atendimento as Atendimento,
-    obter_nome_pf(a.cd_pessoa_fisica) Paciente,
-    b.DS_SETOR_INTERNACAO as Setor,
-    obter_nome_pf(a.cd_medico) Usuario,
-    a.dt_liberacao as Liberacao,
-    substr(Aval(nr_sequencia,23290),1,2000) Pronado,
-    substr(Aval(nr_sequencia,23291),1,2000) ECMO,
-    substr(Aval(nr_sequencia,7641),1,2000) PAV,
-    CASE
-        WHEN substr(Aval(nr_sequencia,7664),1,2000) = 'S' THEN 'SIM'
-        WHEN substr(Aval(nr_sequencia,7672),1,2000) = 'S' THEN 'NAO'
-        ELSE 'Nao se aplica'
-    END as Cabeceira_elevada,
-    
-    CASE 
-        WHEN substr(Aval(nr_sequencia,7665),1,2000) = 'S' THEN 'SIM'
-        ELSE 'NAO'
-    END as Ausencia_condensado,
-
-    CASE 
-        WHEN substr(Aval(nr_sequencia,7663),1,2000) = 'S' THEN 'SIM'
-        ELSE 'NAO'
-    END as higiene_oral,
-    
-    CASE 
-        WHEN  substr(Aval(nr_sequencia,12101),1,2000) = 'S' THEN 'SIM'
-        ELSE 'NAO'
-    END as Pressao_cuff ,
-    
-    substr(Aval(nr_sequencia,7675),1,2000) CVC_PICC,
-    
-    CASE
-        WHEN substr(Aval(nr_sequencia,7691),1,2000) = 'S' THEN 'SIM'
-        WHEN substr(Aval(nr_sequencia,7682),1,2000) = 'S' THEN 'NAO'
-        ELSE 'Nao se aplica'
-    END as Checklist_Preenchido,
-    
-    CASE
-        WHEN substr(Aval(nr_sequencia,7690),1,2000) = 'S' THEN 'SIM'
-        WHEN substr(Aval(nr_sequencia,7685),1,2000) = 'S' THEN 'NAO'
-        ELSE 'Nao se aplica'
-    END as Higiene_mãos,
-    
-    CASE
-        WHEN substr(Aval(nr_sequencia,7681),1,2000) = 'S' THEN 'SIM'
-        WHEN substr(Aval(nr_sequencia,7684),1,2000) = 'S' THEN 'NAO'
-        ELSE 'Nao se aplica'
-    END as Desinfeccao_conexoes,
-
-    CASE
-        WHEN substr(Aval(nr_sequencia,7692),1,2000) = 'S' THEN 'SIM'
-        WHEN substr(Aval(nr_sequencia,7689),1,2000) = 'S' THEN 'NAO'
-        ELSE 'Nao se aplica'
-    END as Protecao_banho,
-    
-    CASE
-        WHEN substr(Aval(nr_sequencia,7727),1,2000) = 'S' THEN 'SIM'
-        WHEN substr(Aval(nr_sequencia,7728),1,2000) = 'S' THEN 'NAO'
-        ELSE 'Nao se aplica'
-    END as Curativo_clorexidine,
-    
-      CASE
-        WHEN  substr(Aval(nr_sequencia,7732),1,2000) = 'S' THEN 'SIM'
-        ELSE 'NAO'
-    END as Curativo_Limpo,
-    
-    substr(Aval(nr_sequencia,7693),1,2000) SVD,
-    
-    CASE
-        WHEN substr(Aval(nr_sequencia,7710),1,2000) = 'S' THEN 'SIM'
-        WHEN substr(Aval(nr_sequencia,7703),1,2000) = 'S' THEN 'NAO'
-        ELSE 'Nao se aplica'
-    END as CheckList_SVD,
-
-    CASE
-        WHEN substr(Aval(nr_sequencia,7709),1,2000) = 'S' THEN 'SIM'
-        ELSE 'NAO'
-    END as Fixacao_Adequada,
-
-    CASE
-        WHEN substr(Aval(nr_sequencia,7708),1,2000) = 'S' THEN 'SIM'
-        ELSE 'NAO'
-    END as Bolsa_coletora,
-    
-    CASE
-        WHEN substr(Aval(nr_sequencia,7707),1,2000) = 'S' THEN 'SIM'
-        ELSE 'NAO'
-    END as Bolsa_coletora
-    
-FROM MED_AVALIACAO_PACIENTE a,
-    atendimento_paciente_v b
-WHERE a.nr_seq_tipo_avaliacao = 950
-    AND a.nr_atendimento = b.nr_atendimento
-    AND a.nr_atendimento = 2983739
-    AND a.dt_liberacao IS NOT NULL
-    AND a.dt_atualizacao BETWEEN :dt_inicial AND fim_dia(:dt_final)
-    
-   -- AND b.CD_ESTABELECIMENTO = OBTER_ESTABELECIMENTO_ATIVO()                        </textarea>
-                                </div>
-                                <div class="d-flex justify-content-end">
-                                    <a href="/relatorios" class="btn btn-success">Salvar</a>
-                                </div>
+                                </form>
                             </div>
+                            <!-- ...existing code... -->
                         </div>
                     </div>
                 </div>

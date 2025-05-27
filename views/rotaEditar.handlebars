@@ -238,7 +238,8 @@
                                 <a href="/rotas" class="btn btn-secondary me-3 shadow-lg">Voltar</a>
                             </div>
                         </div>
-                        <form method="POST" action="/rotaEditar" {{#if rotaBloqueada}}style="pointer-events:none;opacity:0.6;"{{/if}}>
+                        <form method="POST" action="/rotaEditar" {{#if
+                            rotaBloqueada}}style="pointer-events:none;opacity:0.6;" {{/if}}>
                             <div class="card shadow-lg mb-5">
                                 <div class="card-body">
                                     <div class="row">
@@ -331,9 +332,11 @@
                                     </div>
                                     <div class="d-flex justify-content-end flex-wrap">
                                         <button type="submit" name="action" value="editar"
-                                            class="btn btn-success shadow-lg me-3" {{#if rotaBloqueada}}disabled{{/if}}>Salvar</button>
+                                            class="btn btn-success shadow-lg me-3" {{#if
+                                            rotaBloqueada}}disabled{{/if}}>Salvar</button>
                                         <button type="submit" name="action" value="excluir"
-                                            class="btn btn-danger shadow-lg" {{#if rotaBloqueada}}disabled{{/if}}>Excluir</button>
+                                            class="btn btn-danger shadow-lg" {{#if
+                                            rotaBloqueada}}disabled{{/if}}>Excluir</button>
                                     </div>
                                 </div>
                             </div>
@@ -374,21 +377,21 @@
                                                     <div class="form-group">
                                                         <label class="fw-bold">Endereco</label>
                                                         <input type="text" id="endereco" name="endereco"
-                                                            class="form-control" placeholder="Informe o endereço">
+                                                            class="form-control" placeholder="Informe o endereço" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="fw-bold">Peso do material (KG)</label>
                                                         <input type="text" id="peso" name="peso" class="form-control"
-                                                            placeholder="___">
+                                                            placeholder="___" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="fw-bold">Peso do Volume (M3)</label>
                                                         <input type="text" id="volume" name="volume"
-                                                            class="form-control" placeholder="___">
+                                                            class="form-control" placeholder="___" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -607,6 +610,21 @@
                         return false;
                     }
                 });
+
+                const nomeRotaInput = document.querySelector('input[name="nome"]');
+                if (nomeRotaInput) {
+                    nomeRotaInput.addEventListener('input', function () {
+                        // Aceita apenas letras, números e hífen
+                        this.value = this.value.replace(/[^a-zA-Z0-9\-]/g, '');
+                    });
+                }
+
+
+
+
             });
         </script>
+
+
+
     </body>
