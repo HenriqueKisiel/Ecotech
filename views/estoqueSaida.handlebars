@@ -357,7 +357,7 @@
                                         <thead>
                                             <tr>
                                                 <th>Material</th>
-                                                <th>Volume Atual</th>
+                                                <th>Volume m³ Atual</th>
                                                 <th>KG Atual</th>
                                                 <th>Volume a Movimentar</th>
                                                 <th>KG a Movimentar</th>
@@ -427,6 +427,23 @@
                                     }
                                 }
 
+                                function formatarNumero(valor, casasFixas) {
+                                    if (valor == null) return '';
+                                    let num = Number(valor);
+                                    if (isNaN(num)) return valor;
+
+                                    // Formata com casas decimais fixas, depois remove zeros desnecessários
+                                    let str = num.toFixed(casasFixas);
+
+                                    // Se for inteiro, remove tudo após o ponto
+                                    if (str.indexOf('.') !== -1) {
+                                        // Remove zeros à direita, mas mantém pelo menos um zero após o ponto se for tipo 0.0
+                                        str = str.replace(/(\.\d*?[1-9])0+$/g, '$1'); // Remove zeros à direita
+                                        str = str.replace(/\.0+$/, ''); // Remove ponto e zeros se for inteiro
+                                    }
+                                    return str;
+                                }
+
                                 function mostrarLinhaMaterial(dados) {
                                     if (!tbodyResultado) return;
 
@@ -446,8 +463,8 @@
                                     tbodyResultado.innerHTML = `
             <tr>
                 <td class="text-center" id="td-material">${dados.ds_material || ''}</td>
-                <td class="text-center" id="td-volume">${dados.qt_volume != null ? Number(dados.qt_volume).toFixed(8) : ''}</td>
-                <td class="text-center" id="td-peso">${dados.qt_peso != null ? Number(dados.qt_peso).toFixed(3) : ''}</td>
+                <td class="text-center" id="td-volume">${formatarNumero(dados.qt_volume, 8)}</td>
+                <td class="text-center" id="td-peso">${formatarNumero(dados.qt_peso, 3)}</td>
                 <td><input type="number" class="form-control" id="input-volume" placeholder="Digite uma quantidade" readonly step="0.00000001"></td>
                 <td><input type="text" class="form-control" id="input-peso" placeholder="Digite uma quantidade"></td>
                 ${campoValorCompra}
