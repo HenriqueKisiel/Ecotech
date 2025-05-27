@@ -454,6 +454,23 @@ router.get('/novoMaterial2', (req, res) => {
     servico26.exibirNovoMaterial2(req, res);
 });
 
+router.get('/buscarAgendamentoSeparacao', (req, res) => {
+    servico26.buscarAgendamentoSeparacao(req, res)
+});
+
+router.get('/buscarMateriaisLinha5', (req, res) => {
+    servico26.buscarMateriaisLinha5(req, res);
+});
+
+router.get('/buscarEstoquesPorPlanta', (req, res) => {
+    servico26.buscarEstoquesPorPlanta(req, res);
+});
+
+router.post('/novoMaterial2/adicionarItem', (req, res) =>{
+    servico26.adicionarItemEstoqueMaterial(req, res);
+});
+
+
 // ----------------------- Servico27 -------------------//
 router.get('/motorista', (req, res) => {
     servico27.exibirMotorista(req, res);

@@ -139,11 +139,17 @@ function concluirPesagem(req, res) {
     });
 }
 
+function exibirNovoMaterial2(req, res) {
+    const cd_agendamento = req.query.cd_agendamento; // ou req.params.cd_agendamento se for rota dinâmica
+    res.render('novoMaterial2', { cd_agendamento });
+};
+
 //exportando a função 
 module.exports = {
     exibirNovoMaterial,
     buscarAgendamentoMaterial,
     buscarItensgenda,
     atualizarPesos,
-    concluirPesagem
+    concluirPesagem,
+    exibirNovoMaterial2
 }

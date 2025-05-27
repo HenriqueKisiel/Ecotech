@@ -235,8 +235,13 @@
                                 <span class="fs-2 fw-bold">Pesagem de Material</span>
                                 <small class="text-muted">Preencha os dados de cadastro e clique em continuar.</small>
                             </div>
-                            <a href="/estoqueBuscar" class="btn btn-secondary fw-bold shadow-lg me-3 mt-2">
-                                Voltar</a>
+                            <div>
+                                <a href="/novoMaterial2" class="btn btn-secondary fw-bold shadow-lg me-3 mt-2">
+                                    Separação
+                                </a>
+                                <a href="/estoqueBuscar" class="btn btn-secondary fw-bold shadow-lg me-3 mt-2">
+                                    Voltar</a>
+                            </div>
                         </div>
                         <div class="card">
                             <div class="card-body">
@@ -314,14 +319,6 @@
                                 <div class="card-footer d-flex justify-content-end">
                                     <button id="btnConcluirPesagem" class="btn btn-primary"> Concluir
                                         Pesagem</button>
-                                </div>
-                                <div class="card-footer d-flex justify-content-end">
-                                    <a href="/novoMaterial2" class="btn btn-primary fs-5">
-                                        <span class="btn-label">
-                                            <i class="fas fa-angle-double-right"></i>
-                                        </span>
-                                        Separação
-                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -575,8 +572,9 @@
                                         }
                                     },
                                 }).then((value) => {
+                                    const cd_agendamento = document.getElementById('agendamento').value;
                                     if (value === "separacao") {
-                                        window.location.href = "/novoMaterial2?ie_agenda=" + encodeURIComponent(ie_agenda);
+                                        window.location.href = "/novoMaterial2?cd_agendamento=" + encodeURIComponent(cd_agendamento);
                                     } else {
                                         window.location.reload();
                                     }

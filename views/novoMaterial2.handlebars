@@ -235,7 +235,7 @@
                                 <span class="fs-2 fw-bold">Separação de Materiais</span>
                                 <small class="text-muted">Preencha os dados de cadastro e clique em continuar.</small>
                             </div>
-                            <a href="/estoqueBuscar" class="btn btn-secondary fw-bold shadow-lg me-3 mt-2">
+                            <a href="/novoMaterial" class="btn btn-secondary fw-bold shadow-lg me-3 mt-2">
                                 Voltar</a>
                         </div>
                         <div class="card">
@@ -251,16 +251,21 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="fw-bold">Peso previsto no agendamento (KG)</label>
-                                            <input type="text" id="peso" name="peso" class="form-control"
-                                                placeholder="___" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
                                             <label class="fw-bold">Peso real (KG)</label>
                                             <input type="number" step="0.01" id="pesoReal" name="pesoReal"
                                                 class="form-control" placeholder="___" readonly>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-5">
+                                        <div class="col-md-6 ">
+                                            <label class="fw-bold">Rota</label>
+                                            <input type="text" class="form-control" id="nm_rota" name="rota" readonly>
+                                        </div>
+                                        <div class="col-md-6 ">
+                                            <label class="fw-bold">Planta</label>
+                                            <input type="text" class="form-control" id="nm_planta" name="Planta"
+                                                readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -276,40 +281,48 @@
                                             <div class="card-title">Adicionar Item</div>
                                         </div>
                                         <div class="card-body">
-                                            <form
-                                                action="/novoMaterial2/{{agendamento.cd_agendamento}}/adicionarItem"
-                                                method="POST">
+                                            <form action="/novoMaterial2/adicionarItem" method="POST"
+                                                id="formAdicionarItem">
                                                 <div class="row mb-3">
                                                     <div class="col-md-6">
+                                                        <input type="hidden" name="cd_agendamento"
+                                                            id="cd_agendamento_hidden" value="">
                                                         <label class="fw-bold">Materia Prima</label>
-                                                        <select name="linha_material" id="linha_material"
+                                                        <select name="materia_prima" id="materia_prima"
                                                             class="form-control">
                                                             <option value="0">Selecione a linha</option>
-                                                            <option value="2">selected </option>
                                                         </select>
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <label class="fw-bold">Estoque</label>
-                                                        <select name="linha_material" id="linha_material"
-                                                            class="form-control">
-                                                            <option value="0">Estoque 1</option>
-                                                            <option value="2">Estoue 2 </option>
-                                                        </select>
+                                                    <div class="col-md-6 ">
+                                                        <label class="fw-bold">Peso do material (KG)</label>
+                                                        <input type="text" class="form-control" id="qt_peso" name="peso"
+                                                            pattern="^\d+([.,]\d{10,2})?$"
+                                                            oninput="this.value = this.value.replace(/[^0-9.,]/g, '')"
+                                                            required>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-6 ">
-                                                        <label class="fw-bold">Peso do material (KG)</label>
-                                                        <input type="text" class="form-control"
-                                                            id="qt_quantidade_prevista_kg" name="item_peso"
-                                                            pattern="^\d+([.,]\d+)?$"required>
-                                                    </div>
-
-                                                    <div class="col-md-6 ">
                                                         <label class="fw-bold">Volume (m³)</label>
-                                                        <input type="text" class="form-control"
-                                                            id="qt_quantidade_prevista_kg" name="item_peso"
-                                                            pattern="^\d+([.,]\d+)?$"required>
+                                                        <input type="text" class="form-control" id="volume_m3"
+                                                            name="volume" pattern="^\d+([.,]\d{10,5})?$"
+                                                            oninput="this.value = this.value.replace(/[^0-9.,]/g, '')"
+                                                            readonly>
+                                                    </div>
+                                                    <div class="col-md-6 ">
+                                                        <label class="fw-bold">Volume prensado (m³)</label>
+                                                        <input type="text" class="form-control" id="volume_m3_prensado"
+                                                            name="volume_m3_prensado" pattern="^\d+([.,]\d{10,5})?$"
+                                                            oninput="this.value = this.value.replace(/[^0-9.,]/g, '')"
+                                                            required>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="col-md-6">
+                                                        <label class="fw-bold">Estoque</label>
+                                                        <select name="estoque" id="cd_estoque" class="form-control">
+                                                            <option value="0">Selecione o estoque</option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div class="d-flex justify-content-end gap-2 mt-3">
@@ -317,12 +330,6 @@
                                                         class="btn btn-secondary text-white fw-bold shadow-lg">
                                                         Cancelar
                                                     </a>
-
-                                                    <button
-                                                        formaction="/novoMaterial2/{{agendamento.cd_agendamento}}/itens/{{item.cd_mat_agenda}}/editar"
-                                                        class="btn btn-warning text-white fw-bold shadow-lg">
-                                                        Atualizar Item
-                                                    </button>
 
                                                     <button type="submit"
                                                         class="btn btn-success text-white fw-bold shadow-lg">Adicionar
@@ -337,7 +344,7 @@
                                 <div class="col-md-6">
                                     <div class="card shadow-lg mb-5">
                                         <div class="card-header">
-                                            <div class="card-title">Lista de Itens</div>
+                                            <div class="card-title">Itens movimentado</div>
                                         </div>
                                         <div class="card-body p-0">
                                             <table class="table table-head-bg-success">
@@ -365,9 +372,134 @@
                                 </div>
                             </div>
                         </fieldset>
+
                     </div>
                 </div>
             </div>
         </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const selectAgendamento = document.getElementById('agendamento');
+                const pesoRealInput = document.getElementById('pesoReal');
+                const nmPlantaInput = document.getElementById('nm_planta');
+                const nmRotaInput = document.getElementById('nm_rota');
+
+                // Carregar agendamentos para separação
+                fetch('/buscarAgendamentoSeparacao')
+                    .then(response => response.json())
+                    .then(agendamentos => {
+                        agendamentos.forEach(agendamento => {
+                            const option = document.createElement('option');
+                            option.value = agendamento.cd_agendamento;
+                            option.textContent = agendamento.nm_agendamento;
+                            option.dataset.pesoReal = agendamento.qt_peso_real;
+                            option.dataset.cdPlanta = agendamento.cd_planta || '';
+                            option.dataset.nmPlanta = agendamento.nm_planta || '';
+                            option.dataset.nmRota = agendamento.nm_rota || '';
+                            selectAgendamento.appendChild(option);
+                        });
+
+                        // Selecionar automaticamente se vier parâmetro na URL
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const cd_agendamento = urlParams.get('cd_agendamento');
+                        if (cd_agendamento) {
+                            selectAgendamento.value = cd_agendamento;
+                            // Dispara o evento change para atualizar os campos relacionados
+                            selectAgendamento.dispatchEvent(new Event('change'));
+                        }
+                    })
+                    .catch(error => console.error('Erro ao carregar agendamentos:', error));
+
+                selectAgendamento.addEventListener('change', function () {
+                    const selectedOption = selectAgendamento.options[selectAgendamento.selectedIndex];
+                    pesoRealInput.value = selectedOption.dataset.pesoReal || '';
+                    nmPlantaInput.value = selectedOption.dataset.nmPlanta || '';
+                    nmRotaInput.value = selectedOption.dataset.nmRota || '';
+                });
+            });
+
+            document.addEventListener("DOMContentLoaded", function () {
+    const selectAgendamento = document.getElementById('agendamento');
+    const cdAgendamentoHidden = document.getElementById('cd_agendamento_hidden');
+    selectAgendamento.addEventListener('change', function () {
+        cdAgendamentoHidden.value = selectAgendamento.value;
+    });
+    cdAgendamentoHidden.value = selectAgendamento.value;
+});
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const materiaPrimaSelect = document.getElementById('materia_prima');
+                const qtPesoInput = document.getElementById('qt_peso');
+                const volumeInput = document.getElementById('volume_m3');
+                let volumePorKg = null;
+
+                // Carregar materiais no select materia_prima
+                fetch('/buscarMateriaisLinha5')
+                    .then(response => response.json())
+                    .then(materiais => {
+                        materiaPrimaSelect.innerHTML = '<option value="0">Selecione a linha</option>';
+                        materiais.forEach(mat => {
+                            const option = document.createElement('option');
+                            option.value = mat.cd_material;
+                            option.textContent = mat.ds_material;
+                            // Garante que o volume seja um número ou string vazia
+                            option.dataset.volume = mat.volume_m3 !== null && mat.volume_m3 !== undefined ? mat.volume_m3 : '';
+                            materiaPrimaSelect.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error('Erro ao carregar materiais:', error));
+
+                function atualizarVolume() {
+                    const peso = parseFloat(qtPesoInput.value.replace(',', '.'));
+                    if (volumePorKg !== null && !isNaN(peso)) {
+                        volumeInput.value = (peso * volumePorKg).toFixed(5);
+                    } else {
+                        volumeInput.value = '';
+                    }
+                }
+
+                materiaPrimaSelect.addEventListener('change', function () {
+                    const selected = materiaPrimaSelect.options[materiaPrimaSelect.selectedIndex];
+                    // Só faz o cálculo se o volume for válido
+                    volumePorKg = selected.dataset.volume && !isNaN(selected.dataset.volume) ? parseFloat(selected.dataset.volume) : null;
+                    atualizarVolume();
+                });
+
+                qtPesoInput.addEventListener('input', atualizarVolume);
+            });
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const selectAgendamento = document.getElementById('agendamento');
+                const cdEstoqueSelect = document.getElementById('cd_estoque');
+
+                selectAgendamento.addEventListener('change', function () {
+                    // Pegue o código da planta do option selecionado
+                    const selectedOption = selectAgendamento.options[selectAgendamento.selectedIndex];
+                    const cdPlanta = selectedOption.dataset.cdPlanta;
+
+                    // Limpa o select de estoques
+                    cdEstoqueSelect.innerHTML = '<option value="">Selecione o estoque</option>';
+
+                    if (cdPlanta) {
+                        fetch('/buscarEstoquesPorPlanta?cd_planta=' + encodeURIComponent(cdPlanta))
+                            .then(response => response.json())
+                            .then(estoques => {
+                                estoques.forEach(estoque => {
+                                    const option = document.createElement('option');
+                                    option.value = estoque.cd_estoque;
+                                    option.textContent = estoque.nm_estoque;
+                                    cdEstoqueSelect.appendChild(option);
+                                });
+                            })
+                            .catch(error => console.error('Erro ao carregar estoques:', error));
+                    }
+                });
+            });
+        </script>
     </body>
 </main>
