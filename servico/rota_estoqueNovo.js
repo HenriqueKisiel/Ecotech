@@ -16,33 +16,60 @@ function exibirestoqueNovo(req, res) {
     });
 }
 
+// Função auxiliar para renderizar erro e recarregar plantas
+function renderComErro(message, conexao, res) {
+    conexao.query('SELECT cd_planta, nm_planta FROM planta', (err, resultados) => {
+        if (err) {
+            console.error('Erro ao buscar plantas:', err);
+            return res.render('estoqueNovo', { message: 'Erro ao carregar plantas.', plantas: [], codigoEstoque: null });
+        }
+        return res.render('estoqueNovo', {
+            message,
+            plantas: resultados,
+            codigoEstoque: null
+        });
+    });
+}
+
 // Função para cadastrar um novo estoque (POST)
 function cadastrarEstoque(req, res) {
     const conexao = conectiondb();
-    console.log("Body recebido:", req.body);
     const { cd_planta, nm_estoque, qt_volume_total } = req.body;
 
-    console.log("Dados recebidos no servidor:", {
-        cd_planta,
-        nm_estoque,
-        qt_volume_total
-    });
+    // Validação: planta selecionada
+    if (!cd_planta || cd_planta.trim() === "") {
+        return renderComErro('Selecione uma planta!', conexao, res);
+    }
 
-    // Validação dos campos
-    if (!cd_planta || !nm_estoque || !qt_volume_total) {
-        conexao.query('SELECT cd_planta, nm_planta FROM planta', (err, resultados) => {
-            if (err) {
-                console.error('Erro ao buscar plantas:', err);
-                return res.render('estoqueNovo', { message: 'Erro ao carregar plantas.', plantas: [], codigoEstoque: null });
-            }
+    // Validação: nome do estoque obrigatório
+    if (!nm_estoque || typeof nm_estoque !== 'string' || nm_estoque.trim() === "") {
+        return renderComErro('Informe o nome do estoque!', conexao, res);
+    }
 
-            return res.render('estoqueNovo', {
-                message: 'Por favor, preencha todos os campos!',
-                plantas: resultados,
-                codigoEstoque: null
-            });
-        });
-        return;
+    // Validação: nome do estoque conforme regras
+    const nomeValido =
+        nm_estoque.trim().length >= 10 &&
+        !/ {2,}/.test(nm_estoque) &&
+        /^[A-Za-zÀ-ÿ0-9 ]+$/.test(nm_estoque) &&
+        /[A-Za-zÀ-ÿ]/.test(nm_estoque) &&
+        !/^[0-9 ]+$/.test(nm_estoque);
+
+    if (!nomeValido) {
+        return renderComErro('Nome do estoque inválido! O nome deve ter pelo menos 10 caracteres, conter letras, pode ter números (mas não apenas números), não pode ter espaços duplos ou caracteres especiais.', conexao, res);
+    }
+
+    // Validação: capacidade máxima obrigatória
+    if (!qt_volume_total || qt_volume_total.trim() === "") {
+        return renderComErro('Informe a capacidade máxima!', conexao, res);
+    }
+
+    // Validação: capacidade máxima (decimal positivo, até 15 dígitos, 8 casas decimais)
+    const volumeValido =
+        /^(\d{1,7}(\.\d{1,8})?|\d{8,15})$/.test(qt_volume_total) &&
+        parseFloat(qt_volume_total) > 0;
+
+    if (!volumeValido) {
+        return renderComErro('Capacidade máxima inválida! Informe um número positivo, com até 8 casas decimais.', conexao, res);
     }
 
     // Inserção do estoque no banco
@@ -103,8 +130,6 @@ function cadastrarEstoque(req, res) {
         });
     });
 }
-
-
 
 module.exports = {
     exibirestoqueNovo,

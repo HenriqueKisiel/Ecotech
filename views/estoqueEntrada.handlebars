@@ -233,91 +233,67 @@
                         <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
                             <div class="mb-3 d-flex flex-column">
                                 <span class="fs-2 fw-bold">
-                                    Entrada de Material
+                                    Movimentações de Estoque
                                 </span>
                                 <small class="text-muted">
-                                    Preencha os dados de cadastro e clique em salvar.
+                                    Lista de todas as movimentações registradas.
                                 </small>
                             </div>
+                            <a href="/estoqueSaida" class="btn btn-secondary me-3">
+                                Voltar
+                            </a>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6 offset-md-3">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <div class="card-title">
-                                            Registrar Entrada de material
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        {{!--
-                                        <div class="form-group">
-                                            <label class="fw-bold form-label">
-                                                Selecione a Linha do
-                                                material
-                                            </label>
-                                            <div class="row gutters-xs d-flex justify-content-start">
-                                                <div class="col-auto">
-                                                    <label class="colorinput">
-                                                        <input name="color" type="checkbox" value="primary"
-                                                            class="colorinput-input">
-                                                        <span class="colorinput-color bg-primary"></span>
-                                                    </label>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <label class="colorinput">
-                                                        <input name="color" type="checkbox" value="success"
-                                                            class="colorinput-input">
-                                                        <span class="colorinput-color bg-success"></span>
-                                                    </label>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <label class="colorinput">
-                                                        <input name="color" type="checkbox" value="danger"
-                                                            class="colorinput-input">
-                                                        <span class="colorinput-color bg-danger"></span>
-                                                    </label>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <label class="colorinput">
-                                                        <input name="color" type="checkbox" value="warning"
-                                                            class="colorinput-input">
-                                                        <span class="colorinput-color bg-warning"></span>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div> --}}
-                                        <div class="form-group">
-                                            <label class="fw-bold">Nome do Material</label>
-                                            <input type="text" class="form-control form-control" id="defaultInput"
-                                                placeholder="Informe o nome">
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="fw-bold">Quantidade(Kg)</label>
-                                            <input type="text" class="form-control form-control" id="defaultInput"
-                                                placeholder="Kg">
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="fw-bold">Data de Entrada</label>
-                                            <input type="date" class="form-control form-control" id="defaultInput"
-                                                placeholder="dd/mm/aaaa">
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="fw-bold">Motivo da Entrada</label>
-                                            <input type="text" class="form-control form-control" id="defaultInput">
-                                        </div>
-                                    </div>
-                                    <div class="card-footer d-flex justify-content-end">
-                                        <a href="/home" class="btn btn-secondary me-3">
-                                            Voltar
-                                        </a>
-                                        <button type="button" class="btn btn-success">
-                                            Registrar Entrada
-                                        </button>
-                                    </div>
+                        {{#if message}}
+                        <div class="alert alert-warning">{{message}}</div>
+                        {{/if}}
+                        <div class="card shadow-lg mt-4">
+                            <div class="card-body">
+                                <div class="table-responsive rounded" style="overflow-x:auto;">
+                                    <table class="table table-sm table-bordered table-head-bg-success mb-0"
+                                        style="min-width:900px; font-size: 0.92rem;">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Estoque</th>
+                                                <th>Material</th>
+                                                <th>Volume m³</th>
+                                                <th>Peso kg</th>
+                                                <th>Tipo</th>
+                                                <th>Motivo</th>
+                                                <th>Agendamento</th>
+                                                <th>Pessoa Física</th>
+                                                <th>Pessoa Jurídica</th>
+                                                <th>Valor (R$)</th>
+                                                <th>Data</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{#each movimentacoes}}
+                                            <tr>
+                                                <td>{{cd_movimentacao}}</td>
+                                                <td>{{nome_estoque}}</td>
+                                                <td>{{nome_material}}</td>
+                                                <td>{{qt_volume}}</td>
+                                                <td>{{qt_peso}}</td>
+                                                <td>{{tipo_movimentacao}}</td>
+                                                <td>{{ds_motivo}}</td>
+                                                <td>{{cd_agendamento}}</td>
+                                                <td>{{nome_pessoa_fisica}}</td>
+                                                <td>{{nome_pessoa_juridica}}</td>
+                                                <td>{{vl_valor_por_kg}}</td>
+                                                <td>{{dt_movimentacao_formatada}}</td>
+                                            </tr>
+                                            {{else}}
+                                            <tr>
+                                                <td colspan="12" class="text-center text-muted">Nenhuma movimentação
+                                                    encontrada.</td>
+                                            </tr>
+                                            {{/each}}
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <!--end conteudo indiviudual da pagina-->
