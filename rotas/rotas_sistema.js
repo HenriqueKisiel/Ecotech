@@ -502,6 +502,13 @@ router.post('/novoMaterial2/adicionarItem', (req, res) =>{
     servico26.adicionarItemEstoqueMaterial(req, res);
 });
 
+router.get('/novoMaterial2/movimentacoes', (req, res) =>{
+    servico26.buscarMovimentacoesPorAgendamento (req, res);
+});
+
+router.post('/novoMaterial2/concluirSeparacao', (req, res) =>{
+    servico26.concluirSeparacao(req, res);
+});
 
 // ----------------------- Servico27 -------------------//
 router.get('/motorista', (req, res) => {
