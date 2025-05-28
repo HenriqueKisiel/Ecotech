@@ -1,9 +1,9 @@
 const getCon = require('../bd/conexao_mysql.js');
 const con = getCon(); // pega o objeto de conexão
 
-// Página inicial com plantas
+// Página inicial com plantas - SELECT
 function exibirHome(req, res) {
-    const sql = 'SELECT cd_planta, nm_planta FROM planta';
+    const sql = 'SELECT cd_planta, nm_planta FROM planta WHERE ie_situacao = "A" ';
     con.query(sql, (err, result) => {
         if (err) {
             console.error('Erro ao carregar plantas:', err);
@@ -15,7 +15,7 @@ function exibirHome(req, res) {
 }
 
 
-// Endpoint para buscar dados do dashboard de uma planta (agora usando volume)
+// Endpoint para buscar dados do dashboard de uma planta - TABELA
 function dadosDashboard(req, res) {
     const cd_planta = req.params.cd_planta;
     console.log('cd_planta recebido:', cd_planta);
@@ -48,30 +48,27 @@ function dadosDashboard(req, res) {
     });
 }
 
-// Endpoint para retornar o total de coletas realizadas por planta
+// Endpoint para retornar o total de coletas realizadas por planta - INDICADOR
 function totalColetasPlanta(req, res) {
     const cd_planta = req.params.cd_planta;
     // Se não informar planta, retorna 0
     if (!cd_planta || cd_planta === '0') {
         return res.json({ total: 0 });
     }
-    // Consulta baseada no select fornecido
-    const sql = `SELECT COUNT(DISTINCT a.cd_agendamento) as total
-        FROM agendamento a
-        LEFT JOIN pontos_coleta pc ON pc.cd_agendamento = a.cd_agendamento
-        LEFT JOIN rota_coleta rc ON rc.cd_rota = pc.ie_rota
-        LEFT JOIN planta p ON p.cd_planta = pc.cd_planta
-        WHERE a.dt_coleta IS NOT NULL
-            AND a.dt_pesagem IS NOT NULL
-            AND a.dt_separacao IS NULL
-            AND pc.cd_planta = ?`;
+    // Consulta baseada no novo select fornecido
+    const sql = `SELECT 
+    COUNT(DISTINCT pca.cd_agendamento) AS total_coletas
+FROM vw_pontos_coleta pca
+INNER JOIN rota_coleta rc ON pca.cd_rota = rc.cd_rota
+WHERE pca.dt_coleta IS NOT NULL 
+AND pca.cd_planta = ?;`;
     con.query(sql, [cd_planta], (err, result) => {
         if (err) return res.status(500).json({ erro: err });
-        res.json({ total: result[0]?.total || 0 });
+        res.json({ total: result[0]?.total_coletas || 0 });
     });
 }
 
-// Endpoint para faturamento mensal por planta
+// Endpoint para faturamento mensal por planta - FATURAMENTO
 function faturamentoMensalPlanta(req, res) {
     const cd_planta = req.params.cd_planta;
     const ano = 2025; // Ano fixo para o dashboard
@@ -99,21 +96,22 @@ function faturamentoMensalPlanta(req, res) {
     });
 }
 
-// Endpoint para peso coletado mensal por planta
+// Endpoint para peso coletado mensal por planta - PESO COLETADO
 function pesoColetadoMensalPlanta(req, res) {
     const cd_planta = req.params.cd_planta;
     const ano = 2025;
     const sql = `
         SELECT 
             MONTH(a.dt_coleta) AS mes,
-            SUM(a.qt_peso_real) AS peso_total
+            SUM(a.qt_peso_real) AS peso_total_kg
         FROM agendamento a
-        JOIN materiais_agenda ma ON a.cd_agendamento = ma.ie_agenda
-        JOIN estoque_material em ON ma.ie_material = em.cd_material
-        JOIN estoque e ON em.cd_estoque = e.cd_estoque
-        WHERE a.dt_coleta IS NOT NULL
-          AND e.cd_planta = ?
-          AND YEAR(a.dt_coleta) = ?
+        INNER JOIN pontos_coleta pc ON a.cd_agendamento = pc.cd_agendamento
+        INNER JOIN rota_coleta r ON pc.ie_rota = r.cd_rota
+        WHERE 
+            a.dt_coleta IS NOT NULL
+            AND a.dt_pesagem IS NOT NULL
+            AND r.ie_planta = ?
+            AND YEAR(a.dt_coleta) = ?
         GROUP BY mes
         ORDER BY mes
     `;
@@ -121,7 +119,7 @@ function pesoColetadoMensalPlanta(req, res) {
         if (err) return res.status(500).json({ erro: err });
         const pesos = Array(12).fill(0);
         result.forEach(row => {
-            pesos[row.mes - 1] = parseFloat(row.peso_total) || 0;
+            pesos[row.mes - 1] = parseFloat(row.peso_total_kg) || 0;
         });
         res.json({ pesos });
     });
