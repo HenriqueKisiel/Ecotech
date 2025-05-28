@@ -37,6 +37,7 @@ const servico29 = require('../servico/rota_relatoriosNovo.js')
 
 
 
+
 //==================== START ROTAS ====================
 
 //------------------- Servico -------------------//
@@ -234,6 +235,10 @@ router.get('/relatorios', (req, res) => {
 // Exportar relatório
 router.get('/exportarRelatorio/:cd_rel', (req, res) => {
     servico12.exportarRelatorio(req, res);
+});
+
+router.get('/exportarRelatorioPDF/:cd_rel', (req, res) => {
+    servico12.exportarRelatorioPDF(req, res);
 });
 
 //------------------------ Servico13 -------------------//
