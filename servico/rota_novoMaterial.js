@@ -9,7 +9,7 @@ function exibirNovoMaterial(req, res) {
 
 
 function buscarAgendamentoMaterial(req, res) {
-    const sql = 'SELECT cd_agendamento, nm_agendamento, ds_endereco, qt_quantidade_prevista_kg, qt_peso_real,status FROM agendamento WHERE dt_coleta <> "0000-00-00" AND dt_separacao IS NULL';
+    const sql = 'SELECT cd_agendamento, nm_agendamento, ds_endereco, qt_quantidade_prevista_kg, qt_peso_real,status FROM agendamento WHERE dt_coleta IS NOT NULL AND dt_pesagem IS NULL AND dt_separacao IS NULL';
     conectiondb().query(sql, (erro, resultados) => {
         if (erro) {
             console.error('Erro ao buscar Agendamentos:', erro);
@@ -64,12 +64,7 @@ function atualizarPesos(req, res) {
             return res.status(500).send('Erro ao processar o formulário.');
         }
 
-        const dados = req.body; // Capturar os dados enviados pelo formulário
-
-        // Log para depuração
-        console.log('Dados recebidos no backend:', dados);
-
-        // Verificar se os dados foram recebidos
+        const dados = req.body;
         if (!dados || !dados.pesoFinal) {
             console.error('Nenhum dado enviado ou pesoFinal está ausente:', dados);
             return res.status(400).send('Nenhum dado enviado ou pesoFinal está ausente.');
@@ -77,12 +72,11 @@ function atualizarPesos(req, res) {
 
         // Transformar os dados de pesoFinal em um objeto utilizável
         const pesoFinal = Object.entries(dados.pesoFinal).reduce((acc, [key, value]) => {
-            if (value) {
-                acc[key] = value;
-            }
+            if (value) acc[key] = value;
             return acc;
         }, {});
 
+        // Atualizar os pesos dos materiais
         const updates = Object.entries(pesoFinal).map(([cd_mat_agenda, qt_peso_final]) => {
             return new Promise((resolve, reject) => {
                 const sql = `
@@ -91,28 +85,71 @@ function atualizarPesos(req, res) {
                     WHERE cd_mat_agenda = ?
                 `;
                 conectiondb().query(sql, [qt_peso_final, cd_mat_agenda], (erro, resultados) => {
-                    if (erro) {
-                        return reject(erro);
-                    }
+                    if (erro) return reject(erro);
                     resolve(resultados);
                 });
             });
         });
 
         Promise.all(updates)
-            .then(() => res.json({ mensagem: 'Pesos atualizados com sucesso!' }))
+            .then(() => {
+                res.json({ mensagem: 'Pesos atualizados com sucesso!' });
+            })
             .catch(erro => {
                 console.error('Erro ao atualizar os pesos:', erro);
-                res.status(500).send('Erro ao atualizar os pesos.');
+                // Só envia resposta se ainda não foi enviada
+                if (!res.headersSent) {
+                    res.status(500).send('Erro ao atualizar os pesos.');
+                }
             });
     });
 }
 
+
+function concluirPesagem(req, res) {
+    const { ie_agenda } = req.body;
+    if (!ie_agenda) {
+        return res.status(400).json({ mensagem: 'Agendamento não informado.' });
+    }
+
+    // 1. Verificar se todos os itens têm qt_peso_final preenchido
+    const sqlVerifica = `
+        SELECT cd_mat_agenda 
+        FROM materiais_agenda 
+        WHERE ie_agenda = ? AND (qt_peso_final IS NULL OR qt_peso_final = '')
+    `;
+    conectiondb().query(sqlVerifica, [ie_agenda], (erro, resultados) => {
+        if (erro) {
+            console.error('Erro ao verificar pesos finais:', erro);
+            return res.status(500).json({ mensagem: 'Erro ao verificar pesos finais.' });
+        }
+        if (resultados.length > 0) {
+            return res.status(400).json({ mensagem: 'Todos os itens devem ter o peso final preenchido antes de concluir a pesagem.' });
+        }
+
+        // 2. Se todos preenchidos, atualizar dt_pesagem
+        const sql = `UPDATE agendamento SET dt_pesagem = SYSDATE() WHERE cd_agendamento = ?`;
+        conectiondb().query(sql, [ie_agenda], (erro2, resultado) => {
+            if (erro2) {
+                console.error('Erro ao concluir pesagem:', erro2);
+                return res.status(500).json({ mensagem: 'Erro ao concluir pesagem.' });
+            }
+            res.json({ mensagem: 'Pesagem concluída com sucesso!' });
+        });
+    });
+}
+
+function exibirNovoMaterial2(req, res) {
+    const cd_agendamento = req.query.cd_agendamento; // ou req.params.cd_agendamento se for rota dinâmica
+    res.render('novoMaterial2', { cd_agendamento });
+};
 
 //exportando a função 
 module.exports = {
     exibirNovoMaterial,
     buscarAgendamentoMaterial,
     buscarItensgenda,
-    atualizarPesos    
+    atualizarPesos,
+    concluirPesagem,
+    exibirNovoMaterial2
 }

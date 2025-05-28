@@ -232,114 +232,465 @@
                     <div class="page-inner">
                         <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
                             <div class="mb-3 d-flex flex-column">
-                                <span class="fs-2 fw-bold">Cadastro de Material</span>
+                                <span class="fs-2 fw-bold">Separação de Materiais</span>
                                 <small class="text-muted">Preencha os dados de cadastro e clique em continuar.</small>
                             </div>
-                            <a href="/novoMaterial" class="btn btn-secondary">
-                                Voltar
-                            </a>
+                            <a href="/novoMaterial" class="btn btn-secondary fw-bold shadow-lg me-3 mt-2">
+                                Voltar</a>
                         </div>
                         <div class="card">
-                            <div class="card-header">
-                                <div class="card-title">Linha: <span
-                                        class="badge badge-primary fs-5 fw-bold">Azul</span>
-                                    <span class="badge badge-success fs-5 fw-bold">Verde</span>
-                                    <span class="badge badge-warning fs-5 fw-bold">Laranja</span>
-                                    <span class="badge badge-danger fs-5 fw-bold">Vermelha</span>
+                            <div class="card-body">
+                                <div class="row mb-5">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Nome do Agendamento</label>
+                                            <select id="agendamento" name="agendamento" class="form-control">
+                                                <option value="">Selecione um agendamento</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Peso real (KG)</label>
+                                            <input type="number" step="0.01" id="pesoReal" name="pesoReal"
+                                                class="form-control" placeholder="___" readonly>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-5">
+                                        <div class="col-md-6 ">
+                                            <label class="fw-bold">Rota</label>
+                                            <input type="text" class="form-control" id="nm_rota" name="rota" readonly>
+                                        </div>
+                                        <div class="col-md-6 ">
+                                            <label class="fw-bold">Planta</label>
+                                            <input type="text" class="form-control" id="nm_planta" name="Planta"
+                                                readonly>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-end gap-2 mt-3">
+                                        <div class="card-footer d-flex justify-content-end">
+                                            <button id="btnConcluirSeparacao" class="btn btn-primary"> Concluir
+                                                separação</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="card-body p-0">
-
-                                <table class="table table-bordered table-head-bg-black table-bordered-bd-black mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Matéria Prima</th>
-                                            <th scope="col">Peso (Kg)</th>
-                                            <th scope="col">Volume (m³)</th>
-                                            <th scope="col">Destino</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><span class="fs-5">Plástico</span></td>
-                                            <td><input class="form-control" placeholder="Informe a quantidade"></td>
-                                            <td><input class="form-control" placeholder="Informe o volume"></td>
-                                            <td><input class="form-control" placeholder="Informe o estoque destino">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="fs-5">Ferro/aço</span></td>
-                                            <td><input class="form-control" placeholder="Informe a quantidade"></td>
-                                            <td><input class="form-control" placeholder="Informe o volume"></td>
-                                            <td><input class="form-control" placeholder="Informe o estoque destino">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="fs-5">Alumínio</span></td>
-                                            <td><input class="form-control" placeholder="Informe a quantidade"></td>
-                                            <td><input class="form-control" placeholder="Informe o volume"></td>
-                                            <td><input class="form-control" placeholder="Informe o estoque destino">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="fs-5">Cobre</span></td>
-                                            <td><input class="form-control" placeholder="Informe a quantidade"></td>
-                                            <td><input class="form-control" placeholder="Informe o volume"></td>
-                                            <td><input class="form-control" placeholder="Informe o estoque destino">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="fs-5">Ouro/prata</span></td>
-                                            <td><input class="form-control" placeholder="Informe a quantidade"></td>
-                                            <td><input class="form-control" placeholder="Informe o volume"></td>
-                                            <td><input class="form-control" placeholder="Informe o estoque destino">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="fs-5">Vidro</span></td>
-                                            <td><input class="form-control" placeholder="Informe a quantidade"></td>
-                                            <td><input class="form-control" placeholder="Informe o volume"></td>
-                                            <td><input class="form-control" placeholder="Informe o estoque destino">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="fs-5">Descarte</span></td>
-                                            <td><input class="form-control" placeholder="Informe a quantidade"></td>
-                                            <td><input class="form-control" placeholder="Informe o volume"></td>
-                                            <td><input class="form-control" placeholder="Informe o estoque destino">
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="card-footer d-flex justify-content-end">
-                                <button type="submit" class="btn btn-success fs-5 shadow-lg">
-                                    Salvar
-                                </button>
-                            </div>
                         </div>
+
+                        <fieldset>
+                            <div class="row">
+                                <!-- ===== Formulário de Inserção/Edição de Itens ===== -->
+                                <div class="col-md-6">
+                                    <div class="card shadow-lg mb-5">
+                                        <div class="card-header">
+                                            <div class="card-title">Adicionar Item</div>
+                                        </div>
+                                        <div class="card-body">
+                                            <form action="/novoMaterial2/adicionarItem" method="POST"
+                                                id="formAdicionarItem">
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <input type="hidden" name="cd_agendamento"
+                                                            id="cd_agendamento_hidden" value="">
+                                                        <label class="fw-bold">Materia Prima</label>
+                                                        <select name="materia_prima" id="materia_prima"
+                                                            class="form-control">
+                                                            <option value="0">Selecione a linha</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-6 ">
+                                                        <label class="fw-bold">Peso do material (KG)</label>
+                                                        <input type="text" class="form-control" id="qt_peso" name="peso"
+                                                            pattern="^\d+([.,]\d{10,2})?$"
+                                                            oninput="this.value = this.value.replace(/[^0-9.,]/g, '')"
+                                                            required>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6 ">
+                                                        <label class="fw-bold">Volume (m³)</label>
+                                                        <input type="text" class="form-control" id="volume_m3"
+                                                            name="volume" pattern="^\d+([.,]\d{10,5})?$"
+                                                            oninput="this.value = this.value.replace(/[^0-9.,]/g, '')"
+                                                            readonly>
+                                                    </div>
+                                                    <div class="col-md-6 ">
+                                                        <label class="fw-bold">Volume prensado (m³)</label>
+                                                        <input type="text" class="form-control" id="volume_m3_prensado"
+                                                            name="volume_m3_prensado" pattern="^\d+([.,]\d{10,5})?$"
+                                                            oninput="this.value = this.value.replace(/[^0-9.,]/g, '')"
+                                                            required>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="col-md-6">
+                                                        <label class="fw-bold">Estoque</label>
+                                                        <select name="estoque" id="cd_estoque" class="form-control">
+                                                            <option value="0">Selecione o estoque</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex justify-content-end gap-2 mt-3">
+                                                    <a href="/novoMaterial2?id_agendamento={{agendamento.cd_agendamento}}"
+                                                        class="btn btn-secondary text-white fw-bold shadow-lg">
+                                                        Cancelar
+                                                    </a>
+
+                                                    <button type="submit"
+                                                        class="btn btn-success text-white fw-bold shadow-lg">Adicionar
+                                                        Item</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ===== Lista de Itens ===== -->
+                                <div class="col-md-6">
+                                    <div class="card shadow-lg mb-5">
+                                        <div class="card-header">
+                                            <div class="card-title">Itens movimentado</div>
+                                            <div class="col-md-2">
+                                                <label class="fw-bold">Peso já separado (KG)</label>
+                                                <input type="text" id="pesoSeparado" class="form-control" value="0"
+                                                    readonly>
+                                            </div>
+                                        </div>
+                                        <div class="card-body p-0">
+                                            <table class="table table-head-bg-success">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Material</th>
+                                                        <th>Estoque</th>
+                                                        <th>Peso</th>
+                                                        <th>Volume</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {{#each itens}}
+                                                    <tr>
+                                                        <td>{{ds_material}}</td>
+                                                        <td>{{nm_estoque}}</td>
+                                                        <td>{{qt_peso}}</td>
+                                                        <td>{{qt_volume}}</td>
+                                                    </tr>
+                                                    {{/each}}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
 
                     </div>
                 </div>
-
-                <footer class="footer">
-                    <div class="container-fluid d-flex justify-content-between">
-                        <nav class="pull-left">
-                            <ul class="nav">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">footer#1</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">footer#2</a>
-                                </li>
-                            </ul>
-                        </nav>
-                        <div class="copyright">
-                            2025 - Autores: Equipe 7
-                        </div>
-                    </div>
-                </footer>
             </div>
         </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const selectAgendamento = document.getElementById('agendamento');
+                const pesoRealInput = document.getElementById('pesoReal');
+                const nmPlantaInput = document.getElementById('nm_planta');
+                const nmRotaInput = document.getElementById('nm_rota');
+
+                // Carregar agendamentos para separação
+                fetch('/buscarAgendamentoSeparacao')
+                    .then(response => response.json())
+                    .then(agendamentos => {
+                        agendamentos.forEach(agendamento => {
+                            const option = document.createElement('option');
+                            option.value = agendamento.cd_agendamento;
+                            option.textContent = agendamento.nm_agendamento;
+                            option.dataset.pesoReal = agendamento.qt_peso_real;
+                            option.dataset.cdPlanta = agendamento.cd_planta || '';
+                            option.dataset.nmPlanta = agendamento.nm_planta || '';
+                            option.dataset.nmRota = agendamento.nm_rota || '';
+                            selectAgendamento.appendChild(option);
+                        });
+
+                        // Selecionar automaticamente se vier parâmetro na URL
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const cd_agendamento = urlParams.get('cd_agendamento');
+                        if (cd_agendamento) {
+                            selectAgendamento.value = cd_agendamento;
+                            // Dispara o evento change para atualizar os campos relacionados
+                            selectAgendamento.dispatchEvent(new Event('change'));
+                        }
+                    })
+                    .catch(error => console.error('Erro ao carregar agendamentos:', error));
+
+                selectAgendamento.addEventListener('change', function () {
+                    const selectedOption = selectAgendamento.options[selectAgendamento.selectedIndex];
+                    pesoRealInput.value = selectedOption.dataset.pesoReal || '';
+                    nmPlantaInput.value = selectedOption.dataset.nmPlanta || '';
+                    nmRotaInput.value = selectedOption.dataset.nmRota || '';
+                });
+            });
+
+            document.addEventListener("DOMContentLoaded", function () {
+                const selectAgendamento = document.getElementById('agendamento');
+                const cdAgendamentoHidden = document.getElementById('cd_agendamento_hidden');
+                selectAgendamento.addEventListener('change', function () {
+                    cdAgendamentoHidden.value = selectAgendamento.value;
+                });
+                cdAgendamentoHidden.value = selectAgendamento.value;
+            });
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const materiaPrimaSelect = document.getElementById('materia_prima');
+                const qtPesoInput = document.getElementById('qt_peso');
+                const volumeInput = document.getElementById('volume_m3');
+                let volumePorKg = null;
+
+                // Carregar materiais no select materia_prima
+                fetch('/buscarMateriaisLinha5')
+                    .then(response => response.json())
+                    .then(materiais => {
+                        materiaPrimaSelect.innerHTML = '<option value="0">Selecione a linha</option>';
+                        materiais.forEach(mat => {
+                            const option = document.createElement('option');
+                            option.value = mat.cd_material;
+                            option.textContent = mat.ds_material;
+                            // Garante que o volume seja um número ou string vazia
+                            option.dataset.volume = mat.volume_m3 !== null && mat.volume_m3 !== undefined ? mat.volume_m3 : '';
+                            materiaPrimaSelect.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error('Erro ao carregar materiais:', error));
+
+                function atualizarVolume() {
+                    const peso = parseFloat(qtPesoInput.value.replace(',', '.'));
+                    if (volumePorKg !== null && !isNaN(peso)) {
+                        volumeInput.value = (peso * volumePorKg).toFixed(5);
+                    } else {
+                        volumeInput.value = '';
+                    }
+                }
+
+                materiaPrimaSelect.addEventListener('change', function () {
+                    const selected = materiaPrimaSelect.options[materiaPrimaSelect.selectedIndex];
+                    // Só faz o cálculo se o volume for válido
+                    volumePorKg = selected.dataset.volume && !isNaN(selected.dataset.volume) ? parseFloat(selected.dataset.volume) : null;
+                    atualizarVolume();
+                });
+
+                qtPesoInput.addEventListener('input', atualizarVolume);
+            });
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const selectAgendamento = document.getElementById('agendamento');
+                const cdEstoqueSelect = document.getElementById('cd_estoque');
+
+                selectAgendamento.addEventListener('change', function () {
+                    // Pegue o código da planta do option selecionado
+                    const selectedOption = selectAgendamento.options[selectAgendamento.selectedIndex];
+                    const cdPlanta = selectedOption.dataset.cdPlanta;
+
+                    // Limpa o select de estoques
+                    cdEstoqueSelect.innerHTML = '<option value="">Selecione o estoque</option>';
+
+                    if (cdPlanta) {
+                        fetch('/buscarEstoquesPorPlanta?cd_planta=' + encodeURIComponent(cdPlanta))
+                            .then(response => response.json())
+                            .then(estoques => {
+                                estoques.forEach(estoque => {
+                                    const option = document.createElement('option');
+                                    option.value = estoque.cd_estoque;
+                                    option.textContent = estoque.nm_estoque;
+                                    cdEstoqueSelect.appendChild(option);
+                                });
+                            })
+                            .catch(error => console.error('Erro ao carregar estoques:', error));
+                    }
+                });
+            });
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const selectAgendamento = document.getElementById('agendamento');
+                const tabelaItens = document.querySelector('.table tbody');
+                const pesoSeparadoInput = document.getElementById('pesoSeparado');
+
+                function atualizarPesoSeparado() {
+                    let somaPesos = 0;
+                    tabelaItens.querySelectorAll('tr').forEach(tr => {
+                        const pesoItem = parseFloat(tr.children[2]?.textContent.replace(',', '.') || 0);
+                        somaPesos += pesoItem;
+                    });
+                    pesoSeparadoInput.value = somaPesos.toFixed(2);
+                }
+
+                selectAgendamento.addEventListener('change', function () {
+                    const cd_agendamento = selectAgendamento.value;
+                    if (!cd_agendamento) {
+                        tabelaItens.innerHTML = '';
+                        pesoSeparadoInput.value = "0";
+                        return;
+                    }
+                    fetch(`/novoMaterial2/movimentacoes?cd_agendamento=${cd_agendamento}`)
+                        .then(response => response.json())
+                        .then(itens => {
+                            tabelaItens.innerHTML = '';
+                            itens.forEach(item => {
+                                const tr = document.createElement('tr');
+                                tr.innerHTML = `
+                        <td>${item.ds_material || ''}</td>
+                        <td>${item.nm_estoque || ''}</td>
+                        <td>${item.qt_peso || ''}</td>
+                        <td>${item.qt_volume || ''}</td>
+                    `;
+                                tabelaItens.appendChild(tr);
+                            });
+                            atualizarPesoSeparado();
+                        })
+                        .catch(error => {
+                            tabelaItens.innerHTML = '<tr><td colspan="4">Erro ao carregar itens.</td></tr>';
+                            pesoSeparadoInput.value = "0";
+                        });
+                });
+
+                // Atualiza também ao carregar a página
+                if (selectAgendamento.value) {
+                    selectAgendamento.dispatchEvent(new Event('change'));
+                }
+            });
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const form = document.getElementById('formAdicionarItem');
+                const volumeInput = document.getElementById('volume_m3');
+                const volumePrensadoInput = document.getElementById('volume_m3_prensado');
+
+                form.addEventListener('submit', function (e) {
+                    const volume = parseFloat(volumeInput.value.replace(',', '.')) || 0;
+                    const volumePrensado = parseFloat(volumePrensadoInput.value.replace(',', '.')) || 0;
+                    const pesoReal = parseFloat(document.getElementById('pesoReal').value.replace(',', '.')) || 0;
+                    const qtPeso = parseFloat(document.getElementById('qt_peso').value.replace(',', '.')) || 0;
+
+                    // Soma dos pesos já adicionados
+                    let somaPesos = 0;
+                    document.querySelectorAll('.table tbody tr').forEach(tr => {
+                        const pesoItem = parseFloat(tr.children[2]?.textContent.replace(',', '.') || 0);
+                        somaPesos += pesoItem;
+                    });
+
+                    if (volumePrensado > volume) {
+                        e.preventDefault();
+                        swal("Erro!", "O volume prensado não pode ser maior que o volume calculado!", {
+                            icon: "error",
+                            buttons: {
+                                confirm: {
+                                    text: "OK",
+                                    className: "btn btn-danger",
+                                },
+                            },
+                        });
+                        return;
+                    }
+
+                    if ((somaPesos + qtPeso) > pesoReal) {
+                        e.preventDefault();
+                        swal("Erro!", "A soma dos pesos dos itens não pode ultrapassar o peso real do agendamento!", {
+                            icon: "error",
+                            buttons: {
+                                confirm: {
+                                    text: "OK",
+                                    className: "btn btn-danger",
+                                },
+                            },
+                        });
+                        return;
+                    }
+                });
+            });
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const btnConcluir = document.getElementById('btnConcluirSeparacao');
+                const selectAgendamento = document.getElementById('agendamento');
+
+                btnConcluir.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const cd_agendamento = selectAgendamento.value;
+                    if (!cd_agendamento) {
+                        swal("Atenção!", "Selecione um agendamento antes de concluir a separação.", {
+                            icon: "warning",
+                            buttons: {
+                                confirm: {
+                                    text: "OK",
+                                    className: "btn btn-warning",
+                                },
+                            },
+                        });
+                        return;
+                    }
+                    swal({
+                        title: "Deseja confirmar o encerramento da separação?",
+                        icon: "warning",
+                        buttons: {
+                            cancel: {
+                                text: "Não",
+                                value: false,
+                                visible: true,
+                                className: "btn btn-secondary",
+                            },
+                            confirm: {
+                                text: "Sim",
+                                value: true,
+                                visible: true,
+                                className: "btn btn-primary",
+                            }
+                        }
+                    }).then((willConfirm) => {
+                        if (willConfirm) {
+                            // Faz o update via fetch
+                            fetch(`/novoMaterial2/concluirSeparacao?cd_agendamento=${cd_agendamento}`, {
+                                method: 'POST'
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        swal("Sucesso!", "Separação encerrada com sucesso!", {
+                                            icon: "success",
+                                            buttons: {
+                                                confirm: {
+                                                    text: "OK",
+                                                    className: "btn btn-success",
+                                                },
+                                            },
+                                        }).then(() => {
+                                            window.location.href = '/novoMaterial2';
+                                        });
+                                    } else {
+                                        swal("Erro!", data.message || "Erro ao encerrar separação.", {
+                                            icon: "error",
+                                            buttons: {
+                                                confirm: {
+                                                    text: "OK",
+                                                    className: "btn btn-danger",
+                                                },
+                                            },
+                                        });
+                                    }
+                                });
+                        } else {
+                            // Redireciona para a tela com o agendamento marcado
+                            window.location.href = `/novoMaterial2?cd_agendamento=${cd_agendamento}`;
+                        }
+                    });
+                });
+            });
+        </script>
+
     </body>
 </main>

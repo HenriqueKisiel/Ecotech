@@ -27,17 +27,19 @@ function buscarEstoques(req, res) {
 
     if (tipoCadastro === 'estoque') {
         sql = `
-            SELECT 
-                e.cd_estoque,
-                e.nm_estoque,
-                e.cd_planta,
-                e.qt_disponivel,
-                e.qt_capacidade_maxima,
-                p.nm_planta
-            FROM estoque e
-            LEFT JOIN planta p ON e.cd_planta = p.cd_planta
-            WHERE 1=1
-        `;
+        SELECT 
+            e.cd_estoque,
+            e.nm_estoque,
+            e.cd_planta,
+            e.qt_capacidade_atual,
+            e.qt_volume_total,
+            e.qt_volume_atual,
+            e.qt_disponivel_volume,
+            p.nm_planta
+        FROM estoque e
+        LEFT JOIN planta p ON e.cd_planta = p.cd_planta
+        WHERE 1=1
+    `;
 
         if (codigoCadastro) {
             sql += ' AND e.cd_estoque = ?';
@@ -53,6 +55,7 @@ function buscarEstoques(req, res) {
             sql += ' AND p.nm_planta LIKE ?';
             params.push(`%${plantaCadastro}%`);
         }
+
 
     } else if (tipoCadastro === 'material') {
         sql = `
