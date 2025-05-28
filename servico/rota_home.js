@@ -74,16 +74,16 @@ function faturamentoMensalPlanta(req, res) {
     const ano = 2025; // Ano fixo para o dashboard
     const sql = `
         SELECT 
-            MONTH(m.dt_movimentacao) AS mes,
-            SUM(m.qt_peso * m.vl_valor_por_kg) AS faturamento_total
+        MONTH(m.dt_movimentacao) AS mes,
+        SUM(m.vl_valor_por_kg) AS faturamento_total
         FROM movimentacoes m
-        JOIN estoque_material em ON m.cd_estoque = em.cd_estoque AND m.cd_material = em.cd_material
-        JOIN estoque e ON e.cd_estoque = em.cd_estoque
+        JOIN estoque e 
+        ON m.cd_estoque = e.cd_estoque
         WHERE m.tipo_movimentacao = 'venda'
-          AND e.cd_planta = ?
-          AND YEAR(m.dt_movimentacao) = ?
+        AND e.cd_planta = ?
+        AND YEAR(m.dt_movimentacao) = ?
         GROUP BY mes
-        ORDER BY mes
+        ORDER BY mes;
     `;
     con.query(sql, [cd_planta, ano], (err, result) => {
         if (err) return res.status(500).json({ erro: err });

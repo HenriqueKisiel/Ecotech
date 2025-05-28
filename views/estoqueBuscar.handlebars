@@ -322,14 +322,16 @@
 
                         if (tipo === 'estoque') {
                             tabelaCabecalho.innerHTML = `
-                <tr>
-                    <th>Código</th>
-                    <th>Estoque</th>
-                    <th>Planta</th>
-                    <th>Quantidade Disponível (Kg)</th>
-                    <th>Capacidade Máxima (Kg)</th>
-                </tr>
-            `;
+                            <tr>
+                                <th>Código</th>
+                                <th>Estoque</th>
+                                <th>Planta</th>
+                                <th>KG Atual</th>
+                                <th>Volume Total (m³)</th>
+                                <th>Volume Atual (m³)</th>
+                                <th>Volume Disponível (m³)</th>
+                            </tr>
+                            `;
                         } else if (tipo === 'material') {
                             tabelaCabecalho.innerHTML = `
                 <tr>
@@ -414,16 +416,17 @@
 
                             dados.forEach(item => {
                                 if (tipo === 'estoque') {
-                                    // Para "estoque", usamos os campos específicos de estoque
                                     tbody.innerHTML += `
-                        <tr>
-                            <td>${item.cd_estoque}</td>
-                            <td>${item.nm_estoque}</td>
-                            <td>${item.nm_planta}</td>
-                            <td>${item.qt_disponivel}</td>
-                            <td>${item.qt_capacidade_maxima}</td>
-                        </tr>
-                    `;
+                                <tr>
+                <td>${item.cd_estoque}</td>
+                <td>${item.nm_estoque}</td>
+                <td>${item.nm_planta}</td>
+                <td>${item.qt_capacidade_atual ?? '-'}</td>
+                <td>${item.qt_volume_total ?? '-'}</td>
+                <td>${item.qt_volume_atual ?? '-'}</td>
+                <td>${item.qt_disponivel_volume ?? '-'}</td>
+            </tr>
+                            `;
                                 } else if (tipo === 'material') {
                                     // Para "material", usamos os campos específicos de material
                                     tbody.innerHTML += `

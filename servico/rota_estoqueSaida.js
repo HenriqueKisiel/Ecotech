@@ -524,11 +524,10 @@ function atualizarEstoqueMaterial(req, res) {
         WHERE cd_estoque = ? AND cd_material = ?
     `;
 
-    function registrarMovimentacao(novoPesoParaVenda) {
-        // Corrigido: grava o valor total da venda em vl_valor_por_kg se for venda
+    function registrarMovimentacao() {
         let valorParaRegistrar = vl_valor_por_kg;
         if (movimentacao === 'venda') {
-            valorParaRegistrar = (Number(novoPesoParaVenda) || 0) * (Number(vl_valor_por_kg) || 0);
+            valorParaRegistrar = (Number(peso) || 0) * (Number(vl_valor_por_kg) || 0);
         }
 
         const queryMov = `
