@@ -252,9 +252,6 @@
                         <div class="mb-3"></div>
                         <div class="row row-card-no-pd mt-3 shadow-lg mb-5">
                             <div class="col-12 col-sm-6 col-md-6 col-xl-6">
-                                {{!-- Aqui deve pegar todas as plantas cadastradas na tabela planta e mostrar o nome
-                                delas dentro do select, e quando o usuario selecionar um nome de planta automaticamente
-                                todos os dashboards da tela serão atualizados com base naquele cd_planta --}}
                                 <div class="form-group">
                                     <label class="fw-bold">Selecione a Planta</label><br>
                                     <select class="form-select form-control" id="selectPlanta">
@@ -268,8 +265,6 @@
                             <div class="col-12 col-sm-6 col-md-6 col-xl-6">
                                 <div class="card">
                                     <div class="card-body">
-                                        {{!-- Aqui deverá ser feito um calculo onde o qt_capacidade_total_kg será o 100%
-                                        do progresso e o qt_capacidade_atual_kg será o h3 abaixo. --}}
                                         <div class="d-flex justify-content-between">
                                             <div>
                                                 <h5><b>Capacidade de Armazenamento (m³)</b></h5>
@@ -292,8 +287,6 @@
                                         <div class="card-title">Estoques da Planta</div>
                                     </div>
                                     <div class="card-body p-0">
-                                        {{!-- Aqui cada linha deve aparecer todos estoques cadastrados vinculados
-                                        naquele cd_planta selecionado acima --}}
                                         <table class="table table-striped table-head-bg-secondary">
                                             <thead>
                                                 <tr>
@@ -339,7 +332,6 @@ background: linear-gradient(90deg,rgba(42, 123, 155, 1) 0%, rgba(87, 199, 133, 1
                                                     <span class="fs-2 fw-semibold text-white">0</span>
                                                 </div>
                                             </div>
-                                            {{!-- Indicador geral do sistema, pois no agendamento não tem cd_planta --}}
                                             <span class="fs-4 text-white">Total de Coletas Realizadas</span>
                                         </div>
                                     </div>
@@ -399,19 +391,8 @@ background: linear-gradient(90deg,rgba(42, 123, 155, 1) 0%, rgba(87, 199, 133, 1
                         });
 
                     </script>
+                    {{!-- Atualiza o indicador de coletas realizadas por planta ao selecionar --}}
                     <script>
-                        function atualizarIndicadorColetas() {
-                            fetch('/home/totalColetas/0') // O parâmetro é ignorado no backend
-                                .then(res => res.json())
-                                .then(data => {
-                                    document.querySelector('.fa-truck').parentElement.nextElementSibling.querySelector('span').textContent = data.total;
-                                });
-                        }
-                        // Atualiza ao carregar a página
-                        window.addEventListener('DOMContentLoaded', atualizarIndicadorColetas);
-                    </script>
-                    <script>
-                        // Atualiza o indicador de coletas realizadas por planta ao selecionar
                         function atualizarIndicadorColetasPlanta(plantaId) {
                             if (!plantaId) return;
                             fetch(`/home/totalColetas/${plantaId}`)
@@ -424,8 +405,6 @@ background: linear-gradient(90deg,rgba(42, 123, 155, 1) 0%, rgba(87, 199, 133, 1
                             const plantaId = this.value;
                             atualizarIndicadorColetasPlanta(plantaId);
                         });
-                        // Opcional: atualizar ao carregar a página para a primeira planta
-                        // window.addEventListener('DOMContentLoaded', () => atualizarIndicadorColetasPlanta(0));
                     </script>
                     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                     <script>
