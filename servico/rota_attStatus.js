@@ -114,7 +114,7 @@ async function atualizarStatusRota(req, res) {
            AND dt_r_inciada != '000000'
         `;
 
-            // NOVA VALIDAÇÃO: Verifica se motorista e caminhão estão vinculados
+            //Verifica se motorista e caminhão estão vinculados
             const verificaMotoristaCaminhao = `
             SELECT ie_motorista, ie_caminhao 
             FROM rota_coleta 
