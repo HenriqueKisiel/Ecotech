@@ -257,8 +257,13 @@
                                                     <option value="Planta de Reciclagem" {{#if (eq
                                                         tipoCadastro "Planta de Reciclagem" )}}selected{{/if}}>Planta de
                                                         Reciclagem</option>
+                                                    <option value="Motorista" {{#if (eq tipoCadastro "Motorista"
+                                                        )}}selected{{/if}}>Motorista</option>
+                                                    <option value="Caminhão" {{#if (eq tipoCadastro "Caminhão"
+                                                        )}}selected{{/if}}>Caminhão</option>
                                                 </select>
                                             </div>
+
                                         </div>
 
                                         <!-- Situação - Substitui Telefone quando for Planta de Reciclagem -->
@@ -346,29 +351,43 @@
                                             <tr>
                                                 <th>Código</th>
                                                 <th>Nome</th>
+
                                                 {{#if (eq tipoCadastro "Planta de Reciclagem")}}
                                                 <th>KG Atual</th>
                                                 <th>Volume Total (m³)</th>
                                                 <th>Volume Atual (m³)</th>
                                                 <th>Volume Disponível (m³)</th>
+                                                {{else if (eq tipoCadastro "Motorista")}}
+                                                <th>CNH</th>
+                                                <th>Categoria CNH</th>
+                                                <th>Vencimento CNH</th>
+                                                <th>Situação</th>
+                                                {{else if (eq tipoCadastro "Caminhão")}}
+                                                <th>Placa</th>
+                                                <th>Tipo</th>
+                                                <th>Capacidade (KG)</th>
+                                                <th>Capacidade Volume (m³)</th>
+                                                <th>Ano Fabricação</th>
+                                                <th>Situação</th>
                                                 {{else}}
                                                 <th>Email</th>
                                                 <th>CPF/CNPJ</th>
                                                 <th>Telefone</th>
-                                                {{/if}}
                                                 {{#if (or (eq tipoCadastro "Planta de Reciclagem") (eq tipoCadastro
                                                 "Usuário"))}}
                                                 <th>Situação</th>
                                                 {{/if}}
+                                                {{/if}}
+
                                                 <th>Ações</th>
                                             </tr>
                                         </thead>
+
                                         <tbody>
                                             {{#if resultados}}
                                             {{#each resultados}}
                                             <tr>
                                                 <td>{{codigo}}</td>
-
                                                 <td>{{nome}}</td>
 
                                                 {{#if (eq ../tipoCadastro "Planta de Reciclagem")}}
@@ -376,6 +395,18 @@
                                                 <td>{{volume_total}}</td>
                                                 <td>{{volume_atual}}</td>
                                                 <td>{{volume_disponivel}}</td>
+                                                {{else if (eq ../tipoCadastro "Motorista")}}
+                                                <td>{{cnh}}</td>
+                                                <td>{{categoria}}</td>
+                                                <td>{{vencimento}}</td>
+                                                <td>{{situacao}}</td>
+                                                {{else if (eq ../tipoCadastro "Caminhão")}}
+                                                <td>{{placa}}</td>
+                                                <td>{{tipo}}</td>
+                                                <td>{{capacidade_kg}}</td>
+                                                <td>{{capacidade_volume}}</td>
+                                                <td>{{ano_fabricacao}}</td>
+                                                <td>{{situacao}}</td>
                                                 {{else}}
                                                 <td>{{#if email}}{{email}}{{else}}-{{/if}}</td>
                                                 <td>
@@ -384,29 +415,54 @@
                                                     {{/if}}
                                                 </td>
                                                 <td>{{#if telefone}}{{telefone}}{{else}}-{{/if}}</td>
-                                                {{/if}}
-
                                                 {{#if (or (eq ../tipoCadastro "Planta de Reciclagem") (eq
                                                 ../tipoCadastro "Usuário"))}}
                                                 <td>{{#if situacao}}{{situacao}}{{else}}-{{/if}}</td>
                                                 {{/if}}
+                                                {{/if}}
 
                                                 <td>
                                                     <div class="d-flex justify-content-center align-items-center">
-                                                        <a href="/editar/{{codigo}}"
-                                                            class="btn btn-icon btn-round btn-warning btn-editar"
-                                                            data-codigo="{{codigo}}">
+                                                        {{#if (eq ../tipoCadastro "Motorista")}}
+                                                        <a href="/motoristaEditar/{{codigo}}"
+                                                            class="btn btn-icon btn-round btn-warning">
                                                             <i class="fa fa-edit text-white"></i>
                                                         </a>
+                                                        {{else if (eq ../tipoCadastro "Caminhão")}}
+                                                        <a href="/caminhaoEditar/{{codigo}}"
+                                                            class="btn btn-icon btn-round btn-warning">
+                                                            <i class="fa fa-edit text-white"></i>
+                                                        </a>
+                                                        {{else if (eq ../tipoCadastro "Pessoa")}}
+                                                        <a href="/pessoaEditar/{{codigo}}"
+                                                            class="btn btn-icon btn-round btn-warning">
+                                                            <i class="fa fa-edit text-white"></i>
+                                                        </a>
+                                                        {{else if (eq ../tipoCadastro "Fornecedor ou Pessoa Jurídica")}}
+                                                        <a href="/juridicaEditar/{{codigo}}"
+                                                            class="btn btn-icon btn-round btn-warning">
+                                                            <i class="fa fa-edit text-white"></i>
+                                                        </a>
+                                                        {{else if (eq ../tipoCadastro "Planta de Reciclagem")}}
+                                                        <a href="/plantaEditar/{{codigo}}"
+                                                            class="btn btn-icon btn-round btn-warning">
+                                                            <i class="fa fa-edit text-white"></i>
+                                                        </a>
+                                                        {{else if (eq ../tipoCadastro "Usuário")}}
+                                                        <a href="/usuarioEditar/{{codigo}}"
+                                                            class="btn btn-icon btn-round btn-warning">
+                                                            <i class="fa fa-edit text-white"></i>
+                                                        </a>
+                                                        {{/if}}
                                                     </div>
                                                 </td>
-
                                             </tr>
                                             {{/each}}
                                             {{else}}
                                             <tr>
-                                                <td colspan="7" class="text-center text-muted">Nenhum cadastro
-                                                    encontrado</td>
+                                                <td colspan="15" class="text-center text-muted">
+                                                    Nenhum cadastro encontrado
+                                                </td>
                                             </tr>
                                             {{/if}}
                                         </tbody>
@@ -424,11 +480,11 @@
                                 const situacaoField = document.getElementById('situacaoField');
                                 const cpfField = document.getElementById('cpfField');
                                 const cnpjField = document.getElementById('cnpjField');
+                                const emailField = document.querySelector('input[name="email"]').closest('.col-md-6');
                                 const limparBtn = document.getElementById('limparBtn');
                                 const form = document.getElementById('filtroForm');
                                 const editarLinks = document.querySelectorAll('.btn-editar');
 
-                                // Função para atualizar os campos de acordo com o tipo de cadastro
                                 function updateFields() {
                                     const selected = tipoCadastro.value;
 
@@ -437,66 +493,40 @@
                                     situacaoField.style.display = 'none';
                                     cpfField.style.display = 'none';
                                     cnpjField.style.display = 'none';
+                                    emailField.style.display = 'none';
 
-                                    // Mostrar o campo 'Situação' se for 'Planta de Reciclagem'
-                                    if (selected === 'Planta de Reciclagem' || selected === 'Usuário') {
-                                        situacaoField.style.display = 'block'; // Mostra Situação para Planta de Reciclagem
-                                        if (selected === 'Planta de Reciclagem') {
-                                            cnpjField.style.display = 'block'; // Mostra CNPJ para Planta de Reciclagem
-                                        }
-                                    }
-                                    // Caso contrário, mostra o campo 'Telefone' e os campos de CPF ou CNPJ conforme o tipo de cadastro
-                                    else {
+                                    // Se for Motorista ou Caminhão, mostra só Nome e Situação
+                                    if (selected === 'Motorista' || selected === 'Caminhão') {
+                                        situacaoField.style.display = 'block';
+                                        // Os outros campos permanecem escondidos
+                                    } else if (
+                                        selected === 'Planta de Reciclagem' ||
+                                        selected === 'Usuário'
+                                    ) {
+                                        situacaoField.style.display = 'block';
+                                        if (selected === 'Planta de Reciclagem') cnpjField.style.display = 'block';
+                                        if (selected === 'Usuário') cpfField.style.display = 'block';
                                         telefoneField.style.display = 'block';
-                                        cnpjField.style.display = 'none'; // Garante que CNPJ não apareça para outros tipos que não sejam Planta
-                                        if (selected === 'Pessoa' || selected === 'Usuário') {
-                                            cpfField.style.display = 'block'; // Mostrar CPF para Pessoa e Usuário
-                                        } else if (selected === 'Fornecedor ou Pessoa Jurídica') {
-                                            cnpjField.style.display = 'block'; // Mostrar CNPJ para Fornecedor ou Pessoa Jurídica
-                                        }
+                                        emailField.style.display = 'block';
+                                    } else {
+                                        telefoneField.style.display = 'block';
+                                        emailField.style.display = 'block';
+                                        if (selected === 'Pessoa') cpfField.style.display = 'block';
+                                        else if (selected === 'Fornecedor ou Pessoa Jurídica') cnpjField.style.display = 'block';
                                     }
                                 }
 
-                                // Função para atualizar os links de edição com base no tipo de cadastro
-                                function atualizarLinksEditar() {
-                                    const tipo = tipoCadastro.value;
-                                    let rota = '/editar';
-
-                                    switch (tipo) {
-                                        case 'Pessoa':
-                                            rota = '/pessoaEditar';
-                                            break;
-                                        case 'Usuário':
-                                            rota = '/usuarioEditar';
-                                            break;
-                                        case 'Fornecedor ou Pessoa Jurídica':
-                                            rota = '/juridicaEditar';
-                                            break;
-                                        case 'Planta de Reciclagem':
-                                            rota = '/plantaEditar';
-                                            break;
-                                    }
-
-                                    editarLinks.forEach(link => {
-                                        const codigo = link.getAttribute('data-codigo');
-                                        link.setAttribute('href', `${rota}/${codigo}`);
-                                    });
-                                }
-
-                                // Adiciona o evento de mudança para atualizar os campos e os links de edição
                                 tipoCadastro.addEventListener('change', () => {
                                     updateFields();
                                     atualizarLinksEditar();
                                 });
 
-                                // Função de limpar os campos do filtro e resetar as visibilidades
                                 limparBtn.addEventListener('click', () => {
                                     form.reset();
                                     updateFields();
                                     atualizarLinksEditar();
                                 });
 
-                                // Chama a função para configurar os campos ao carregar a página
                                 updateFields();
                                 atualizarLinksEditar();
                             });

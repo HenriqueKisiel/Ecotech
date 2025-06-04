@@ -231,7 +231,7 @@
                     <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
                         <div class="mb-3 d-flex flex-column">
                             <span class="fs-2 fw-bold">
-                                Cadastro de Motorista
+                                Editar de Motorista
                             </span>
                             <small class="text-muted">
                                 Preencha os dados de cadastro e clique em salvar.
@@ -245,32 +245,36 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <form id="formMotorista" action="/motorista" method="POST">
+                            <form id="formMotorista" action="/motoristaEditar" method="POST">
+                                <input type="hidden" name="id_motorista" value="{{motorista.id_motorista}}" readonly>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Selecione a Pessoa Física</label><br>
-                                            <select class="form-select form-control" name="cd_pessoa_fisica" required>
-                                                <option value="">Selecione</option>
-                                                {{#each pessoasFisicas}}
-                                                <option value="{{cd_pessoa_fisica}}">{{nm_pessoa_fisica}}</option>
-                                                {{/each}}
-                                            </select>
+                                            <input maxlength="50" type="text" name="nm_motorista" class="form-control"
+                                                placeholder={{motorista.nm_motorista}} readonly>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Número da CNH</label>
-                                            <input maxlength="11" minlength="11" type="text" name="nrCnh"
-                                                class="form-control" placeholder="Insira o número" required
-                                                pattern="\d{11}" title="A CNH deve conter exatamente 11 números">
+                                            <input maxlength="50" type="text" name="nrCnh" class="form-control"
+                                                placeholder={{motorista.cnh}} readonly>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Categoria atual da CNH</label>
+                                            <input maxlength="50" type="text" name="categoriaAtual" class="form-control"
+                                                placeholder={{motorista.categoria_cnh}} readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label class="fw-bold">Categoria CNH</label><br>
-                                            <select name="categoria_cnh" class="form-select form-control" required>
-                                                <option value="" disabled selected>Selecione a categoria</option>
+                                            <select class="form-select form-control" title="Selecione a Pessoa"
+                                                name="categoria_cnh" required>
+                                                <option value={{motorista.categoria_cnh}}>Altere a categoria</option>
                                                 <option value="A">A</option>
                                                 <option value="B">B</option>
                                                 <option value="C">C</option>
@@ -279,11 +283,19 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label class="fw-bold">Data de Vencimento</label>
-                                            <input type="date" name="dataVenc" class="form-control" id="dataVenc"
-                                                required>
+                                            <input type="date" name="dataVenc" class="form-control"
+                                                value="{{motorista.vencimento_cnh}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Situação</label><br>
+                                            <input type="checkbox" id="situacao" name="situacao" value="A" {{#if (eq
+                                                motorista.situacao "A" )}}checked{{/if}}>
+                                            <label for="situacao">Ativo</label>
                                         </div>
                                     </div>
                                 </div>
@@ -297,29 +309,9 @@
                     </div>
                 </div>
             </div>
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    const dataInput = document.getElementById('dataVenc');
-                    if (dataInput) {
-                        const hoje = new Date();
-                        const yyyy = hoje.getFullYear();
-                        const mm = String(hoje.getMonth() + 1).padStart(2, '0');
-                        const dd = String(hoje.getDate()).padStart(2, '0');
-                        const minDate = `${yyyy}-${mm}-${dd}`;
-                        dataInput.setAttribute('min', minDate);
-                    }
-
-                    // Validação CNH: só números e máximo 11 dígitos
-                    const cnhInput = document.querySelector('input[name="nrCnh"]');
-                    if (cnhInput) {
-                        cnhInput.addEventListener('input', function () {
-                            this.value = this.value.replace(/\D/g, '').slice(0, 11);
-                        });
-                    }
-                });
-            </script>
-
-
+            {{#if script}}
+            {{{script}}}
+            {{/if}}
             <!--End conteudo indiviudual da pagina-->
         </div>
         <!--End MenuBar-->

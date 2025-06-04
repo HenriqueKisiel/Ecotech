@@ -34,6 +34,8 @@ const servico26 = require('../servico/rota_novoMaterial2.js');
 const servico27 = require('../servico/rota_motorista.js');
 const servico28 = require('../servico/rota_caminhao.js');
 const servico29 = require('../servico/rota_relatoriosNovo.js')
+const servico30 = require('../servico/rota_motoristaEditar.js');
+const servico31 = require('../servico/rota_caminhaoEditar.js');
 
 
 
@@ -241,6 +243,10 @@ router.get('/exportarRelatorioPDF/:cd_rel', (req, res) => {
     servico12.exportarRelatorioPDF(req, res);
 });
 
+// Filtro de relatórios
+router.post('/relatorios', (req, res) => {
+    servico12.filtrarRelatorios(req, res);
+});
 //------------------------ Servico13 -------------------//
 
 // Rota para a página de processamento
@@ -520,14 +526,17 @@ router.get('/motorista', (req, res) => {
     servico27.exibirMotorista(req, res);
 });
 
+router.post('/motorista', (req, res) => {
+    servico27.inserirMotorista(req, res);
+});
+
 // ----------------------- Servico28 -------------------//
 router.get('/caminhao', (req, res) => {
     servico28.exibirCaminhao(req, res);
 });
 
-// Filtro de relatórios
-router.post('/relatorios', (req, res) => {
-    servico12.filtrarRelatorios(req, res);
+router.post('/caminhao', (req, res) => {
+    servico28.cadastrarCaminhao(req, res);
 });
 
 // ----------------------- Servico29 -------------------//
@@ -538,6 +547,26 @@ router.get('/relatoriosNovo', (req, res) => {
 router.post('/relatoriosNovo', (req, res) => {
     servico29.salvarRelatorioNovo(req, res);
 });
+
+// ----------------------- Servico30 -------------------//
+
+router.get('/motoristaEditar/:id_motorista', (req, res) => {
+    servico30.exibirEditarMotorista(req, res);
+});
+
+router.post('/motoristaEditar', (req, res) => {
+    servico30.editarMotorista(req, res);
+});
+
+// ----------------------- Servico31 -------------------//
+router.get('/caminhaoEditar/:id_caminhao', (req, res) => {
+    servico31.exibirCaminhaoEditar(req, res);
+});
+
+router.post('/caminhaoEditar', (req, res) => {
+    servico31.editarCaminhao(req, res);
+});
+
 
 //==================== END ROTAS ====================
 

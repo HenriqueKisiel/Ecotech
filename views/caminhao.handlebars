@@ -245,52 +245,56 @@
                             </div>
                         </div>
                         <div class="card-body">
+                        
                             <form id="formCaminhao" action="/caminhao" method="POST">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Modelo</label>
-                                            <input maxlength="50" type="text" name="nrCnh" class="form-control"
-                                                placeholder="Informe o modelo">
+                                            <input maxlength="50" type="text" name="nm_modelo" class="form-control"
+                                                placeholder="Informe o modelo" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Tipo</label><br>
-                                            <select class="form-select form-control" title="Selecione a Pessoa"
-                                                name="pessoaFisica">
-                                                <option value="1">option 1</option>
-                                                <option value="2">option 2</option>
+                                            <select class="form-select form-control" name="tipo" required>
+                                                <option value="">Selecione o tipo</option>
+                                                <option value="VUC">VUC</option>
+                                                <option value="TRUCK">TRUCK</option>
+                                                <option value="SIDER">SIDER</option>
+                                                <option value="FURGAO">FURGAO</option>
+                                                <option value="HR">HR</option>
+                                                <option value="TOCO">TOCO</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Placa</label>
-                                            <input maxlength="50" type="text" name="nrCnh" class="form-control"
-                                                placeholder="Informe o Placa">
+                                            <input maxlength="50" type="text" name="placa" class="form-control"
+                                                placeholder="Informe a placa" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Ano Fabricação</label>
+                                            <input maxlength="4" type="text" name="ano_fabricacao" class="form-control"
+                                                placeholder="Informe o ano" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Capacidade (Kg)</label>
-                                            <input maxlength="50" type="text" name="nrCnh" class="form-control"
-                                                placeholder="Informe a capacidade">
+                                            <input maxlength="50" type="number" name="capacidade_kg"
+                                                class="form-control" placeholder="Informe a capacidade" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Capacidade em Volume (m³)</label>
-                                            <input maxlength="50" type="text" name="nrCnh" class="form-control"
-                                                placeholder="Informe a capacidade">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 d-flex align-items-end">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="flexCheckDefault">
-                                            <label class="form-check-label fw-bold">
-                                                Inativar
-                                            </label>
+                                            <input maxlength="50" type="number" name="capacidade_volume"
+                                                class="form-control" placeholder="Informe a capacidade" required>
                                         </div>
                                     </div>
                                 </div>
@@ -300,6 +304,7 @@
                                     <button type="submit" class="btn btn-success shadow-lg fs-6 fw-bold">Salvar</button>
                                 </div>
                             </form>
+                         
                         </div>
                     </div>
                 </div>

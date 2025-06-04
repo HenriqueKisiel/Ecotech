@@ -231,7 +231,7 @@
                     <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
                         <div class="mb-3 d-flex flex-column">
                             <span class="fs-2 fw-bold">
-                                Cadastro de Motorista
+                                Editar Caminhão
                             </span>
                             <small class="text-muted">
                                 Preencha os dados de cadastro e clique em salvar.
@@ -245,45 +245,76 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <form id="formMotorista" action="/motorista" method="POST">
+                            <form id="formCaminhao" action="/caminhaoEditar" method="POST">
+                            <input type="hidden" name="id_caminhao" value="{{caminhao.id_caminhao}}">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="fw-bold">Selecione a Pessoa Física</label><br>
-                                            <select class="form-select form-control" name="cd_pessoa_fisica" required>
-                                                <option value="">Selecione</option>
-                                                {{#each pessoasFisicas}}
-                                                <option value="{{cd_pessoa_fisica}}">{{nm_pessoa_fisica}}</option>
-                                                {{/each}}
+                                            <label class="fw-bold">Modelo</label>
+                                            <input type="text" name="nm_modelo" class="form-control"
+                                                value="{{caminhao.nm_modelo}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Tipo Atual</label>
+                                            <input type="text" name="tipo_atual" class="form-control"
+                                                value={{caminhao.tipo}} readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Tipo</label><br>
+                                            <select class="form-select form-control" name="tipo">
+                                                <option value={{caminhao.tipo}}></option>
+                                                <option value="VUC">VUC</option>
+                                                <option value="TRUCK">TRUCK</option>
+                                                <option value="SIDER">SIDER</option>
+                                                <option value="FURGAO">FURGAO</option>
+                                                <option value="HR">HR</option>
+                                                <option value="TOCO">TOCO</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <div class="form-group">
-                                            <label class="fw-bold">Número da CNH</label>
-                                            <input maxlength="11" minlength="11" type="text" name="nrCnh"
-                                                class="form-control" placeholder="Insira o número" required
-                                                pattern="\d{11}" title="A CNH deve conter exatamente 11 números">
+                                            <label class="fw-bold">Placa</label>
+                                            <input maxlength="50" type="text" name="placa" class="form-control"
+                                                placeholder="Informe o Placa" value={{caminhao.placa}} readonly>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <div class="form-group">
-                                            <label class="fw-bold">Categoria CNH</label><br>
-                                            <select name="categoria_cnh" class="form-select form-control" required>
-                                                <option value="" disabled selected>Selecione a categoria</option>
-                                                <option value="A">A</option>
-                                                <option value="B">B</option>
-                                                <option value="C">C</option>
-                                                <option value="D">D</option>
-                                                <option value="E">E</option>
-                                            </select>
+                                            <label class="fw-bold">Ano Fabricação</label>
+                                            <input maxlength="50" type="text" name="ano_fabricacao" class="form-control"
+                                                placeholder="Informe o Placa" value={{caminhao.ano_fabricacao}}>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+
+                                    <div class="col-md-3">
                                         <div class="form-group">
-                                            <label class="fw-bold">Data de Vencimento</label>
-                                            <input type="date" name="dataVenc" class="form-control" id="dataVenc"
-                                                required>
+                                            <label class="fw-bold">Capacidade (Kg)</label>
+                                            <input maxlength="50" type="number" name="capacidade_kg"
+                                                class="form-control" placeholder="Informe a capacidade"
+                                                value={{caminhao.capacidade_kg}}>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Capacidade em Volume (m³)</label>
+                                            <input maxlength="50" type="numeber" name="capacidade_volume"
+                                                class="form-control" placeholder="Informe a capacidade"
+                                                value={{caminhao.capacidade_volume}}>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 d-flex align-items-end">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="situacao"
+                                                name="situacao" value="A" {{#if (eq caminhao.situacao "A"
+                                                )}}checked{{/if}}>
+                                            <label class="form-check-label fw-bold" for="situacao">
+                                                Ativo
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
@@ -297,29 +328,6 @@
                     </div>
                 </div>
             </div>
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    const dataInput = document.getElementById('dataVenc');
-                    if (dataInput) {
-                        const hoje = new Date();
-                        const yyyy = hoje.getFullYear();
-                        const mm = String(hoje.getMonth() + 1).padStart(2, '0');
-                        const dd = String(hoje.getDate()).padStart(2, '0');
-                        const minDate = `${yyyy}-${mm}-${dd}`;
-                        dataInput.setAttribute('min', minDate);
-                    }
-
-                    // Validação CNH: só números e máximo 11 dígitos
-                    const cnhInput = document.querySelector('input[name="nrCnh"]');
-                    if (cnhInput) {
-                        cnhInput.addEventListener('input', function () {
-                            this.value = this.value.replace(/\D/g, '').slice(0, 11);
-                        });
-                    }
-                });
-            </script>
-
-
             <!--End conteudo indiviudual da pagina-->
         </div>
         <!--End MenuBar-->

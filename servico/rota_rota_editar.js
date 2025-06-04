@@ -2,7 +2,7 @@ const conectiondb = require('../bd/conexao_mysql.js');
 const { calcularEDistanciaRotaCompleta } = require('./distanciaTotal');
 
 // ========================
-// Exibir a página de edição da rota
+// Exibir a página de edição da rota e pontos de coleta
 // ========================
 function exibirrotaeditar(req, res) {
     const cd_rota = req.params.cd_rota;
@@ -29,7 +29,6 @@ function exibirrotaeditar(req, res) {
     });
 }
 
-
 //Função para editar Rota e exclui/inativa
 function editarRota(req, res) {
     const cd_rota = req.body.codigo;
@@ -43,7 +42,7 @@ function editarRota(req, res) {
         return res.status(400).send('ID da rota é obrigatório.');
     }
 
-    // NOVO: Verifica se existe ponto iniciado
+    //Verifica se existe ponto iniciado
     const sqlBloqueio = `
         SELECT 1 FROM vw_pontos_coleta
         WHERE cd_rota = ? AND dt_r_inciada IS NOT NULL LIMIT 1
@@ -71,7 +70,7 @@ function editarRota(req, res) {
             });
         }
 
-        // função para realizar a edição
+        // função para realizar a edição da rota
         if (action == 'editar') {
             const sqlrota =
                 `UPDATE rota_coleta 
@@ -220,7 +219,7 @@ function editarRota(req, res) {
     });
 }
 
-// Busca agendamentos
+// Busca agendamentos para gerar um ponto de coleta
 function buscarAgendamento(req, res) {
     const sql = `
         SELECT a.cd_agendamento, a.nm_agendamento, a.ds_endereco, a.qt_quantidade_prevista_kg, a.status, volume_agendamento
@@ -241,7 +240,7 @@ function buscarAgendamento(req, res) {
         res.json(resultados);
     });
 }
-
+// funcão de buscar o motorista
 function buscarMotoristas(req, res) {
     const sql = `
         SELECT m.*, 
@@ -262,7 +261,9 @@ function buscarMotoristas(req, res) {
     });
 }
 
+// Função buscar o caminhão
 function buscarCaminhao(req, res) {
+    
     const sql = `
         SELECT * FROM caminhao
     `;
@@ -278,7 +279,7 @@ function buscarCaminhao(req, res) {
 
 // Adiciona ponto de coleta
 function adicionarAgendamentoNaRota(req, res) {
-    const { cd_agendamento, agendamento,  } = req.body;
+    const { cd_agendamento, agendamento, } = req.body;
     const { cd_rota } = req.params;
 
     const connection = conectiondb();

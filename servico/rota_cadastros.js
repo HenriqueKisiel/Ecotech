@@ -1,11 +1,9 @@
 const conectiondb = require('../bd/conexao_mysql.js')();
 
-// Renderiza a página inicialmente
 function exibirCadastros(req, res) {
     res.render('cadastros', { resultados: [] });
 }
 
-// Mapeamento do tipo de cadastro para tabela e colunas correspondentes
 const configuracoesPorTipo = {
     'Pessoa': {
         tabela: 'pessoa_fisica',
@@ -49,10 +47,33 @@ const configuracoesPorTipo = {
             volume_disponivel: 'qt_disponivel_volume',
             situacao: 'ie_situacao'
         }
+    },
+    'Motorista': {
+        tabela: 'motorista',
+        colunas: {
+            nome: 'nm_motorista',
+            codigo: 'id_motorista',
+            cnh: 'cnh',
+            categoria: 'categoria_cnh',
+            vencimento: 'vencimento_cnh',
+            situacao: 'situacao'
+        }
+    },
+    'Caminhão': {
+        tabela: 'caminhao',
+        colunas: {
+            nome: 'nm_modelo',
+            codigo: 'id_caminhao',
+            placa: 'placa',
+            tipo: 'tipo',
+            capacidade_kg: 'capacidade_kg',
+            capacidade_volume: 'capacidade_volume',
+            ano_fabricacao: 'ano_fabricacao',
+            situacao: 'situacao'
+        }
     }
 };
 
-// Função para buscar cadastros com base nos filtros
 function buscarCadastros(req, res) {
     const { tipoCadastro, nome, email, telefone, cpf, cnpj, codigo, situacao } = req.body;
     const tipoCadastroCorrigido = tipoCadastro.trim();
@@ -66,7 +87,6 @@ function buscarCadastros(req, res) {
     let query = `SELECT * FROM ${tabela} WHERE 1=1`;
     const params = [];
 
-    // Filtros comuns
     if (nome && colunas.nome) {
         query += ` AND ${colunas.nome} LIKE ?`;
         params.push('%' + nome + '%');
@@ -92,10 +112,9 @@ function buscarCadastros(req, res) {
         params.push(codigo);
     }
 
-    // Filtro adicional para "Situação" se for "Planta de Reciclagem"
-    if ((tipoCadastroCorrigido === 'Planta de Reciclagem' || tipoCadastroCorrigido === 'Usuário') && situacao && situacao !== 'Todos') {
+    if ((['Planta de Reciclagem', 'Usuário', 'Motorista', 'Caminhão'].includes(tipoCadastroCorrigido)) && situacao && situacao !== 'Todos') {
         query += ` AND ${colunas.situacao} = ?`;
-        params.push(situacao === 'Ativo' ? 'A' : 'I'); // 'A' para Ativo, 'I' para Inativo
+        params.push(situacao === 'Ativo' ? 'A' : 'I');
     }
 
     conectiondb.query(query, params, (erro, resultados) => {
@@ -103,8 +122,6 @@ function buscarCadastros(req, res) {
             console.error('Erro ao buscar cadastros:', erro);
             return res.status(500).send('Erro no servidor');
         }
-
-        console.log('Resultados brutos do banco:', resultados);
 
         const resultadoFormatado = resultados.map(item => {
             const resultado = {
@@ -119,18 +136,28 @@ function buscarCadastros(req, res) {
                 resultado.volume_disponivel = item[colunas.volume_disponivel] || '-';
                 resultado.situacao = item[colunas.situacao] === 'A' ? 'Ativo' : 'Inativo';
             } else if (tipoCadastroCorrigido === 'Usuário') {
-                resultado.situacao = item[colunas.situacao] === 'A' ? 'Ativo' : 'Inativo'; 
+                resultado.situacao = item[colunas.situacao] === 'A' ? 'Ativo' : 'Inativo';
+            } else if (tipoCadastroCorrigido === 'Motorista') {
+                resultado.cnh = item[colunas.cnh] || '-';
+                resultado.categoria = item[colunas.categoria] || '-';
+                resultado.vencimento = item[colunas.vencimento] || '-';
+                resultado.situacao = item[colunas.situacao] === 'A' ? 'Ativo' : 'Inativo';
+            } else if (tipoCadastroCorrigido === 'Caminhão') {
+                resultado.placa = item[colunas.placa] || '-';
+                resultado.tipo = item[colunas.tipo] || '-';
+                resultado.capacidade_kg = item[colunas.capacidade_kg] || '-';
+                resultado.capacidade_volume = item[colunas.capacidade_volume] || '-';
+                resultado.ano_fabricacao = item[colunas.ano_fabricacao] || '-';
+                resultado.situacao = item[colunas.situacao] === 'A' ? 'Ativo' : 'Inativo';
             }
-                resultado.email = colunas.email ? item[colunas.email] || null : null;
-                resultado.telefone = colunas.telefone ? item[colunas.telefone] || null : null;
-                resultado.cpf = colunas.cpf ? item[colunas.cpf] || null : null;
-                resultado.cnpj = colunas.cnpj ? item[colunas.cnpj] || null : null;
-            
+
+            resultado.email = colunas.email ? item[colunas.email] || null : null;
+            resultado.telefone = colunas.telefone ? item[colunas.telefone] || null : null;
+            resultado.cpf = colunas.cpf ? item[colunas.cpf] || null : null;
+            resultado.cnpj = colunas.cnpj ? item[colunas.cnpj] || null : null;
 
             return resultado;
         });
-
-        console.log('Enviando para o Handlebars:', resultadoFormatado);
 
         res.render('cadastros', {
             resultados: resultadoFormatado,
