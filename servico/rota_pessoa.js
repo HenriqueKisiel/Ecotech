@@ -7,27 +7,29 @@ function exibirPessoa(req, res) {
 
 //Função para validar CPF
 function validarCPF(cpf) {
-  cpf = cpf.replace(/[^\d]+/g, '');
-  if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+  cpf = cpf.replace(/[^\d]+/g, ''); // Remove todos os caracteres que não são dígitos (mantém apenas números)
 
-  let soma = 0;
+  if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false; // Verifica se o CPF tem 11 dígitos e se todos são iguais (caso inválido como '11111111111')
+
+  let soma = 0; // Inicializa a soma dos produtos dos dígitos para o primeiro dígito verificador
   for (let i = 0; i < 9; i++) {
-    soma += parseInt(cpf.charAt(i)) * (10 - i);
+    soma += parseInt(cpf.charAt(i)) * (10 - i); // Multiplica cada um dos 9 primeiros dígitos por pesos decrescentes de 10 a 2
   }
-  let resto = (soma * 10) % 11;
-  if (resto === 10 || resto === 11) resto = 0;
-  if (resto !== parseInt(cpf.charAt(9))) return false;
+  let resto = (soma * 10) % 11; // Calcula o resto da divisão da soma multiplicada por 10 por 11
+  if (resto === 10 || resto === 11) resto = 0; // Se o resto for 10 ou 11, define como 0 (regra do CPF)
+  if (resto !== parseInt(cpf.charAt(9))) return false; // Verifica se o primeiro dígito verificador está correto
 
-  soma = 0;
+  soma = 0; // Zera a soma para calcular o segundo dígito verificador
   for (let i = 0; i < 10; i++) {
-    soma += parseInt(cpf.charAt(i)) * (11 - i);
+    soma += parseInt(cpf.charAt(i)) * (11 - i); // Multiplica os 10 primeiros dígitos por pesos decrescentes de 11 a 2
   }
-  resto = (soma * 10) % 11;
-  if (resto === 10 || resto === 11) resto = 0;
-  if (resto !== parseInt(cpf.charAt(10))) return false;
+  resto = (soma * 10) % 11; // Calcula o resto da divisão da nova soma multiplicada por 10 por 11
+  if (resto === 10 || resto === 11) resto = 0; // Se o resto for 10 ou 11, define como 0
+  if (resto !== parseInt(cpf.charAt(10))) return false; // Verifica se o segundo dígito verificador está correto
 
-  return true;
+  return true; // Se passou por todas as validações, retorna verdadeiro (CPF válido)
 }
+
 
 // Função para cadastrar pessoa física
 function insertPessoa(req, res) {
@@ -46,7 +48,7 @@ function insertPessoa(req, res) {
     cep
   } = req.body;
 
-
+  // Objeto para armazenar campos obrigatórios não preenchidos
   const erros = {};
   if (!nomeFisico || nomeFisico.trim() === '') erros.nomeFisico = true;
   if (!dataNasc || dataNasc.trim() === '') erros.dataNasc = true;
@@ -56,6 +58,7 @@ function insertPessoa(req, res) {
   if (!email || email.trim() === '') erros.email = true;
   if (!cep || cep.trim() === '') erros.cep = true;
 
+  // Se houver campos obrigatórios não preenchidos
   if (Object.keys(erros).length > 0) {
     return res.render('pessoa', {
       hasError: erros,
@@ -77,22 +80,22 @@ function insertPessoa(req, res) {
   // Validação de data de nascimento (mínimo 14, máximo 120 anos, não pode ser futura)
   const hoje = new Date();
   const dataNascimento = new Date(dataNasc);
-  dataNascimento.setHours(0, 0, 0, 0);
+  dataNascimento.setHours(0, 0, 0, 0);// Zera horas para comparar apenas datas
   hoje.setHours(0, 0, 0, 0);
 
-  let idade = hoje.getFullYear() - dataNascimento.getFullYear();
-  const mes = hoje.getMonth() - dataNascimento.getMonth();
+  let idade = hoje.getFullYear() - dataNascimento.getFullYear(); // Calcula idade
+  const mes = hoje.getMonth() - dataNascimento.getMonth(); // Diferença de meses
   if (mes < 0 || (mes === 0 && hoje.getDate() < dataNascimento.getDate())) {
-    idade--;
+    idade--; // Ajusta idade se ainda não fez aniversário no ano
   }
 
   if (
-    isNaN(dataNascimento.getTime()) ||
-    dataNascimento > hoje ||
-    idade < 14 ||
-    idade > 120
+    isNaN(dataNascimento.getTime()) || // Data inválida
+    dataNascimento > hoje ||  // Data futura
+    idade < 14 || // Menor que 14 anos
+    idade > 120 // Maior que 120 anos
   ) {
-    return res.render('pessoa', {
+    return res.render('pessoa', { // Retorna erro de data de nascimento inválida
       hasError: { dataNasc: true },
       dadosForm: req.body,
       script: `<script>
@@ -109,10 +112,10 @@ function insertPessoa(req, res) {
     });
   }
 
-  const cpfLimpo = cpf.replace(/\D/g, '');
+  const cpfLimpo = cpf.replace(/\D/g, ''); // Remove caracteres não numéricos do CPF
 
-  if (!validarCPF(cpfLimpo)) {
-    return res.render('pessoa', {
+  if (!validarCPF(cpfLimpo)) { // Valida o CPF usando a função validarCPF
+    return res.render('pessoa', { // Retorna erro se CPF for inválido
       hasError: { cpf: true },
       dadosForm: req.body,
       script: `<script>
@@ -129,10 +132,10 @@ function insertPessoa(req, res) {
     });
   }
 
-  const cepLimpo = cep ? cep.replace(/\D/g, '') : null;
+  const cepLimpo = cep ? cep.replace(/\D/g, '') : null;  // Remove caracteres não numéricos do CEP
 
-  const verificarCPF = `SELECT * FROM pessoa_fisica WHERE nr_cpf = ?`;
-  conectiondb().query(verificarCPF, [cpfLimpo], (err, results) => {
+  const verificarCPF = `SELECT * FROM pessoa_fisica WHERE nr_cpf = ?`; // Query para verificar se o CPF já existe
+  conectiondb().query(verificarCPF, [cpfLimpo], (err, results) => { // Consulta no banco de dados
     if (err) {
       console.error('Erro ao verificar CPF:', err);
       return res.render('pessoa', {
@@ -150,7 +153,7 @@ function insertPessoa(req, res) {
       });
     }
 
-    if (results.length > 0) {
+    if (results.length > 0) {  // Se CPF já existe no banco
       return res.render('pessoa', {
         dadosForm: req.body,
         script: `<script>
@@ -167,6 +170,7 @@ function insertPessoa(req, res) {
       });
     }
 
+    // Query para inserir nova pessoa
     const sql = `
     INSERT INTO pessoa_fisica 
     (nm_pessoa_fisica, dt_nascimento, ie_sexo, nr_cpf, nr_telefone_celular, ds_email, ds_endereco, nr_endereco, nm_bairro, nm_cidade, uf_estado, nr_cep, dt_atualizacao) 
@@ -190,7 +194,7 @@ function insertPessoa(req, res) {
     ];
 
 
-    conectiondb().query(sql, values, (error, results) => {
+    conectiondb().query(sql, values, (error, results) => { // Executa o insert no banco
       if (error) {
         console.error('Erro ao cadastrar pessoa:', error);
         return res.render('pessoa', {

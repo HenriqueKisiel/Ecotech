@@ -2,30 +2,29 @@ const conectiondb = require('../bd/conexao_mysql.js');
 
 // Função para abrir a página de edição
 function exibirPessoaEditar(req, res) {
-    let sql = 'SELECT * FROM pessoa_fisica WHERE cd_pessoa_fisica = ?';
+    let sql = 'SELECT * FROM pessoa_fisica WHERE cd_pessoa_fisica = ?'; // Consulta a pessoa física pelo ID
 
     conectiondb().query(sql, [req.params.cd_pessoa_fisica], function (erro, retorno) {
-        if (erro) throw erro;
+        if (erro) throw erro; // Lança erro se a consulta falhar
 
         if (retorno.length === 0) {
-            return res.status(404).send('Pessoa não encontrada.');
+            return res.status(404).send('Pessoa não encontrada.'); // Retorna erro 404 se não encontrar registro
         }
 
-        //Isso garante que a data venha no formato que o campo <input type="date"> entende, que é YYYY-MM-DD.
-        const pessoa = retorno[0];
-        pessoa.dt_nascimento = formatarDataInput(pessoa.dt_nascimento);
+        const pessoa = retorno[0]; // Obtém o primeiro (e único) resultado
+        pessoa.dt_nascimento = formatarDataInput(pessoa.dt_nascimento); // Formata data de nascimento para o input date
 
-        res.render('pessoaEditar', { pessoa_fisica: pessoa });
+        res.render('pessoaEditar', { pessoa_fisica: pessoa }); // Renderiza a página com os dados da pessoa
     });
 }
 
-//função para formatar a data e retornar da maneira correta no campo data de nascimento
+// Função para formatar a data e retornar da maneira correta no campo data de nascimento
 function formatarDataInput(data) {
-    const d = new Date(data);
-    const ano = d.getFullYear();
-    const mes = String(d.getMonth() + 1).padStart(2, '0');
-    const dia = String(d.getDate()).padStart(2, '0');
-    return `${ano}-${mes}-${dia}`;
+    const d = new Date(data); // Cria um objeto Date a partir da data recebida
+    const ano = d.getFullYear(); // Obtém o ano
+    const mes = String(d.getMonth() + 1).padStart(2, '0'); // Obtém o mês com zero à esquerda
+    const dia = String(d.getDate()).padStart(2, '0'); // Obtém o dia com zero à esquerda
+    return `${ano}-${mes}-${dia}`; // Retorna no formato YYYY-MM-DD
 }
 
 // Função para atualizar os dados da pessoa
@@ -44,7 +43,7 @@ function editarPessoa(req, res) {
         nm_bairro,
         nm_cidade,
         uf_estado
-    } = req.body;
+    } = req.body; // Extrai dados do corpo da requisição
 
     // Validação básica
     if (!codigo || codigo.trim() === '') {
@@ -63,7 +62,7 @@ function editarPessoa(req, res) {
                     });
                 </script>
             `
-        });
+        }); // Se o código estiver vazio, retorna erro com alerta
     }
 
     const sql = `
@@ -83,7 +82,7 @@ function editarPessoa(req, res) {
             uf_estado = ?,
             dt_atualizacao = NOW()
         WHERE cd_pessoa_fisica = ?
-    `;
+    `; // SQL de atualização dos dados da pessoa
 
     const valores = [
         nomeFisico,
@@ -99,11 +98,11 @@ function editarPessoa(req, res) {
         nm_cidade,
         uf_estado,
         codigo
-    ];
+    ]; // Parâmetros para o UPDATE
 
     conectiondb().query(sql, valores, function (erro) {
         if (erro) {
-            console.error('Erro ao atualizar pessoa:', erro.sqlMessage);
+            console.error('Erro ao atualizar pessoa:', erro.sqlMessage); // Exibe erro no console
             return res.render('pessoaEditar', {
                 pessoa_fisica: req.body,
                 script: `
@@ -119,7 +118,7 @@ function editarPessoa(req, res) {
                         });
                     </script>
                 `
-            });
+            }); // Retorna erro e reexibe o formulário com os dados preenchidos
         }
 
         // Sucesso
@@ -133,12 +132,12 @@ function editarPessoa(req, res) {
                 nr_endereco,
                 ds_endereco,
                 nr_cep: cep,
-                dt_nascimento: formatarDataInput(dataNasc),
+                dt_nascimento: formatarDataInput(dataNasc), // Formata data de nascimento novamente
                 ie_sexo: sexo,
                 nm_bairro,
                 nm_cidade,
                 uf_estado,
-                dt_atualizacao: new Date().toISOString().slice(0, 19).replace('T', ' ')
+                dt_atualizacao: new Date().toISOString().slice(0, 19).replace('T', ' ') // Formata a data de atualização
             },
             script: `
                 <script>
@@ -155,9 +154,10 @@ function editarPessoa(req, res) {
                     });
                 </script>
             `
-        });
+        }); // Exibe mensagem de sucesso e retorna a view com os dados atualizados
     });
 }
+
 
 module.exports = {
     exibirPessoaEditar,

@@ -1,7 +1,7 @@
 const getCon = require('../bd/conexao_mysql.js');
 const con = getCon(); // pega o objeto de conexão
 
-// Página inicial com plantas - SELECT
+// Função para carregar o select e exibir a home
 function exibirHome(req, res) {
     const sql = 'SELECT cd_planta, nm_planta FROM planta WHERE ie_situacao = "A" ';
     con.query(sql, (err, result) => {
@@ -15,40 +15,40 @@ function exibirHome(req, res) {
 }
 
 
-// Endpoint para buscar dados do dashboard de uma planta - TABELA
+// função para retornar os dados da tabela com os estoques
 function dadosDashboard(req, res) {
-    const cd_planta = req.params.cd_planta;
-    console.log('cd_planta recebido:', cd_planta);
+    const cd_planta = req.params.cd_planta; // Obtém o código da planta a partir dos parâmetros da requisição
+    console.log('cd_planta recebido:', cd_planta); // Exibe o código da planta recebido para debug
 
     // Busca volume total e atual
-    const sqlPlanta = 'SELECT qt_capacidade_total_volume, qt_capacidade_atual_volume FROM planta WHERE cd_planta = ?';
-    const sqlEstoque = 'SELECT nm_estoque, COALESCE(qt_volume_total, 0) as qt_volume_total, COALESCE(qt_volume_atual, 0) as qt_volume_atual, COALESCE(qt_capacidade_atual, 0) as qt_capacidade_atual FROM estoque WHERE cd_planta = ?';
+    const sqlPlanta = 'SELECT qt_capacidade_total_volume, qt_capacidade_atual_volume FROM planta WHERE cd_planta = ?'; // Query para buscar capacidade total e atual da planta
+    const sqlEstoque = 'SELECT nm_estoque, COALESCE(qt_volume_total, 0) as qt_volume_total, COALESCE(qt_volume_atual, 0) as qt_volume_atual, COALESCE(qt_capacidade_atual, 0) as qt_capacidade_atual FROM estoque WHERE cd_planta = ?'; // Query para buscar dados dos estoques da planta
 
-    con.query(sqlPlanta, [cd_planta], (err1, resultPlanta) => {
-        if (err1) {
-            console.error('Erro consulta planta:', err1);
-            return res.status(500).json({ erro: err1 });
+    con.query(sqlPlanta, [cd_planta], (err1, resultPlanta) => { // Executa a consulta para buscar dados da planta
+        if (err1) { // Se ocorrer erro na consulta da planta
+            console.error('Erro consulta planta:', err1); // Exibe o erro no console
+            return res.status(500).json({ erro: err1 }); // Retorna erro 500 para o cliente
         }
-        if (resultPlanta.length === 0) {
-            console.warn('Planta não encontrada para id:', cd_planta);
-            return res.status(404).json({ erro: 'Planta não encontrada' });
+        if (resultPlanta.length === 0) { // Se não encontrar nenhuma planta com o código informado
+            console.warn('Planta não encontrada para id:', cd_planta); // Exibe aviso no console
+            return res.status(404).json({ erro: 'Planta não encontrada' }); // Retorna erro 404 para o cliente
         }
 
-        con.query(sqlEstoque, [cd_planta], (err2, resultEstoque) => {
-            if (err2) {
-                console.error('Erro consulta estoque:', err2);
-                return res.status(500).json({ erro: err2 });
+        con.query(sqlEstoque, [cd_planta], (err2, resultEstoque) => { // Executa a consulta para buscar dados dos estoques da planta
+            if (err2) { // Se ocorrer erro na consulta dos estoques
+                console.error('Erro consulta estoque:', err2); // Exibe o erro no console
+                return res.status(500).json({ erro: err2 }); // Retorna erro 500 para o cliente
             }
 
-            res.json({
-                planta: resultPlanta[0],
-                estoques: resultEstoque
+            res.json({ // Retorna os dados em formato JSON
+                planta: resultPlanta[0], // Dados da planta encontrada
+                estoques: resultEstoque // Lista de estoques da planta
             });
         });
     });
 }
 
-// Endpoint para retornar o total de coletas realizadas por planta - INDICADOR
+// Função para retornar o total de coletas realizadas por planta
 function totalColetasPlanta(req, res) {
     const cd_planta = req.params.cd_planta;
     // Se não informar planta, retorna 0
@@ -68,7 +68,7 @@ AND pca.cd_planta = ?;`;
     });
 }
 
-// Endpoint para faturamento mensal por planta - FATURAMENTO
+// Função para mostrar faturamento mensal por planta
 function faturamentoMensalPlanta(req, res) {
     const cd_planta = req.params.cd_planta;
     const ano = 2025; // Ano fixo para o dashboard
@@ -96,7 +96,7 @@ function faturamentoMensalPlanta(req, res) {
     });
 }
 
-// Endpoint para peso coletado mensal por planta - PESO COLETADO
+// Função para mostrar o peso coletado mensal por planta 
 function pesoColetadoMensalPlanta(req, res) {
     const cd_planta = req.params.cd_planta;
     const ano = 2025;
@@ -125,7 +125,7 @@ function pesoColetadoMensalPlanta(req, res) {
     });
 }
 
-// Endpoint para proporção de movimentações (entrada, saída, venda) por planta
+//Função para proporção de movimentações (entrada, saída, venda) por planta
 function proporcaoMovimentacoesPlanta(req, res) {
     const cd_planta = req.params.cd_planta;
     const sql = `

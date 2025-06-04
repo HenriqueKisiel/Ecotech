@@ -69,7 +69,7 @@ router.get('/home', (req, res) => {
     servico2.exibirHome(req, res);
 });
 
-// Filtrar estoque por planta no dashboard (AJAX)
+// Filtrar estoque por planta no dashboard 
 router.get('/home/:cd_planta', (req, res) => {
     servico2.dadosDashboard(req, res); // certifique-se que está chamando a função certa
 });
@@ -509,15 +509,15 @@ router.get('/buscarEstoquesPorPlanta', (req, res) => {
     servico26.buscarEstoquesPorPlanta(req, res);
 });
 
-router.post('/novoMaterial2/adicionarItem', (req, res) =>{
+router.post('/novoMaterial2/adicionarItem', (req, res) => {
     servico26.adicionarItemEstoqueMaterial(req, res);
 });
 
-router.get('/novoMaterial2/movimentacoes', (req, res) =>{
-    servico26.buscarMovimentacoesPorAgendamento (req, res);
+router.get('/novoMaterial2/movimentacoes', (req, res) => {
+    servico26.buscarMovimentacoesPorAgendamento(req, res);
 });
 
-router.post('/novoMaterial2/concluirSeparacao', (req, res) =>{
+router.post('/novoMaterial2/concluirSeparacao', (req, res) => {
     servico26.concluirSeparacao(req, res);
 });
 
