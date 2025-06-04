@@ -1,3 +1,4 @@
+// Importa a função de conexão com o banco de dados MySQL
 const conectiondb = require('../bd/conexao_mysql.js');
 
 // Função utilitária para arredondar para 8 casas decimais
@@ -8,11 +9,11 @@ function round8(num) {
 // Renderiza a tela estoqueSaida com as plantas carregadas
 function exibirestoqueSaida(req, res) {
     const conexao = conectiondb();
-
-    const query = 'SELECT cd_planta, nm_planta FROM planta';
+    const query = "SELECT cd_planta, nm_planta FROM planta WHERE ie_situacao = 'A'";
 
     conexao.query(query, (err, results) => {
         if (err) {
+            // Se der erro, exibe mensagem e retorna página vazia
             console.error('Erro ao buscar plantas:', err);
             return res.render('estoqueSaida', {
                 resultados: [],
@@ -21,6 +22,7 @@ function exibirestoqueSaida(req, res) {
             });
         }
 
+        // Se sucesso, renderiza a página com as plantas carregadas
         return res.render('estoqueSaida', {
             resultados: [],
             message: '',
@@ -29,15 +31,15 @@ function exibirestoqueSaida(req, res) {
     });
 }
 
-// Obtém estoques de uma planta (por parâmetro cd_planta)
+// Obtém estoques de uma planta
 function obterEstoquesPorPlanta(req, res) {
     const cd_planta = req.params.cd_planta;
     const conexao = conectiondb();
-
     const query = 'SELECT cd_estoque, nm_estoque FROM estoque WHERE cd_planta = ?';
 
     conexao.query(query, [cd_planta], (err, results) => {
         if (err) {
+            // Se der erro, retorna erro para o frontend
             console.error('Erro ao buscar estoques:', err);
             return res.status(500).json({
                 erro: 'Erro ao buscar estoques',
@@ -54,17 +56,18 @@ function obterEstoquesPorPlanta(req, res) {
                 </script>`
             });
         }
+        // Se sucesso, retorna os estoques encontrados
         return res.json(results);
     });
 }
 
-// Obtém materiais filtrando por estoqueId e tipo de movimentacao (entrada/saida/venda)
+// Obtém materiais filtrando por estoque e tipo de movimentacao
 function obterMateriaisPorEstoque(req, res) {
     const estoqueId = req.params.estoqueId;
-    const movimentacao = req.params.movimentacao; // entrada, saida ou venda
-
+    const movimentacao = req.params.movimentacao;
     const conexao = conectiondb();
 
+    // Validação: estoqueId deve ser informado
     if (!estoqueId) {
         return res.status(400).json({
             erro: 'Estoque inválido',
@@ -82,39 +85,20 @@ function obterMateriaisPorEstoque(req, res) {
         });
     }
 
-    let query = '';
-    let params = [];
+    // Só existem as opções 'saida' ou 'venda' para esse endpoint
+    const query = `
+        SELECT m.cd_material, m.ds_material
+        FROM materiais m
+        INNER JOIN estoque_material em ON m.cd_material = em.cd_material
+        WHERE em.cd_estoque = ?
+        ORDER BY m.ds_material ASC
+    `;
+    const params = [estoqueId];
 
-    if (movimentacao === 'entrada') {
-        query = 'SELECT cd_material, ds_material FROM materiais ORDER BY ds_material ASC';
-    } else if (movimentacao === 'saida' || movimentacao === 'venda') {
-        query = `
-            SELECT m.cd_material, m.ds_material
-            FROM materiais m
-            INNER JOIN estoque_material em ON m.cd_material = em.cd_material
-            WHERE em.cd_estoque = ?
-            ORDER BY m.ds_material ASC
-        `;
-        params = [estoqueId];
-    } else {
-        return res.status(400).json({
-            erro: 'Movimentação inválida',
-            script: `<script>
-                swal("Erro!", "Movimentação inválida.", {
-                    icon: "error",
-                    buttons: {
-                        confirm: {
-                            text: "OK",
-                            className: "btn btn-danger",
-                        },
-                    },
-                });
-            </script>`
-        });
-    }
-
+    // Executa a query com os parâmetros
     conexao.query(query, params, (err, results) => {
         if (err) {
+            // Se der erro, retorna erro para o frontend
             console.error('Erro ao buscar materiais:', err);
             return res.status(500).json({
                 erro: 'Erro ao buscar materiais',
@@ -131,17 +115,20 @@ function obterMateriaisPorEstoque(req, res) {
                 </script>`
             });
         }
+        // Se sucesso, retorna os materiais encontrados
         res.json(results);
     });
 }
 
-// Obtém todos os materiais (sem filtro)
+// Obtém todos os materiais (entrada)
 function obterTodosMateriais(req, res) {
     const conexao = conectiondb();
     const query = 'SELECT cd_material, ds_material FROM materiais ORDER BY ds_material ASC';
 
+    // Executa a query
     conexao.query(query, (err, results) => {
         if (err) {
+            // Se der erro, retorna erro para o frontend
             console.error('Erro ao buscar todos os materiais:', err);
             return res.status(500).json({
                 erro: 'Erro ao buscar materiais',
@@ -158,6 +145,7 @@ function obterTodosMateriais(req, res) {
                 </script>`
             });
         }
+        // Se sucesso, retorna todos os materiais
         res.json(results);
     });
 }
@@ -187,7 +175,6 @@ function obterDadosMaterialEstoque(req, res) {
     const cd_estoque = req.params.cd_estoque;
     const cd_material = req.params.cd_material;
     const conexao = conectiondb();
-
     const query = `
     SELECT m.ds_material, em.qt_volume, em.qt_peso, m.volume_m3
     FROM estoque_material em
@@ -198,6 +185,7 @@ function obterDadosMaterialEstoque(req, res) {
 
     conexao.query(query, [cd_estoque, cd_material], (err, results) => {
         if (err) {
+            // Se der erro, retorna erro para o frontend
             console.error('Erro ao buscar dados do material:', err);
             return res.status(500).json({
                 erro: 'Erro ao buscar dados do material',
@@ -214,10 +202,11 @@ function obterDadosMaterialEstoque(req, res) {
                 </script>`
             });
         }
-        // Retorne qt_volume já arredondado para 8 casas
+        // Se encontrou resultado, arredonda o volume para 8 casas decimais
         if (results[0]) {
             results[0].qt_volume = round8(results[0].qt_volume);
         }
+        // Retorna o resultado (ou objeto vazio)
         res.json(results[0] || {});
     });
 }
@@ -228,6 +217,7 @@ function obterDadosMaterialEntrada(req, res) {
     const cd_material = req.params.cd_material;
     const conexao = conectiondb();
 
+    // Query para buscar dados do material, mesmo que não exista no estoque
     const query = `
     SELECT m.ds_material,
            IFNULL(em.qt_volume, 0) as qt_volume,
@@ -242,6 +232,7 @@ function obterDadosMaterialEntrada(req, res) {
 
     conexao.query(query, [cd_estoque, cd_material], (err, results) => {
         if (err) {
+            // Se der erro, retorna erro para o frontend
             console.error('Erro ao buscar dados do material:', err);
             return res.status(500).json({
                 erro: 'Erro ao buscar dados do material',
@@ -258,9 +249,11 @@ function obterDadosMaterialEntrada(req, res) {
                 </script>`
             });
         }
+        // Se encontrou resultado, arredonda o volume para 8 casas decimais
         if (results[0]) {
             results[0].qt_volume = round8(results[0].qt_volume);
         }
+        // Retorna o resultado (ou objeto vazio)
         res.json(results[0] || {});
     });
 }
@@ -270,6 +263,7 @@ function obterValorPorKgMaterial(req, res) {
     const cd_material = req.params.cd_material;
     const conexao = conectiondb();
     const query = 'SELECT vl_valor_por_kg FROM materiais WHERE cd_material = ? LIMIT 1';
+
     conexao.query(query, [cd_material], (err, results) => {
         if (err) return res.status(500).json({
             erro: 'Erro ao buscar valor por kg',
@@ -285,12 +279,14 @@ function obterValorPorKgMaterial(req, res) {
                 });
             </script>`
         });
+        // Retorna o valor encontrado ou 0
         res.json({ valorPorKg: results[0]?.vl_valor_por_kg || 0 });
     });
 }
 
 // Atualiza o estoque de um material
 function atualizarEstoqueMaterial(req, res) {
+    // Extrai os dados do corpo da requisição
     const {
         cd_estoque, cd_material, qt_volume, qt_peso, movimentacao,
         ds_motivo, cd_pessoa_fisica, cd_pessoa_juridica, vl_valor_por_kg
@@ -298,10 +294,11 @@ function atualizarEstoqueMaterial(req, res) {
     const conexao = conectiondb();
 
     // --- Validações ---
+    // Converte volume e peso para número e arredonda conforme necessário
     const volume = round8(Number(qt_volume));
     const peso = Number(qt_peso);
 
-    // Validação do motivo
+    // Validação do motivo (apenas para entrada e saída)
     if (movimentacao === 'saida' || movimentacao === 'entrada') {
         const motivo = (ds_motivo || '').trim();
 
@@ -497,8 +494,6 @@ function atualizarEstoqueMaterial(req, res) {
         });
     }
 
-    // --- Fim das validações iniciais ---
-
     // Query para buscar o material no estoque
     const queryBusca = `
         SELECT qt_volume, qt_peso 
@@ -524,30 +519,35 @@ function atualizarEstoqueMaterial(req, res) {
         WHERE cd_estoque = ? AND cd_material = ?
     `;
 
+    // Função interna para registrar a movimentação na tabela de movimentações
     function registrarMovimentacao() {
+
         let valorParaRegistrar = vl_valor_por_kg;
         if (movimentacao === 'venda') {
             valorParaRegistrar = (Number(peso) || 0) * (Number(vl_valor_por_kg) || 0);
         }
 
+        // Query SQL para inserir a movimentação na tabela 'movimentacoes'
         const queryMov = `
-            INSERT INTO movimentacoes (
-                cd_estoque, cd_material, qt_volume, qt_peso, tipo_movimentacao,
-                ds_motivo, cd_pessoa_fisica, cd_pessoa_juridica, vl_valor_por_kg, dt_movimentacao
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
-        `;
+        INSERT INTO movimentacoes (
+            cd_estoque, cd_material, qt_volume, qt_peso, tipo_movimentacao,
+            ds_motivo, cd_pessoa_fisica, cd_pessoa_juridica, vl_valor_por_kg, dt_movimentacao
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+    `;
+
+        // Executa a query de inserção da movimentação no banco de dados
         conexao.query(
             queryMov,
             [
-                cd_estoque,
-                cd_material,
-                round8(qt_volume),
-                Number(qt_peso),
-                movimentacao,
-                ds_motivo || null,
-                cd_pessoa_fisica || null,
-                cd_pessoa_juridica || null,
-                valorParaRegistrar || null
+                cd_estoque,                    
+                cd_material,                   
+                round8(qt_volume),             
+                Number(qt_peso),              
+                movimentacao,                  
+                ds_motivo || null,           
+                cd_pessoa_fisica || null,      
+                cd_pessoa_juridica || null,  
+                valorParaRegistrar || null   
             ],
             (errMov) => {
                 if (errMov) console.error('Erro ao registrar movimentação:', errMov);
@@ -555,106 +555,112 @@ function atualizarEstoqueMaterial(req, res) {
         );
     }
 
+    // Busca o material no estoque para decidir se é entrada, saída ou atualização
     conexao.query(queryBusca, [cd_estoque, cd_material], (err, results) => {
         if (err) return res.status(500).json({
             erro: 'Erro ao buscar estoque',
             script: `<script>
-                swal("Erro!", "Erro ao buscar estoque.", {
-                    icon: "error",
-                    buttons: {
-                        confirm: {
-                            text: "OK",
-                            className: "btn btn-danger",
-                        },
+            swal("Erro!", "Erro ao buscar estoque.", {
+                icon: "error",
+                buttons: {
+                    confirm: {
+                        text: "OK",
+                        className: "btn btn-danger",
                     },
-                });
-            </script>`
+                },
+            });
+        </script>`
         });
 
         let novoVolume = 0;
         let novoPeso = 0;
 
         if (!results.length) {
-            // Não existe no estoque, então é entrada
+            // Não existe no estoque, então é ENTRADA de material novo
             novoVolume = volume;
             novoPeso = peso;
 
-            // Não precisa validar estoque negativo aqui, pois é entrada
-
+            // Busca o nome do material para inserir no estoque
             conexao.query(queryMaterial, [cd_material], (errMat, matResults) => {
                 if (errMat || !matResults.length) {
+                    // Erro ao buscar nome do material
                     return res.status(500).json({
                         erro: 'Erro ao buscar nome do material',
                         script: `<script>
-                            swal("Erro!", "Erro ao buscar nome do material.", {
-                                icon: "error",
-                                buttons: {
-                                    confirm: {
-                                        text: "OK",
-                                        className: "btn btn-danger",
-                                    },
+                        swal("Erro!", "Erro ao buscar nome do material.", {
+                            icon: "error",
+                            buttons: {
+                                confirm: {
+                                    text: "OK",
+                                    className: "btn btn-danger",
                                 },
-                            });
-                        </script>`
+                            },
+                        });
+                    </script>`
                     });
                 }
                 const ds_material = matResults[0].ds_material;
 
+                // Insere o novo material no estoque
                 const queryInsert = `
-                    INSERT INTO estoque_material (cd_material, ds_material, cd_estoque, qt_volume, qt_peso)
-                    VALUES (?, ?, ?, ?, ?)
-                `;
+                INSERT INTO estoque_material (cd_material, ds_material, cd_estoque, qt_volume, qt_peso)
+                VALUES (?, ?, ?, ?, ?)
+            `;
                 conexao.query(queryInsert, [cd_material, ds_material, cd_estoque, round8(novoVolume), Number(novoPeso)], (errIns) => {
                     if (errIns) return res.status(500).json({
                         erro: 'Erro ao inserir material no estoque',
                         script: `<script>
-                            swal("Erro!", "Erro ao inserir material no estoque.", {
-                                icon: "error",
-                                buttons: {
-                                    confirm: {
-                                        text: "OK",
-                                        className: "btn btn-danger",
-                                    },
+                        swal("Erro!", "Erro ao inserir material no estoque.", {
+                            icon: "error",
+                            buttons: {
+                                confirm: {
+                                    text: "OK",
+                                    className: "btn btn-danger",
                                 },
-                            });
-                        </script>`
+                            },
+                        });
+                    </script>`
                     });
+                    // Registra a movimentação após inserir no estoque
                     registrarMovimentacao(novoPeso);
+                    // Retorna sucesso para o frontend
                     res.json({
                         sucesso: true,
                         novoVolume: round8(novoVolume),
                         novoPeso: Number(novoPeso),
                         script: `
-                            <script>
-                                swal({
-                                    title: "Movimentação registrada!",
-                                    text: "A movimentação foi registrada com sucesso!",
-                                    icon: "success",
-                                    buttons: {
-                                        confirm: {
-                                            text: "OK",
-                                            value: true,
-                                            visible: true,
-                                            className: "btn btn-success",
-                                            closeModal: true
-                                        }
+                        <script>
+                            swal({
+                                title: "Movimentação registrada!",
+                                text: "A movimentação foi registrada com sucesso!",
+                                icon: "success",
+                                buttons: {
+                                    confirm: {
+                                        text: "OK",
+                                        value: true,
+                                        visible: true,
+                                        className: "btn btn-success",
+                                        closeModal: true
                                     }
-                                });
-                            </script>
-                        `
+                                }
+                            });
+                        </script>
+                    `
                     });
                 });
             });
         } else {
-            // Já existe no estoque
+            // Já existe no estoque, pode ser ENTRADA (soma) ou SAÍDA/VENDA (subtrai)
             const atual = results[0];
             let atualVolume = round8(Number(atual.qt_volume) || 0);
             let atualPeso = Number(atual.qt_peso) || 0;
 
             if (movimentacao === 'entrada') {
+                // Soma os valores ao estoque atual
                 novoVolume = round8(atualVolume + volume);
                 novoPeso = Number((atualPeso + peso).toFixed(3));
             } else {
+                // Subtrai os valores do estoque atual (saída ou venda)
                 novoVolume = round8(atualVolume - volume);
                 novoPeso = Number((atualPeso - peso).toFixed(3));
 
@@ -663,16 +669,16 @@ function atualizarEstoqueMaterial(req, res) {
                     return res.status(400).json({
                         erro: 'Movimentação deixaria o estoque negativo.',
                         script: `<script>
-                            swal("Erro ao registrar!", "Movimentação deixaria o estoque negativo.", {
-                                icon: "error",
-                                buttons: {
-                                    confirm: {
-                                        text: "OK",
-                                        className: "btn btn-danger",
-                                    },
+                        swal("Erro ao registrar!", "Movimentação deixaria o estoque negativo.", {
+                            icon: "error",
+                            buttons: {
+                                confirm: {
+                                    text: "OK",
+                                    className: "btn btn-danger",
                                 },
-                            });
-                        </script>`
+                            },
+                        });
+                    </script>`
                     });
                 }
             }
@@ -680,104 +686,109 @@ function atualizarEstoqueMaterial(req, res) {
             // Permitir zerar estoque se ambos forem praticamente zero (tolerância)
             const epsilon = 0.00000001;
             if (Math.abs(novoVolume) < epsilon && Math.abs(novoPeso) < 0.001) {
-                // Remove do estoque
+                // Remove o material do estoque se zerou
                 conexao.query(queryDelete, [cd_estoque, cd_material], (errDel) => {
                     if (errDel) return res.status(500).json({
                         erro: 'Erro ao excluir material do estoque',
                         script: `<script>
-                            swal("Erro!", "Erro ao excluir material do estoque.", {
-                                icon: "error",
-                                buttons: {
-                                    confirm: {
-                                        text: "OK",
-                                        className: "btn btn-danger",
-                                    },
+                        swal("Erro!", "Erro ao excluir material do estoque.", {
+                            icon: "error",
+                            buttons: {
+                                confirm: {
+                                    text: "OK",
+                                    className: "btn btn-danger",
                                 },
-                            });
-                        </script>`
+                            },
+                        });
+                    </script>`
                     });
+                    // Registra a movimentação após excluir do estoque
                     registrarMovimentacao(novoPeso);
+                    // Retorna sucesso para o frontend
                     res.json({
                         sucesso: true,
                         excluido: true,
                         novoVolume: 0,
                         novoPeso: 0,
                         script: `
-                            <script>
-                                swal({
-                                    title: "Movimentação registrada!",
-                                    text: "A movimentação foi registrada com sucesso!",
-                                    icon: "success",
-                                    buttons: {
-                                        confirm: {
-                                            text: "OK",
-                                            value: true,
-                                            visible: true,
-                                            className: "btn btn-success",
-                                            closeModal: true
-                                        }
+                        <script>
+                            swal({
+                                title: "Movimentação registrada!",
+                                text: "A movimentação foi registrada com sucesso!",
+                                icon: "success",
+                                buttons: {
+                                    confirm: {
+                                        text: "OK",
+                                        value: true,
+                                        visible: true,
+                                        className: "btn btn-success",
+                                        closeModal: true
                                     }
-                                });
-                            </script>
-                        `
+                                }
+                            });
+                        </script>
+                    `
                     });
                 });
             } else {
-                // Atualiza estoque
+                // Atualiza o estoque com os novos valores
                 conexao.query(queryUpdate, [round8(novoVolume), Number(novoPeso), cd_estoque, cd_material], (err2) => {
                     if (err2) return res.status(500).json({
                         erro: 'Erro ao atualizar estoque',
                         script: `<script>
-                            swal("Erro!", "Erro ao atualizar estoque.", {
-                                icon: "error",
-                                buttons: {
-                                    confirm: {
-                                        text: "OK",
-                                        className: "btn btn-danger",
-                                    },
+                        swal("Erro!", "Erro ao atualizar estoque.", {
+                            icon: "error",
+                            buttons: {
+                                confirm: {
+                                    text: "OK",
+                                    className: "btn btn-danger",
                                 },
-                            });
-                        </script>`
+                            },
+                        });
+                    </script>`
                     });
+                    // Registra a movimentação após atualizar o estoque
                     registrarMovimentacao(novoPeso);
+                    // Retorna sucesso para o frontend
                     res.json({
                         sucesso: true,
                         novoVolume: round8(novoVolume),
                         novoPeso: Number(novoPeso),
                         script: `
-                            <script>
-                                swal({
-                                    title: "Movimentação registrada!",
-                                    text: "A movimentação foi registrada com sucesso!",
-                                    icon: "success",
-                                    buttons: {
-                                        confirm: {
-                                            text: "OK",
-                                            value: true,
-                                            visible: true,
-                                            className: "btn btn-success",
-                                            closeModal: true
-                                        }
+                        <script>
+                            swal({
+                                title: "Movimentação registrada!",
+                                text: "A movimentação foi registrada com sucesso!",
+                                icon: "success",
+                                buttons: {
+                                    confirm: {
+                                        text: "OK",
+                                        value: true,
+                                        visible: true,
+                                        className: "btn btn-success",
+                                        closeModal: true
                                     }
-                                });
-                            </script>
-                        `
+                                }
+                            });
+                        </script>
+                    `
                     });
                 });
             }
         }
     });
-}
+}    
 
-module.exports = {
-    exibirestoqueSaida,
-    obterEstoquesPorPlanta,
-    obterMateriaisPorEstoque,
-    obterTodosMateriais,
-    obterPessoasFisicas,
-    obterPessoasJuridicas,
-    obterDadosMaterialEstoque,
-    obterDadosMaterialEntrada,
-    atualizarEstoqueMaterial,
-    obterValorPorKgMaterial,
-};
+    // Exporta todas as funções para uso nas rotas do Express
+    module.exports = {
+        exibirestoqueSaida,
+        obterEstoquesPorPlanta,
+        obterMateriaisPorEstoque,
+        obterTodosMateriais,
+        obterPessoasFisicas,
+        obterPessoasJuridicas,
+        obterDadosMaterialEstoque,
+        obterDadosMaterialEntrada,
+        atualizarEstoqueMaterial,
+        obterValorPorKgMaterial,
+    };
