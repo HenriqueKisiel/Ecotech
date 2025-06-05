@@ -590,7 +590,7 @@
                 });
             });
 
-            // filepath: c:\Users\NICO\Desktop\PROJETOECOTH_GIT\Ecotech\views\rotaEditar.handlebars
+            //FAZ A VALIDAÇÃO DE PESO E VOLUME
             document.addEventListener('DOMContentLoaded', function () {
                 const form = document.querySelector('form[action^="/rotaEditar/"]');
                 if (!form) return;
@@ -620,6 +620,7 @@
                     }
                 });
 
+                // VALIDA APENAS LETRAS
                 const nomeRotaInput = document.querySelector('input[name="nome"]');
                 if (nomeRotaInput) {
                     nomeRotaInput.addEventListener('input', function () {
