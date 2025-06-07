@@ -1,8 +1,8 @@
 const conectiondb = require('../bd/conexao_mysql.js');
 
 //Função para pagina home
-function exibirNovoMaterial2(req, res) {
-    res.render('novoMaterial2');
+function exibirseparacao(req, res) {
+    res.render('separacao');
 };
 
 function buscarAgendamentoSeparacao(req, res) {
@@ -67,7 +67,7 @@ function adicionarItemEstoqueMaterial(req, res) {
 
     // Validação do volume
     if (volumePrensado > volume) {
-        return res.render('novoMaterial2', {
+        return res.render('separacao', {
             script: `<script>
             swal("Erro!", "O volume prensado não pode ser maior que o volume calculado!", {
                 icon: "error",
@@ -78,7 +78,7 @@ function adicionarItemEstoqueMaterial(req, res) {
                     },
                 },
             }).then(() => {
-                window.location.href = '/novoMaterial2?cd_agendamento=${cd_agendamento}';
+                window.location.href = '/separacao?cd_agendamento=${cd_agendamento}';
             });
         </script>`
         });
@@ -86,7 +86,7 @@ function adicionarItemEstoqueMaterial(req, res) {
 
     // Validação dos campos obrigatórios
     if (!materia_prima || !estoque || !peso || !volume_m3_prensado) {
-        return res.render('novoMaterial2', {
+        return res.render('separacao', {
             script: `<script>
                 swal("Erro!", "Todos os campos são obrigatórios.", {
                 icon: "error",
@@ -97,7 +97,7 @@ function adicionarItemEstoqueMaterial(req, res) {
                     },
                 },
         }).then(() => {
-            window.location.href = '/novoMaterial2?cd_agendamento=${cd_agendamento}';
+            window.location.href = '/separacao?cd_agendamento=${cd_agendamento}';
         });
             </script>`
         });
@@ -108,13 +108,13 @@ function adicionarItemEstoqueMaterial(req, res) {
     const sqlPesoReal = "SELECT qt_peso_real FROM agendamento WHERE cd_agendamento = ?";
     conectiondb().query(sqlPesoReal, [cd_agendamento], (erroPeso, resultadoPeso) => {
         if (erroPeso || resultadoPeso.length === 0) {
-            return res.render('novoMaterial2', {
+            return res.render('separacao', {
                 script: `<script>
                     swal("Erro!", "Não foi possível validar o peso real do agendamento.", {
                         icon: "error",
                         buttons: { confirm: { text: "OK", className: "btn btn-danger" } }
                     }).then(() => {
-                        window.location.href = '/novoMaterial2?cd_agendamento=${cd_agendamento}';
+                        window.location.href = '/separacao?cd_agendamento=${cd_agendamento}';
                     });
                 </script>`
             });
@@ -129,13 +129,13 @@ function adicionarItemEstoqueMaterial(req, res) {
         `;
         conectiondb().query(sqlSomaPesos, [cd_agendamento], (erroSoma, resultadoSoma) => {
             if (erroSoma) {
-                return res.render('novoMaterial2', {
+                return res.render('separacao', {
                     script: `<script>
                         swal("Erro!", "Não foi possível validar o peso dos itens já adicionados.", {
                             icon: "error",
                             buttons: { confirm: { text: "OK", className: "btn btn-danger" } }
                         }).then(() => {
-                            window.location.href = '/novoMaterial2?cd_agendamento=${cd_agendamento}';
+                            window.location.href = '/separacao?cd_agendamento=${cd_agendamento}';
                         });
                     </script>`
                 });
@@ -144,13 +144,13 @@ function adicionarItemEstoqueMaterial(req, res) {
             const novoPeso = Number(peso);
 
             if ((somaPesos + novoPeso) > pesoReal) {
-                return res.render('novoMaterial2', {
+                return res.render('separacao', {
                     script: `<script>
                         swal("Erro!", "A soma dos pesos dos itens não pode ultrapassar o peso real do agendamento!", {
                             icon: "error",
                             buttons: { confirm: { text: "OK", className: "btn btn-danger" } }
                         }).then(() => {
-                            window.location.href = '/novoMaterial2?cd_agendamento=${cd_agendamento}';
+                            window.location.href = '/separacao?cd_agendamento=${cd_agendamento}';
                         });
                     </script>`
                 });
@@ -242,7 +242,7 @@ function adicionarItemEstoqueMaterial(req, res) {
                                 tipo_movimentacao: 'entrada',
                                 ds_motivo: `Gerada pela separação do Agendamento ${cd_agendamento}`
                             });
-                            return res.render('novoMaterial2', {
+                            return res.render('separacao', {
                                 script: `<script>
         swal("Sucesso!", "Item adicionado ao estoque!", {
             icon: "success",
@@ -253,7 +253,7 @@ function adicionarItemEstoqueMaterial(req, res) {
                 },
             },
         }).then(() => {
-            window.location.href = '/novoMaterial2?cd_agendamento=${cd_agendamento}';
+            window.location.href = '/separacao?cd_agendamento=${cd_agendamento}';
         });
     </script>`
                             });
@@ -278,7 +278,7 @@ function adicionarItemEstoqueMaterial(req, res) {
                                 tipo_movimentacao: 'entrada',
                                 ds_motivo: `Gerada pela separação do Agendamento ${cd_agendamento}`
                             });
-                            return res.render('novoMaterial2', {
+                            return res.render('separacao', {
                                 script: `<script>
         swal("Sucesso!", "Item adicionado ao estoque!", {
             icon: "success",
@@ -289,7 +289,7 @@ function adicionarItemEstoqueMaterial(req, res) {
                 },
             },
         }).then(() => {
-            window.location.href = '/novoMaterial2?cd_agendamento=${cd_agendamento}';
+            window.location.href = '/separacao?cd_agendamento=${cd_agendamento}';
         });
     </script>`
                             });
@@ -370,7 +370,7 @@ function concluirSeparacao(req, res) {
 
 //exportando a função 
 module.exports = {
-    exibirNovoMaterial2,
+    exibirseparacao,
     buscarAgendamentoSeparacao,
     buscarMateriaisLinha5,
     buscarEstoquesPorPlanta,

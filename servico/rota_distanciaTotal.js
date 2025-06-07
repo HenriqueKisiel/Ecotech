@@ -1,4 +1,4 @@
-const { calcularDistancia } = require('./distancia');
+const { calcularDistancia } = require('./rota_distancia');
 const conectiondb = require('../bd/conexao_mysql');
 
 async function calcularEDistanciaRotaCompleta(cd_rota) {

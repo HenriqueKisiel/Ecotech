@@ -48,7 +48,7 @@
                                 <div class="collapse" id="cadastro">
                                     <ul class="nav nav-collapse">
                                         <li>
-                                            <a href="/cadastros">
+                                            <a href="/cadastrosBuscar">
                                                 <span class="sub-item">Buscar</span>
                                             </a>
                                         </li>
@@ -67,6 +67,16 @@
                                                 <span class="sub-item">Nova Planta</span>
                                             </a>
                                         </li>
+                                        <li>
+                                            <a href="/motorista">
+                                                <span class="sub-item">Novo Motorista</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/caminhao">
+                                                <span class="sub-item">Novo Caminhão</span>
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                             </li>
@@ -79,12 +89,12 @@
                                 <div class="collapse" id="estoque">
                                     <ul class="nav nav-collapse">
                                         <li>
-                                            <a href="/estoqueBuscar">
+                                            <a href="/cadastrosBuscar2">
                                                 <span class="sub-item">Buscar</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/estoqueNovo">
+                                            <a href="/estoque">
                                                 <span class="sub-item">Novo Estoque</span>
                                             </a>
                                         </li>
@@ -94,12 +104,12 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/estoqueSaida">
+                                            <a href="/movimentacoes">
                                                 <span class="sub-item">Movimentações</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/novoMaterial">
+                                            <a href="/pesagem">
                                                 <span class="sub-item">Pesagem da coleta</span>
                                             </a>
                                         </li>
@@ -235,7 +245,7 @@
                                 <span class="fs-2 fw-bold">Separação de Materiais</span>
                                 <small class="text-muted">Preencha os dados de cadastro e clique em continuar.</small>
                             </div>
-                            <a href="/novoMaterial" class="btn btn-secondary fw-bold shadow-lg me-3 mt-2">
+                            <a href="/pesagem" class="btn btn-secondary fw-bold shadow-lg me-3 mt-2">
                                 Voltar</a>
                         </div>
                         <div class="card">
@@ -287,7 +297,7 @@
                                             <div class="card-title">Adicionar Item</div>
                                         </div>
                                         <div class="card-body">
-                                            <form action="/novoMaterial2/adicionarItem" method="POST"
+                                            <form action="/separacao/adicionarItem" method="POST"
                                                 id="formAdicionarItem">
                                                 <div class="row mb-3">
                                                     <div class="col-md-6">
@@ -332,7 +342,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="d-flex justify-content-end gap-2 mt-3">
-                                                    <a href="/novoMaterial2?id_agendamento={{agendamento.cd_agendamento}}"
+                                                    <a href="/separacao?id_agendamento={{agendamento.cd_agendamento}}"
                                                         class="btn btn-secondary text-white fw-bold shadow-lg">
                                                         Cancelar
                                                     </a>
@@ -535,7 +545,7 @@
                         pesoSeparadoInput.value = "0";
                         return;
                     }
-                    fetch(`/novoMaterial2/movimentacoes?cd_agendamento=${cd_agendamento}`)
+                    fetch(`/separacao/movimentacoes?cd_agendamento=${cd_agendamento}`)
                         .then(response => response.json())
                         .then(itens => {
                             tabelaItens.innerHTML = '';
@@ -654,7 +664,7 @@
                     }).then((willConfirm) => {
                         if (willConfirm) {
                             // Faz o update via fetch
-                            fetch(`/novoMaterial2/concluirSeparacao?cd_agendamento=${cd_agendamento}`, {
+                            fetch(`/separacao/concluirSeparacao?cd_agendamento=${cd_agendamento}`, {
                                 method: 'POST'
                             })
                                 .then(response => response.json())
@@ -669,7 +679,7 @@
                                                 },
                                             },
                                         }).then(() => {
-                                            window.location.href = '/novoMaterial2';
+                                            window.location.href = '/separacao';
                                         });
                                     } else {
                                         swal("Erro!", data.message || "Erro ao encerrar separação.", {
@@ -685,7 +695,7 @@
                                 });
                         } else {
                             // Redireciona para a tela com o agendamento marcado
-                            window.location.href = `/novoMaterial2?cd_agendamento=${cd_agendamento}`;
+                            window.location.href = `/separacao?cd_agendamento=${cd_agendamento}`;
                         }
                     });
                 });

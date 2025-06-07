@@ -6,8 +6,8 @@ function round8(num) {
     return Number(Number(num).toFixed(8));
 }
 
-// Renderiza a tela estoqueSaida com as plantas carregadas
-function exibirestoqueSaida(req, res) {
+// Renderiza a tela movimentacoes com as plantas carregadas
+function exibirmovimentacoes(req, res) {
     const conexao = conectiondb();
     const query = "SELECT cd_planta, nm_planta FROM planta WHERE ie_situacao = 'A'";
 
@@ -15,7 +15,7 @@ function exibirestoqueSaida(req, res) {
         if (err) {
             // Se der erro, exibe mensagem e retorna página vazia
             console.error('Erro ao buscar plantas:', err);
-            return res.render('estoqueSaida', {
+            return res.render('movimentacoes', {
                 resultados: [],
                 message: 'Erro ao carregar plantas.',
                 plantas: []
@@ -23,7 +23,7 @@ function exibirestoqueSaida(req, res) {
         }
 
         // Se sucesso, renderiza a página com as plantas carregadas
-        return res.render('estoqueSaida', {
+        return res.render('movimentacoes', {
             resultados: [],
             message: '',
             plantas: results
@@ -781,7 +781,7 @@ function atualizarEstoqueMaterial(req, res) {
 
     // Exporta todas as funções para uso nas rotas do Express
     module.exports = {
-        exibirestoqueSaida,
+        exibirmovimentacoes,
         obterEstoquesPorPlanta,
         obterMateriaisPorEstoque,
         obterTodosMateriais,
