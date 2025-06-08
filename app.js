@@ -1,6 +1,7 @@
 // npm install multer
 // npm install exceljs
 // npm install axios
+// npm install express-session
 
 const express = require('express');
 const { engine } = require('express-handlebars');
@@ -35,7 +36,11 @@ console.log('EMAIL_GMAIL:', process.env.EMAIL_GMAIL);
 console.log('EMAIL_PASSWORD:', process.env.EMAIL_PASSWORD);
 
 // Criando a sessão
-app.use(session({ secret: "ssshhhhh" }));
+app.use(session({
+  secret: 'seuSegredoForteAqui', // Troque por algo seguro!
+  resave: false,
+  saveUninitialized: false
+}));
 
 // Configuração do body-parser para leitura de POST
 const bodyParser = require("body-parser");

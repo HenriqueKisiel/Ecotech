@@ -9,7 +9,14 @@ function exibirpesagem(req, res) {
 
 
 function buscarAgendamentoMaterial(req, res) {
-    const sql = 'SELECT cd_agendamento, nm_agendamento, ds_endereco, qt_quantidade_prevista_kg, qt_peso_real,status FROM agendamento WHERE dt_coleta IS NOT NULL AND dt_pesagem IS NULL AND dt_separacao IS NULL';
+    const sql = `SELECT a.cd_agendamento, a.nm_agendamento, a.ds_endereco, a.qt_quantidade_prevista_kg, a.qt_peso_real,status
+        FROM agendamento a
+            LEFT JOIN pontos_coleta pc ON a.cd_agendamento = pc.cd_agendamento
+            LEFT JOIN rota_coleta rc ON pc.ie_rota = rc.cd_rota
+        WHERE a.dt_coleta IS NOT NULL 
+            AND a.dt_pesagem IS NULL 
+            AND a.dt_separacao IS NULL
+            AND rc.dt_fim IS NOT NULL`;
     conectiondb().query(sql, (erro, resultados) => {
         if (erro) {
             console.error('Erro ao buscar Agendamentos:', erro);

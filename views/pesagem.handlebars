@@ -300,6 +300,7 @@
                                     <div class="col-md-9">
                                         <div class="card-body">
                                             <div class="table-responsive rounded">
+                                                <div id="linhaSelecionada" class="mb-2 fs-5 fw-bold "></div>
                                                 <form id="formUpdate">
                                                     <table class="table table-bordered table-head-bg-black">
                                                         <thead>
@@ -375,10 +376,13 @@
                         }
 
                         function configurarBotoesLinha() {
+                            const linhaSelecionadaDiv = document.getElementById('linhaSelecionada');
                             buttonsLinha.forEach(button => {
                                 button.addEventListener('click', function () {
                                     buttonsLinha.forEach(btn => btn.classList.remove('active'));
                                     this.classList.add('active');
+
+                                    linhaSelecionadaDiv.textContent = "Linha selecionada: " + this.textContent;
 
                                     const ie_linha = this.getAttribute('data-linha');
                                     const ie_agenda = selectAgendamento.value;

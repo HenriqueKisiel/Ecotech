@@ -4,6 +4,9 @@ const express = require('express');
 //Extraindo a função Router de módulo express
 const router = express.Router();
 
+//Autenticador de usuario
+const ensureAuthenticated = require('../middleware/auth.js');
+
 //importar a conexão com o banco de dados
 const servico = require('../servico/rota_login.js');
 const servico2 = require('../servico/rota_home.js');
@@ -62,7 +65,7 @@ router.post('/recuperar-senha', (req, res) => {
 
 //-------------------- Servico2 -------------------//
 // Rota para a página home
-router.get('/home', (req, res) => {
+router.get('/home', ensureAuthenticated, (req, res) => {
     servico2.exibirHome(req, res);
 });
 
@@ -97,7 +100,7 @@ router.get('/home/proporcaoMovimentacoes/:cd_planta', (req, res) => {
 
 //-------------------- Servico3 -------------------//
 // Rota para a página cadastro de pessoa
-router.get('/pessoa', (req, res) => {
+router.get('/pessoa', ensureAuthenticated, (req, res) => {
     servico3.exibirPessoa(req, res);
 });
 
@@ -108,7 +111,7 @@ router.post('/pessoa', (req, res) => {
 
 //--------------------- Servico4 -------------------//
 // Rota para a página cadastro de pessoa juridica/fornecedor
-router.get('/juridica', (req, res) => {
+router.get('/juridica', ensureAuthenticated, (req, res) => {
     servico4.exibirFornecedor(req, res);
 });
 
@@ -119,7 +122,7 @@ router.post('/juridica', (req, res) => {
 
 //--------------------- Servico5 -------------------//
 // Rota para a página cadastro de usuario
-router.get('/usuario', (req, res) => {
+router.get('/usuario', ensureAuthenticated, (req, res) => {
     servico5.exibirUsuario(req, res);
 });
 
@@ -134,7 +137,7 @@ router.get('/pessoa/:id', (req, res) => {
 });
 
 // Rota para adicionar usuário
-router.get('/usuarioAdicionar', (req, res) => {
+router.get('/usuarioAdicionar', ensureAuthenticated, (req, res) => {
     servico5.adicionarUsuario(req, res);
 });
 
@@ -160,7 +163,7 @@ router.get('/inativarUsuario/:cd_usuario&:nm_usuario', (req, res) => {
 
 //--------------------- Servico6 -------------------//
 // Rota para a página cadastro de planta
-router.get('/planta', (req, res) => {
+router.get('/planta', ensureAuthenticated, (req, res) => {
     servico6.exibirPlanta(req, res);
 });
 
@@ -171,13 +174,13 @@ router.post('/planta', (req, res) => {
 
 //---------------------- Servico7 -------------------//
 // Rota para a página de cadastrar rota
-router.get('/cadastroRota', (req, res) => {
+router.get('/cadastroRota', ensureAuthenticated, (req, res) => {
     servico7.exibirRotaCadastro(req, res);
 });
 
 //---------------------- Servico8 -------------------//
 // Mostra a página do formulário
-router.get('/material', (req, res) => {
+router.get('/material', ensureAuthenticated, (req, res) => {
     servico8.exibirMaterial(req, res);
 });
 
@@ -188,7 +191,7 @@ router.post('/material', (req, res) => {
 
 //---------------------- Servico9 -------------------//
 // Rota para a página de cadastrar estoque
-router.get('/estoque', (req, res) => {
+router.get('/estoque', ensureAuthenticated, (req, res) => {
     servico9.exibirestoque(req, res);
 });
 
@@ -199,7 +202,7 @@ router.post('/estoque/cadastrar', (req, res) => {
 
 //----------------------- Servico10 -------------------//
 // Rota GET para exibir a lista de agendamentos
-router.get('/agendamento', (req, res) => {
+router.get('/agendamento', ensureAuthenticated, (req, res) => {
     servico10.exibirAgendamento(req, res);
 });
 
@@ -214,7 +217,7 @@ router.get('/agendamento/bairrosPorNome/:nm_cidade?', (req, res) => {
 });
 //---------------------- Servico11 -------------------//
 // Rota para a página de rotas programadas
-router.get('/rotas', (req, res) => {
+router.get('/rotas', ensureAuthenticated, (req, res) => {
     servico11.exibirRotas(req, res);
 });
 
@@ -235,7 +238,7 @@ router.post('/rotas', (req, res) => {
 
 //----------------------- Servico12 -------------------//
 // Rota para a página de relatorios, listar relatórios
-router.get('/relatorios', (req, res) => {
+router.get('/relatorios', ensureAuthenticated, (req, res) => {
     servico12.exibirRelatorios(req, res);
 });
 
@@ -256,7 +259,7 @@ router.post('/relatorios', (req, res) => {
 
 //------------------------ Servico13 -------------------//
 // Rota para a página de processamento
-router.get('/processamento', (req, res) => {
+router.get('/processamento', ensureAuthenticated, (req, res) => {
     servico13.exibirProcessamento(req, res);
 });
 
@@ -278,7 +281,7 @@ router.post('/atualizarAgendamento/:cd_agendamento', (req, res) => {
 
 //------------------------ Servico15 -------------------//
 // Rota para exibir a página de filtro de cadastros
-router.get('/cadastrosBuscar', (req, res) => {
+router.get('/cadastrosBuscar', ensureAuthenticated,(req, res) => {
     servico15.exibirCadastros(req, res);
 });
 
@@ -289,7 +292,7 @@ router.post('/cadastrosBuscar', (req, res) => {
 
 //------------------------ Servico16 -------------------//
 // Rota para exibir a página de buscar material no estoque
-router.get('/cadastrosBuscar2', (req, res) => {
+router.get('/cadastrosBuscar2', ensureAuthenticated, (req, res) => {
     servico16.exibirestoqueBuscar(req, res);
 });
 
@@ -300,13 +303,13 @@ router.post('/cadastrosBuscar2', (req, res) => {
 
 //------------------------ Servico17 -------------------//
 // Rota para a página de entrada de material
-router.get('/movimentacoesBuscar', (req, res) => {
+router.get('/movimentacoesBuscar', ensureAuthenticated, (req, res) => {
     servico17.exibirmovimentacoesBuscar(req, res);
 });
 
 //------------------------ Servico18 -------------------//
 // Rota para a página de saída de material
-router.get('/movimentacoes', (req, res) => {
+router.get('/movimentacoes', ensureAuthenticated, (req, res) => {
     servico18.exibirmovimentacoes(req, res);
 });
 
@@ -357,7 +360,7 @@ router.get('/valorPorKgMaterial/:cd_material', (req, res) => {
 
 //----------------------- Servico19 -------------------//
 // Rota para exibir o formulário de novo agendamento
-router.get('/agendamentoAdd', (req, res) => {
+router.get('/agendamentoAdd', ensureAuthenticated, (req, res) => {
     servico19.exibirAgendamento(req, res);
 });
 
@@ -378,7 +381,7 @@ router.get('/pessoas-juridicas-busca', (req, res) => {
 
 //----------------------- Servico20 -------------------//
 // Rota principal que exibe a tela de edição do agendamento.
-router.get('/agendamentoEditar',
+router.get('/agendamentoEditar', 
     servico20.exibirEditarAgendamento);
 
 // Rota para atualizar os dados do agendamento.
@@ -403,7 +406,7 @@ router.get('/agendamentoEditar/:id_agendamento/itens/:itemId/excluir',
 
 // ----------------------- Servico21 -------------------//
 // Página para editar rota
-router.get('/rotaEditar', (req, res) => {
+router.get('/rotaEditar', ensureAuthenticated, (req, res) => {
     servico21.exibirrotaeditar(req, res);
 });
 
@@ -481,7 +484,7 @@ router.post('/plantaEditar', (req, res) => {
 
 // ----------------------- Servico25 -------------------//
 // Rota para exibir pesagem
-router.get('/pesagem', (req, res) => {
+router.get('/pesagem', ensureAuthenticated, (req, res) => {
     servico25.exibirpesagem(req, res);
 });
 
@@ -507,7 +510,7 @@ router.post('/concluirPesagem', (req, res) => {
 
 // ----------------------- Servico26 -------------------//
 // Rota para exibir separação
-router.get('/separacao', (req, res) => {
+router.get('/separacao', ensureAuthenticated, (req, res) => {
     servico26.exibirseparacao(req, res);
 });
 
@@ -543,7 +546,7 @@ router.post('/separacao/concluirSeparacao', (req, res) => {
 
 // ----------------------- Servico27 -------------------//
 // Rota para exibir motoristas
-router.get('/motorista', (req, res) => {
+router.get('/motorista', ensureAuthenticated, (req, res) => {
     servico27.exibirMotorista(req, res);
 });
 
@@ -554,7 +557,7 @@ router.post('/motorista', (req, res) => {
 
 // ----------------------- Servico28 -------------------//
 // Rota para exibir caminhão
-router.get('/caminhao', (req, res) => {
+router.get('/caminhao', ensureAuthenticated, (req, res) => {
     servico28.exibirCaminhao(req, res);
 });
 
@@ -565,7 +568,7 @@ router.post('/caminhao', (req, res) => {
 
 // ----------------------- Servico29 -------------------//
 // Rota para exibir relatório novo 
-router.get('/relatoriosNovo', (req, res) => {
+router.get('/relatoriosNovo', ensureAuthenticated, (req, res) => {
     servico29.exibirRelatorioNovo(req, res);
 });
 
