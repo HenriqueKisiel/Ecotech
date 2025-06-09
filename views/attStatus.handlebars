@@ -387,6 +387,37 @@
                     </div>
                 </div>
             </div>
+            <!--Modal Motivo canelamento-->
+            <div class="modal fade" id="modalMotivoCancelamento" tabindex="-1"
+                aria-labelledby="modalMotivoCancelamentoLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header bg-danger text-white">
+                            <h5 class="modal-title" id="modalMotivoCancelamentoLabel">Motivo do Cancelamento</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                aria-label="Fechar"></button>
+                        </div>
+                        <div class="modal-body">
+                            <label for="motivoCancelamento" class="form-label">Selecione ou digite o motivo:</label>
+                            <select id="motivoCancelamento" class="form-select mb-2">
+                                <option value="">Selecione...</option>
+                                <option value="Ausência do responsável">Ausência do responsável</option>
+                                <option value="Endereço incorreto">Endereço incorreto</option>
+                                <option value="Material não disponível">Material não disponível</option>
+                                <option value="Outro">Outro</option>
+                            </select>
+                            <input type="text" id="motivoOutro" class="form-control mt-2 d-none"
+                                placeholder="Descreva o motivo">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-danger"
+                                id="confirmarMotivoCancelamento">Confirmar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!--end conteudo indiviudual da pagina-->
             <footer class="footer">
                 <div class="container-fluid d-flex justify-content-between">
@@ -408,218 +439,358 @@
         </div>
         </div>
         <script>
-document.addEventListener("DOMContentLoaded", function () {
-    // Iniciar rota
-    const btnIniciar = document.getElementById('btn-iniciar');
-    if (btnIniciar) {
-        btnIniciar.addEventListener('click', async () => {
-            const cdRota = {{rotas.cd_rota}};
-            try {
-                const response = await fetch(`/attStatus/${cdRota}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ acao: 'iniciar' })
+            document.addEventListener("DOMContentLoaded", function () {
+                // Iniciar rota
+                const btnIniciar = document.getElementById('btn-iniciar');
+                if (btnIniciar) {
+                    btnIniciar.addEventListener('click', async () => {
+                        const cdRota = {{ rotas.cd_rota }};
+                    try {
+                        const response = await fetch(`/attStatus/${cdRota}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ acao: 'iniciar' })
+                        });
+                        const result = await response.json();
+                        if (result.success) {
+                            btnIniciar.style.display = 'none';
+                            swal("Início registrado!", "A coleta foi iniciada com sucesso!", {
+                                icon: "success",
+                                buttons: {
+                                    confirm: {
+                                        text: "OK",
+                                        className: "btn btn-success",
+                                    },
+                                },
+                            });
+                        } else if (result.motoristaCaminhao) {
+                            swal("Atenção!", result.message, {
+                                icon: "warning",
+                                buttons: {
+                                    confirm: {
+                                        text: "Entendi",
+                                        className: "btn btn-warning",
+                                    },
+                                },
+                            });
+                        } else if (result.iniciado) {
+                            swal("Atenção!", result.message, {
+                                icon: "warning",
+                                buttons: {
+                                    confirm: {
+                                        text: "Entendi",
+                                        className: "btn btn-warning",
+                                    },
+                                },
+                            });
+                        } else {
+                            swal("Erro!", "Não foi possível iniciar a rota.", {
+                                icon: "error",
+                                buttons: {
+                                    confirm: {
+                                        text: "OK",
+                                        className: "btn btn-danger",
+                                    },
+                                },
+                            });
+                        }
+                    } catch (error) {
+                        console.error('Erro na requisição:', error);
+                        swal("Erro!", "Erro na comunicação com o servidor.", {
+                            icon: "error",
+                            buttons: {
+                                confirm: {
+                                    text: "OK",
+                                    className: "btn btn-danger",
+                                },
+                            },
+                        });
+                    }
                 });
-
-                const result = await response.json();
-                if (result.success) {
-                    swal("Início registrado!", "A coleta foi iniciada com sucesso!", {
-                        icon: "success",
-                        buttons: {
-                            confirm: {
-                                text: "OK",
-                                className: "btn btn-success",
-                            },
-                        },
-                    }).then(() => {
-                        window.location.href = `/attStatus/${cdRota}`;
-                    });
-                } else if (result.motoristaCaminhao) {
-                    swal("Atenção!", "É necessário vincular um motorista e um caminhão à rota antes de iniciar.", {
-                        icon: "warning",
-                        buttons: {
-                            confirm: {
-                                text: "Entendi",
-                                className: "btn btn-warning",
-                            },
-                        },
-                    });
-                } else if (result.iniciado) {
-                    swal("Atenção!", "Não é possível iniciar a rota pois ela já iniciou.", {
-                        icon: "warning",
-                        buttons: {
-                            confirm: {
-                                text: "Entendi",
-                                className: "btn btn-warning",
-                            },
-                        },
-                    });
-                } else {
-                    swal("Erro!", "Não foi possível registrar o início.", {
-                        icon: "error",
-                        buttons: {
-                            confirm: {
-                                text: "Fechar",
-                                className: "btn btn-danger",
-                            },
-                        },
-                    });
-                }
-            } catch (error) {
-                console.error('Erro na requisição:', error);
-                swal("Erro!", "Erro na comunicação com o servidor.", {
-                    icon: "error",
-                    buttons: {
-                        confirm: {
-                            text: "Fechar",
-                            className: "btn btn-danger",
-                        },
-                    },
-                });
-            }
-        });
     }
 
-    // Finalizar rota
-    const btnFinalizar = document.getElementById('btn-finalizar');
-    if (btnFinalizar) {
-        btnFinalizar.addEventListener('click', async () => {
-            const cdRota = {{rotas.cd_rota}};
-            try {
-                const response = await fetch(`/attStatus/${cdRota}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ acao: 'finalizar' })
-                });
+            // Finalizar rota
+            const btnFinalizar = document.getElementById('btn-finalizar');
+            if (btnFinalizar) {
+                btnFinalizar.addEventListener('click', async () => {
+                    const cdRota = {{ rotas.cd_rota }};
+                try {
+                    const response = await fetch(`/attStatus/${cdRota}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ acao: 'finalizar' })
+                    });
 
-                const result = await response.json();
-                if (result.success) {
-                    swal("Rota Finalizada com sucesso!", "A coleta foi finalizada com sucesso!", {
-                        icon: "success",
-                        buttons: {
-                            confirm: {
-                                text: "OK",
-                                className: "btn btn-success",
+                    const result = await response.json();
+                    if (result.success) {
+                        btnFinalizar.style.display = 'none';
+                        swal("Rota Finalizada com sucesso!", "A coleta foi finalizada com sucesso!", {
+                            icon: "success",
+                            buttons: {
+                                confirm: {
+                                    text: "OK",
+                                    className: "btn btn-success",
+                                },
                             },
-                        },
-                    }).then(() => {
-                        window.location.href = `/attStatus/${cdRota}`;
-                    });
-                } else if (result.coletado) {
-                    swal("Atenção!", "Não é possível finalizar a rota pois existem agendamentos a serem coletados.", {
-                        icon: "warning",
-                        buttons: {
-                            confirm: {
-                                text: "Entendi",
-                                className: "btn btn-warning",
+                        });
+                    } else if (result.coletado) {
+                        swal("Atenção!", result.message, {
+                            icon: "warning",
+                            buttons: {
+                                confirm: {
+                                    text: "Entendi",
+                                    className: "btn btn-warning",
+                                },
                             },
-                        },
-                    });
-                } else if (result.jaFinalizada) {
-                    swal("Atenção!", "Esta rota já foi finalizada.", {
-                        icon: "warning",
-                        buttons: {
-                            confirm: {
-                                text: "Entendi",
-                                className: "btn btn-warning",
+                        });
+                    } else if (result.jaFinalizada) {
+                        swal("Atenção!", result.message, {
+                            icon: "warning",
+                            buttons: {
+                                confirm: {
+                                    text: "Entendi",
+                                    className: "btn btn-warning",
+                                },
                             },
-                        },
-                    });
-                } else if (result.motoristaCaminhao) {
-                    swal("Atenção!", "É necessário vincular um motorista e um caminhão à rota para finalizar.", {
-                        icon: "warning",
-                        buttons: {
-                            confirm: {
-                                text: "Entendi",
-                                className: "btn btn-warning",
+                        });
+                    } else if (result.motoristaCaminhao) {
+                        swal("Atenção!", result.message, {
+                            icon: "warning",
+                            buttons: {
+                                confirm: {
+                                    text: "Entendi",
+                                    className: "btn btn-warning",
+                                },
                             },
-                        },
-                    });
-                } else {
-                    swal("Erro!", "Não foi possível registrar o término.", {
+                        });
+                    } else {
+                        swal("Erro!", "Não foi possível registrar o término.", {
+                            icon: "error",
+                            buttons: {
+                                confirm: {
+                                    text: "OK",
+                                    className: "btn btn-danger",
+                                },
+                            },
+                        });
+                    }
+                } catch (error) {
+                    console.error('Erro na requisição:', error);
+                    swal("Erro!", "Erro na comunicação com o servidor.", {
                         icon: "error",
                         buttons: {
                             confirm: {
-                                text: "Fechar",
+                                text: "OK",
                                 className: "btn btn-danger",
                             },
                         },
                     });
                 }
-            } catch (error) {
-                console.error('Erro na requisição:', error);
-                swal("Erro!", "Erro na comunicação com o servidor.", {
-                    icon: "error",
-                    buttons: {
-                        confirm: {
-                            text: "Fechar",
-                            className: "btn btn-danger",
-                        },
-                    },
-                });
-            }
-        });
+            });
     }
 
-    // Coletar ponto
-    document.querySelectorAll('.btn-coletar').forEach(btn => {
-        btn.addEventListener('click', async (e) => {
-            const cdAgendamento = btn.getAttribute('data-cd-agendamento');
-            try {
-                const response = await fetch(`/atualizarAgendamento/${cdAgendamento}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ acao: 'coletar' })
+            // Coletar ponto
+            document.querySelectorAll('.btn-coletar').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const cdAgendamento = btn.getAttribute('data-cd-agendamento');
+                    try {
+                        const response = await fetch(`/atualizarAgendamento/${cdAgendamento}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ acao: 'coletar' })
+                        });
+                        const result = await response.json();
+                        if (result.success) {
+                            btn.style.display = 'none';
+                            // Busca o botão cancelar no mesmo container d-flex
+                            const cancelarBtn = btn.closest('.d-flex').querySelector('.btn-cancelar');
+                            if (cancelarBtn) cancelarBtn.style.display = 'none';
+                            swal("Coleta registrada!", "O ponto foi coletado com sucesso!", {
+                                icon: "success",
+                                buttons: {
+                                    confirm: {
+                                        text: "OK",
+                                        className: "btn btn-success",
+                                    },
+                                },
+                            });
+                        } else if (result.rotaNaoIniciada) {
+                            swal("Atenção!", result.message, {
+                                icon: "warning",
+                                buttons: {
+                                    confirm: {
+                                        text: "Entendi",
+                                        className: "btn btn-warning",
+                                    },
+                                },
+                            });
+                        } else if (result.jaColetado) {
+                            swal("Atenção!", result.message, {
+                                icon: "warning",
+                                buttons: {
+                                    confirm: {
+                                        text: "Entendi",
+                                        className: "btn btn-warning",
+                                    },
+                                },
+                            });
+                        } else if (result.pontoCancelado) {
+                            swal("Atenção!", result.message, {
+                                icon: "warning",
+                                buttons: {
+                                    confirm: {
+                                        text: "Entendi",
+                                        className: "btn btn-warning",
+                                    },
+                                },
+                            });
+                        } else {
+                            swal("Erro!", "Erro ao coletar ponto.", {
+                                icon: "error",
+                                buttons: {
+                                    confirm: {
+                                        text: "OK",
+                                        className: "btn btn-danger",
+                                    },
+                                },
+                            });
+                        }
+                    } catch (error) {
+                        console.error('Erro na requisição:', error);
+                        swal("Erro!", "Erro na comunicação com o servidor.", {
+                            icon: "error",
+                            buttons: {
+                                confirm: {
+                                    text: "OK",
+                                    className: "btn btn-danger",
+                                },
+                            },
+                        });
+                    }
                 });
-                const result = await response.json();
-                if (result.success) {
-                    swal("Coleta registrada!", "O ponto foi coletado com sucesso!", {
-                        icon: "success",
-                        buttons: {
-                            confirm: {
-                                text: "OK",
-                                className: "btn btn-success",
-                            },
-                        },
-                    });
-                } else if (result.rotaNaoIniciada) {
-                    swal("Atenção!", result.message, {
-                        icon: "warning",
-                        buttons: {
-                            confirm: {
-                                text: "Entendi",
-                                className: "btn btn-warning",
-                            },
-                        },
-                    });
-                } else if (result.jaColetado) {
-                    swal("Atenção!", "Este ponto já foi coletado.", {
-                        icon: "warning",
-                        buttons: {
-                            confirm: {
-                                text: "Entendi",
-                                className: "btn btn-warning",
-                            },
-                        },
-                    });
-                } else if (result.pontoCancelado) {
-                    swal("Atenção!", "Não é possível coletar um ponto cancelado.", {
-                        icon: "warning",
-                        buttons: {
-                            confirm: {
-                                text: "Entendi",
-                                className: "btn btn-warning",
-                            },
-                        },
-                    });
+            });
+
+            // Cancelar ponto
+            let agendamentoParaCancelar = null;
+            let cancelarBtnRef = null;
+            document.querySelectorAll('.btn-cancelar').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    agendamentoParaCancelar = btn.getAttribute('data-cd-agendamento');
+                    cancelarBtnRef = btn;
+                    // Limpa campos do modal
+                    document.getElementById('motivoCancelamento').value = "";
+                    document.getElementById('motivoOutro').classList.add('d-none');
+                    document.getElementById('motivoOutro').value = "";
+                    // Mostra o modal
+                    var modal = new bootstrap.Modal(document.getElementById('modalMotivoCancelamento'));
+                    modal.show();
+                });
+            });
+
+            // Mostra campo de texto se "Outro" for selecionado
+            document.getElementById('motivoCancelamento').addEventListener('change', function () {
+                if (this.value === "Outro") {
+                    document.getElementById('motivoOutro').classList.remove('d-none');
                 } else {
-                    swal("Erro!", "Erro ao registrar coleta.", {
+                    document.getElementById('motivoOutro').classList.add('d-none');
+                    document.getElementById('motivoOutro').value = "";
+                }
+            });
+
+            // Confirma o motivo e envia para o backend
+            document.getElementById('confirmarMotivoCancelamento').addEventListener('click', async function () {
+                const motivoSelect = document.getElementById('motivoCancelamento').value;
+                const motivoOutro = document.getElementById('motivoOutro').value;
+                let motivo = motivoSelect === "Outro" ? motivoOutro : motivoSelect;
+
+                if (!motivo) {
+                    swal("Atenção!", "Por favor, selecione ou digite um motivo.", {
+                        icon: "warning",
+                        buttons: {
+                            confirm: {
+                                text: "Entendi",
+                                className: "btn btn-warning",
+                            },
+                        },
+                    });
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`/atualizarAgendamento/${agendamentoParaCancelar}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ acao: 'cancelar', motivo })
+                    });
+                    const result = await response.json();
+                    if (result.success) {
+                        if (cancelarBtnRef) {
+                            cancelarBtnRef.style.display = 'none';
+                            // Busca o botão coletar no mesmo container d-flex
+                            const coletarBtn = cancelarBtnRef.closest('.d-flex').querySelector('.btn-coletar');
+                            if (coletarBtn) coletarBtn.style.display = 'none';
+                        }
+                        swal("Cancelamento registrado!", "O ponto foi cancelado com sucesso!", {
+                            icon: "success",
+                            buttons: {
+                                confirm: {
+                                    text: "OK",
+                                    className: "btn btn-success",
+                                },
+                            },
+                        });
+                    } else if (result.jaColetado) {
+                        swal("Atenção!", result.message, {
+                            icon: "warning",
+                            buttons: {
+                                confirm: {
+                                    text: "Entendi",
+                                    className: "btn btn-warning",
+                                },
+                            },
+                        });
+                    } else if (result.jaCancelado) {
+                        swal("Atenção!", result.message, {
+                            icon: "warning",
+                            buttons: {
+                                confirm: {
+                                    text: "Entendi",
+                                    className: "btn btn-warning",
+                                },
+                            },
+                        });
+                    } else if (result.rotaNaoIniciada) {
+                        swal("Atenção!", result.message, {
+                            icon: "warning",
+                            buttons: {
+                                confirm: {
+                                    text: "Entendi",
+                                    className: "btn btn-warning",
+                                },
+                            },
+                        });
+                    } else {
+                        swal("Erro!", "Erro ao cancelar ponto.", {
+                            icon: "error",
+                            buttons: {
+                                confirm: {
+                                    text: "OK",
+                                    className: "btn btn-danger",
+                                },
+                            },
+                        });
+                    }
+                } catch (error) {
+                    console.error('Erro na requisição:', error);
+                    swal("Erro!", "Erro na comunicação com o servidor.", {
                         icon: "error",
                         buttons: {
                             confirm: {
@@ -629,108 +800,29 @@ document.addEventListener("DOMContentLoaded", function () {
                         },
                     });
                 }
-            } catch (error) {
-                console.error('Erro na requisição:', error);
-                swal("Erro!", "Erro na comunicação com o servidor.", {
-                    icon: "error",
-                    buttons: {
-                        confirm: {
-                            text: "OK",
-                            className: "btn btn-danger",
-                        },
-                    },
-                });
-            }
-        });
-    });
+                // Fecha o modal
+                var modal = bootstrap.Modal.getInstance(document.getElementById('modalMotivoCancelamento'));
+                modal.hide();
+            });
 
-    // Cancelar ponto
-    document.querySelectorAll('.btn-cancelar').forEach(btn => {
-        btn.addEventListener('click', async (e) => {
-            const cdAgendamento = btn.getAttribute('data-cd-agendamento');
-            try {
-                const response = await fetch(`/atualizarAgendamento/${cdAgendamento}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ acao: 'cancelar' })
-                });
-                const result = await response.json();
-                if (result.success) {
-                    swal("Cancelamento registrado!", "O ponto foi cancelado com sucesso!", {
-                        icon: "success",
-                        buttons: {
-                            confirm: {
-                                text: "OK",
-                                className: "btn btn-success",
-                            },
-                        },
-                    });
-                } else if (result.jaColetado) {
-                    swal("Atenção!", "Não é possível cancelar um ponto já coletado.", {
-                        icon: "warning",
-                        buttons: {
-                            confirm: {
-                                text: "Entendi",
-                                className: "btn btn-warning",
-                            },
-                        },
-                    });
-                } else if (result.jaCancelado) {
-                    swal("Atenção!", "Este ponto já foi cancelado.", {
-                        icon: "warning",
-                        buttons: {
-                            confirm: {
-                                text: "Entendi",
-                                className: "btn btn-warning",
-                            },
-                        },
-                    });
-                } else {
-                    swal("Erro!", "Erro ao cancelar ponto.", {
-                        icon: "error",
-                        buttons: {
-                            confirm: {
-                                text: "OK",
-                                className: "btn btn-danger",
-                            },
-                        },
-                    });
-                }
-            } catch (error) {
-                console.error('Erro na requisição:', error);
-                swal("Erro!", "Erro na comunicação com o servidor.", {
-                    icon: "error",
-                    buttons: {
-                        confirm: {
-                            text: "OK",
-                            className: "btn btn-danger",
-                        },
-                    },
-                });
-            }
-        });
-    });
+            // Formatar datas (mantém seu script de formatação)
+            const formatarData = (dataString) => {
+                if (!dataString || dataString === "_____" || dataString === "Na/Na/Na") return "_____";
+                const data = new Date(dataString);
+                if (isNaN(data)) return "_____";
+                const dia = String(data.getDate()).padStart(2, '0');
+                const mes = String(data.getMonth() + 1).padStart(2, '0');
+                const ano = String(data.getFullYear()).slice(-2);
+                return `${dia}/${mes}/${ano}`;
+            };
 
-    // Formatar datas (mantém seu script de formatação)
-    const formatarData = (dataString) => {
-        if (!dataString || dataString === "_____" || dataString === "Na/Na/Na") return "_____";
-        const data = new Date(dataString);
-        if (isNaN(data)) return "_____";
-        const dia = String(data.getDate()).padStart(2, '0');
-        const mes = String(data.getMonth() + 1).padStart(2, '0');
-        const ano = String(data.getFullYear()).slice(-2);
-        return `${dia}/${mes}/${ano}`;
-    };
+            const inputDtInicio = document.querySelector('input[name="dt_inicio"]');
+            const inputDtFim = document.querySelector('input[name="dt_fim"]');
 
-    const inputDtInicio = document.querySelector('input[name="dt_inicio"]');
-    const inputDtFim = document.querySelector('input[name="dt_fim"]');
-
-    if (inputDtInicio) inputDtInicio.value = formatarData(inputDtInicio.value);
-    if (inputDtFim) inputDtFim.value = formatarData(inputDtFim.value);
+            if (inputDtInicio) inputDtInicio.value = formatarData(inputDtInicio.value);
+            if (inputDtFim) inputDtFim.value = formatarData(inputDtFim.value);
 });
-</script>
+        </script>
 
 
     </body>

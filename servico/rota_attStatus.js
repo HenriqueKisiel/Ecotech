@@ -69,7 +69,7 @@ async function atualizarStatusRota(req, res) {
                     return res.json({ success: false, naoIniciada: true, message: 'Não é possível finalizar uma rota que não foi iniciada.' });
                 }
                 if (!resultadoFim[0].ie_motorista || !resultadoFim[0].ie_caminhao) {
-                return res.json({ success: false, motoristaCaminhao: true, message: 'É necessário vincular um motorista e um caminhão à rota para finalizar.' });
+                    return res.json({ success: false, motoristaCaminhao: true, message: 'É necessário vincular um motorista e um caminhão à rota para finalizar.' });
                 }
 
                 // Verifica se existe algum agendamento com dt_coleta preenchida
@@ -229,8 +229,9 @@ async function atualizarDataColeta(req, res) {
             }
 
             // Prossegue com o cancelamento
-            const query = `UPDATE agendamento SET dt_cancelado = ? WHERE cd_agendamento = ?`;
-            connection.query(query, [dataAtual, cd_agendamento], (erro, resultado) => {
+            const motivo = req.body.motivo || null;
+            const query = `UPDATE agendamento SET dt_cancelado = ?, ds_motivo = ? WHERE cd_agendamento = ?`;
+            connection.query(query, [dataAtual, motivo, cd_agendamento], (erro, resultado) => {
                 if (erro) {
                     console.error("Erro ao cancelar agendamento:", erro);
                     return res.json({ success: false });
