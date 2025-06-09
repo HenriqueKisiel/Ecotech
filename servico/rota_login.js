@@ -10,27 +10,32 @@ function exibirPadrao(req, res) {
 
 //função para exibir o login
 function fazerLogin(req, res) {
-    //pega os valores digitados pelo usuário
     var usuario = req.body.login;
     var Senha = req.body.Senha;
-    //conexão com banco de dados
     var conexao = conectiondb();
-    //query de execução
-    var query = 'SELECT * FROM usuario WHERE ds_senha = ? AND nm_usuario like ?';
 
-    //execução da query
+    console.log('Tentando login para usuário:', usuario);
+
+    var query = `SELECT * FROM usuario 
+        WHERE ds_senha = ? 
+        AND nm_usuario like ? 
+        AND ie_situacao = 'A' `;
+
     conexao.query(query, [Senha, usuario], function (err, results) {
         if (err) {
             console.error('Erro ao executar a query:', err);
             res.status(500).send('Erro ao executar a query');
             return;
         }
+        console.log('Resultado da query:', results);
+
         if (results.length > 0) {
-            req.session.user = usuario; //seção de identificação            
+            req.session.usuario = results[0]; // Salva o usuário na sessão
             console.log("Login feito com sucesso!");
-            res.render('home', { message: results });
+            res.redirect('/home'); // Redireciona para a rota protegida
         } else {
             var message = 'Login incorreto!';
+            console.log('Login falhou para usuário:', usuario);
             res.render('formulario', { message: message });
         }
     });

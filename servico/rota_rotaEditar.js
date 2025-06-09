@@ -1,5 +1,5 @@
 const conectiondb = require('../bd/conexao_mysql.js');
-const { calcularEDistanciaRotaCompleta } = require('./distanciaTotal');
+const { calcularEDistanciaRotaCompleta } = require('./rota_distanciaTotal.js');
 
 // ========================
 // Exibir a página de edição da rota e pontos de coleta

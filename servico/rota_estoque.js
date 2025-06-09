@@ -1,18 +1,18 @@
 const conectiondb = require('../bd/conexao_mysql.js');
 
 // Função para exibir a página de cadastro de estoque (GET)
-function exibirestoqueNovo(req, res) {
+function exibirestoque(req, res) {
     const conexao = conectiondb();
 
     // Carrega a lista de plantas
     conexao.query('SELECT cd_planta, nm_planta FROM planta', (err, resultados) => {
         if (err) {
             console.error('Erro ao buscar plantas:', err);
-            return res.render('estoqueNovo', { message: 'Erro ao carregar plantas.', plantas: [] });
+            return res.render('estoque', { message: 'Erro ao carregar plantas.', plantas: [] });
         }
 
         // Exibe o formulário de cadastro de estoque com a lista de plantas
-        return res.render('estoqueNovo', { message: '', plantas: resultados });
+        return res.render('estoque', { message: '', plantas: resultados });
     });
 }
 
@@ -21,9 +21,9 @@ function renderComErro(message, conexao, res) {
     conexao.query('SELECT cd_planta, nm_planta FROM planta', (err, resultados) => {
         if (err) {
             console.error('Erro ao buscar plantas:', err);
-            return res.render('estoqueNovo', { message: 'Erro ao carregar plantas.', plantas: [], codigoEstoque: null });
+            return res.render('estoque', { message: 'Erro ao carregar plantas.', plantas: [], codigoEstoque: null });
         }
-        return res.render('estoqueNovo', {
+        return res.render('estoque', {
             message,
             plantas: resultados,
             codigoEstoque: null
@@ -88,10 +88,10 @@ function cadastrarEstoque(req, res) {
             conexao.query('SELECT cd_planta, nm_planta FROM planta', (err2, resultados) => {
                 if (err2) {
                     console.error('Erro ao buscar plantas:', err2);
-                    return res.render('estoqueNovo', { message: 'Erro ao cadastrar o estoque.', plantas: [], codigoEstoque: null });
+                    return res.render('estoque', { message: 'Erro ao cadastrar o estoque.', plantas: [], codigoEstoque: null });
                 }
 
-                return res.render('estoqueNovo', {
+                return res.render('estoque', {
                     message: 'Erro ao cadastrar o estoque.',
                     plantas: resultados,
                     codigoEstoque: null
@@ -115,14 +115,14 @@ function cadastrarEstoque(req, res) {
         conexao.query('SELECT cd_planta, nm_planta FROM planta', (err3, resultados) => {
             if (err3) {
                 console.error('Erro ao buscar plantas:', err3);
-                return res.render('estoqueNovo', {
+                return res.render('estoque', {
                     message: 'Cadastro realizado, mas houve erro ao carregar plantas.',
                     plantas: [],
                     codigoEstoque: codigoGerado
                 });
             }
 
-            return res.render('estoqueNovo', {
+            return res.render('estoque', {
                 message: `Estoque cadastrado com sucesso! Código gerado: ${codigoGerado}`,
                 plantas: resultados,
                 codigoEstoque: codigoGerado
@@ -132,6 +132,6 @@ function cadastrarEstoque(req, res) {
 }
 
 module.exports = {
-    exibirestoqueNovo,
+    exibirestoque,
     cadastrarEstoque
 };

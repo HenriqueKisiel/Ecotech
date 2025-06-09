@@ -1,7 +1,7 @@
 const conectiondb = require('../bd/conexao_mysql.js');
 
 // Exibe a página de entrada de estoque com a lista de movimentações
-function exibirestoqueEntrada(req, res) {
+function exibirmovimentacoesBuscar(req, res) {
     const conexao = conectiondb();
     const query = `
     SELECT 
@@ -27,7 +27,7 @@ function exibirestoqueEntrada(req, res) {
     conexao.query(query, (err, results) => {
         if (err) {
             console.error('Erro ao buscar movimentações:', err);
-            return res.render('estoqueEntrada', { movimentacoes: [], message: 'Erro ao buscar movimentações.' });
+            return res.render('movimentacoesBuscar', { movimentacoes: [], message: 'Erro ao buscar movimentações.' });
         }
         // Formata a data no backend para facilitar o uso no front
         const movimentacoes = results.map(mov => {
@@ -38,10 +38,10 @@ function exibirestoqueEntrada(req, res) {
                 pad(data.getDate()) + '/' + pad(data.getMonth() + 1) + '/' + data.getFullYear();
             return mov;
         });
-        res.render('estoqueEntrada', { movimentacoes, message: '' });
+        res.render('movimentacoesBuscar', { movimentacoes, message: '' });
     });
 }
 
 module.exports = {
-    exibirestoqueEntrada
+    exibirmovimentacoesBuscar
 };

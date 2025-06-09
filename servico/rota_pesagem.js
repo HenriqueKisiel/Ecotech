@@ -3,13 +3,20 @@ const multer = require('multer');
 const upload = multer();
 
 //Função para pagina home
-function exibirNovoMaterial(req, res) {
-    res.render('novoMaterial');
+function exibirpesagem(req, res) {
+    res.render('pesagem');
 };
 
 
 function buscarAgendamentoMaterial(req, res) {
-    const sql = 'SELECT cd_agendamento, nm_agendamento, ds_endereco, qt_quantidade_prevista_kg, qt_peso_real,status FROM agendamento WHERE dt_coleta IS NOT NULL AND dt_pesagem IS NULL AND dt_separacao IS NULL';
+    const sql = `SELECT a.cd_agendamento, a.nm_agendamento, a.ds_endereco, a.qt_quantidade_prevista_kg, a.qt_peso_real,status
+        FROM agendamento a
+            LEFT JOIN pontos_coleta pc ON a.cd_agendamento = pc.cd_agendamento
+            LEFT JOIN rota_coleta rc ON pc.ie_rota = rc.cd_rota
+        WHERE a.dt_coleta IS NOT NULL 
+            AND a.dt_pesagem IS NULL 
+            AND a.dt_separacao IS NULL
+            AND rc.dt_fim IS NOT NULL`;
     conectiondb().query(sql, (erro, resultados) => {
         if (erro) {
             console.error('Erro ao buscar Agendamentos:', erro);
@@ -139,17 +146,17 @@ function concluirPesagem(req, res) {
     });
 }
 
-function exibirNovoMaterial2(req, res) {
+function exibirseparacao(req, res) {
     const cd_agendamento = req.query.cd_agendamento; // ou req.params.cd_agendamento se for rota dinâmica
-    res.render('novoMaterial2', { cd_agendamento });
+    res.render('separacao', { cd_agendamento });
 };
 
 //exportando a função 
 module.exports = {
-    exibirNovoMaterial,
+    exibirpesagem,
     buscarAgendamentoMaterial,
     buscarItensgenda,
     atualizarPesos,
     concluirPesagem,
-    exibirNovoMaterial2
+    exibirseparacao
 }

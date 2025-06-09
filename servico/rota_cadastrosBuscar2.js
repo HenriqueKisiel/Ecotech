@@ -3,7 +3,7 @@ const conectiondb = require('../bd/conexao_mysql.js');
 // Exibe a página de busca de estoques
 function exibirestoqueBuscar(req, res) {
     console.log("Função exibirestoqueBuscar chamada");
-    res.status(200).render('estoqueBuscar');
+    res.status(200).render('cadastrosBuscar2');
 }
 
 // Busca estoques ou materiais com base no tipo de cadastro e filtros
