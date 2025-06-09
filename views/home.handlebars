@@ -208,7 +208,13 @@
                                         </form>
                                     </ul>
                                 </li>
-                                <li class="nav-item topbar-user dropdown hidden-caret">
+                                <li
+                                    class="nav-item topbar-user dropdown hidden-caret d-flex flex-row align-items-center">
+                                    <div>
+                                        <button class="border-0 bg-white" title="Ajuda" onclick="iniciarTour()"><i
+                                                class="fas fa-question-circle text-black fs-2"></i></button>
+
+                                    </div>
                                     <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
                                         aria-expanded="false">
                                         <span class="profile-username">
@@ -250,24 +256,33 @@
                 <div class="container pt-5">
                     <div class="page-inner">
                         <div class="mb-3"></div>
-                        <div class="row row-card-no-pd mt-3 shadow-lg mb-5">
-                            <div class="col-12 col-sm-6 col-md-6 col-xl-6">
+                        <div class="d-flex justify-content-center">
+                            <div class="card border border-2 border-success p-3">
                                 <div class="form-group">
-                                    <label class="fw-bold">Selecione a Planta</label><br>
+                                    <label class="fw-bold">Selecione a Planta:</label><br>
                                     <select class="form-select form-control" id="selectPlanta">
-                                        <option selected disabled>Selecione uma planta</option>
+                                        <option selected disabled value="">Selecione uma planta</option>
                                         {{#each plantas}}
                                         <option value="{{cd_planta}}">{{nm_planta}}</option>
                                         {{/each}}
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-12 col-sm-6 col-md-6 col-xl-6">
-                                <div class="card">
+                        </div>
+                        <!-- Aviso: aparece só quando nenhuma planta está selecionada -->
+                        <div id="avisoSemPlanta" class="text-center">
+                            <span class="fs-1 fw-bold"><i class="fas fa-info-circle"></i> Selecione uma planta para
+                                atualizar seu Dashboard!</span>
+                            <img src="assets/data-report-animate.svg" height="500" />
+                        </div>
+                        <!-- Dashboard: aparece só quando uma planta está selecionada -->
+                        <div id="dashboardPlanta" class="row d-none">
+                            <div class="col-md-8">
+                                <div class="card shadow-lg bg-dark p-2 mb-5">
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between">
                                             <div>
-                                                <h5><b>Capacidade de Armazenamento (m³)</b></h5>
+                                                <h5 class="text-white"><b>Capacidade de Armazenamento (m³)</b></h5>
                                             </div>
                                             <h3 id="percentual" class="text-danger fw-bold">0%</h3>
                                         </div>
@@ -278,10 +293,6 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-8">
                                 <div class="card shadow-lg mb-5">
                                     <div class="card-header">
                                         <div class="card-title">Estoques da Planta</div>
@@ -360,269 +371,279 @@ background: linear-gradient(90deg,rgba(42, 123, 155, 1) 0%, rgba(87, 199, 133, 1
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    {{!-- Esse script é responsável por atualizar dinamicamente o dashboard de estoques com base na
-                    planta selecionada --}}
-                    <script>
-                        document.getElementById('selectPlanta').addEventListener('change', function () {
-                            const plantaId = this.value;
+                        <script>
+                            function atualizarVisibilidadeDashboard() {
+                                const select = document.getElementById('selectPlanta');
+                                const aviso = document.getElementById('avisoSemPlanta');
+                                const dashboard = document.getElementById('dashboardPlanta');
+                                if (!select.value) {
+                                    aviso.classList.remove('d-none');
+                                    dashboard.classList.add('d-none');
+                                } else {
+                                    aviso.classList.add('d-none');
+                                    dashboard.classList.remove('d-none');
+                                }
+                            }
+                            document.getElementById('selectPlanta').addEventListener('change', function () {
+                                atualizarVisibilidadeDashboard();
+                                const plantaId = this.value;
 
-                            fetch(`/home/${plantaId}`)
-                                .then(res => res.json())
-                                .then(data => {
-                                    if (!data.planta || !Array.isArray(data.estoques)) {
-                                        throw new Error('Dados inválidos');
-                                    }
+                                fetch(`/home/${plantaId}`)
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        if (!data.planta || !Array.isArray(data.estoques)) {
+                                            throw new Error('Dados inválidos');
+                                        }
 
-                                    const planta = data.planta;
-                                    const estoques = data.estoques;
+                                        const planta = data.planta;
+                                        const estoques = data.estoques;
 
-                                    const total = planta.qt_capacidade_total_volume || 0;
-                                    const atual = planta.qt_capacidade_atual_volume || 0;
-                                    const percentual = total > 0 ? ((atual / total) * 100).toFixed(1) : 0;
+                                        const total = planta.qt_capacidade_total_volume || 0;
+                                        const atual = planta.qt_capacidade_atual_volume || 0;
+                                        const percentual = total > 0 ? ((atual / total) * 100).toFixed(1) : 0;
 
-                                    document.getElementById('percentual').textContent = `${percentual}%`;
-                                    document.getElementById('progressBar').style.width = `${percentual}%`;
+                                        document.getElementById('percentual').textContent = `${percentual}%`;
+                                        document.getElementById('progressBar').style.width = `${percentual}%`;
 
-                                    let tabelaHTML = '';
-                                    estoques.forEach(est => {
-                                        tabelaHTML += `<tr>
-                                                            <td class="fw-bold">${est.nm_estoque ?? ''}</td>
-                                                            <td class="fw-bold">${est.qt_volume_total ?? 0}</td>
-                                                            <td class="fw-bold">${est.qt_volume_atual ?? 0}</td>
-                                                            <td class="fw-bold">${est.qt_capacidade_atual ?? 0}</td>
-                                                        </tr>`;
+                                        let tabelaHTML = '';
+                                        estoques.forEach(est => {
+                                            tabelaHTML += `<tr>
+                                                                <td class="fw-bold">${est.nm_estoque ?? ''}</td>
+                                                                <td class="fw-bold">${est.qt_volume_total ?? 0}</td>
+                                                                <td class="fw-bold">${est.qt_volume_atual ?? 0}</td>
+                                                                <td class="fw-bold">${est.qt_capacidade_atual ?? 0}</td>
+                                                            </tr>`;
+                                        });
+
+                                        document.getElementById('tabelaEstoques').innerHTML = tabelaHTML;
+                                    })
+                                    .catch(err => {
+                                        console.error('Erro ao buscar dados:', err);
+                                        document.getElementById('percentual').textContent = `0%`;
+                                        document.getElementById('progressBar').style.width = `0%`;
+                                        document.getElementById('tabelaEstoques').innerHTML = '<tr><td colspan="3">Erro ao carregar estoques</td></tr>';
                                     });
+                            });
 
-                                    document.getElementById('tabelaEstoques').innerHTML = tabelaHTML;
-                                })
-                                .catch(err => {
-                                    console.error('Erro ao buscar dados:', err);
-                                    document.getElementById('percentual').textContent = `0%`;
-                                    document.getElementById('progressBar').style.width = `0%`;
-                                    document.getElementById('tabelaEstoques').innerHTML = '<tr><td colspan="3">Erro ao carregar estoques</td></tr>';
-                                });
-                        });
+                        </script>
+                        {{!-- Atualiza o indicador de coletas realizadas por planta ao selecionar --}}
+                        <script>
+                            function atualizarIndicadorColetasPlanta(plantaId) {
+                                if (!plantaId) return;
+                                fetch(`/home/totalColetas/${plantaId}`)
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        document.querySelector('.fa-truck').parentElement.nextElementSibling.querySelector('span').textContent = data.total;
+                                    });
+                            }
+                            document.getElementById('selectPlanta').addEventListener('change', function () {
+                                const plantaId = this.value;
+                                atualizarIndicadorColetasPlanta(plantaId);
+                            });
+                        </script>
+                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                        <script>
+                            let grafico1;
+                            const labels = [
+                                'Janeiro', 'Fevereiro', 'Março', 'Abril',
+                                'Maio', 'Junho', 'Julho', 'Agosto',
+                                'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+                            ];
 
-                    </script>
-                    {{!-- Atualiza o indicador de coletas realizadas por planta ao selecionar --}}
-                    <script>
-                        function atualizarIndicadorColetasPlanta(plantaId) {
-                            if (!plantaId) return;
-                            fetch(`/home/totalColetas/${plantaId}`)
-                                .then(res => res.json())
-                                .then(data => {
-                                    document.querySelector('.fa-truck').parentElement.nextElementSibling.querySelector('span').textContent = data.total;
-                                });
-                        }
-                        document.getElementById('selectPlanta').addEventListener('change', function () {
-                            const plantaId = this.value;
-                            atualizarIndicadorColetasPlanta(plantaId);
-                        });
-                    </script>
-                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                    <script>
-                        let grafico1;
-                        const labels = [
-                            'Janeiro', 'Fevereiro', 'Março', 'Abril',
-                            'Maio', 'Junho', 'Julho', 'Agosto',
-                            'Setembro', 'Outubro', 'Novembro', 'Dezembro'
-                        ];
+                            function atualizarGraficoFaturamento(plantaId) {
+                                if (!plantaId) return;
+                                fetch(`/home/faturamento/${plantaId}`)
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        const faturamento = data.faturamento || Array(12).fill(0);
+                                        if (grafico1) {
+                                            grafico1.data.datasets[0].data = faturamento;
+                                            grafico1.update();
+                                        } else {
+                                            const ctx = document.getElementById('grafico1').getContext('2d');
+                                            grafico1 = new Chart(ctx, {
+                                                type: 'bar',
+                                                data: {
+                                                    labels: labels,
+                                                    datasets: [{
+                                                        label: 'Faturamento por Mês (R$)',
+                                                        data: faturamento,
+                                                        backgroundColor: [
+                                                            'rgba(255, 99, 132, 0.2)', 'rgba(255, 159, 64, 0.2)',
+                                                            'rgba(255, 205, 86, 0.2)', 'rgba(75, 192, 192, 0.2)',
+                                                            'rgba(54, 162, 235, 0.2)', 'rgba(153, 102, 255, 0.2)',
+                                                            'rgba(201, 203, 207, 0.2)', 'rgba(100, 255, 218, 0.2)',
+                                                            'rgba(255, 99, 255, 0.2)', 'rgba(255, 180, 99, 0.2)',
+                                                            'rgba(99, 255, 132, 0.2)', 'rgba(99, 132, 255, 0.2)'
+                                                        ],
+                                                        borderColor: [
+                                                            'rgb(255, 99, 132)', 'rgb(255, 159, 64)',
+                                                            'rgb(255, 205, 86)', 'rgb(75, 192, 192)',
+                                                            'rgb(54, 162, 235)', 'rgb(153, 102, 255)',
+                                                            'rgb(201, 203, 207)', 'rgb(100, 255, 218)',
+                                                            'rgb(255, 99, 255)', 'rgb(255, 180, 99)',
+                                                            'rgb(99, 255, 132)', 'rgb(99, 132, 255)'
+                                                        ],
+                                                        borderWidth: 1
+                                                    }]
+                                                },
+                                                options: {
+                                                    responsive: true,
+                                                    scales: {
+                                                        y: {
+                                                            beginAtZero: true
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    });
+                            }
 
-                        function atualizarGraficoFaturamento(plantaId) {
-                            if (!plantaId) return;
-                            fetch(`/home/faturamento/${plantaId}`)
-                                .then(res => res.json())
-                                .then(data => {
-                                    const faturamento = data.faturamento || Array(12).fill(0);
-                                    if (grafico1) {
-                                        grafico1.data.datasets[0].data = faturamento;
-                                        grafico1.update();
-                                    } else {
-                                        const ctx = document.getElementById('grafico1').getContext('2d');
-                                        grafico1 = new Chart(ctx, {
-                                            type: 'bar',
-                                            data: {
-                                                labels: labels,
-                                                datasets: [{
-                                                    label: 'Faturamento por Mês (R$)',
-                                                    data: faturamento,
-                                                    backgroundColor: [
-                                                        'rgba(255, 99, 132, 0.2)', 'rgba(255, 159, 64, 0.2)',
-                                                        'rgba(255, 205, 86, 0.2)', 'rgba(75, 192, 192, 0.2)',
-                                                        'rgba(54, 162, 235, 0.2)', 'rgba(153, 102, 255, 0.2)',
-                                                        'rgba(201, 203, 207, 0.2)', 'rgba(100, 255, 218, 0.2)',
-                                                        'rgba(255, 99, 255, 0.2)', 'rgba(255, 180, 99, 0.2)',
-                                                        'rgba(99, 255, 132, 0.2)', 'rgba(99, 132, 255, 0.2)'
+                            document.getElementById('selectPlanta').addEventListener('change', function () {
+                                const plantaId = this.value;
+                                atualizarGraficoFaturamento(plantaId);
+                                // ...existing code...
+                            });
+
+                            // Inicializa o gráfico vazio ao carregar a página
+                            window.addEventListener('DOMContentLoaded', function () {
+                                const select = document.getElementById('selectPlanta');
+                                if (select && select.value) {
+                                    atualizarGraficoFaturamento(select.value);
+                                }
+                            });
+                        </script>
+                        <script>
+                            let grafico2;
+                            function atualizarGraficoPesoColetado(plantaId) {
+                                if (!plantaId) return;
+                                fetch(`/home/pesoColetado/${plantaId}`)
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        const pesos = data.pesos || Array(12).fill(0);
+                                        if (grafico2) {
+                                            grafico2.data.datasets[0].data = pesos;
+                                            grafico2.update();
+                                        } else {
+                                            const ctx2 = document.getElementById('grafico2').getContext('2d');
+                                            grafico2 = new Chart(ctx2, {
+                                                type: 'bar',
+                                                data: {
+                                                    labels: [
+                                                        'Janeiro', 'Fevereiro', 'Março', 'Abril',
+                                                        'Maio', 'Junho', 'Julho', 'Agosto',
+                                                        'Setembro', 'Outubro', 'Novembro', 'Dezembro'
                                                     ],
-                                                    borderColor: [
-                                                        'rgb(255, 99, 132)', 'rgb(255, 159, 64)',
-                                                        'rgb(255, 205, 86)', 'rgb(75, 192, 192)',
-                                                        'rgb(54, 162, 235)', 'rgb(153, 102, 255)',
-                                                        'rgb(201, 203, 207)', 'rgb(100, 255, 218)',
-                                                        'rgb(255, 99, 255)', 'rgb(255, 180, 99)',
-                                                        'rgb(99, 255, 132)', 'rgb(99, 132, 255)'
-                                                    ],
-                                                    borderWidth: 1
-                                                }]
-                                            },
-                                            options: {
-                                                responsive: true,
-                                                scales: {
-                                                    y: {
-                                                        beginAtZero: true
+                                                    datasets: [{
+                                                        label: 'Peso Coletado (kg)',
+                                                        data: pesos,
+                                                        backgroundColor: 'rgba(87, 199, 133, 0.2)',
+                                                        borderColor: 'rgba(87, 199, 133, 1)',
+                                                        borderWidth: 1
+                                                    }]
+                                                },
+                                                options: {
+                                                    responsive: true,
+                                                    scales: {
+                                                        y: {
+                                                            beginAtZero: true
+                                                        }
                                                     }
                                                 }
-                                            }
-                                        });
-                                    }
-                                });
-                        }
-
-                        document.getElementById('selectPlanta').addEventListener('change', function () {
-                            const plantaId = this.value;
-                            atualizarGraficoFaturamento(plantaId);
-                            // ...existing code...
-                        });
-
-                        // Inicializa o gráfico vazio ao carregar a página
-                        window.addEventListener('DOMContentLoaded', function () {
-                            const select = document.getElementById('selectPlanta');
-                            if (select && select.value) {
-                                atualizarGraficoFaturamento(select.value);
+                                            });
+                                        }
+                                    });
                             }
-                        });
-                    </script>
-                    <script>
-                        let grafico2;
-                        function atualizarGraficoPesoColetado(plantaId) {
-                            if (!plantaId) return;
-                            fetch(`/home/pesoColetado/${plantaId}`)
-                                .then(res => res.json())
-                                .then(data => {
-                                    const pesos = data.pesos || Array(12).fill(0);
-                                    if (grafico2) {
-                                        grafico2.data.datasets[0].data = pesos;
-                                        grafico2.update();
-                                    } else {
-                                        const ctx2 = document.getElementById('grafico2').getContext('2d');
-                                        grafico2 = new Chart(ctx2, {
-                                            type: 'bar',
-                                            data: {
-                                                labels: [
-                                                    'Janeiro', 'Fevereiro', 'Março', 'Abril',
-                                                    'Maio', 'Junho', 'Julho', 'Agosto',
-                                                    'Setembro', 'Outubro', 'Novembro', 'Dezembro'
-                                                ],
-                                                datasets: [{
-                                                    label: 'Peso Coletado (kg)',
-                                                    data: pesos,
-                                                    backgroundColor: 'rgba(87, 199, 133, 0.2)',
-                                                    borderColor: 'rgba(87, 199, 133, 1)',
-                                                    borderWidth: 1
-                                                }]
-                                            },
-                                            options: {
-                                                responsive: true,
-                                                scales: {
-                                                    y: {
-                                                        beginAtZero: true
+
+                            document.getElementById('selectPlanta').addEventListener('change', function () {
+                                const plantaId = this.value;
+                                atualizarGraficoPesoColetado(plantaId);
+                            });
+
+                            window.addEventListener('DOMContentLoaded', function () {
+                                const select = document.getElementById('selectPlanta');
+                                if (select && select.value) {
+                                    atualizarGraficoPesoColetado(select.value);
+                                }
+                            });
+                        </script>
+                        <script>
+                            let grafico3;
+                            function atualizarGraficoProporcaoMovimentacoes(plantaId) {
+                                if (!plantaId) return;
+                                fetch(`/home/proporcaoMovimentacoes/${plantaId}`)
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        const labels = data.labels || [];
+                                        const dados = data.dados || [];
+                                        const backgroundColors = [
+                                            'rgb(54, 162, 235)', // entrada
+                                            'rgb(255, 205, 86)', // saida
+                                            'rgb(255, 99, 132)'  // venda
+                                        ];
+                                        if (grafico3) {
+                                            grafico3.data.labels = labels;
+                                            grafico3.data.datasets[0].data = dados;
+                                            grafico3.data.datasets[0].backgroundColor = backgroundColors;
+                                            grafico3.update();
+                                        } else {
+                                            const ctx3 = document.getElementById('grafico3').getContext('2d');
+                                            grafico3 = new Chart(ctx3, {
+                                                type: 'doughnut',
+                                                data: {
+                                                    labels: labels,
+                                                    datasets: [{
+                                                        label: 'Total de Movimentações',
+                                                        data: dados,
+                                                        backgroundColor: backgroundColors,
+                                                        hoverOffset: 4
+                                                    }]
+                                                },
+                                                options: {
+                                                    responsive: true,
+                                                    plugins: {
+                                                        legend: {
+                                                            position: 'bottom'
+                                                        }
                                                     }
                                                 }
-                                            }
-                                        });
-                                    }
-                                });
-                        }
-
-                        document.getElementById('selectPlanta').addEventListener('change', function () {
-                            const plantaId = this.value;
-                            atualizarGraficoPesoColetado(plantaId);
-                        });
-
-                        window.addEventListener('DOMContentLoaded', function () {
-                            const select = document.getElementById('selectPlanta');
-                            if (select && select.value) {
-                                atualizarGraficoPesoColetado(select.value);
+                                            });
+                                        }
+                                    });
                             }
-                        });
-                    </script>
-                    <script>
-                        let grafico3;
-                        function atualizarGraficoProporcaoMovimentacoes(plantaId) {
-                            if (!plantaId) return;
-                            fetch(`/home/proporcaoMovimentacoes/${plantaId}`)
-                                .then(res => res.json())
-                                .then(data => {
-                                    const labels = data.labels || [];
-                                    const dados = data.dados || [];
-                                    const backgroundColors = [
-                                        'rgb(54, 162, 235)', // entrada
-                                        'rgb(255, 205, 86)', // saida
-                                        'rgb(255, 99, 132)'  // venda
-                                    ];
-                                    if (grafico3) {
-                                        grafico3.data.labels = labels;
-                                        grafico3.data.datasets[0].data = dados;
-                                        grafico3.data.datasets[0].backgroundColor = backgroundColors;
-                                        grafico3.update();
-                                    } else {
-                                        const ctx3 = document.getElementById('grafico3').getContext('2d');
-                                        grafico3 = new Chart(ctx3, {
-                                            type: 'doughnut',
-                                            data: {
-                                                labels: labels,
-                                                datasets: [{
-                                                    label: 'Total de Movimentações',
-                                                    data: dados,
-                                                    backgroundColor: backgroundColors,
-                                                    hoverOffset: 4
-                                                }]
-                                            },
-                                            options: {
-                                                responsive: true,
-                                                plugins: {
-                                                    legend: {
-                                                        position: 'bottom'
-                                                    }
-                                                }
-                                            }
-                                        });
-                                    }
-                                });
-                        }
 
-                        document.getElementById('selectPlanta').addEventListener('change', function () {
-                            const plantaId = this.value;
-                            atualizarGraficoProporcaoMovimentacoes(plantaId);
-                        });
+                            document.getElementById('selectPlanta').addEventListener('change', function () {
+                                const plantaId = this.value;
+                                atualizarGraficoProporcaoMovimentacoes(plantaId);
+                            });
 
-                        window.addEventListener('DOMContentLoaded', function () {
-                            const select = document.getElementById('selectPlanta');
-                            if (select && select.value) {
-                                atualizarGraficoProporcaoMovimentacoes(select.value);
-                            }
-                        });
-                    </script>
-                    <!--end conteudo indiviudual da pagina-->
-                    <footer class="footer">
-                        <div class="container-fluid d-flex justify-content-between">
-                            <nav class="pull-left">
-                                <ul class="nav">
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">footer#1</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">footer#2</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                            <div class="copyright">
-                                2025 - Autores: Equipe 7
+                            window.addEventListener('DOMContentLoaded', function () {
+                                const select = document.getElementById('selectPlanta');
+                                if (select && select.value) {
+                                    atualizarGraficoProporcaoMovimentacoes(select.value);
+                                }
+                            });
+                        </script>
+                        <!--end conteudo indiviudual da pagina-->
+                        <footer class="footer">
+                            <div class="container-fluid d-flex justify-content-between">
+                                <nav class="pull-left">
+                                    <ul class="nav">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#">footer#1</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#">footer#2</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                                <div class="copyright">
+                                    2025 - Autores: Equipe 7
+                                </div>
                             </div>
-                        </div>
-                    </footer>
+                        </footer>
+                    </div>
                 </div>
-            </div>
     </body>
 </main>
