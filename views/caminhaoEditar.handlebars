@@ -1,0 +1,345 @@
+<main>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <div class="sidebar" data-background-color="dark">
+            <div class="sidebar-logo">
+                <!-- Logo Header -->
+                <div class="logo-header" data-background-color="dark">
+                    <a href="/home" class="logo">
+                        <img src="/assets/Eco.png" alt="navbar brand" class="navbar-brand" height="30" />
+                    </a>
+                    <div class="nav-toggle">
+                        <button class="btn btn-toggle toggle-sidebar">
+                            <i class="gg-menu-right"></i>
+                        </button>
+                        <button class="btn btn-toggle sidenav-toggler">
+                            <i class="gg-menu-left"></i>
+                        </button>
+                    </div>
+                    <button class="topbar-toggler more">
+                        <i class="gg-more-vertical-alt"></i>
+                    </button>
+                </div>
+                <!-- End Logo Header -->
+            </div>
+            <div class="sidebar-wrapper scrollbar scrollbar-inner">
+                <div class="sidebar-content">
+                    <ul class="nav nav-secondary">
+                        <li class="nav-item">
+                            <a href="/home" class="collapsed" aria-expanded="false">
+                                <i class="fas fa-home"></i>
+                                <p>Home</p>
+                            </a>
+                        </li>
+                        <li class="nav-section">
+                            <span class="sidebar-mini-icon">
+                                <i class="fa fa-ellipsis-h"></i>
+                            </span>
+                            <h4 class="text-section">Funções Do Sistema</h4>
+                        </li>
+                        <li class="nav-item active">
+                            <a data-bs-toggle="collapse" href="#cadastro">
+                                <i class="fas fa-user"></i>
+                                <p>Cadastros</p>
+                                <span class="caret"></span>
+                            </a>
+                            <div class="collapse" id="cadastro">
+                                <ul class="nav nav-collapse">
+                                        <li>
+                                            <a href="/cadastrosBuscar">
+                                                <span class="sub-item">Buscar</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/pessoa">
+                                                <span class="sub-item">Nova Pessoa</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/usuario">
+                                                <span class="sub-item">Novo Usuario</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/planta">
+                                                <span class="sub-item">Nova Planta</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/motorista">
+                                                <span class="sub-item">Novo Motorista</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/caminhao">
+                                                <span class="sub-item">Novo Caminhão</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a data-bs-toggle="collapse" href="#estoque">
+                                <i class="fas fa-th-list"></i>
+                                <p>Estoque</p>
+                                <span class="caret"></span>
+                            </a>
+                            <div class="collapse" id="estoque">
+                                <ul class="nav nav-collapse">
+                                    <li>
+                                        <a href="/cadastrosBuscar2">
+                                            <span class="sub-item">Buscar</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/estoque">
+                                            <span class="sub-item">Novo Estoque</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/material">
+                                            <span class="sub-item">Novo Material</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/movimentacoes">
+                                            <span class="sub-item">Movimentações</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/pesagem">
+                                            <span class="sub-item">Pesagem da coleta</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a data-bs-toggle="collapse" href="#coleta">
+                                <i class="fa fa-map-marker-alt"></i>
+                                <p>Gestão de Coleta</p>
+                                <span class="caret"></span>
+                            </a>
+                            <div class="collapse" id="coleta">
+                                <ul class="nav nav-collapse">
+                                    <li>
+                                        <a href="/agendamento">
+                                            <span class="sub-item">Agendamento</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/rotas">
+                                            <span class="sub-item">Rotas Programadas</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/attStatus">
+                                            <span class="sub-item">Atualizar Status da Coleta</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/relatorios">
+                                <i class="fas fa-table"></i>
+                                <p>Relatórios</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/processamento">
+                                <i class="fas fa-thumbtack"></i>
+                                <p>Processamento</p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- End Sidebar -->
+        <!--Start MenuBar-->
+        <div class="main-panel">
+            <div class="main-header">
+                <div class="main-header-logo">
+                    <!-- Logo Header -->
+                    <div class="logo-header" data-background-color="dark">
+                        <a href="#" class="logo">
+                            <img src="/public/assets/Eco.png" alt="navbar brand" class="navbar-brand" height="20" />
+                        </a>
+                        <div class="nav-toggle">
+                            <button class="btn btn-toggle toggle-sidebar">
+                                <i class="gg-menu-right"></i>
+                            </button>
+                            <button class="btn btn-toggle sidenav-toggler">
+                                <i class="gg-menu-left"></i>
+                            </button>
+                        </div>
+                        <button class="topbar-toggler more">
+                            <i class="gg-more-vertical-alt"></i>
+                        </button>
+                    </div>
+                    <!-- End Logo Header -->
+                </div>
+                <!-- Navbar Header -->
+                <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+                    <div class="container-fluid">
+                        <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+                            <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                                    aria-expanded="false" aria-haspopup="true">
+                                    <i class="fa fa-search"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-search animated fadeIn">
+                                    <form class="navbar-left navbar-form nav-search">
+                                        <div class="input-group">
+                                            <input type="text" placeholder="Search ..." class="form-control" />
+                                        </div>
+                                    </form>
+                                </ul>
+                            </li>
+                            <li class="nav-item topbar-user dropdown hidden-caret">
+                                <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
+                                    aria-expanded="false">
+                                    <span class="profile-username">
+                                        <i class="fas fa-user-circle fa-2x"></i>
+                                    </span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-user animated fadeIn">
+                                    <div class="dropdown-user-scroll scrollbar-outer">
+                                        <li>
+                                            <div class="user-box">
+                                                <div class="u-text">
+                                                    <h4>Henrique</h4>
+                                                    <p class="text-muted">henrique@gmail.com</p>
+                                                    <a href="#" class="btn btn-xs btn-secondary btn-sm">
+                                                        Ver
+                                                        Perfil
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">Minha conta</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">Configurações</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="/login">Sair</a>
+                                        </li>
+                                    </div>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                <!-- End Navbar -->
+            </div>
+            <!--End MenuBar-->
+            <!--Start conteudo indiviudual da pagina-->
+            <div class="container">
+                <div class="page-inner">
+                    <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
+                        <div class="mb-3 d-flex flex-column">
+                            <span class="fs-2 fw-bold">
+                                Editar Caminhão
+                            </span>
+                            <small class="text-muted">
+                                Preencha os dados de cadastro e clique em salvar.
+                            </small>
+                        </div>
+                    </div>
+                    <div class="card shadow-lg">
+                        <div class="card-header d-none">
+                            <div class="card-title">
+                                <span class="fs-2 fw-bold"></span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <form id="formCaminhao" action="/caminhaoEditar" method="POST">
+                            <input type="hidden" name="id_caminhao" value="{{caminhao.id_caminhao}}">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Modelo</label>
+                                            <input type="text" name="nm_modelo" class="form-control"
+                                                value="{{caminhao.nm_modelo}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Tipo Atual</label>
+                                            <input type="text" name="tipo_atual" class="form-control"
+                                                value={{caminhao.tipo}} readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Tipo</label><br>
+                                            <select class="form-select form-control" name="tipo">
+                                                <option value={{caminhao.tipo}}></option>
+                                                <option value="VUC">VUC</option>
+                                                <option value="TRUCK">TRUCK</option>
+                                                <option value="SIDER">SIDER</option>
+                                                <option value="FURGAO">FURGAO</option>
+                                                <option value="HR">HR</option>
+                                                <option value="TOCO">TOCO</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Placa</label>
+                                            <input maxlength="50" type="text" name="placa" class="form-control"
+                                                placeholder="Informe o Placa" value={{caminhao.placa}} readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Ano Fabricação</label>
+                                            <input maxlength="50" type="text" name="ano_fabricacao" class="form-control"
+                                                placeholder="Informe o Placa" value={{caminhao.ano_fabricacao}}>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Capacidade (Kg)</label>
+                                            <input maxlength="50" type="number" name="capacidade_kg"
+                                                class="form-control" placeholder="Informe a capacidade"
+                                                value={{caminhao.capacidade_kg}}>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Capacidade em Volume (m³)</label>
+                                            <input maxlength="50" type="numeber" name="capacidade_volume"
+                                                class="form-control" placeholder="Informe a capacidade"
+                                                value={{caminhao.capacidade_volume}}>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 d-flex align-items-end">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="situacao"
+                                                name="situacao" value="A" {{#if (eq caminhao.situacao "A"
+                                                )}}checked{{/if}}>
+                                            <label class="form-check-label fw-bold" for="situacao">
+                                                Ativo
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end mt-3">
+                                    <a href="/cadastros"
+                                        class="btn btn-secondary shadow-lg fs-6 fw-bold me-3">Voltar</a>
+                                    <button type="submit" class="btn btn-success shadow-lg fs-6 fw-bold">Salvar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End conteudo indiviudual da pagina-->
+        </div>
+        <!--End MenuBar-->
+    </div>
+</main>

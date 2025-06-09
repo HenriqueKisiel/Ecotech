@@ -6,6 +6,7 @@ function exibirRotas(req, res) {
 
     //Executando a consulta no banco de dados
     conectiondb().query(sql, function (erro, retorno) {
+      // Guarda o retorno dos dados em rotas
         res.render('rotas', { rotas: retorno });
         if (erro) {
           console.error('Erro ao buscar as rotas:', erro);
@@ -13,6 +14,8 @@ function exibirRotas(req, res) {
         }
     });
 };
+
+/*------------------------parte de cadastro de rotas--------------------------*/
 
 //Função para exibir  pagina atualizar Rotas
 function exibirAtualizarRotas(req, res) {
@@ -24,6 +27,7 @@ function exibirCadastrarRotas(req, res) {
     res.render('rotasCadastrar');
 };
 
+// Busca uma planta para vincular a rota
 function buscarPlanta(req, res) {
     const sql = `
         SELECT * FROM planta WHERE ie_situacao = 'A'
@@ -102,7 +106,7 @@ function insertRota(req, res){
     });
 }
 
-// Função Buscar Rota
+//*Função para filtrar os dados no buscar Rotas
 function buscarRota(req, res) {
   console.log("Função buscarRotas chamada");
 
@@ -121,17 +125,17 @@ function buscarRota(req, res) {
   `;
 
   const valores = [];
-
+  // filtra por nome
   if (nome_rota) {
     query += " AND nm_rota LIKE ?";
     valores.push(`%${nome_rota}%`);
   }
-
+  // filtra por data agendada
   if (dt_rota) {
     query += " AND DATE_FORMAT(dt_agendada, '%Y-%m-%d') = ?";
     valores.push(dt_rota);
   }
-
+  // filtra por situação
   if (ie_situacao) {
     query += " AND ie_situacao LIKE ?";
     valores.push(ie_situacao);

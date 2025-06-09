@@ -1,0 +1,706 @@
+<main>
+
+    <body>
+        <div class="wrapper">
+            <!-- Sidebar -->
+            <div class="sidebar" data-background-color="dark">
+                <div class="sidebar-logo">
+                    <!-- Logo Header -->
+                    <div class="logo-header" data-background-color="dark">
+                        <a href="/home" class="logo">
+                            <img src="/assets/Eco.png" alt="navbar brand" class="navbar-brand" height="30" />
+                        </a>
+                        <div class="nav-toggle">
+                            <button class="btn btn-toggle toggle-sidebar">
+                                <i class="gg-menu-right"></i>
+                            </button>
+                            <button class="btn btn-toggle sidenav-toggler">
+                                <i class="gg-menu-left"></i>
+                            </button>
+                        </div>
+                        <button class="topbar-toggler more">
+                            <i class="gg-more-vertical-alt"></i>
+                        </button>
+                    </div>
+                    <!-- End Logo Header -->
+                </div>
+                <div class="sidebar-wrapper scrollbar scrollbar-inner">
+                    <div class="sidebar-content">
+                        <ul class="nav nav-secondary">
+                            <li class="nav-item">
+                                <a href="/home" class="collapsed" aria-expanded="false">
+                                    <i class="fas fa-home"></i>
+                                    <p>Home</p>
+                                </a>
+                            </li>
+                            <li class="nav-section">
+                                <span class="sidebar-mini-icon">
+                                    <i class="fa fa-ellipsis-h"></i>
+                                </span>
+                                <h4 class="text-section">Funções Do Sistema</h4>
+                            </li>
+                            <li class="nav-item">
+                                <a data-bs-toggle="collapse" href="#cadastro">
+                                    <i class="fas fa-user"></i>
+                                    <p>Cadastros</p>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="cadastro">
+                                    <ul class="nav nav-collapse">
+                                        <li>
+                                            <a href="/cadastrosBuscar">
+                                                <span class="sub-item">Buscar</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/pessoa">
+                                                <span class="sub-item">Nova Pessoa</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/usuario">
+                                                <span class="sub-item">Novo Usuario</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/planta">
+                                                <span class="sub-item">Nova Planta</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/motorista">
+                                                <span class="sub-item">Novo Motorista</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/caminhao">
+                                                <span class="sub-item">Novo Caminhão</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item active">
+                                <a data-bs-toggle="collapse" href="#estoque">
+                                    <i class="fas fa-th-list"></i>
+                                    <p>Estoque</p>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="estoque">
+                                    <ul class="nav nav-collapse">
+                                        <li>
+                                            <a href="/cadastrosBuscar2">
+                                                <span class="sub-item">Buscar</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/estoque">
+                                                <span class="sub-item">Novo Estoque</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/material">
+                                                <span class="sub-item">Novo Material</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/movimentacoes">
+                                                <span class="sub-item">Movimentações</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/pesagem">
+                                                <span class="sub-item">Pesagem da coleta</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a data-bs-toggle="collapse" href="#coleta">
+                                    <i class="fa fa-map-marker-alt"></i>
+                                    <p>Gestão de Coleta</p>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="coleta">
+                                    <ul class="nav nav-collapse">
+                                        <li>
+                                            <a href="/agendamento">
+                                                <span class="sub-item">Agendamento</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/rotas">
+                                                <span class="sub-item">Rotas Programadas</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/attStatus">
+                                                <span class="sub-item">Atualizar Status da Coleta</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/relatorios">
+                                    <i class="fas fa-table"></i>
+                                    <p>Relatórios</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/processamento">
+                                    <i class="fas fa-thumbtack"></i>
+                                    <p>Processamento</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- End Sidebar -->
+            <!--Start MenuBar-->
+            <div class="main-panel">
+                <div class="main-header">
+                    <div class="main-header-logo">
+                        <!-- Logo Header -->
+                        <div class="logo-header" data-background-color="dark">
+                            <a href="#" class="logo">
+                                <img src="public/assets/Eco.png" alt="navbar brand" class="navbar-brand" height="20" />
+                            </a>
+                            <div class="nav-toggle">
+                                <button class="btn btn-toggle toggle-sidebar">
+                                    <i class="gg-menu-right"></i>
+                                </button>
+                                <button class="btn btn-toggle sidenav-toggler">
+                                    <i class="gg-menu-left"></i>
+                                </button>
+                            </div>
+                            <button class="topbar-toggler more">
+                                <i class="gg-more-vertical-alt"></i>
+                            </button>
+                        </div>
+                        <!-- End Logo Header -->
+                    </div>
+                    <!-- Navbar Header -->
+                    <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+                        <div class="container-fluid">
+                            <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+                                <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                                        aria-expanded="false" aria-haspopup="true">
+                                        <i class="fa fa-search"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-search animated fadeIn">
+                                        <form class="navbar-left navbar-form nav-search">
+                                            <div class="input-group">
+                                                <input type="text" placeholder="Search ..." class="form-control" />
+                                            </div>
+                                        </form>
+                                    </ul>
+                                </li>
+                                <li class="nav-item topbar-user dropdown hidden-caret">
+                                    <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
+                                        aria-expanded="false">
+                                        <span class="profile-username">
+                                            <i class="fas fa-user-circle fa-2x"></i>
+                                        </span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user animated fadeIn">
+                                        <div class="dropdown-user-scroll scrollbar-outer">
+                                            <li>
+                                                <div class="user-box">
+                                                    <div class="u-text">
+                                                        <h4>Henrique</h4>
+                                                        <p class="text-muted">henrique@gmail.com</p>
+                                                        <a href="#" class="btn btn-xs btn-secondary btn-sm">
+                                                            Ver
+                                                            Perfil
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="#">Minha conta</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="#">Configurações</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="/login">Sair</a>
+                                            </li>
+                                        </div>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                    <!-- End Navbar -->
+                </div>
+                <!--End MenuBar-->
+                <!--Start conteúdo individual da página-->
+                <div class="container">
+                    <div class="page-inner">
+                        <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
+                            <div class="mb-3 d-flex flex-column">
+                                <span class="fs-2 fw-bold">Separação de Materiais</span>
+                                <small class="text-muted">Preencha os dados de cadastro e clique em continuar.</small>
+                            </div>
+                            <a href="/pesagem" class="btn btn-secondary fw-bold shadow-lg me-3 mt-2">
+                                Voltar</a>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row mb-5">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Nome do Agendamento</label>
+                                            <select id="agendamento" name="agendamento" class="form-control">
+                                                <option value="">Selecione um agendamento</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Peso real (KG)</label>
+                                            <input type="number" step="0.01" id="pesoReal" name="pesoReal"
+                                                class="form-control" placeholder="___" readonly>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-5">
+                                        <div class="col-md-6 ">
+                                            <label class="fw-bold">Rota</label>
+                                            <input type="text" class="form-control" id="nm_rota" name="rota" readonly>
+                                        </div>
+                                        <div class="col-md-6 ">
+                                            <label class="fw-bold">Planta</label>
+                                            <input type="text" class="form-control" id="nm_planta" name="Planta"
+                                                readonly>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-end gap-2 mt-3">
+                                        <div class="card-footer d-flex justify-content-end">
+                                            <button id="btnConcluirSeparacao" class="btn btn-primary"> Concluir
+                                                separação</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <fieldset>
+                            <div class="row">
+                                <!-- ===== Formulário de Inserção/Edição de Itens ===== -->
+                                <div class="col-md-6">
+                                    <div class="card shadow-lg mb-5">
+                                        <div class="card-header">
+                                            <div class="card-title">Adicionar Item</div>
+                                        </div>
+                                        <div class="card-body">
+                                            <form action="/separacao/adicionarItem" method="POST"
+                                                id="formAdicionarItem">
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <input type="hidden" name="cd_agendamento"
+                                                            id="cd_agendamento_hidden" value="">
+                                                        <label class="fw-bold">Materia Prima</label>
+                                                        <select name="materia_prima" id="materia_prima"
+                                                            class="form-control">
+                                                            <option value="0">Selecione a linha</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-6 ">
+                                                        <label class="fw-bold">Peso do material (KG)</label>
+                                                        <input type="text" class="form-control" id="qt_peso" name="peso"
+                                                            pattern="^\d+([.,]\d{10,2})?$"
+                                                            oninput="this.value = this.value.replace(/[^0-9.,]/g, '')"
+                                                            required>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6 ">
+                                                        <label class="fw-bold">Volume (m³)</label>
+                                                        <input type="text" class="form-control" id="volume_m3"
+                                                            name="volume" pattern="^\d+([.,]\d{10,5})?$"
+                                                            oninput="this.value = this.value.replace(/[^0-9.,]/g, '')"
+                                                            readonly>
+                                                    </div>
+                                                    <div class="col-md-6 ">
+                                                        <label class="fw-bold">Volume prensado (m³)</label>
+                                                        <input type="text" class="form-control" id="volume_m3_prensado"
+                                                            name="volume_m3_prensado" pattern="^\d+([.,]\d{10,5})?$"
+                                                            oninput="this.value = this.value.replace(/[^0-9.,]/g, '')"
+                                                            required>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="col-md-6">
+                                                        <label class="fw-bold">Estoque</label>
+                                                        <select name="estoque" id="cd_estoque" class="form-control">
+                                                            <option value="0">Selecione o estoque</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex justify-content-end gap-2 mt-3">
+                                                    <a href="/separacao?id_agendamento={{agendamento.cd_agendamento}}"
+                                                        class="btn btn-secondary text-white fw-bold shadow-lg">
+                                                        Cancelar
+                                                    </a>
+
+                                                    <button type="submit"
+                                                        class="btn btn-success text-white fw-bold shadow-lg">Adicionar
+                                                        Item</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ===== Lista de Itens ===== -->
+                                <div class="col-md-6">
+                                    <div class="card shadow-lg mb-5">
+                                        <div class="card-header">
+                                            <div class="card-title">Itens movimentado</div>
+                                            <div class="col-md-2">
+                                                <label class="fw-bold">Peso já separado (KG)</label>
+                                                <input type="text" id="pesoSeparado" class="form-control" value="0"
+                                                    readonly>
+                                            </div>
+                                        </div>
+                                        <div class="card-body p-0">
+                                            <table class="table table-head-bg-success">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Material</th>
+                                                        <th>Estoque</th>
+                                                        <th>Peso</th>
+                                                        <th>Volume</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {{#each itens}}
+                                                    <tr>
+                                                        <td>{{ds_material}}</td>
+                                                        <td>{{nm_estoque}}</td>
+                                                        <td>{{qt_peso}}</td>
+                                                        <td>{{qt_volume}}</td>
+                                                    </tr>
+                                                    {{/each}}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const selectAgendamento = document.getElementById('agendamento');
+                const pesoRealInput = document.getElementById('pesoReal');
+                const nmPlantaInput = document.getElementById('nm_planta');
+                const nmRotaInput = document.getElementById('nm_rota');
+
+                // Carregar agendamentos para separação
+                fetch('/buscarAgendamentoSeparacao')
+                    .then(response => response.json())
+                    .then(agendamentos => {
+                        agendamentos.forEach(agendamento => {
+                            const option = document.createElement('option');
+                            option.value = agendamento.cd_agendamento;
+                            option.textContent = agendamento.nm_agendamento;
+                            option.dataset.pesoReal = agendamento.qt_peso_real;
+                            option.dataset.cdPlanta = agendamento.cd_planta || '';
+                            option.dataset.nmPlanta = agendamento.nm_planta || '';
+                            option.dataset.nmRota = agendamento.nm_rota || '';
+                            selectAgendamento.appendChild(option);
+                        });
+
+                        // Selecionar automaticamente se vier parâmetro na URL
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const cd_agendamento = urlParams.get('cd_agendamento');
+                        if (cd_agendamento) {
+                            selectAgendamento.value = cd_agendamento;
+                            // Dispara o evento change para atualizar os campos relacionados
+                            selectAgendamento.dispatchEvent(new Event('change'));
+                        }
+                    })
+                    .catch(error => console.error('Erro ao carregar agendamentos:', error));
+
+                selectAgendamento.addEventListener('change', function () {
+                    const selectedOption = selectAgendamento.options[selectAgendamento.selectedIndex];
+                    pesoRealInput.value = selectedOption.dataset.pesoReal || '';
+                    nmPlantaInput.value = selectedOption.dataset.nmPlanta || '';
+                    nmRotaInput.value = selectedOption.dataset.nmRota || '';
+                });
+            });
+
+            document.addEventListener("DOMContentLoaded", function () {
+                const selectAgendamento = document.getElementById('agendamento');
+                const cdAgendamentoHidden = document.getElementById('cd_agendamento_hidden');
+                selectAgendamento.addEventListener('change', function () {
+                    cdAgendamentoHidden.value = selectAgendamento.value;
+                });
+                cdAgendamentoHidden.value = selectAgendamento.value;
+            });
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const materiaPrimaSelect = document.getElementById('materia_prima');
+                const qtPesoInput = document.getElementById('qt_peso');
+                const volumeInput = document.getElementById('volume_m3');
+                let volumePorKg = null;
+
+                // Carregar materiais no select materia_prima
+                fetch('/buscarMateriaisLinha5')
+                    .then(response => response.json())
+                    .then(materiais => {
+                        materiaPrimaSelect.innerHTML = '<option value="0">Selecione a linha</option>';
+                        materiais.forEach(mat => {
+                            const option = document.createElement('option');
+                            option.value = mat.cd_material;
+                            option.textContent = mat.ds_material;
+                            // Garante que o volume seja um número ou string vazia
+                            option.dataset.volume = mat.volume_m3 !== null && mat.volume_m3 !== undefined ? mat.volume_m3 : '';
+                            materiaPrimaSelect.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error('Erro ao carregar materiais:', error));
+
+                function atualizarVolume() {
+                    const peso = parseFloat(qtPesoInput.value.replace(',', '.'));
+                    if (volumePorKg !== null && !isNaN(peso)) {
+                        volumeInput.value = (peso * volumePorKg).toFixed(5);
+                    } else {
+                        volumeInput.value = '';
+                    }
+                }
+
+                materiaPrimaSelect.addEventListener('change', function () {
+                    const selected = materiaPrimaSelect.options[materiaPrimaSelect.selectedIndex];
+                    // Só faz o cálculo se o volume for válido
+                    volumePorKg = selected.dataset.volume && !isNaN(selected.dataset.volume) ? parseFloat(selected.dataset.volume) : null;
+                    atualizarVolume();
+                });
+
+                qtPesoInput.addEventListener('input', atualizarVolume);
+            });
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const selectAgendamento = document.getElementById('agendamento');
+                const cdEstoqueSelect = document.getElementById('cd_estoque');
+
+                selectAgendamento.addEventListener('change', function () {
+                    // Pegue o código da planta do option selecionado
+                    const selectedOption = selectAgendamento.options[selectAgendamento.selectedIndex];
+                    const cdPlanta = selectedOption.dataset.cdPlanta;
+
+                    // Limpa o select de estoques
+                    cdEstoqueSelect.innerHTML = '<option value="">Selecione o estoque</option>';
+
+                    if (cdPlanta) {
+                        fetch('/buscarEstoquesPorPlanta?cd_planta=' + encodeURIComponent(cdPlanta))
+                            .then(response => response.json())
+                            .then(estoques => {
+                                estoques.forEach(estoque => {
+                                    const option = document.createElement('option');
+                                    option.value = estoque.cd_estoque;
+                                    option.textContent = estoque.nm_estoque;
+                                    cdEstoqueSelect.appendChild(option);
+                                });
+                            })
+                            .catch(error => console.error('Erro ao carregar estoques:', error));
+                    }
+                });
+            });
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const selectAgendamento = document.getElementById('agendamento');
+                const tabelaItens = document.querySelector('.table tbody');
+                const pesoSeparadoInput = document.getElementById('pesoSeparado');
+
+                function atualizarPesoSeparado() {
+                    let somaPesos = 0;
+                    tabelaItens.querySelectorAll('tr').forEach(tr => {
+                        const pesoItem = parseFloat(tr.children[2]?.textContent.replace(',', '.') || 0);
+                        somaPesos += pesoItem;
+                    });
+                    pesoSeparadoInput.value = somaPesos.toFixed(2);
+                }
+
+                selectAgendamento.addEventListener('change', function () {
+                    const cd_agendamento = selectAgendamento.value;
+                    if (!cd_agendamento) {
+                        tabelaItens.innerHTML = '';
+                        pesoSeparadoInput.value = "0";
+                        return;
+                    }
+                    fetch(`/separacao/movimentacoes?cd_agendamento=${cd_agendamento}`)
+                        .then(response => response.json())
+                        .then(itens => {
+                            tabelaItens.innerHTML = '';
+                            itens.forEach(item => {
+                                const tr = document.createElement('tr');
+                                tr.innerHTML = `
+                        <td>${item.ds_material || ''}</td>
+                        <td>${item.nm_estoque || ''}</td>
+                        <td>${item.qt_peso || ''}</td>
+                        <td>${item.qt_volume || ''}</td>
+                    `;
+                                tabelaItens.appendChild(tr);
+                            });
+                            atualizarPesoSeparado();
+                        })
+                        .catch(error => {
+                            tabelaItens.innerHTML = '<tr><td colspan="4">Erro ao carregar itens.</td></tr>';
+                            pesoSeparadoInput.value = "0";
+                        });
+                });
+
+                // Atualiza também ao carregar a página
+                if (selectAgendamento.value) {
+                    selectAgendamento.dispatchEvent(new Event('change'));
+                }
+            });
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const form = document.getElementById('formAdicionarItem');
+                const volumeInput = document.getElementById('volume_m3');
+                const volumePrensadoInput = document.getElementById('volume_m3_prensado');
+
+                form.addEventListener('submit', function (e) {
+                    const volume = parseFloat(volumeInput.value.replace(',', '.')) || 0;
+                    const volumePrensado = parseFloat(volumePrensadoInput.value.replace(',', '.')) || 0;
+                    const pesoReal = parseFloat(document.getElementById('pesoReal').value.replace(',', '.')) || 0;
+                    const qtPeso = parseFloat(document.getElementById('qt_peso').value.replace(',', '.')) || 0;
+
+                    // Soma dos pesos já adicionados
+                    let somaPesos = 0;
+                    document.querySelectorAll('.table tbody tr').forEach(tr => {
+                        const pesoItem = parseFloat(tr.children[2]?.textContent.replace(',', '.') || 0);
+                        somaPesos += pesoItem;
+                    });
+
+                    if (volumePrensado > volume) {
+                        e.preventDefault();
+                        swal("Erro!", "O volume prensado não pode ser maior que o volume calculado!", {
+                            icon: "error",
+                            buttons: {
+                                confirm: {
+                                    text: "OK",
+                                    className: "btn btn-danger",
+                                },
+                            },
+                        });
+                        return;
+                    }
+
+                    if ((somaPesos + qtPeso) > pesoReal) {
+                        e.preventDefault();
+                        swal("Erro!", "A soma dos pesos dos itens não pode ultrapassar o peso real do agendamento!", {
+                            icon: "error",
+                            buttons: {
+                                confirm: {
+                                    text: "OK",
+                                    className: "btn btn-danger",
+                                },
+                            },
+                        });
+                        return;
+                    }
+                });
+            });
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const btnConcluir = document.getElementById('btnConcluirSeparacao');
+                const selectAgendamento = document.getElementById('agendamento');
+
+                btnConcluir.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const cd_agendamento = selectAgendamento.value;
+                    if (!cd_agendamento) {
+                        swal("Atenção!", "Selecione um agendamento antes de concluir a separação.", {
+                            icon: "warning",
+                            buttons: {
+                                confirm: {
+                                    text: "OK",
+                                    className: "btn btn-warning",
+                                },
+                            },
+                        });
+                        return;
+                    }
+                    swal({
+                        title: "Deseja confirmar o encerramento da separação?",
+                        icon: "warning",
+                        buttons: {
+                            cancel: {
+                                text: "Não",
+                                value: false,
+                                visible: true,
+                                className: "btn btn-secondary",
+                            },
+                            confirm: {
+                                text: "Sim",
+                                value: true,
+                                visible: true,
+                                className: "btn btn-primary",
+                            }
+                        }
+                    }).then((willConfirm) => {
+                        if (willConfirm) {
+                            // Faz o update via fetch
+                            fetch(`/separacao/concluirSeparacao?cd_agendamento=${cd_agendamento}`, {
+                                method: 'POST'
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        swal("Sucesso!", "Separação encerrada com sucesso!", {
+                                            icon: "success",
+                                            buttons: {
+                                                confirm: {
+                                                    text: "OK",
+                                                    className: "btn btn-success",
+                                                },
+                                            },
+                                        }).then(() => {
+                                            window.location.href = '/separacao';
+                                        });
+                                    } else {
+                                        swal("Erro!", data.message || "Erro ao encerrar separação.", {
+                                            icon: "error",
+                                            buttons: {
+                                                confirm: {
+                                                    text: "OK",
+                                                    className: "btn btn-danger",
+                                                },
+                                            },
+                                        });
+                                    }
+                                });
+                        } else {
+                            // Redireciona para a tela com o agendamento marcado
+                            window.location.href = `/separacao?cd_agendamento=${cd_agendamento}`;
+                        }
+                    });
+                });
+            });
+        </script>
+
+    </body>
+</main>

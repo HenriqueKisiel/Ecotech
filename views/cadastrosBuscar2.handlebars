@@ -1,0 +1,515 @@
+<main>
+
+    <body>
+        <div class="wrapper">
+            <!-- Sidebar -->
+            <div class="sidebar" data-background-color="dark">
+                <div class="sidebar-logo">
+                    <!-- Logo Header -->
+                    <div class="logo-header" data-background-color="dark">
+                        <a href="/home" class="logo">
+                            <img src="/assets/Eco.png" alt="navbar brand" class="navbar-brand" height="30" />
+                        </a>
+                        <div class="nav-toggle">
+                            <button class="btn btn-toggle toggle-sidebar">
+                                <i class="gg-menu-right"></i>
+                            </button>
+                            <button class="btn btn-toggle sidenav-toggler">
+                                <i class="gg-menu-left"></i>
+                            </button>
+                        </div>
+                        <button class="topbar-toggler more">
+                            <i class="gg-more-vertical-alt"></i>
+                        </button>
+                    </div>
+                    <!-- End Logo Header -->
+                </div>
+                <div class="sidebar-wrapper scrollbar scrollbar-inner">
+                    <div class="sidebar-content">
+                        <ul class="nav nav-secondary">
+                            <li class="nav-item">
+                                <a href="/home" class="collapsed" aria-expanded="false">
+                                    <i class="fas fa-home"></i>
+                                    <p>Home</p>
+                                </a>
+                            </li>
+                            <li class="nav-section">
+                                <span class="sidebar-mini-icon">
+                                    <i class="fa fa-ellipsis-h"></i>
+                                </span>
+                                <h4 class="text-section">Funções Do Sistema</h4>
+                            </li>
+                            <li class="nav-item">
+                                <a data-bs-toggle="collapse" href="#cadastro">
+                                    <i class="fas fa-user"></i>
+                                    <p>Cadastros</p>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="cadastro">
+                                    <ul class="nav nav-collapse">
+                                        <li>
+                                            <a href="/cadastrosBuscar">
+                                                <span class="sub-item">Buscar</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/pessoa">
+                                                <span class="sub-item">Nova Pessoa</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/usuario">
+                                                <span class="sub-item">Novo Usuario</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/planta">
+                                                <span class="sub-item">Nova Planta</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/motorista">
+                                                <span class="sub-item">Novo Motorista</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/caminhao">
+                                                <span class="sub-item">Novo Caminhão</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item active">
+                                <a data-bs-toggle="collapse" href="#estoque">
+                                    <i class="fas fa-th-list"></i>
+                                    <p>Estoque</p>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="estoque">
+                                    <ul class="nav nav-collapse">
+                                        <li>
+                                            <a href="/cadastrosBuscar2">
+                                                <span class="sub-item">Buscar</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/estoque">
+                                                <span class="sub-item">Novo Estoque</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/material">
+                                                <span class="sub-item">Novo Material</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/movimentacoes">
+                                                <span class="sub-item">Movimentações</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/pesagem">
+                                                <span class="sub-item">Pesagem da coleta</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a data-bs-toggle="collapse" href="#coleta">
+                                    <i class="fa fa-map-marker-alt"></i>
+                                    <p>Gestão de Coleta</p>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="coleta">
+                                    <ul class="nav nav-collapse">
+                                        <li>
+                                            <a href="/agendamento">
+                                                <span class="sub-item">Agendamento</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/rotas">
+                                                <span class="sub-item">Rotas Programadas</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/attStatus">
+                                                <span class="sub-item">Atualizar Status da Coleta</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/relatorios">
+                                    <i class="fas fa-table"></i>
+                                    <p>Relatórios</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/processamento">
+                                    <i class="fas fa-thumbtack"></i>
+                                    <p>Processamento</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- End Sidebar -->
+            <!--Start MenuBar-->
+            <div class="main-panel">
+                <div class="main-header">
+                    <div class="main-header-logo">
+                        <!-- Logo Header -->
+                        <div class="logo-header" data-background-color="dark">
+                            <a href="#" class="logo">
+                                <img src="public/assets/Eco.png" alt="navbar brand" class="navbar-brand" height="20" />
+                            </a>
+                            <div class="nav-toggle">
+                                <button class="btn btn-toggle toggle-sidebar">
+                                    <i class="gg-menu-right"></i>
+                                </button>
+                                <button class="btn btn-toggle sidenav-toggler">
+                                    <i class="gg-menu-left"></i>
+                                </button>
+                            </div>
+                            <button class="topbar-toggler more">
+                                <i class="gg-more-vertical-alt"></i>
+                            </button>
+                        </div>
+                        <!-- End Logo Header -->
+                    </div>
+                    <!-- Navbar Header -->
+                    <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+                        <div class="container-fluid">
+                            <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+                                <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                                        aria-expanded="false" aria-haspopup="true">
+                                        <i class="fa fa-search"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-search animated fadeIn">
+                                        <form class="navbar-left navbar-form nav-search">
+                                            <div class="input-group">
+                                                <input type="text" placeholder="Search ..." class="form-control" />
+                                            </div>
+                                        </form>
+                                    </ul>
+                                </li>
+                                <li class="nav-item topbar-user dropdown hidden-caret">
+                                    <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
+                                        aria-expanded="false">
+                                        <span class="profile-username">
+                                            <i class="fas fa-user-circle fa-2x"></i>
+                                        </span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user animated fadeIn">
+                                        <div class="dropdown-user-scroll scrollbar-outer">
+                                            <li>
+                                                <div class="user-box">
+                                                    <div class="u-text">
+                                                        <h4>Henrique</h4>
+                                                        <p class="text-muted">henrique@gmail.com</p>
+                                                        <a href="#" class="btn btn-xs btn-secondary btn-sm">
+                                                            Ver
+                                                            Perfil
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="#">Minha conta</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="#">Configurações</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="/login">Sair</a>
+                                            </li>
+                                        </div>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                    <!-- End Navbar -->
+                </div>
+                <!--End MenuBar-->
+                <!--Start conteudo indiviudual da pagina-->
+                <div class="container">
+                    <div class="page-inner">
+                        <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
+                            <div class="mb-3 d-flex flex-column">
+                                <span class="fs-2 fw-bold">
+                                    Buscar Estoque / Material
+                                </span>
+                                <small class="text-muted">
+                                    Busque o material ou estoque que deseja.
+                                </small>
+                            </div>
+                        </div>
+                        <div class="card shadow-lg">
+                            <div class="card-header d-none">
+                                <div class="card-title"></div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-1">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Tipo de Cadastro</label>
+                                            <select class="form-control" id="tipoCadastro">
+                                                <option value="estoque">Estoque</option>
+                                                <option value="material">Material</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Código Cadastrado</label>
+                                            <input type="text" class="form-control" placeholder="Informe o código"
+                                                id="codigoCadastro">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Nome</label>
+                                            <input type="text" class="form-control" placeholder="Informe o nome"
+                                                id="nomeCadastro">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div id="campoEstoqueArmazenado" class="form-group">
+                                            <label class="fw-bold">Estoque Armazenado</label>
+                                            <input type="text" class="form-control" name="estoque_armazenado"
+                                                placeholder="Informe o estoque" id="estoqueCadastro">
+                                        </div>
+                                        <div id="campoPlantaCadastrada" class="form-group" style="display: none;">
+                                            <label class="fw-bold">Planta Cadastrada</label>
+                                            <input type="text" class="form-control" name="planta_cadastrada"
+                                                placeholder="Informe a planta" id="plantaCadastro">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer d-flex justify-content-end">
+                                <button type="button" id="limparBtn" class="btn btn-info me-3">Limpar
+                                    Filtros</button>
+                                <button class="btn btn-primary" id="btnBuscar">Buscar</button>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header d-none">
+                                <div class="card-title"></div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive rounded">
+                                    <table class="table table-bordered table-head-bg-success">
+                                        <thead id="tabelaCabecalho">
+                                            <!-- Cabeçalho será alterado dinamicamente com base na seleção -->
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="7" class="text-center text-muted">Nenhum cadastro
+                                                    encontrado</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End conteudo indiviudual da pagina-->
+                <!-- Start Script-->
+                <script>
+                    // Função para atualizar o cabeçalho da tabela com base no tipo de cadastro
+                    function atualizarTabelaCabeçalho(tipo) {
+                        const tabelaCabecalho = document.getElementById('tabelaCabecalho');
+
+                        if (tipo === 'estoque') {
+                            tabelaCabecalho.innerHTML = `
+                            <tr>
+                                <th>Código</th>
+                                <th>Estoque</th>
+                                <th>Planta</th>
+                                <th>KG Atual</th>
+                                <th>Volume Total (m³)</th>
+                                <th>Volume Atual (m³)</th>
+                                <th>Volume Disponível (m³)</th>
+                            </tr>
+                            `;
+                        } else if (tipo === 'material') {
+                            tabelaCabecalho.innerHTML = `
+                <tr>
+                    <th>Código</th>
+                    <th>Material</th>
+                    <th>Valor por KG</th>
+                    <th>Quantidade (KG)</th>
+                    <th>Estoque</th>
+                    <th>Planta</th>
+                </tr>
+            `;
+                        }
+                    }
+
+                    // Evento de troca de tipo de cadastro
+                    document.getElementById('tipoCadastro').addEventListener('change', function () {
+                        atualizarTabelaCabeçalho(this.value);
+                        atualizarCamposCadastro(this.value); // Atualiza os campos de entrada conforme o tipo de cadastro
+                    });
+
+                    // Inicializar com o tipo selecionado ao carregar
+                    window.addEventListener('DOMContentLoaded', () => {
+                        const tipoSelecionado = document.getElementById('tipoCadastro').value;
+                        atualizarTabelaCabeçalho(tipoSelecionado);
+                        atualizarCamposCadastro(tipoSelecionado);
+                    });
+
+                    // Função para atualizar os campos de entrada com base no tipo de cadastro
+                    function atualizarCamposCadastro(tipo) {
+                        const campoEstoque = document.getElementById('campoEstoqueArmazenado');
+                        const campoPlanta = document.getElementById('campoPlantaCadastrada');
+
+                        if (tipo === 'material') {
+                            campoEstoque.style.display = 'block';
+                            campoPlanta.style.display = 'none';
+                        } else {
+                            campoEstoque.style.display = 'none';
+                            campoPlanta.style.display = 'block';
+                        }
+                    }
+
+                    // 🚀 Função de busca ao clicar no botão
+                    document.getElementById('btnBuscar').addEventListener('click', async () => {
+                        const tipo = document.getElementById('tipoCadastro').value;
+                        const codigo = document.getElementById('codigoCadastro').value;
+                        const nome = document.getElementById('nomeCadastro').value;
+                        const estoque = document.getElementById('estoqueCadastro').value;
+                        const planta = document.getElementById('plantaCadastro').value;
+
+                        const filtros = { tipoCadastro: tipo };
+
+                        // Construindo filtros de acordo com o tipo de cadastro
+                        if (tipo === 'estoque') {
+                            if (codigo) filtros.codigoCadastro = codigo;
+                            if (nome) filtros.nomeCadastro = nome;
+                            if (planta) filtros.plantaCadastro = planta;
+                        } else if (tipo === 'material') {
+                            if (codigo) filtros.codigoCadastro = codigo;
+                            if (nome) filtros.nomeCadastro = nome;
+                            if (estoque) filtros.estoqueCadastro = estoque;
+                        }
+
+                        console.log("🔍 Filtros enviados:", filtros); // Log para depuração
+
+                        try {
+                            const resposta = await fetch('/cadastrosBuscar2', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(filtros)
+                            });
+
+                            const dados = await resposta.json();
+                            console.log("📦 Dados recebidos do back-end:", dados); // Log para ver o retorno
+
+                            const tbody = document.querySelector('table tbody');
+                            tbody.innerHTML = ''; // Limpa a tabela antes de adicionar os novos dados
+
+                            if (!Array.isArray(dados) || dados.length === 0) {
+                                tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">Nenhum cadastro encontrado</td></tr>';
+                                return;
+                            }
+
+                            dados.forEach(item => {
+                                if (tipo === 'estoque') {
+                                    tbody.innerHTML += `
+                                <tr>
+                <td>${item.cd_estoque}</td>
+                <td>${item.nm_estoque}</td>
+                <td>${item.nm_planta}</td>
+                <td>${item.qt_capacidade_atual ?? '-'}</td>
+                <td>${item.qt_volume_total ?? '-'}</td>
+                <td>${item.qt_volume_atual ?? '-'}</td>
+                <td>${item.qt_disponivel_volume ?? '-'}</td>
+            </tr>
+                            `;
+                                } else if (tipo === 'material') {
+                                    // Para "material", usamos os campos específicos de material
+                                    tbody.innerHTML += `
+                        <tr>
+                            <td>${item.cd_material}</td>
+                            <td>${item.ds_material}</td>
+                            <td>${item.vl_valor_por_kg}</td>
+                            <td>${item.qt_peso}</td>
+                            <td>${item.nm_estoque}</td>
+                            <td>${item.nm_planta}</td>
+                        </tr>
+                    `;
+                                }
+                            });
+                        } catch (erro) {
+                            console.error('❌ Erro ao buscar:', erro);
+                            alert('Erro ao buscar os dados.');
+                        }
+                    });
+
+                    // Função para limpar filtros
+                    document.getElementById('limparBtn').addEventListener('click', () => {
+                        // Limpa os campos de filtro
+                        document.getElementById('codigoCadastro').value = '';
+                        document.getElementById('nomeCadastro').value = '';
+                        document.getElementById('estoqueCadastro').value = '';
+                        document.getElementById('plantaCadastro').value = '';
+
+                        // Opcional: redefine o tipo de cadastro para o primeiro da lista
+                        document.getElementById('tipoCadastro').selectedIndex = 0;
+
+                        // Limpa os resultados da tabela
+                        const tbody = document.querySelector('table tbody');
+                        tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">Nenhum cadastro encontrado</td></tr>';
+                    });
+
+                    // Evento de troca de tipo de cadastro
+                    document.getElementById('tipoCadastro').addEventListener('change', function () {
+                        atualizarTabelaCabeçalho(this.value);
+                        atualizarCamposCadastro(this.value); // Atualiza os campos de entrada conforme o tipo de cadastro
+
+                        // Limpa os resultados da tabela ao trocar o tipo de cadastro
+                        const tbody = document.querySelector('table tbody');
+                        tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">Nenhum cadastro encontrado</td></tr>'
+
+                        // Limpa os filtros
+                        document.getElementById('codigoCadastro').value = '';
+                        document.getElementById('nomeCadastro').value = '';
+                        document.getElementById('estoqueCadastro').value = '';
+                        document.getElementById('plantaCadastro').value = '';
+                    });
+
+                </script>
+                <!--End Script-->
+                <!--end conteudo indiviudual da pagina-->
+                <footer class="footer">
+                    <div class="container-fluid d-flex justify-content-between">
+                        <nav class="pull-left">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">footer#1</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">footer#2</a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <div class="copyright">
+                            2025 - Autores: Equipe 7
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </body>
+</main>

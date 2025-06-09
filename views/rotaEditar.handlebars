@@ -48,7 +48,7 @@
                                 <div class="collapse" id="cadastro">
                                     <ul class="nav nav-collapse">
                                         <li>
-                                            <a href="/cadastros">
+                                            <a href="/cadastrosBuscar">
                                                 <span class="sub-item">Buscar</span>
                                             </a>
                                         </li>
@@ -67,6 +67,16 @@
                                                 <span class="sub-item">Nova Planta</span>
                                             </a>
                                         </li>
+                                        <li>
+                                            <a href="/motorista">
+                                                <span class="sub-item">Novo Motorista</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/caminhao">
+                                                <span class="sub-item">Novo Caminhão</span>
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                             </li>
@@ -79,12 +89,12 @@
                                 <div class="collapse" id="estoque">
                                     <ul class="nav nav-collapse">
                                         <li>
-                                            <a href="/estoqueBuscar">
+                                            <a href="/cadastrosBuscar2">
                                                 <span class="sub-item">Buscar</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/estoqueNovo">
+                                            <a href="/estoque">
                                                 <span class="sub-item">Novo Estoque</span>
                                             </a>
                                         </li>
@@ -94,12 +104,12 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/estoqueSaida">
+                                            <a href="/movimentacoes">
                                                 <span class="sub-item">Movimentações</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="/novoMaterial">
+                                            <a href="/pesagem">
                                                 <span class="sub-item">Pesagem da coleta</span>
                                             </a>
                                         </li>
@@ -251,7 +261,7 @@
                                                     value="{{rotas.cd_rota}}" readonly>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 {{!-- Nome Rota --}}
                                                 <label class="fw-bold">Nome</label>
@@ -292,16 +302,23 @@
                                                 </script>
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-2">
                                             <div class="form-group">
                                                 <label class="fw-bold">Motorista Atual</label>
                                                 <input type="text" value="{{rotas.nm_motorista}}" class="form-control"
                                                     placeholder="___" disabled>
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-2">
                                             <div class="form-group">
-                                                <label class="fw-bold">Caminão Atual Atual</label>
+                                                <label class="fw-bold">Volume Caminhão (M3)</label>
+                                                <input type="text" value="{{rotas.capacidade_volume}}"
+                                                    class="form-control" id="capacidade_m3" placeholder="___" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="fw-bold">Caminão Atual </label>
                                                 <input type="text" value="{{rotas.nm_modelo}}" class="form-control"
                                                     placeholder="___" disabled>
                                             </div>
@@ -377,7 +394,8 @@
                                                     <div class="form-group">
                                                         <label class="fw-bold">Endereco</label>
                                                         <input type="text" id="endereco" name="endereco"
-                                                            class="form-control" placeholder="Informe o endereço" readonly>
+                                                            class="form-control" placeholder="Informe o endereço"
+                                                            readonly>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -582,7 +600,7 @@
                 });
             });
 
-            // filepath: c:\Users\NICO\Desktop\PROJETOECOTH_GIT\Ecotech\views\rotaEditar.handlebars
+            //FAZ A VALIDAÇÃO DE PESO E VOLUME
             document.addEventListener('DOMContentLoaded', function () {
                 const form = document.querySelector('form[action^="/rotaEditar/"]');
                 if (!form) return;
@@ -590,16 +608,17 @@
                 form.addEventListener('submit', function (e) {
                     const pesoAtual = parseFloat((document.querySelector('input[value="{{rotas.qt_peso_total_kg}}"]')?.value || '0').replace(',', '.')) || 0;
                     const volumeAtual = parseFloat((document.querySelector('input[value="{{rotas.volume_rota}}"]')?.value || '0').replace(',', '.')) || 0;
-                    const capacidade = parseFloat((document.querySelector('input[value="{{rotas.capacidade_kg}}"]')?.value || '0').replace(',', '.')) || 0;
+                    const capacidadePeso = parseFloat((document.querySelector('input[value="{{rotas.capacidade_kg}}"]')?.value || '0').replace(',', '.')) || 0;
+                    const capacidadeVolume = parseFloat((document.getElementById('capacidade_m3')?.value || '0').replace(',', '.')) || 0;
 
                     const pesoNovo = parseFloat((document.getElementById('peso')?.value || '0').replace(',', '.')) || 0;
                     const volumeNovo = parseFloat((document.getElementById('volume')?.value || '0').replace(',', '.')) || 0;
 
                     let mensagem = '';
-                    if ((pesoAtual + pesoNovo) > capacidade) {
+                    if ((pesoAtual + pesoNovo) > capacidadePeso) {
                         mensagem = 'O peso total da rota excede a capacidade do caminhão!';
-                    } else if ((volumeAtual + volumeNovo) > capacidade) {
-                        mensagem = 'O volume total da rota excede a capacidade do caminhão!';
+                    } else if ((volumeAtual + volumeNovo) > capacidadeVolume) {
+                        mensagem = 'O volume total da rota excede a capacidade de volume do caminhão!';
                     }
 
                     if (mensagem) {
@@ -611,6 +630,7 @@
                     }
                 });
 
+                // VALIDA APENAS LETRAS
                 const nomeRotaInput = document.querySelector('input[name="nome"]');
                 if (nomeRotaInput) {
                     nomeRotaInput.addEventListener('input', function () {
