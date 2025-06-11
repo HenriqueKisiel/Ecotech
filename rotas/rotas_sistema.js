@@ -7,6 +7,15 @@ const router = express.Router();
 //Autenticador de usuario
 const ensureAuthenticated = require('../middleware/auth.js');
 
+router.get('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Erro ao encerrar a sessão:', err);
+        }
+        res.redirect('/');
+    });
+});
+
 //importar a conexão com o banco de dados
 const servico = require('../servico/rota_login.js');
 const servico2 = require('../servico/rota_home.js');

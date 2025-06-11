@@ -10,7 +10,10 @@ function exibirHome(req, res) {
             return res.status(500).send('Erro ao carregar plantas');
         }
         console.log('Plantas carregadas:', result); // Debug
-        res.render('home', { plantas: result });
+        res.render('home', { 
+            plantas: result,
+            usuario: req.session.usuario
+         });
     });
 }
 
