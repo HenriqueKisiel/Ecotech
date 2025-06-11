@@ -39,6 +39,7 @@ const servico28 = require('../servico/rota_caminhao.js');
 const servico29 = require('../servico/rota_relatoriosNovo.js');
 const servico30 = require('../servico/rota_motoristaEditar.js');
 const servico31 = require('../servico/rota_caminhaoEditar.js');
+const servico32 = require('../servico/rota_feedback.js');
 
 //==================== START ROTAS ==========================//
 
@@ -597,6 +598,36 @@ router.get('/caminhaoEditar/:id_caminhao', (req, res) => {
 // Rota para editar caminhão 
 router.post('/caminhaoEditar', (req, res) => {
     servico31.editarCaminhao(req, res);
+});
+
+// ----------------------- Servico32 -------------------//
+// Enviar e-mail de feedback
+router.post('/enviarFeedback/:cd_agendamento', (req, res) => {
+    servico32.enviarFeedbackEmail(req.params.cd_agendamento, (err, msg) => {
+        if (err) return res.status(400).send(err);
+        res.send(msg);
+    });
+});
+
+// Exibir formulário de feedback
+router.get('/feedback/:cd_agendamento', (req, res) => {
+    res.render('feedback', { cd_agendamento: req.params.cd_agendamento });
+});
+
+// Salvar feedback no banco
+router.post('/feedback/:cd_agendamento', (req, res) => {
+    const { ds_feedback, nr_nota } = req.body;
+    servico32.salvarFeedback(req.params.cd_agendamento, ds_feedback, nr_nota, (err, msg) => {
+        if (err) return res.status(400).send(err);
+        res.send(msg);
+    });
+});
+
+router.get('/enviarFeedback/:cd_agendamento', (req, res) => {
+    servico32.enviarFeedbackEmail(req.params.cd_agendamento, (err, msg) => {
+        if (err) return res.status(400).send(err);
+        res.send(msg);
+    });
 });
 
 //========================= END ROTAS ===========================//

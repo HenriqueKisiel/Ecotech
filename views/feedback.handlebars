@@ -1,0 +1,16 @@
+<!-- views/feedback.handlebars -->
+<h2>Feedback da Coleta</h2>
+<form method="POST" action="/feedback/{{cd_agendamento}}">
+    <label>Como foi sua experiência?</label><br>
+    <textarea name="ds_feedback" maxlength="255" required></textarea><br>
+    <label>Nota (1 a 5):</label>
+    <select name="nr_nota" required>
+        <option value="">Selecione</option>
+        <option value="1">1 - Ruim</option>
+        <option value="2">2</option>
+        <option value="3">3 - Regular</option>
+        <option value="4">4</option>
+        <option value="5">5 - Excelente</option>
+    </select><br>
+    <button type="submit">Enviar</button>
+</form>

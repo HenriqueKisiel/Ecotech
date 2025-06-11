@@ -1,4 +1,5 @@
 const conectiondb = require('../bd/conexao_mysql.js');
+const feedbackService = require('./rota_feedback.js');
 
 // Função para página Atualizar status
 function exibirAtualizarRotas(req, res) {
@@ -201,6 +202,17 @@ async function atualizarDataColeta(req, res) {
                     console.error("Erro ao atualizar data_coleta:", erro);
                     return res.json({ success: false });
                 }
+
+                // ENVIA O E-MAIL DE FEEDBACK APÓS COLETAR
+                feedbackService.enviarFeedbackEmail(cd_agendamento, (err, msg) => {
+                    if (err) {
+                        console.error('Erro ao enviar e-mail de feedback:', err);
+                        // Você pode decidir se quer retornar erro ou não para o front
+                    } else {
+                        console.log('E-mail de feedback enviado:', msg);
+                    }
+                });
+
                 return res.json({ success: true });
             });
         });
