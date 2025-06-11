@@ -1,4 +1,5 @@
 const conectiondb = require('../bd/conexao_mysql.js');
+const feedbackService = require('./rota_feedback.js');
 
 // Função para página Atualizar status
 function exibirAtualizarRotas(req, res) {
@@ -69,7 +70,7 @@ async function atualizarStatusRota(req, res) {
                     return res.json({ success: false, naoIniciada: true, message: 'Não é possível finalizar uma rota que não foi iniciada.' });
                 }
                 if (!resultadoFim[0].ie_motorista || !resultadoFim[0].ie_caminhao) {
-                return res.json({ success: false, motoristaCaminhao: true, message: 'É necessário vincular um motorista e um caminhão à rota para finalizar.' });
+                    return res.json({ success: false, motoristaCaminhao: true, message: 'É necessário vincular um motorista e um caminhão à rota para finalizar.' });
                 }
 
                 // Verifica se existe algum agendamento com dt_coleta preenchida
@@ -201,6 +202,17 @@ async function atualizarDataColeta(req, res) {
                     console.error("Erro ao atualizar data_coleta:", erro);
                     return res.json({ success: false });
                 }
+
+                // ENVIA O E-MAIL DE FEEDBACK APÓS COLETAR
+                feedbackService.enviarFeedbackEmail(cd_agendamento, (err, msg) => {
+                    if (err) {
+                        console.error('Erro ao enviar e-mail de feedback:', err);
+                        // Você pode decidir se quer retornar erro ou não para o front
+                    } else {
+                        console.log('E-mail de feedback enviado:', msg);
+                    }
+                });
+
                 return res.json({ success: true });
             });
         });
@@ -229,8 +241,9 @@ async function atualizarDataColeta(req, res) {
             }
 
             // Prossegue com o cancelamento
-            const query = `UPDATE agendamento SET dt_cancelado = ? WHERE cd_agendamento = ?`;
-            connection.query(query, [dataAtual, cd_agendamento], (erro, resultado) => {
+            const motivo = req.body.motivo || null;
+            const query = `UPDATE agendamento SET dt_cancelado = ?, ds_motivo = ? WHERE cd_agendamento = ?`;
+            connection.query(query, [dataAtual, motivo, cd_agendamento], (erro, resultado) => {
                 if (erro) {
                     console.error("Erro ao cancelar agendamento:", erro);
                     return res.json({ success: false });

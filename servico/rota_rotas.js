@@ -68,7 +68,7 @@ function insertRota(req, res){
     conectiondb().query(sql, values, (error, results) => {
         if (error) {
             console.error('Erro ao cadastrar Rota:', error);
-            res.render('RotaCadastro', {
+            res.render('cadastroRota', {
                 script: ` <script>
           swal("Erro ao cadastrar!", "Verifique os dados e tente novamente.", {
             icon: "error",
@@ -82,7 +82,7 @@ function insertRota(req, res){
         </script>`
             });
         } else {
-            res.render('RotaCadastro', {
+            res.render('cadastroRota', {
                 script: `
                   <script>
                     swal({

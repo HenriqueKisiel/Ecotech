@@ -28,15 +28,14 @@ function exibirEditarAgendamento(req, res, itemEmEdicao = null) {
         }
 
         const agendamento = results[0];
-        const bloquearEdicao = !!agendamento.dt_coleta;
-
+        const bloquearEdicao = !!agendamento.dt_coleta || !!agendamento.dt_cancelado;
         // Consulta para pegar todas as linhas cadastradas
         const linhasQuery = 'SELECT cd_linha, nm_linha FROM linha';
         connection.query(linhasQuery, (err, linhas) => {
             if (err) return res.status(500).send('Erro ao buscar as linhas');
 
-        // Filtra para remover "Materia Prima"
-        const linhasFiltradas = linhas.filter(linha =>
+            // Filtra para remover "Materia Prima"
+            const linhasFiltradas = linhas.filter(linha =>
                 linha.nm_linha && linha.nm_linha.toLowerCase() !== "materia prima"
             );
 

@@ -7,6 +7,15 @@ const router = express.Router();
 //Autenticador de usuario
 const ensureAuthenticated = require('../middleware/auth.js');
 
+router.get('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Erro ao encerrar a sessão:', err);
+        }
+        res.redirect('/');
+    });
+});
+
 //importar a conexão com o banco de dados
 const servico = require('../servico/rota_login.js');
 const servico2 = require('../servico/rota_home.js');
@@ -41,6 +50,7 @@ const servico30 = require('../servico/rota_motoristaEditar.js');
 const servico31 = require('../servico/rota_caminhaoEditar.js');
 const servico32 = require('../servico/rota_estoqueEditar.js');
 const servico33 = require('../servico/rota_materialEditar.js');
+const servico34 = require('../servico/rota_feedback.js');
 
 //==================== START ROTAS ==========================//
 
@@ -283,7 +293,7 @@ router.post('/atualizarAgendamento/:cd_agendamento', (req, res) => {
 
 //------------------------ Servico15 -------------------//
 // Rota para exibir a página de filtro de cadastros
-router.get('/cadastrosBuscar', ensureAuthenticated,(req, res) => {
+router.get('/cadastrosBuscar', ensureAuthenticated, (req, res) => {
     servico15.exibirCadastros(req, res);
 });
 
@@ -383,7 +393,7 @@ router.get('/pessoas-juridicas-busca', (req, res) => {
 
 //----------------------- Servico20 -------------------//
 // Rota principal que exibe a tela de edição do agendamento.
-router.get('/agendamentoEditar', 
+router.get('/agendamentoEditar',
     servico20.exibirEditarAgendamento);
 
 // Rota para atualizar os dados do agendamento.
@@ -621,6 +631,37 @@ router.get('/materialEditar/:cd_material', (req, res) => {
 // Rota para editar material
 router.post('/materialEditar', (req, res) => {
     servico33.editarMaterial(req, res);
+});
+
+// ----------------------- Servico34 -------------------//
+// Enviar e-mail de feedback
+router.post('/enviarFeedback/:cd_agendamento', (req, res) => {
+    servico34.enviarFeedbackEmail(req.params.cd_agendamento, (err, msg) => {
+        if (err) return res.status(400).send(err);
+        res.send(msg);
+    });
+});
+
+// Exibir formulário de feedback
+router.get('/feedback/:cd_agendamento', (req, res) => {
+    res.render('feedback', { cd_agendamento: req.params.cd_agendamento });
+});
+
+// Salvar feedback no banco
+router.post('/feedback/:cd_agendamento', (req, res) => {
+    const { ds_feedback, nr_nota } = req.body;
+    servico34.salvarFeedback(req.params.cd_agendamento, ds_feedback, nr_nota, (err, msg) => {
+        if (err) return res.status(400).send(err);
+        res.send(msg);
+    });
+});
+
+// Enviar feedback e-mail
+router.get('/enviarFeedback/:cd_agendamento', (req, res) => {
+    servico34.enviarFeedbackEmail(req.params.cd_agendamento, (err, msg) => {
+        if (err) return res.status(400).send(err);
+        res.send(msg);
+    });
 });
 
 //========================= END ROTAS ===========================//
