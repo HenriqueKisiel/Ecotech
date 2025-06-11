@@ -22,7 +22,7 @@ function dadosDashboard(req, res) {
 
     // Busca volume total e atual
     const sqlPlanta = 'SELECT qt_capacidade_total_volume, qt_capacidade_atual_volume FROM planta WHERE cd_planta = ?'; // Query para buscar capacidade total e atual da planta
-    const sqlEstoque = 'SELECT nm_estoque, COALESCE(qt_volume_total, 0) as qt_volume_total, COALESCE(qt_volume_atual, 0) as qt_volume_atual, COALESCE(qt_capacidade_atual, 0) as qt_capacidade_atual FROM estoque WHERE cd_planta = ?'; // Query para buscar dados dos estoques da planta
+    const sqlEstoque = 'SELECT nm_estoque, CAST(COALESCE(qt_volume_total, 0) AS DECIMAL(18,4)) AS qt_volume_total, CAST(COALESCE(qt_volume_atual, 0) AS DECIMAL(18,4)) AS qt_volume_atual, CAST(COALESCE(qt_capacidade_atual, 0) AS DECIMAL(18,4)) AS qt_capacidade_atual FROM estoque WHERE cd_planta = ?'; // Query para buscar dados dos estoques da planta
 
     con.query(sqlPlanta, [cd_planta], (err1, resultPlanta) => { // Executa a consulta para buscar dados da planta
         if (err1) { // Se ocorrer erro na consulta da planta
@@ -103,13 +103,12 @@ function pesoColetadoMensalPlanta(req, res) {
     const sql = `
         SELECT 
             MONTH(a.dt_coleta) AS mes,
-            SUM(a.qt_peso_real) AS peso_total_kg
+            SUM(pc.peso_kg_ponto) AS peso_total_kg
         FROM agendamento a
         INNER JOIN pontos_coleta pc ON a.cd_agendamento = pc.cd_agendamento
         INNER JOIN rota_coleta r ON pc.ie_rota = r.cd_rota
         WHERE 
             a.dt_coleta IS NOT NULL
-            AND a.dt_pesagem IS NOT NULL
             AND r.ie_planta = ?
             AND YEAR(a.dt_coleta) = ?
         GROUP BY mes
