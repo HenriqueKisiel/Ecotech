@@ -465,7 +465,7 @@
                         });
                         const result = await response.json();
                         if (result.success) {
-                            btnIniciar.style.display = 'none';
+                            // btnIniciar.style.display = 'none'; // Removido para não sumir o botão
                             swal("Início registrado!", "A coleta foi iniciada com sucesso!", {
                                 icon: "success",
                                 buttons: {
@@ -519,7 +519,7 @@
                         });
                     }
                 });
-    }
+        }
 
             // Finalizar rota
             const btnFinalizar = document.getElementById('btn-finalizar');
@@ -537,7 +537,7 @@
 
                     const result = await response.json();
                     if (result.success) {
-                        btnFinalizar.style.display = 'none';
+                        // btnFinalizar.style.display = 'none'; // Removido para não sumir o botão
                         swal("Rota Finalizada com sucesso!", "A coleta foi finalizada com sucesso!", {
                             icon: "success",
                             buttons: {
@@ -601,7 +601,7 @@
                     });
                 }
             });
-    }
+        }
 
             // Coletar ponto
             document.querySelectorAll('.btn-coletar').forEach(btn => {
@@ -617,10 +617,9 @@
                         });
                         const result = await response.json();
                         if (result.success) {
-                            btn.style.display = 'none';
-                            // Busca o botão cancelar no mesmo container d-flex
-                            const cancelarBtn = btn.closest('.d-flex').querySelector('.btn-cancelar');
-                            if (cancelarBtn) cancelarBtn.style.display = 'none';
+                            // btn.style.display = 'none'; // Removido para não sumir o botão
+                            // const cancelarBtn = btn.closest('.d-flex').querySelector('.btn-cancelar');
+                            // if (cancelarBtn) cancelarBtn.style.display = 'none'; // Removido para não sumir o botão
                             swal("Coleta registrada!", "O ponto foi coletado com sucesso!", {
                                 icon: "success",
                                 buttons: {
@@ -742,12 +741,11 @@
                     });
                     const result = await response.json();
                     if (result.success) {
-                        if (cancelarBtnRef) {
-                            cancelarBtnRef.style.display = 'none';
-                            // Busca o botão coletar no mesmo container d-flex
-                            const coletarBtn = cancelarBtnRef.closest('.d-flex').querySelector('.btn-coletar');
-                            if (coletarBtn) coletarBtn.style.display = 'none';
-                        }
+                        // if (cancelarBtnRef) {
+                        //     cancelarBtnRef.style.display = 'none';
+                        //     const coletarBtn = cancelarBtnRef.closest('.d-flex').querySelector('.btn-coletar');
+                        //     if (coletarBtn) coletarBtn.style.display = 'none';
+                        // }
                         swal("Cancelamento registrado!", "O ponto foi cancelado com sucesso!", {
                             icon: "success",
                             buttons: {
@@ -831,7 +829,7 @@
 
             if (inputDtInicio) inputDtInicio.value = formatarData(inputDtInicio.value);
             if (inputDtFim) inputDtFim.value = formatarData(inputDtFim.value);
-});
+    });
         </script>
 
 
