@@ -39,6 +39,8 @@ const servico28 = require('../servico/rota_caminhao.js');
 const servico29 = require('../servico/rota_relatoriosNovo.js');
 const servico30 = require('../servico/rota_motoristaEditar.js');
 const servico31 = require('../servico/rota_caminhaoEditar.js');
+const servico32 = require('../servico/rota_estoqueEditar.js');
+const servico33 = require('../servico/rota_materialEditar.js');
 
 //==================== START ROTAS ==========================//
 
@@ -597,6 +599,28 @@ router.get('/caminhaoEditar/:id_caminhao', (req, res) => {
 // Rota para editar caminhão 
 router.post('/caminhaoEditar', (req, res) => {
     servico31.editarCaminhao(req, res);
+});
+
+// ----------------------- Servico32 -------------------//
+// Rota para exibir estoque editar
+router.get('/estoqueEditar/:cd_estoque', (req, res) => {
+    servico32.exibirEstoqueEditar(req, res);
+});
+
+// Rota para editar estoque
+router.post('/estoqueEditar', (req, res) => {
+    servico32.editarEstoque(req, res);
+});
+
+// ----------------------- Servico33 -------------------//
+// Rota para exibir material editar
+router.get('/materialEditar/:cd_material', (req, res) => {
+    servico33.exibirMaterialEditar(req, res);
+});
+
+// Rota para editar material
+router.post('/materialEditar', (req, res) => {
+    servico33.editarMaterial(req, res);
 });
 
 //========================= END ROTAS ===========================//

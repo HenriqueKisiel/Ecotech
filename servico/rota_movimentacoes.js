@@ -1,11 +1,6 @@
 // Importa a função de conexão com o banco de dados MySQL
 const conectiondb = require('../bd/conexao_mysql.js');
 
-// Função utilitária para arredondar para 8 casas decimais
-function round8(num) {
-    return Number(Number(num).toFixed(8));
-}
-
 // Renderiza a tela movimentacoes com as plantas carregadas
 function exibirmovimentacoes(req, res) {
     const conexao = conectiondb();
@@ -123,9 +118,9 @@ function obterMateriaisPorEstoque(req, res) {
 // Obtém todos os materiais (entrada)
 function obterTodosMateriais(req, res) {
     const conexao = conectiondb();
-    const query = 'SELECT cd_material, ds_material FROM materiais ORDER BY ds_material ASC';
+    // Só permite materiais com ie_linha = 5 para entrada
+    const query = 'SELECT cd_material, ds_material FROM materiais WHERE ie_linha = 5 ORDER BY ds_material ASC';
 
-    // Executa a query
     conexao.query(query, (err, results) => {
         if (err) {
             // Se der erro, retorna erro para o frontend
@@ -145,7 +140,7 @@ function obterTodosMateriais(req, res) {
                 </script>`
             });
         }
-        // Se sucesso, retorna todos os materiais
+        // Se sucesso, retorna todos os materiais permitidos
         res.json(results);
     });
 }
@@ -202,10 +197,6 @@ function obterDadosMaterialEstoque(req, res) {
                 </script>`
             });
         }
-        // Se encontrou resultado, arredonda o volume para 8 casas decimais
-        if (results[0]) {
-            results[0].qt_volume = round8(results[0].qt_volume);
-        }
         // Retorna o resultado (ou objeto vazio)
         res.json(results[0] || {});
     });
@@ -249,10 +240,6 @@ function obterDadosMaterialEntrada(req, res) {
                 </script>`
             });
         }
-        // Se encontrou resultado, arredonda o volume para 8 casas decimais
-        if (results[0]) {
-            results[0].qt_volume = round8(results[0].qt_volume);
-        }
         // Retorna o resultado (ou objeto vazio)
         res.json(results[0] || {});
     });
@@ -294,8 +281,8 @@ function atualizarEstoqueMaterial(req, res) {
     const conexao = conectiondb();
 
     // --- Validações ---
-    // Converte volume e peso para número e arredonda conforme necessário
-    const volume = round8(Number(qt_volume));
+    // Converte volume e peso para número (sem arredondar)
+    const volume = Number(qt_volume);
     const peso = Number(qt_peso);
 
     // Validação do motivo (apenas para entrada e saída)
@@ -539,15 +526,15 @@ function atualizarEstoqueMaterial(req, res) {
         conexao.query(
             queryMov,
             [
-                cd_estoque,                    
-                cd_material,                   
-                round8(qt_volume),             
-                Number(qt_peso),              
-                movimentacao,                  
-                ds_motivo || null,           
-                cd_pessoa_fisica || null,      
-                cd_pessoa_juridica || null,  
-                valorParaRegistrar || null   
+                cd_estoque,
+                cd_material,
+                Number(qt_volume),
+                Number(qt_peso),
+                movimentacao,
+                ds_motivo || null,
+                cd_pessoa_fisica || null,
+                cd_pessoa_juridica || null,
+                valorParaRegistrar || null
             ],
             (errMov) => {
                 if (errMov) console.error('Erro ao registrar movimentação:', errMov);
@@ -606,7 +593,7 @@ function atualizarEstoqueMaterial(req, res) {
                 INSERT INTO estoque_material (cd_material, ds_material, cd_estoque, qt_volume, qt_peso)
                 VALUES (?, ?, ?, ?, ?)
             `;
-                conexao.query(queryInsert, [cd_material, ds_material, cd_estoque, round8(novoVolume), Number(novoPeso)], (errIns) => {
+                conexao.query(queryInsert, [cd_material, ds_material, cd_estoque, novoVolume, Number(novoPeso)], (errIns) => {
                     if (errIns) return res.status(500).json({
                         erro: 'Erro ao inserir material no estoque',
                         script: `<script>
@@ -626,7 +613,7 @@ function atualizarEstoqueMaterial(req, res) {
                     // Retorna sucesso para o frontend
                     res.json({
                         sucesso: true,
-                        novoVolume: round8(novoVolume),
+                        novoVolume: novoVolume,
                         novoPeso: Number(novoPeso),
                         script: `
                         <script>
@@ -652,17 +639,17 @@ function atualizarEstoqueMaterial(req, res) {
         } else {
             // Já existe no estoque, pode ser ENTRADA (soma) ou SAÍDA/VENDA (subtrai)
             const atual = results[0];
-            let atualVolume = round8(Number(atual.qt_volume) || 0);
+            let atualVolume = Number(atual.qt_volume) || 0;
             let atualPeso = Number(atual.qt_peso) || 0;
 
             if (movimentacao === 'entrada') {
                 // Soma os valores ao estoque atual
-                novoVolume = round8(atualVolume + volume);
-                novoPeso = Number((atualPeso + peso).toFixed(3));
+                novoVolume = atualVolume + volume;
+                novoPeso = atualPeso + peso;
             } else {
                 // Subtrai os valores do estoque atual (saída ou venda)
-                novoVolume = round8(atualVolume - volume);
-                novoPeso = Number((atualPeso - peso).toFixed(3));
+                novoVolume = atualVolume - volume;
+                novoPeso = atualPeso - peso;
 
                 // Não permitir estoque negativo
                 if (novoVolume < 0 || novoPeso < 0) {
@@ -732,7 +719,7 @@ function atualizarEstoqueMaterial(req, res) {
                 });
             } else {
                 // Atualiza o estoque com os novos valores
-                conexao.query(queryUpdate, [round8(novoVolume), Number(novoPeso), cd_estoque, cd_material], (err2) => {
+                conexao.query(queryUpdate, [novoVolume, Number(novoPeso), cd_estoque, cd_material], (err2) => {
                     if (err2) return res.status(500).json({
                         erro: 'Erro ao atualizar estoque',
                         script: `<script>
@@ -752,7 +739,7 @@ function atualizarEstoqueMaterial(req, res) {
                     // Retorna sucesso para o frontend
                     res.json({
                         sucesso: true,
-                        novoVolume: round8(novoVolume),
+                        novoVolume: novoVolume,
                         novoPeso: Number(novoPeso),
                         script: `
                         <script>
@@ -777,18 +764,18 @@ function atualizarEstoqueMaterial(req, res) {
             }
         }
     });
-}    
+}
 
-    // Exporta todas as funções para uso nas rotas do Express
-    module.exports = {
-        exibirmovimentacoes,
-        obterEstoquesPorPlanta,
-        obterMateriaisPorEstoque,
-        obterTodosMateriais,
-        obterPessoasFisicas,
-        obterPessoasJuridicas,
-        obterDadosMaterialEstoque,
-        obterDadosMaterialEntrada,
-        atualizarEstoqueMaterial,
-        obterValorPorKgMaterial,
-    };
+// Exporta todas as funções para uso nas rotas do Express
+module.exports = {
+    exibirmovimentacoes,
+    obterEstoquesPorPlanta,
+    obterMateriaisPorEstoque,
+    obterTodosMateriais,
+    obterPessoasFisicas,
+    obterPessoasJuridicas,
+    obterDadosMaterialEstoque,
+    obterDadosMaterialEntrada,
+    atualizarEstoqueMaterial,
+    obterValorPorKgMaterial,
+};

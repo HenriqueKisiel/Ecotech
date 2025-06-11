@@ -242,7 +242,7 @@
                     <div class="page-inner">
                         <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
                             <div class="mb-3 d-flex flex-column">
-                                <span class="fs-2 fw-bold">Cadastro de Material</span>
+                                <span class="fs-2 fw-bold">Editar Material</span>
                                 <small class="text-muted">Preencha os dados de cadastro e clique em salvar.</small>
                             </div>
                         </div>
@@ -252,11 +252,13 @@
                                 <div class="card shadow-lg">
                                     <div class="card-body">
                                         <form method="POST" id="form-material">
+                                            <input type="hidden" name="cd_material" value="{{material.cd_material}}">
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="fw-bold">Descrição do Material</label>
                                                         <input type="text" class="form-control" name="descricao"
+                                                            value="{{material.ds_material}}"
                                                             placeholder="Informe a descrição">
                                                     </div>
                                                 </div>
@@ -264,48 +266,51 @@
                                                     <div class="form-group">
                                                         <label class="fw-bold">Valor por Kg</label>
                                                         <input type="number" step="0.01" class="form-control"
-                                                            name="valor_kg" placeholder="R$">
+                                                            name="valor_kg" value="{{material.vl_valor_por_kg}}"
+                                                            placeholder="R$">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="fw-bold">Peso Padrão (Kg)</label>
                                                         <input type="number" step="0.001" class="form-control"
-                                                            name="peso_padrao" placeholder="Informe um peso">
+                                                            name="peso_padrao" value="{{material.peso_padrao}}"
+                                                            placeholder="Informe um peso">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="fw-bold">Volume por Kg</label>
                                                         <input type="number" step="0.00001" class="form-control"
-                                                            name="volume_m3" placeholder="Informe um volume">
+                                                            name="volume_m3" value="{{material.volume_m3}}"
+                                                            placeholder="Informe um volume">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="form-group mb-3">
                                                         <label class="fw-bold mb-2">Linha do Material</label>
                                                         <input type="hidden" name="linha" id="linhaSelecionada"
-                                                            value="">
+                                                            value="{{material.ie_linha}}">
                                                         <div class="nav nav-pills nav-pills-no-bd nav-pills-icons d-flex flex-row gap-2"
                                                             id="v-pills-tab-with-icon" role="tablist"
                                                             aria-orientation="horizontal">
-                                                            <a class="nav-link flex-fill text-center text-primary bg-light"
+                                                            <a class="nav-link flex-fill text-center text-primary bg-light {{#if (eq material.ie_linha '1')}}active border border-dark{{/if}}"
                                                                 href="#" role="tab" data-linha="1">
                                                                 <i class="fas fa-trash text-primary"></i> Linha Azul
                                                             </a>
-                                                            <a class="nav-link flex-fill text-center text-success bg-light"
+                                                            <a class="nav-link flex-fill text-center text-success bg-light {{#if (eq material.ie_linha '2')}}active border border-dark{{/if}}"
                                                                 href="#" role="tab" data-linha="2">
                                                                 <i class="fas fa-trash text-success"></i> Linha Verde
                                                             </a>
-                                                            <a class="nav-link flex-fill text-center text-warning bg-light"
+                                                            <a class="nav-link flex-fill text-center text-warning bg-light {{#if (eq material.ie_linha '3')}}active border border-dark{{/if}}"
                                                                 href="#" role="tab" data-linha="3">
                                                                 <i class="fas fa-trash text-warning"></i> Linha Laranja
                                                             </a>
-                                                            <a class="nav-link flex-fill text-center text-danger bg-light"
+                                                            <a class="nav-link flex-fill text-center text-danger bg-light {{#if (eq material.ie_linha '4')}}active border border-dark{{/if}}"
                                                                 href="#" role="tab" data-linha="4">
                                                                 <i class="fas fa-trash text-danger"></i> Linha Vermelha
                                                             </a>
-                                                            <a class="nav-link flex-fill text-center text-dark bg-light"
+                                                            <a class="nav-link flex-fill text-center text-dark bg-light {{#if (eq material.ie_linha '5')}}active border border-dark{{/if}}"
                                                                 href="#" role="tab" data-linha="5">
                                                                 <i class="fas fa-trash text-black"></i> Matéria Prima
                                                             </a>
@@ -313,9 +318,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="d-flex justify-content-end">
-                                                    <a href="/home" class="btn btn-secondary me-3">
-                                                        Voltar
-                                                    </a>
+                                                    <a href="/cadastrosBuscar2" class="btn btn-secondary me-3">Voltar</a>
                                                     <button type="submit" class="btn btn-success">Salvar</button>
                                                 </div>
                                             </div>
@@ -391,12 +394,9 @@
                 <script>
                     // Atualiza seleção visual e mostra materiais da linha escolhida
                     function mostrarMateriaisPorLinha(linha) {
-                        // Esconde todos os blocos de materiais
                         document.querySelectorAll('.materiais-linha').forEach(div => div.classList.add('d-none'));
-                        // Esconde mensagem
                         document.getElementById('mensagemSelecioneLinha').style.display = 'none';
 
-                        // Mostra só a linha selecionada
                         if (linha) {
                             const div = document.querySelector('.materiais-linha[data-linha="' + linha + '"]');
                             if (div) div.classList.remove('d-none');
@@ -405,22 +405,19 @@
                         }
                     }
 
-                    // Inicializa com mensagem
-                    mostrarMateriaisPorLinha();
+                    // Inicializa mostrando a linha do material já selecionada (se houver)
+                    mostrarMateriaisPorLinha(document.getElementById('linhaSelecionada').value);
 
                     // Seleção visual e exibição dos materiais
                     document.querySelectorAll('.nav-pills [data-linha]').forEach(link => {
                         link.addEventListener('click', function (e) {
                             e.preventDefault();
                             document.getElementById('linhaSelecionada').value = this.getAttribute('data-linha');
-                            // Remove active e borda preta de todos, garante bg-light
                             this.parentElement.querySelectorAll('.nav-link').forEach(a => {
                                 a.classList.remove('active', 'border', 'border-dark');
                                 a.classList.add('bg-light');
                             });
-                            // Adiciona active e borda preta ao selecionado, mantém bg-light
                             this.classList.add('active', 'border', 'border-dark', 'bg-light');
-                            // Mostra materiais da linha selecionada
                             mostrarMateriaisPorLinha(this.getAttribute('data-linha'));
                         });
                     });
@@ -431,7 +428,7 @@
                         const form = this;
                         const data = new FormData(form);
 
-                        fetch('/material', {
+                        fetch('/materialEditar', { // <-- ALTERADO AQUI
                             method: 'POST',
                             headers: {
                                 'Accept': 'application/json'
@@ -441,7 +438,7 @@
                             .then(async res => {
                                 const json = await res.json();
                                 if (!res.ok) {
-                                    swal("Erro ao registrar!", json.erro || "Erro desconhecido!", {
+                                    swal("Erro ao atualizar!", json.erro || "Erro desconhecido!", {
                                         icon: "error",
                                         buttons: {
                                             confirm: {
@@ -451,7 +448,7 @@
                                         },
                                     });
                                 } else {
-                                    swal("Sucesso!", json.mensagem || "Material cadastrado com sucesso!", {
+                                    swal("Sucesso!", json.mensagem || "Material atualizado com sucesso!", {
                                         icon: "success",
                                         buttons: {
                                             confirm: {
@@ -465,7 +462,7 @@
                                 }
                             })
                             .catch(() => {
-                                swal("Erro ao registrar!", "Erro inesperado!", {
+                                swal("Erro ao atualizar!", "Erro inesperado!", {
                                     icon: "error",
                                     buttons: {
                                         confirm: {

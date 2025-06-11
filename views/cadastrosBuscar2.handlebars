@@ -337,22 +337,25 @@
                                 <th>Estoque</th>
                                 <th>Planta</th>
                                 <th>KG Atual</th>
-                                <th>Volume Total (m³)</th>
-                                <th>Volume Atual (m³)</th>
-                                <th>Volume Disponível (m³)</th>
+                                <th>Volume Total</th>
+                                <th>Volume Atual</th>
+                                <th>Volume Disponível</th>
+                                <th>Ações</th>
                             </tr>
                             `;
                         } else if (tipo === 'material') {
                             tabelaCabecalho.innerHTML = `
-                <tr>
-                    <th>Código</th>
-                    <th>Material</th>
-                    <th>Valor por KG</th>
-                    <th>Quantidade (KG)</th>
-                    <th>Estoque</th>
-                    <th>Planta</th>
-                </tr>
-            `;
+                            <tr>
+                                <th>Código</th>
+                                <th>Material</th>
+                                <th>Valor por KG</th>
+                                <th>KG Atual</th>
+                                <th>Volume Atual</th>
+                                <th>Estoque</th>
+                                <th>Planta</th>
+                                <th>Ações</th>
+                            </tr>
+                            `;
                         }
                     }
 
@@ -360,6 +363,17 @@
                     document.getElementById('tipoCadastro').addEventListener('change', function () {
                         atualizarTabelaCabeçalho(this.value);
                         atualizarCamposCadastro(this.value); // Atualiza os campos de entrada conforme o tipo de cadastro
+
+                        // Limpa os resultados da tabela ao trocar o tipo de cadastro
+                        const tbody = document.querySelector('table tbody');
+                        const colspan = (this.value === 'estoque') ? 8 : 7;
+                        tbody.innerHTML = `<tr><td colspan="${colspan}" class="text-center text-muted">Nenhum cadastro encontrado</td></tr>`;
+
+                        // Limpa os filtros
+                        document.getElementById('codigoCadastro').value = '';
+                        document.getElementById('nomeCadastro').value = '';
+                        document.getElementById('estoqueCadastro').value = '';
+                        document.getElementById('plantaCadastro').value = '';
                     });
 
                     // Inicializar com o tipo selecionado ao carregar
@@ -367,6 +381,11 @@
                         const tipoSelecionado = document.getElementById('tipoCadastro').value;
                         atualizarTabelaCabeçalho(tipoSelecionado);
                         atualizarCamposCadastro(tipoSelecionado);
+
+                        // Corrige o colspan inicial
+                        const tbody = document.querySelector('table tbody');
+                        const colspan = (tipoSelecionado === 'estoque') ? 8 : 7;
+                        tbody.innerHTML = `<tr><td colspan="${colspan}" class="text-center text-muted">Nenhum cadastro encontrado</td></tr>`;
                     });
 
                     // Função para atualizar os campos de entrada com base no tipo de cadastro
@@ -420,34 +439,49 @@
                             tbody.innerHTML = ''; // Limpa a tabela antes de adicionar os novos dados
 
                             if (!Array.isArray(dados) || dados.length === 0) {
-                                tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">Nenhum cadastro encontrado</td></tr>';
+                                const colspan = (tipo === 'estoque') ? 8 : 7;
+                                tbody.innerHTML = `<tr><td colspan="${colspan}" class="text-center text-muted">Nenhum cadastro encontrado</td></tr>`;
                                 return;
                             }
 
                             dados.forEach(item => {
                                 if (tipo === 'estoque') {
                                     tbody.innerHTML += `
-                                <tr>
-                <td>${item.cd_estoque}</td>
-                <td>${item.nm_estoque}</td>
-                <td>${item.nm_planta}</td>
-                <td>${item.qt_capacidade_atual ?? '-'}</td>
-                <td>${item.qt_volume_total ?? '-'}</td>
-                <td>${item.qt_volume_atual ?? '-'}</td>
-                <td>${item.qt_disponivel_volume ?? '-'}</td>
-            </tr>
-                            `;
+                    <tr>
+                        <td>${item.cd_estoque}</td>
+                        <td>${item.nm_estoque}</td>
+                        <td>${item.nm_planta}</td>
+                        <td>${item.qt_capacidade_atual ?? '-'}</td>
+                        <td>${item.qt_volume_total ?? '-'}</td>
+                        <td>${item.qt_volume_atual ?? '-'}</td>
+                        <td>${item.qt_disponivel_volume ?? '-'}</td>
+                        <td>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <a href="/estoqueEditar/${item.cd_estoque}" class="btn btn-icon btn-round btn-warning" title="Editar Estoque">
+                                    <i class="fa fa-edit text-white"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    `;
                                 } else if (tipo === 'material') {
-                                    // Para "material", usamos os campos específicos de material
                                     tbody.innerHTML += `
-                        <tr>
-                            <td>${item.cd_material}</td>
-                            <td>${item.ds_material}</td>
-                            <td>${item.vl_valor_por_kg}</td>
-                            <td>${item.qt_peso}</td>
-                            <td>${item.nm_estoque}</td>
-                            <td>${item.nm_planta}</td>
-                        </tr>
+                    <tr>
+                        <td>${item.cd_material}</td>
+                        <td>${item.ds_material}</td>
+                        <td>${item.vl_valor_por_kg}</td>
+                        <td>${item.qt_peso}</td>
+                         <td>${item.qt_volume}</td>
+                        <td>${item.nm_estoque}</td>
+                        <td>${item.nm_planta}</td>
+                        <td>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <a href="/materialEditar/${item.cd_material}" class="btn btn-icon btn-round btn-warning" title="Editar Material">
+                                    <i class="fa fa-edit text-white"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
                     `;
                                 }
                             });
@@ -469,26 +503,11 @@
                         document.getElementById('tipoCadastro').selectedIndex = 0;
 
                         // Limpa os resultados da tabela
+                        const tipo = document.getElementById('tipoCadastro').value;
                         const tbody = document.querySelector('table tbody');
-                        tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">Nenhum cadastro encontrado</td></tr>';
+                        const colspan = (tipo === 'estoque') ? 8 : 7;
+                        tbody.innerHTML = `<tr><td colspan="${colspan}" class="text-center text-muted">Nenhum cadastro encontrado</td></tr>`;
                     });
-
-                    // Evento de troca de tipo de cadastro
-                    document.getElementById('tipoCadastro').addEventListener('change', function () {
-                        atualizarTabelaCabeçalho(this.value);
-                        atualizarCamposCadastro(this.value); // Atualiza os campos de entrada conforme o tipo de cadastro
-
-                        // Limpa os resultados da tabela ao trocar o tipo de cadastro
-                        const tbody = document.querySelector('table tbody');
-                        tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">Nenhum cadastro encontrado</td></tr>'
-
-                        // Limpa os filtros
-                        document.getElementById('codigoCadastro').value = '';
-                        document.getElementById('nomeCadastro').value = '';
-                        document.getElementById('estoqueCadastro').value = '';
-                        document.getElementById('plantaCadastro').value = '';
-                    });
-
                 </script>
                 <!--End Script-->
                 <!--end conteudo indiviudual da pagina-->
