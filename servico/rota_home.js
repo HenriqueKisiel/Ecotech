@@ -71,7 +71,7 @@ AND pca.cd_planta = ?;`;
 // Função para mostrar faturamento mensal por planta
 function faturamentoMensalPlanta(req, res) {
     const cd_planta = req.params.cd_planta;
-    const ano = 2025; // Ano fixo para o dashboard
+    const ano = req.query.ano ? parseInt(req.query.ano) : 2025; // Aceita ano por query, padrão 2025
     const sql = `
         SELECT 
         MONTH(m.dt_movimentacao) AS mes,
@@ -99,7 +99,7 @@ function faturamentoMensalPlanta(req, res) {
 // Função para mostrar o peso coletado mensal por planta 
 function pesoColetadoMensalPlanta(req, res) {
     const cd_planta = req.params.cd_planta;
-    const ano = 2025;
+    const ano = req.query.ano ? parseInt(req.query.ano) : 2025; // Aceita ano por query, padrão 2025
     const sql = `
         SELECT 
             MONTH(a.dt_coleta) AS mes,

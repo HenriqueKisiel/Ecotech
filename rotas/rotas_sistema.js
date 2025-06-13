@@ -282,7 +282,7 @@ router.post('/atualizarAgendamento/:cd_agendamento', (req, res) => {
 
 //------------------------ Servico15 -------------------//
 // Rota para exibir a página de filtro de cadastros
-router.get('/cadastrosBuscar', ensureAuthenticated,(req, res) => {
+router.get('/cadastrosBuscar', ensureAuthenticated, (req, res) => {
     servico15.exibirCadastros(req, res);
 });
 
@@ -382,7 +382,7 @@ router.get('/pessoas-juridicas-busca', (req, res) => {
 
 //----------------------- Servico20 -------------------//
 // Rota principal que exibe a tela de edição do agendamento.
-router.get('/agendamentoEditar', 
+router.get('/agendamentoEditar',
     servico20.exibirEditarAgendamento);
 
 // Rota para atualizar os dados do agendamento.
