@@ -440,10 +440,10 @@
                                 function mostrarMensagemSelecioneMaterial() {
                                     if (tbodyResultado) {
                                         tbodyResultado.innerHTML = `
-                    <tr>
-                        <td colspan="7" class="text-center text-muted">Selecione os dados do Material</td>
-                    </tr>
-                `;
+                                        <tr>
+                                            <td colspan="7" class="text-center text-muted">Selecione os dados do Material</td>
+                                        </tr>
+                                    `;
                                     }
                                 }
 
@@ -501,7 +501,7 @@
                                             if (Math.abs(peso - pesoAtual) < 0.000001) {
                                                 inputVolume.value = volumeAtual;
                                             } else {
-                                                inputVolume.value = peso * volume_m3;
+                                                inputVolume.value = (peso * volume_m3).toFixed(8);
                                             }
                                         });
                                         // Inicializa o valor se já houver peso
@@ -526,7 +526,7 @@
 
                                         // Atualiza o valor total conforme o peso digitado
                                         function atualizarValorCompra() {
-                                            const qtdKg = Number(inputPeso.value) || 0;
+                                            const qtdKg = Number(inputPeso.value.replace(',', '.')) || 0;
                                             const valor = qtdKg * valorPorKg;
                                             inputValorCompra.value = valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
                                             valorCompraExibicao.innerText = valor > 0
@@ -710,6 +710,21 @@
                                         });
                                 }
 
+                                function formatarCPF(cpf) {
+                                    cpf = cpf.replace(/\D/g, '').padStart(11, '0');
+                                    return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+                                }
+
+                                function formatarCNPJ(cnpj) {
+                                    cnpj = cnpj.replace(/\D/g, '').padStart(14, '0');
+                                    return cnpj.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
+                                }
+
+                                function formatarCEP(cep) {
+                                    cep = cep.replace(/\D/g, '').padStart(8, '0');
+                                    return cep.replace(/(\d{5})(\d{3})/, "$1-$2");
+                                }
+
                                 // Limpa campos de dados do comprador
                                 function limparCamposComprador() {
                                     if (inputNumero) inputNumero.value = '';
@@ -732,15 +747,15 @@
                                     if (tipoPessoa === 'fisica') {
                                         if (inputNumero) inputNumero.value = dados.nr_telefone_celular || '';
                                         if (inputEmail) inputEmail.value = dados.ds_email || '';
-                                        if (inputCPF) inputCPF.value = dados.nr_cpf || '';
+                                        if (inputCPF) inputCPF.value = dados.nr_cpf ? formatarCPF(dados.nr_cpf) : '';
                                         if (inputCNPJ) inputCNPJ.value = '';
-                                        if (inputCEP) inputCEP.value = dados.nr_cep || '';
+                                        if (inputCEP) inputCEP.value = dados.nr_cep ? formatarCEP(dados.nr_cep) : '';
                                     } else if (tipoPessoa === 'juridica') {
                                         if (inputNumero) inputNumero.value = dados.nr_telefone || '';
                                         if (inputEmail) inputEmail.value = dados.ds_email || '';
                                         if (inputCPF) inputCPF.value = '';
-                                        if (inputCNPJ) inputCNPJ.value = dados.nr_cnpj || '';
-                                        if (inputCEP) inputCEP.value = dados.nr_cep || '';
+                                        if (inputCNPJ) inputCNPJ.value = dados.nr_cnpj ? formatarCNPJ(dados.nr_cnpj) : '';
+                                        if (inputCEP) inputCEP.value = dados.nr_cep ? formatarCEP(dados.nr_cep) : '';
                                     }
                                 }
 

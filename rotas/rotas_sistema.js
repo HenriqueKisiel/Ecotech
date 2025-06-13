@@ -212,6 +212,11 @@ router.post('/estoque/cadastrar', (req, res) => {
     servico9.cadastrarEstoque(req, res);
 });
 
+// Rota para obter a capacidade máxima disponível de uma planta
+router.get('/planta/capacidade/:cd_planta', (req, res) => {
+    servico9.obterCapacidadeDisponivelPlanta(req, res);
+});
+
 //----------------------- Servico10 -------------------//
 // Rota GET para exibir a lista de agendamentos
 router.get('/agendamento', ensureAuthenticated, (req, res) => {
