@@ -241,7 +241,7 @@
                     <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-center mb-3">
                         <div class="mb-3 d-flex flex-column">
                             <span class="fs-2 fw-bold">
-                                Cadastro de Estoque
+                                Editar Estoque
                             </span>
                             <small class="text-muted">
                                 Preencha os dados de cadastro e clique em salvar.
@@ -258,14 +258,15 @@
                         </div>
                         <div class="card-body">
                             <!-- Formulário para cadastro de estoque -->
-                            <form action="/estoque/cadastrar" method="POST">
+                            <form action="/estoqueEditar" method="POST">
+                                <input type="hidden" name="cd_estoque" value="{{estoque.cd_estoque}}">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold" for="selectNomePlanta">Nome da Planta</label>
                                             <select id="selectNomePlanta" class="form-control" name="cd_planta"
                                                 required>
-                                                <option value="">Planta onde o estoque será cadastrado</option>
+                                                <option value="">Nome da planta onde o estoque será cadastrado</option>
                                                 {{#each plantas}}
                                                 <option value="{{cd_planta}}" data-nome="{{nm_planta}}" {{#if (eq
                                                     cd_planta ../estoque.cd_planta)}}selected{{/if}}>{{nm_planta}}
@@ -288,19 +289,21 @@
                                         <div class="form-group">
                                             <label class="fw-bold" for="input">Nome do Estoque</label>
                                             <input type="text" class="form-control" name="nm_estoque"
-                                                placeholder="Informe o nome" required>
+                                                placeholder="Informe o nome" required value="{{estoque.nm_estoque}}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="fw-bold" for="input">Capacidade Máxima de Volume</label>
+                                            <label class="fw-bold" for="input">Capacidade Máxima em volume cúbico
+                                                (m³)</label>
                                             <input type="text" class="form-control" name="qt_volume_total"
-                                                placeholder="Insira a capacidade" required>
+                                                placeholder="Insira a capacidade" required
+                                                value="{{estoque.qt_volume_total}}">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card-footer d-flex justify-content-end mt-4">
-                                    <a href="/home" class="btn btn-secondary me-3">Voltar</a>
+                                    <a href="/cadastrosBuscar2" class="btn btn-secondary me-3">Voltar</a>
                                     <button type="submit" class="btn btn-success">Salvar</button>
                                 </div>
                             </form>
@@ -309,8 +312,10 @@
                 </div>
             </div>
             <!-- Fim do conteúdo individual da página -->
+
             <!-- Start Script -->
             <script>
+                // filepath: c:\Users\guime\Documents\Ecotech\Ecotech\views\estoqueEditar.handlebars
                 const nomePlantaSelect = document.getElementById('selectNomePlanta');
                 const codigoPlantaInput = document.getElementById('inputCodigoPlanta');
 

@@ -52,8 +52,8 @@ function buscarEstoques(req, res) {
         }
 
         if (plantaCadastro) {
-            sql += ' AND p.nm_planta LIKE ?';
-            params.push(`%${plantaCadastro}%`);
+            sql += ' AND (p.nm_planta LIKE ? OR p.cd_planta LIKE ?)';
+            params.push(`%${plantaCadastro}%`, `%${plantaCadastro}%`);
         }
 
 
@@ -64,6 +64,7 @@ function buscarEstoques(req, res) {
         m.ds_material,
         m.vl_valor_por_kg,
         IFNULL(em.qt_peso, '-') AS qt_peso,
+        IFNULL(em.qt_volume, '-') AS qt_volume,
         IFNULL(e.nm_estoque, '-') AS nm_estoque,
         IFNULL(p.nm_planta, '-') AS nm_planta
     FROM materiais m
@@ -84,8 +85,8 @@ function buscarEstoques(req, res) {
         }
 
         if (estoqueCadastro) {
-            sql += ' AND e.nm_estoque LIKE ?';
-            params.push(`%${estoqueCadastro}%`);
+            sql += ' AND (e.nm_estoque LIKE ? OR e.cd_estoque LIKE ?)';
+            params.push(`%${estoqueCadastro}%`, `%${estoqueCadastro}%`);
         }
 
     } else {

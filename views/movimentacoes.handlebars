@@ -370,7 +370,7 @@
                                         <thead>
                                             <tr>
                                                 <th>Material</th>
-                                                <th>Volume m³ Atual</th>
+                                                <th>Volume Atual</th>
                                                 <th>KG Atual</th>
                                                 <th>Volume a Movimentar</th>
                                                 <th>KG a Movimentar</th>
@@ -448,16 +448,10 @@
                                 }
 
                                 // Formata números para exibição, removendo zeros desnecessários
-                                function formatarNumero(valor, casasFixas) {
+                                function formatarNumero(valor, casas) {
                                     if (valor == null) return '';
-                                    let num = Number(valor);
-                                    if (isNaN(num)) return valor;
-                                    let str = num.toFixed(casasFixas);
-                                    if (str.indexOf('.') !== -1) {
-                                        str = str.replace(/(\.\d*?[1-9])0+$/g, '$1');
-                                        str = str.replace(/\.0+$/, '');
-                                    }
-                                    return str;
+                                    // Garante string e força casas decimais
+                                    return Number(valor).toFixed(casas || 8);
                                 }
 
                                 // Monta a linha da tabela com os dados do material selecionado
@@ -469,27 +463,27 @@
                                     if (isVenda) {
                                         // Se for venda, mostra campo de valor a pagar
                                         campoValorCompra = `
-                    <td>
-                        <input type="text" class="form-control" id="input-valor-compra" readonly style="font-weight:bold; color:green;"/>
-                        <div id="valor-compra-exibicao" style="font-size:0.9em; color:#555;"></div>
-                    </td>
-                `;
+                                            <td>
+                                                <input type="text" class="form-control" id="input-valor-compra" readonly style="font-weight:bold; color:green;"/>
+                                                <div id="valor-compra-exibicao" style="font-size:0.9em; color:#555;"></div>
+                                            </td>
+                                        `;
                                     } else {
                                         campoValorCompra = `<td style="display:none"></td>`;
                                     }
 
                                     // Monta a linha da tabela
                                     tbodyResultado.innerHTML = `
-                <tr>
-                    <td class="text-center" id="td-material">${dados.ds_material || ''}</td>
-                    <td class="text-center" id="td-volume">${formatarNumero(dados.qt_volume, 8)}</td>
-                    <td class="text-center" id="td-peso">${formatarNumero(dados.qt_peso, 3)}</td>
-                    <td><input type="number" class="form-control" id="input-volume" placeholder="Digite uma quantidade" readonly step="0.00000001"></td>
-                    <td><input type="text" class="form-control" id="input-peso" placeholder="Digite uma quantidade"></td>
-                    ${campoValorCompra}
-                    <td><a class="btn btn-warning text-white w-100" id="btn-registrar">Registrar</a></td>
-                </tr>
-            `;
+                                        <tr>
+                                            <td class="text-center" id="td-material">${dados.ds_material || ''}</td>
+                                            <td class="text-center" id="td-volume">${formatarNumero(dados.qt_volume, 8)}</td>
+                                            <td class="text-center" id="td-peso">${formatarNumero(dados.qt_peso, 3)}</td>
+                                            <td><input type="number" class="form-control" id="input-volume" placeholder="Digite uma quantidade" readonly step="0.00000001"></td>
+                                            <td><input type="text" class="form-control" id="input-peso" placeholder="Digite uma quantidade"></td>
+                                            ${campoValorCompra}
+                                            <td><a class="btn btn-warning text-white w-100" id="btn-registrar">Registrar</a></td>
+                                        </tr>
+                                    `;
 
                                     // Atualiza o volume automaticamente conforme o peso digitado
                                     const volume_m3 = Number(dados.volume_m3) || 0;
@@ -505,9 +499,9 @@
                                             const volumeAtual = Number(tdVolumeAtual?.textContent) || 0;
                                             // Se digitou exatamente o peso atual, zera o volume também
                                             if (Math.abs(peso - pesoAtual) < 0.000001) {
-                                                inputVolume.value = volumeAtual.toFixed(8);
+                                                inputVolume.value = volumeAtual;
                                             } else {
-                                                inputVolume.value = (peso * volume_m3).toFixed(8);
+                                                inputVolume.value = peso * volume_m3;
                                             }
                                         });
                                         // Inicializa o valor se já houver peso
@@ -546,7 +540,7 @@
                                     // Evento do botão Registrar movimentação
                                     const btnRegistrar = document.getElementById('btn-registrar');
                                     btnRegistrar.addEventListener('click', function () {
-                                        const qt_volume = Number(document.getElementById('input-volume').value).toFixed(8);
+                                        const qt_volume = document.getElementById('input-volume').value;
                                         const qt_peso = document.getElementById('input-peso').value.replace(',', '.');
                                         const cd_estoque = selectEstoque.value;
                                         const cd_material = selectMaterial.value;

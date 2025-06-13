@@ -7,6 +7,15 @@ const router = express.Router();
 //Autenticador de usuario
 const ensureAuthenticated = require('../middleware/auth.js');
 
+router.get('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Erro ao encerrar a sessão:', err);
+        }
+        res.redirect('/');
+    });
+});
+
 //importar a conexão com o banco de dados
 const servico = require('../servico/rota_login.js');
 const servico2 = require('../servico/rota_home.js');
@@ -39,7 +48,9 @@ const servico28 = require('../servico/rota_caminhao.js');
 const servico29 = require('../servico/rota_relatoriosNovo.js');
 const servico30 = require('../servico/rota_motoristaEditar.js');
 const servico31 = require('../servico/rota_caminhaoEditar.js');
-const servico32 = require('../servico/rota_feedback.js');
+const servico32 = require('../servico/rota_estoqueEditar.js');
+const servico33 = require('../servico/rota_materialEditar.js');
+const servico34 = require('../servico/rota_feedback.js');
 
 //==================== START ROTAS ==========================//
 
@@ -601,9 +612,31 @@ router.post('/caminhaoEditar', (req, res) => {
 });
 
 // ----------------------- Servico32 -------------------//
+// Rota para exibir estoque editar
+router.get('/estoqueEditar/:cd_estoque', (req, res) => {
+    servico32.exibirEstoqueEditar(req, res);
+});
+
+// Rota para editar estoque
+router.post('/estoqueEditar', (req, res) => {
+    servico32.editarEstoque(req, res);
+});
+
+// ----------------------- Servico33 -------------------//
+// Rota para exibir material editar
+router.get('/materialEditar/:cd_material', (req, res) => {
+    servico33.exibirMaterialEditar(req, res);
+});
+
+// Rota para editar material
+router.post('/materialEditar', (req, res) => {
+    servico33.editarMaterial(req, res);
+});
+
+// ----------------------- Servico34 -------------------//
 // Enviar e-mail de feedback
 router.post('/enviarFeedback/:cd_agendamento', (req, res) => {
-    servico32.enviarFeedbackEmail(req.params.cd_agendamento, (err, msg) => {
+    servico34.enviarFeedbackEmail(req.params.cd_agendamento, (err, msg) => {
         if (err) return res.status(400).send(err);
         res.send(msg);
     });
@@ -617,14 +650,15 @@ router.get('/feedback/:cd_agendamento', (req, res) => {
 // Salvar feedback no banco
 router.post('/feedback/:cd_agendamento', (req, res) => {
     const { ds_feedback, nr_nota } = req.body;
-    servico32.salvarFeedback(req.params.cd_agendamento, ds_feedback, nr_nota, (err, msg) => {
+    servico34.salvarFeedback(req.params.cd_agendamento, ds_feedback, nr_nota, (err, msg) => {
         if (err) return res.status(400).send(err);
         res.send(msg);
     });
 });
 
+// Enviar feedback e-mail
 router.get('/enviarFeedback/:cd_agendamento', (req, res) => {
-    servico32.enviarFeedbackEmail(req.params.cd_agendamento, (err, msg) => {
+    servico34.enviarFeedbackEmail(req.params.cd_agendamento, (err, msg) => {
         if (err) return res.status(400).send(err);
         res.send(msg);
     });

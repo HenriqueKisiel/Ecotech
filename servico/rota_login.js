@@ -16,7 +16,7 @@ function fazerLogin(req, res) {
 
     console.log('Tentando login para usuário:', usuario);
 
-    var query = `SELECT * FROM usuario 
+    var query = `SELECT * FROM Pessoa_Usuario 
         WHERE ds_senha = ? 
         AND nm_usuario like ? 
         AND ie_situacao = 'A' `;
