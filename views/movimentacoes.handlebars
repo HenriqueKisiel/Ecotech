@@ -745,19 +745,32 @@
                                     const dados = JSON.parse(selectedOption.dataset.info);
 
                                     if (tipoPessoa === 'fisica') {
-                                        if (inputNumero) inputNumero.value = dados.nr_telefone_celular || '';
+                                        if (inputNumero) inputNumero.value = formatTelefone(dados.nr_telefone_celular || '');
                                         if (inputEmail) inputEmail.value = dados.ds_email || '';
                                         if (inputCPF) inputCPF.value = dados.nr_cpf ? formatarCPF(dados.nr_cpf) : '';
                                         if (inputCNPJ) inputCNPJ.value = '';
                                         if (inputCEP) inputCEP.value = dados.nr_cep ? formatarCEP(dados.nr_cep) : '';
                                     } else if (tipoPessoa === 'juridica') {
-                                        if (inputNumero) inputNumero.value = dados.nr_telefone || '';
+                                        if (inputNumero) inputNumero.value = formatTelefone(dados.nr_telefone || '');
                                         if (inputEmail) inputEmail.value = dados.ds_email || '';
                                         if (inputCPF) inputCPF.value = '';
                                         if (inputCNPJ) inputCNPJ.value = dados.nr_cnpj ? formatarCNPJ(dados.nr_cnpj) : '';
                                         if (inputCEP) inputCEP.value = dados.nr_cep ? formatarCEP(dados.nr_cep) : '';
                                     }
+
+                                    function formatTelefone(telefone) {
+                                        if (!telefone) return '';
+                                        telefone = telefone.replace(/\D/g, '');
+                                        if (telefone.length === 10) {
+                                            return telefone.replace(/(\d{2})(\d{4})(\d{4})/, "($1) $2-$3");
+                                        } else if (telefone.length === 11) {
+                                            return telefone.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+                                        }
+                                        return telefone;
+                                    }
                                 }
+
+
 
                                 // Carrega estoques disponíveis para a planta selecionada
                                 function carregarEstoquesPorPlanta(cd_planta) {

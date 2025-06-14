@@ -12,7 +12,7 @@ function buscarEstoques(req, res) {
 
     const {
         tipoCadastro,
-        codigoCadastro,  // Aqui estamos verificando o filtro para cd_estoque
+        codigoCadastro,
         nomeCadastro,
         estoqueCadastro,
         plantaCadastro
@@ -38,7 +38,7 @@ function buscarEstoques(req, res) {
             p.nm_planta
         FROM estoque e
         LEFT JOIN planta p ON e.cd_planta = p.cd_planta
-        WHERE 1=1
+        WHERE p.ie_situacao = "A"
     `;
 
         if (codigoCadastro) {
