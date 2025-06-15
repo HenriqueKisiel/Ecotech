@@ -132,6 +132,8 @@ function insertPessoa(req, res) {
     });
   }
 
+  const telefoneLimpo = telefone ? telefone.replace(/\D/g, '') : null; // Remove caracteres não numéricos do telefone
+
   const cepLimpo = cep ? cep.replace(/\D/g, '') : null;  // Remove caracteres não numéricos do CEP
 
   const verificarCPF = `SELECT * FROM pessoa_fisica WHERE nr_cpf = ?`; // Query para verificar se o CPF já existe
@@ -183,7 +185,7 @@ function insertPessoa(req, res) {
       dataNasc,
       sexo,
       cpfLimpo,
-      telefone,
+      telefoneLimpo,
       email,
       ds_endereco,
       nr_endereco,

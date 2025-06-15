@@ -45,37 +45,37 @@
                             </a>
                             <div class="collapse" id="cadastro">
                                 <ul class="nav nav-collapse">
-                                        <li>
-                                            <a href="/cadastrosBuscar">
-                                                <span class="sub-item">Buscar</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/pessoa">
-                                                <span class="sub-item">Nova Pessoa</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/usuario">
-                                                <span class="sub-item">Novo Usuario</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/planta">
-                                                <span class="sub-item">Nova Planta</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/motorista">
-                                                <span class="sub-item">Novo Motorista</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/caminhao">
-                                                <span class="sub-item">Novo Caminhão</span>
-                                            </a>
-                                        </li>
-                                    </ul>
+                                    <li>
+                                        <a href="/cadastrosBuscar">
+                                            <span class="sub-item">Buscar</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/pessoa">
+                                            <span class="sub-item">Nova Pessoa</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/usuario">
+                                            <span class="sub-item">Novo Usuario</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/planta">
+                                            <span class="sub-item">Nova Planta</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/motorista">
+                                            <span class="sub-item">Novo Motorista</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/caminhao">
+                                            <span class="sub-item">Novo Caminhão</span>
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
                         </li>
                         <li class="nav-item">
@@ -247,9 +247,6 @@
                                 Preencha os dados de cadastro e clique em salvar.
                             </small>
                         </div>
-                        <div>
-                            <a href="/cadastros" class="btn btn-secondary fw-bold shadow-lg me-3 mt-2">Voltar</a>
-                        </div>
                     </div>
                     <div class="card shadow-lg">
                         <div class="card-header d-none">
@@ -260,9 +257,7 @@
                         <div class="card-body">
                             <form id="formPessoaFisicaEditar" action="/pessoaEditar" method="POST">
                                 <input type="hidden" name="codigo" value="{{pessoa_fisica.cd_pessoa_fisica}}">
-
                                 <div class="row">
-                                    <!-- Nome -->
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Nome Completo</label>
@@ -271,8 +266,6 @@
                                                 placeholder="Insira o nome completo" required>
                                         </div>
                                     </div>
-
-                                    <!-- Email -->
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">E-mail</label>
@@ -281,18 +274,13 @@
                                                 placeholder="Insira o E-mail" required>
                                         </div>
                                     </div>
-
-                                    <!-- CPF -->
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">CPF</label>
                                             <input maxlength="14" id="cpf" name="cpf" value="{{pessoa_fisica.nr_cpf}}"
                                                 class="form-control" placeholder="Insira o CPF" required>
-                                            <small class="form-text text-muted">Em caso de pessoa física.</small>
                                         </div>
                                     </div>
-
-                                    <!-- Telefone -->
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Telefone</label>
@@ -301,8 +289,6 @@
                                                 placeholder="Nr de telefone" required>
                                         </div>
                                     </div>
-
-                                    <!-- Data de Nascimento -->
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Data de Nascimento</label>
@@ -310,8 +296,6 @@
                                                 class="form-control" required>
                                         </div>
                                     </div>
-
-                                    <!-- Sexo -->
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Sexo</label>
@@ -324,11 +308,9 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- Endereço -->
+                                <hr>
                                 <div class="row">
-                                    <!-- CEP -->
-                                    <div class="col-md-3">
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">CEP</label>
                                             <input maxlength="9" id="cep" type="text" name="cep"
@@ -336,54 +318,42 @@
                                                 placeholder="Digite o CEP" required>
                                         </div>
                                     </div>
-
-                                    <!-- Número -->
-                                    <div class="col-md-3">
+                                    <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="fw-bold">Número</label>
+                                            <label class="fw-bold">Número do Endereço</label>
                                             <input type="text" name="nr_endereco" value="{{pessoa_fisica.nr_endereco}}"
                                                 class="form-control" placeholder="Número da casa" required>
                                         </div>
                                     </div>
-
-                                    <!-- Logradouro (readonly) -->
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="fw-bold">Endereço</label>
+                                            <label class="fw-bold">Rua do Endereço</label>
                                             <input type="text" name="ds_endereco" id="logradouro"
                                                 value="{{pessoa_fisica.ds_endereco}}" class="form-control" readonly>
                                         </div>
                                     </div>
-
-                                    <!-- Bairro (readonly) -->
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Bairro</label>
                                             <input type="text" name="nm_bairro" id="bairro"
                                                 value="{{pessoa_fisica.nm_bairro}}" class="form-control" readonly>
                                         </div>
                                     </div>
-
-                                    <!-- Cidade (readonly) -->
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold">Cidade</label>
                                             <input type="text" name="nm_cidade" id="cidade"
                                                 value="{{pessoa_fisica.nm_cidade}}" class="form-control" readonly>
                                         </div>
                                     </div>
-
-                                    <!-- Estado (readonly) -->
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="fw-bold">UF</label>
+                                            <label class="fw-bold">Estado (UF)</label>
                                             <input type="text" name="uf_estado" id="estado"
                                                 value="{{pessoa_fisica.uf_estado}}" class="form-control" readonly>
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- Atualização -->
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -393,40 +363,69 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- Botão -->
                                 <div class="d-flex justify-content-end mt-3">
+                                    <a href="/cadastrosBuscar"
+                                        class="btn btn-secondary fw-bold shadow-lg me-3">Voltar</a>
                                     <button type="submit" class="btn btn-success shadow-lg">Salvar</button>
                                 </div>
                             </form>
-
                         </div>
                     </div>
                 </div>
             </div>
             <!--end conteudo indiviudual da pagina-->
+            <!-- Script -->
             <script>
-                document.getElementById("cep").addEventListener("blur", function () {
-                    const cep = this.value.replace(/\D/g, "");
+                // Função para formatar telefone
+                function formatTelefone(telefone) {
+                    if (!telefone) return '';
+                    telefone = telefone.replace(/\D/g, '');
+                    if (telefone.length === 10) {
+                        return telefone.replace(/(\d{2})(\d{4})(\d{4})/, "($1) $2-$3");
+                    } else if (telefone.length === 11) {
+                        return telefone.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+                    }
+                    return telefone;
+                }
 
-                    if (cep.length === 8) {
-                        fetch(`https://viacep.com.br/ws/${cep}/json/`)
-                            .then((res) => res.json())
-                            .then((data) => {
-                                if (!data.erro) {
-                                    document.getElementById("logradouro").value = data.logradouro;
-                                    document.getElementById("bairro").value = data.bairro;
-                                    document.getElementById("cidade").value = data.localidade;
-                                    document.getElementById("estado").value = data.uf;
-                                } else {
-                                    alert("CEP não encontrado.");
-                                }
-                            })
-                            .catch(() => alert("Erro ao consultar o CEP."));
+                document.addEventListener('DOMContentLoaded', function () {
+                    // Máscara de telefone ao carregar e ao digitar
+                    const telInput = document.getElementById('telefone');
+                    if (telInput) {
+                        telInput.value = formatTelefone(telInput.value);
+
+                        telInput.addEventListener('input', function () {
+                            let val = telInput.value.replace(/\D/g, '');
+                            if (val.length > 11) val = val.slice(0, 11);
+                            telInput.value = formatTelefone(val);
+                        });
+                    }
+
+                    // Consulta de CEP e preenchimento automático
+                    const cepInput = document.getElementById("cep");
+                    if (cepInput) {
+                        cepInput.addEventListener("blur", function () {
+                            const cep = this.value.replace(/\D/g, "");
+
+                            if (cep.length === 8) {
+                                fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                                    .then((res) => res.json())
+                                    .then((data) => {
+                                        if (!data.erro) {
+                                            document.getElementById("logradouro").value = data.logradouro;
+                                            document.getElementById("bairro").value = data.bairro;
+                                            document.getElementById("cidade").value = data.localidade;
+                                            document.getElementById("estado").value = data.uf;
+                                        } else {
+                                            alert("CEP não encontrado.");
+                                        }
+                                    })
+                                    .catch(() => alert("Erro ao consultar o CEP."));
+                            }
+                        });
                     }
                 });
             </script>
-
             <footer class="footer">
                 <div class="container-fluid d-flex justify-content-between">
                     <nav class="pull-left">

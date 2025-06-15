@@ -2,7 +2,8 @@ const conectiondb = require('../bd/conexao_mysql.js');
 
 // Função para exibir a página de edição da pessoa jurídica
 function exibirJuridicaEditar(req, res) {
-    const sql = ` // SQL para buscar os dados da pessoa jurídica pelo código
+    // SQL para buscar os dados da pessoa jurídica pelo código
+    const sql = ` 
         SELECT 
             cd_pessoa_juridica,
             nm_fantasia,

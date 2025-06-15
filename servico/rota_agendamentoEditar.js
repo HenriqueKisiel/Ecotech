@@ -30,7 +30,7 @@ function exibirEditarAgendamento(req, res, itemEmEdicao = null) {
         const agendamento = results[0];
         const bloquearEdicao = !!agendamento.dt_coleta || !!agendamento.dt_cancelado;
         // Consulta para pegar todas as linhas cadastradas
-        const linhasQuery = 'SELECT cd_linha, nm_linha FROM linha';
+        const linhasQuery = 'SELECT cd_linha, nm_linha FROM linha WHERE cd_linha <> 5';
         connection.query(linhasQuery, (err, linhas) => {
             if (err) return res.status(500).send('Erro ao buscar as linhas');
 

@@ -65,6 +65,7 @@ function editarPessoa(req, res) {
         }); // Se o código estiver vazio, retorna erro com alerta
     }
 
+    const telefoneLimpo = telefone ? telefone.replace(/\D/g, '') : null;
     const sql = `
         UPDATE pessoa_fisica 
         SET 
@@ -88,7 +89,7 @@ function editarPessoa(req, res) {
         nomeFisico,
         email,
         cpf,
-        telefone,
+        telefoneLimpo,
         nr_endereco,
         ds_endereco,
         cep,

@@ -249,9 +249,6 @@
                                     Preencha os dados de cadastro e clique em salvar.
                                 </small>
                             </div>
-                            <div>
-                                <a href="/pessoa" class="btn btn-secondary shadow-lg">Voltar</a>
-                            </div>
                         </div>
                         <div class="card shadow-lg">
                             <div class="card-header d-none">
@@ -270,7 +267,7 @@
                                             <div class="form-group {{#if hasError.nomeFantasia}}has-error{{/if}}">
                                                 <label class="fw-bold">Nome Fantasia</label>
                                                 <input type="text" name="nomeFantasia" class="form-control"
-                                                    placeholder="Insira o nome/razão"
+                                                    placeholder="Insira o nome fantasia"
                                                     value="{{dadosForm.nomeFantasia}}">
                                             </div>
                                         </div>
@@ -278,7 +275,8 @@
                                             <div class="form-group {{#if hasError.razaoSocial}}has-error{{/if}}">
                                                 <label class="fw-bold">Razão Social</label>
                                                 <input type="text" name="razaoSocial" class="form-control"
-                                                    placeholder="Insira o nome/razão" value="{{dadosForm.razaoSocial}}">
+                                                    placeholder="Insira a razão social"
+                                                    value="{{dadosForm.razaoSocial}}">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -294,10 +292,9 @@
                                                 <input maxlength="18" type="text" id="cnpj" name="cnpj"
                                                     class="form-control" placeholder="Insira o CNPJ"
                                                     value="{{dadosForm.cnpj}}">
-                                                <small class="form-text text-muted">Em caso de pessoa jurídica.</small>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 mb-3">
                                             <div class="form-group {{#if hasError.telefone}}has-error{{/if}}">
                                                 <label class="fw-bold">Telefone</label>
                                                 <input maxlength="14" id="telefone" type="text" name="telefone"
@@ -305,9 +302,8 @@
                                                     value="{{dadosForm.telefone}}">
                                             </div>
                                         </div>
-
-                                        <!-- CEP e Número -->
-                                        <div class="col-md-3">
+                                        <hr>
+                                        <div class="col-md-6">
                                             <div class="form-group {{#if hasError.cep}}has-error{{/if}}">
                                                 <label class="fw-bold">CEP</label>
                                                 <input maxlength="9" id="cep" type="text" name="cep"
@@ -315,7 +311,7 @@
                                                     value="{{dadosForm.cep}}">
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Número</label>
                                                 <input maxlength="10" type="text" name="numero_endereco"
@@ -324,33 +320,35 @@
                                                     value="{{dadosForm.numero_endereco}}">
                                             </div>
                                         </div>
-
-                                        <!-- Campos preenchidos automaticamente -->
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="fw-bold">Endereço</label>
+                                                <label class="fw-bold">Rua do Endereço</label>
                                                 <input type="text" name="endereco" id="endereco" class="form-control"
-                                                    readonly value="{{dadosForm.endereco}}">
+                                                    placeholder="Preencha o CEP para buscar Rua" readonly
+                                                    value="{{dadosForm.endereco}}">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Bairro</label>
                                                 <input type="text" name="bairro" id="bairro" class="form-control"
-                                                    readonly value="{{dadosForm.bairro}}">
+                                                    placeholder="Preencha o CEP para buscar Bairro" readonly
+                                                    value="{{dadosForm.bairro}}">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Cidade</label>
                                                 <input type="text" name="cidade" id="cidade" class="form-control"
-                                                    readonly value="{{dadosForm.cidade}}">
+                                                    placeholder="Preencha o CEP para buscar Cidade" readonly
+                                                    value="{{dadosForm.cidade}}">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="fw-bold">UF</label>
-                                                <input type="text" name="uf" id="uf" class="form-control" readonly
+                                                <label class="fw-bold">Estado (UF)</label>
+                                                <input type="text" name="uf" id="uf" class="form-control"
+                                                    placeholder="Preencha o CEP para buscar Estado" readonly
                                                     value="{{dadosForm.uf}}">
                                             </div>
                                         </div>
@@ -366,6 +364,7 @@
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-end mt-3">
+                                        <a href="/cadastrosBuscar" class="btn btn-secondary shadow-lg me-3">Voltar</a>
                                         <button type="submit" class="btn btn-success">Salvar</button>
                                     </div>
                                 </form>

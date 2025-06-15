@@ -4,6 +4,23 @@ function exibirCadastros(req, res) {
     res.render('cadastrosBuscar', { resultados: [] });
 }
 
+function formatarDataBR(data) {
+    if (!data) return '-';
+    // Se vier como Date
+    if (data instanceof Date) {
+        const dia = String(data.getDate()).padStart(2, '0');
+        const mes = String(data.getMonth() + 1).padStart(2, '0');
+        const ano = data.getFullYear();
+        return `${dia}/${mes}/${ano}`;
+    }
+    // Se vier como string '2025-09-26'
+    if (typeof data === 'string' && /^\d{4}-\d{2}-\d{2}/.test(data)) {
+        const [ano, mes, dia] = data.split('T')[0].split('-');
+        return `${dia}/${mes}/${ano}`;
+    }
+    return data;
+}
+
 const configuracoesPorTipo = {
     'Pessoa': {
         tabela: 'pessoa_fisica',
@@ -91,14 +108,6 @@ function buscarCadastros(req, res) {
         query += ` AND ${colunas.nome} LIKE ?`;
         params.push('%' + nome + '%');
     }
-    if (email && colunas.email) {
-        query += ` AND ${colunas.email} LIKE ?`;
-        params.push('%' + email + '%');
-    }
-    if (telefone && colunas.telefone) {
-        query += ` AND ${colunas.telefone} LIKE ?`;
-        params.push('%' + telefone + '%');
-    }
     if (cpf && colunas.cpf) {
         query += ` AND ${colunas.cpf} LIKE ?`;
         params.push('%' + cpf + '%');
@@ -140,7 +149,7 @@ function buscarCadastros(req, res) {
             } else if (tipoCadastroCorrigido === 'Motorista') {
                 resultado.cnh = item[colunas.cnh] || '-';
                 resultado.categoria = item[colunas.categoria] || '-';
-                resultado.vencimento = item[colunas.vencimento] || '-';
+                resultado.vencimento = formatarDataBR(item[colunas.vencimento]);
                 resultado.situacao = item[colunas.situacao] === 'A' ? 'Ativo' : 'Inativo';
             } else if (tipoCadastroCorrigido === 'Caminhão') {
                 resultado.placa = item[colunas.placa] || '-';
@@ -168,5 +177,6 @@ function buscarCadastros(req, res) {
 
 module.exports = {
     exibirCadastros,
+    formatarDataBR,
     buscarCadastros
 };

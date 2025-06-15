@@ -237,7 +237,6 @@
                     <!-- End Navbar -->
                 </div>
                 <!--End MenuBar-->
-
                 <!-- Start conteudo indiviual da pagina -->
                 <div class="container">
                     <div class="page-inner">
@@ -247,7 +246,6 @@
                                 <small class="text-muted">Filtre por todos os tipos de cadastros do sistema.</small>
                             </div>
                         </div>
-
                         <div class="card shadow-lg">
                             <div class="card-body">
                                 <form id="filtroForm" method="POST" action="/cadastrosBuscar">
@@ -265,17 +263,15 @@
                                                     <option value="Usuário" {{#if (eq tipoCadastro "Usuário"
                                                         )}}selected{{/if}}>Usuário</option>
                                                     <option value="Planta de Reciclagem" {{#if (eq
-                                                        tipoCadastro "Planta de Reciclagem" )}}selected{{/if}}>Planta</option>
+                                                        tipoCadastro "Planta de Reciclagem" )}}selected{{/if}}>Planta
+                                                    </option>
                                                     <option value="Motorista" {{#if (eq tipoCadastro "Motorista"
                                                         )}}selected{{/if}}>Motorista</option>
                                                     <option value="Caminhão" {{#if (eq tipoCadastro "Caminhão"
                                                         )}}selected{{/if}}>Caminhão</option>
                                                 </select>
                                             </div>
-
                                         </div>
-
-                                        <!-- Situação - Substitui Telefone quando for Planta de Reciclagem -->
                                         <div class="col-md-6" id="situacaoField" style="display:none;">
                                             <div class="form-group">
                                                 <label class="fw-bold">Situação</label>
@@ -286,28 +282,6 @@
                                                 </select>
                                             </div>
                                         </div>
-
-                                        <!-- Telefone (será escondido quando for Planta de Reciclagem) -->
-                                        <div class="col-md-6" id="telefoneField">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Telefone</label>
-                                                <input maxlength="18" name="telefone" class="form-control"
-                                                    placeholder="Nr de telefone" />
-                                            </div>
-                                        </div>
-
-
-
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="fw-bold">Nome</label>
-                                                <input type="text" name="nome" class="form-control"
-                                                    placeholder="Insira o Nome" />
-                                            </div>
-                                        </div>
-
-                                        <!-- CPF -->
                                         <div class="col-md-6" id="cpfField">
                                             <div class="form-group">
                                                 <label class="fw-bold">CPF</label>
@@ -315,8 +289,6 @@
                                                     placeholder="Informe o CPF" />
                                             </div>
                                         </div>
-
-                                        <!-- CNPJ -->
                                         <div class="col-md-6" id="cnpjField">
                                             <div class="form-group">
                                                 <label class="fw-bold">CNPJ</label>
@@ -324,15 +296,13 @@
                                                     placeholder="Informe o CNPJ" />
                                             </div>
                                         </div>
-
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="fw-bold">E-mail</label>
-                                                <input type="text" name="email" class="form-control"
-                                                    placeholder="Insira o E-mail" />
+                                                <label class="fw-bold">Nome</label>
+                                                <input type="text" name="nome" class="form-control"
+                                                    placeholder="Insira o Nome" />
                                             </div>
                                         </div>
-
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="fw-bold">Código Cadastrado</label>
@@ -341,7 +311,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="card-footer d-flex justify-content-end mt-3">
                                         <button type="button" id="limparBtn" class="btn btn-info me-3">Limpar
                                             Filtros</button>
@@ -350,86 +319,83 @@
                                 </form>
                             </div>
                         </div>
-
                         <!-- TABELA DE RESULTADO -->
                         <div class="card shadow-lg mt-4">
                             <div class="card-body">
                                 <div class="table-responsive rounded">
-                                    <table class="table table-bordered table-head-bg-success">
+                                    <table class="table table-bordered table-head-bg-success align-middle">
                                         <thead>
                                             <tr>
-                                                <th>Código</th>
-                                                <th>Nome</th>
-
+                                                <th class="text-center align-middle">Código</th>
+                                                <th class="align-middle">Nome</th>
                                                 {{#if (eq tipoCadastro "Planta de Reciclagem")}}
-                                                <th>KG Atual</th>
-                                                <th>Volume Total (m³)</th>
-                                                <th>Volume Atual (m³)</th>
-                                                <th>Volume Disponível (m³)</th>
+                                                <th class="text-center align-middle">Volume Máximo</th>
+                                                <th class="text-center align-middle">Volume Disponível</th>
+                                                <th class="text-center align-middle">Volume Atual</th>
+                                                <th class="text-center align-middle">KG Atual</th>
+                                                <th class="text-center align-middle">Situação</th>
                                                 {{else if (eq tipoCadastro "Motorista")}}
-                                                <th>CNH</th>
-                                                <th>Categoria CNH</th>
-                                                <th>Vencimento CNH</th>
-                                                <th>Situação</th>
+                                                <th class="text-center align-middle">CNH</th>
+                                                <th class="text-center align-middle">Categoria CNH</th>
+                                                <th class="text-center align-middle">Vencimento CNH</th>
+                                                <th class="text-center align-middle">Situação</th>
                                                 {{else if (eq tipoCadastro "Caminhão")}}
-                                                <th>Placa</th>
-                                                <th>Tipo</th>
-                                                <th>Capacidade (KG)</th>
-                                                <th>Capacidade Volume (m³)</th>
-                                                <th>Ano Fabricação</th>
-                                                <th>Situação</th>
+                                                <th class="text-center align-middle">Placa</th>
+                                                <th class="text-center align-middle">Tipo</th>
+                                                <th class="text-center align-middle">KG Máximo</th>
+                                                <th class="text-center align-middle">Volume Máximo</th>
+                                                <th class="text-center align-middle">Ano Fabricação</th>
+                                                <th class="text-center align-middle">Situação</th>
                                                 {{else}}
-                                                <th>Email</th>
-                                                <th>CPF/CNPJ</th>
-                                                <th>Telefone</th>
+                                                <th class="align-middle">E-mail</th>
+                                                <th class="text-center align-middle">CPF / CNPJ</th>
+                                                <th class="text-center align-middle">Telefone</th>
                                                 {{#if (or (eq tipoCadastro "Planta de Reciclagem") (eq tipoCadastro
                                                 "Usuário"))}}
-                                                <th>Situação</th>
+                                                <th class="text-center align-middle">Situação</th>
                                                 {{/if}}
                                                 {{/if}}
-
-                                                <th>Ações</th>
+                                                <th class="text-center align-middle">Ações</th>
                                             </tr>
                                         </thead>
-
                                         <tbody>
                                             {{#if resultados}}
                                             {{#each resultados}}
                                             <tr>
-                                                <td>{{codigo}}</td>
-                                                <td>{{nome}}</td>
+                                                <td class="text-center align-middle">{{codigo}}</td>
+                                                <td class="align-middle">{{nome}}</td>
 
                                                 {{#if (eq ../tipoCadastro "Planta de Reciclagem")}}
-                                                <td>{{kg_atual}}</td>
-                                                <td>{{volume_total}}</td>
-                                                <td>{{volume_atual}}</td>
-                                                <td>{{volume_disponivel}}</td>
+                                                <td class="text-center align-middle">{{volume_total}}</td>
+                                                <td class="text-center align-middle">{{volume_disponivel}}</td>
+                                                <td class="text-center align-middle">{{volume_atual}}</td>
+                                                <td class="text-center align-middle">{{kg_atual}}</td>
+                                                <td class="text-center align-middle">{{situacao}}</td>
                                                 {{else if (eq ../tipoCadastro "Motorista")}}
-                                                <td>{{cnh}}</td>
-                                                <td>{{categoria}}</td>
-                                                <td>{{vencimento}}</td>
-                                                <td>{{situacao}}</td>
+                                                <td class="text-center align-middle">{{cnh}}</td>
+                                                <td class="text-center align-middle">{{categoria}}</td>
+                                                <td class="text-center align-middle">{{vencimento}}</td>
+                                                <td class="text-center align-middle">{{situacao}}</td>
                                                 {{else if (eq ../tipoCadastro "Caminhão")}}
-                                                <td>{{placa}}</td>
-                                                <td>{{tipo}}</td>
-                                                <td>{{capacidade_kg}}</td>
-                                                <td>{{capacidade_volume}}</td>
-                                                <td>{{ano_fabricacao}}</td>
-                                                <td>{{situacao}}</td>
+                                                <td class="text-center align-middle">{{placa}}</td>
+                                                <td class="text-center align-middle">{{tipo}}</td>
+                                                <td class="text-center align-middle">{{capacidade_kg}}</td>
+                                                <td class="text-center align-middle">{{capacidade_volume}}</td>
+                                                <td class="text-center align-middle">{{ano_fabricacao}}</td>
+                                                <td class="text-center align-middle">{{situacao}}</td>
                                                 {{else}}
-                                                <td>{{#if email}}{{email}}{{else}}-{{/if}}</td>
-                                                <td>
+                                                <td class="align-middle">{{#if email}}{{email}}{{else}}-{{/if}}</td>
+                                                <td class="text-center align-middle">
                                                     {{#if cpf}}{{cpf}}{{else}}
                                                     {{#if cnpj}}{{cnpj}}{{else}}-{{/if}}
                                                     {{/if}}
                                                 </td>
-                                                <td>{{#if telefone}}{{telefone}}{{else}}-{{/if}}</td>
+                                                <td class="text-center align-middle">{{#if telefone}}{{telefone}}{{else}}-{{/if}}</td>
                                                 {{#if (or (eq ../tipoCadastro "Planta de Reciclagem") (eq
                                                 ../tipoCadastro "Usuário"))}}
-                                                <td>{{#if situacao}}{{situacao}}{{else}}-{{/if}}</td>
+                                                <td class="text-center align-middle">{{#if situacao}}{{situacao}}{{else}}-{{/if}}</td>
                                                 {{/if}}
                                                 {{/if}}
-
                                                 <td>
                                                     <div class="d-flex justify-content-center align-items-center">
                                                         {{#if (eq ../tipoCadastro "Motorista")}}
@@ -479,74 +445,105 @@
                                 </div>
                             </div>
                         </div>
-
-
-                        <!-- Scripts -->
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function () {
-                                const tipoCadastro = document.getElementById('defaultSelect');
-                                const telefoneField = document.getElementById('telefoneField');
-                                const situacaoField = document.getElementById('situacaoField');
-                                const cpfField = document.getElementById('cpfField');
-                                const cnpjField = document.getElementById('cnpjField');
-                                const emailField = document.querySelector('input[name="email"]').closest('.col-md-6');
-                                const limparBtn = document.getElementById('limparBtn');
-                                const form = document.getElementById('filtroForm');
-                                const editarLinks = document.querySelectorAll('.btn-editar');
-
-                                function updateFields() {
-                                    const selected = tipoCadastro.value;
-
-                                    // Esconde todos os campos inicialmente
-                                    telefoneField.style.display = 'none';
-                                    situacaoField.style.display = 'none';
-                                    cpfField.style.display = 'none';
-                                    cnpjField.style.display = 'none';
-                                    emailField.style.display = 'none';
-
-                                    // Se for Motorista ou Caminhão, mostra só Nome e Situação
-                                    if (selected === 'Motorista' || selected === 'Caminhão') {
-                                        situacaoField.style.display = 'block';
-                                        // Os outros campos permanecem escondidos
-                                    } else if (
-                                        selected === 'Planta de Reciclagem' ||
-                                        selected === 'Usuário'
-                                    ) {
-                                        situacaoField.style.display = 'block';
-                                        if (selected === 'Planta de Reciclagem') cnpjField.style.display = 'block';
-                                        if (selected === 'Usuário') cpfField.style.display = 'block';
-                                        telefoneField.style.display = 'block';
-                                        emailField.style.display = 'block';
-                                    } else {
-                                        telefoneField.style.display = 'block';
-                                        emailField.style.display = 'block';
-                                        if (selected === 'Pessoa') cpfField.style.display = 'block';
-                                        else if (selected === 'Fornecedor ou Pessoa Jurídica') cnpjField.style.display = 'block';
-                                    }
-                                }
-
-                                tipoCadastro.addEventListener('change', () => {
-                                    updateFields();
-                                    atualizarLinksEditar();
-                                });
-
-                                limparBtn.addEventListener('click', () => {
-                                    form.reset();
-                                    updateFields();
-                                    atualizarLinksEditar();
-                                });
-
-                                updateFields();
-                                atualizarLinksEditar();
-                            });
-                        </script>
-
                     </div>
                 </div>
+                <!-- Scripts -->
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const tipoCadastro = document.getElementById('defaultSelect');
+                        const situacaoField = document.getElementById('situacaoField');
+                        const cpfField = document.getElementById('cpfField');
+                        const cnpjField = document.getElementById('cnpjField');
+                        const limparBtn = document.getElementById('limparBtn');
+                        const form = document.getElementById('filtroForm');
 
-                <!-- Script para alterar os campos visíveis com base no tipo de cadastro -->
+                        function updateFields() {
+                            const selected = tipoCadastro.value;
 
+                            // Esconde todos os campos inicialmente
+                            situacaoField.style.display = 'none';
+                            cpfField.style.display = 'none';
+                            cnpjField.style.display = 'none';
 
+                            // Se for Motorista, Caminhão, Planta ou Usuário, mostra só Situação
+                            if (
+                                selected === 'Motorista' ||
+                                selected === 'Caminhão' ||
+                                selected === 'Planta de Reciclagem' ||
+                                selected === 'Usuário'
+                            ) {
+                                situacaoField.style.display = 'block';
+                            }
+                            // Se for Pessoa, mostra CPF
+                            else if (selected === 'Pessoa') {
+                                cpfField.style.display = 'block';
+                            }
+                            // Se for Jurídica, mostra CNPJ
+                            else if (selected === 'Fornecedor ou Pessoa Jurídica') {
+                                cnpjField.style.display = 'block';
+                            }
+                        }
+
+                        tipoCadastro.addEventListener('change', updateFields);
+
+                        limparBtn.addEventListener('click', function () {
+                            form.reset();
+                            updateFields();
+                        });
+
+                        updateFields();
+
+                        // --- FORMATAÇÃO DE CPF, CNPJ E TELEFONE NA TABELA ---
+                        function formatCPF(cpf) {
+                            if (!cpf) return '';
+                            cpf = cpf.replace(/\D/g, '');
+                            if (cpf.length !== 11) return cpf;
+                            return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+                        }
+                        function formatCNPJ(cnpj) {
+                            if (!cnpj) return '';
+                            cnpj = cnpj.replace(/\D/g, '');
+                            if (cnpj.length !== 14) return cnpj;
+                            return cnpj.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
+                        }
+                        function formatTelefone(telefone) {
+                            if (!telefone) return '';
+                            telefone = telefone.replace(/\D/g, '');
+                            if (telefone.length === 10) {
+                                // Formato: (12) 1234-5678
+                                return telefone.replace(/(\d{2})(\d{4})(\d{4})/, "($1) $2-$3");
+                            } else if (telefone.length === 11) {
+                                // Formato: (12) 12345-6789
+                                return telefone.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+                            }
+                            return telefone;
+                        }
+
+                        // Só aplica formatação para Pessoa e Jurídica
+                        const tipo = "{{tipoCadastro}}";
+                        document.querySelectorAll('tbody tr').forEach(function (tr) {
+                            if (tipo === 'Pessoa' || tipo === 'Fornecedor ou Pessoa Jurídica' || tipo === 'Usuário') {
+                                // Para CPF/CNPJ
+                                const cpfCnpjTd = tr.querySelector('td:nth-child(4)');
+                                if (cpfCnpjTd) {
+                                    let valor = cpfCnpjTd.innerText.trim();
+                                    if (/^\d{11}$/.test(valor)) {
+                                        cpfCnpjTd.innerText = formatCPF(valor);
+                                    } else if (/^\d{14}$/.test(valor)) {
+                                        cpfCnpjTd.innerText = formatCNPJ(valor);
+                                    }
+                                }
+                                // Para Telefone
+                                const telefoneTd = tr.querySelector('td:nth-child(5)');
+                                if (telefoneTd) {
+                                    let valor = telefoneTd.innerText.trim();
+                                    telefoneTd.innerText = formatTelefone(valor);
+                                }
+                            }
+                        });
+                    });
+                </script>
+                <!-- End Script  -->
                 <footer class="footer">
                     <div class="container-fluid d-flex justify-content-between">
                         <nav class="pull-left">

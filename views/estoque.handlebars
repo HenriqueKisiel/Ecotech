@@ -263,8 +263,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="fw-bold" for="selectNomePlanta">Nome da Planta</label>
-                                            <select id="selectNomePlanta" class="form-control" name="cd_planta"
-                                                required>
+                                            <select id="selectNomePlanta" class="form-control" name="cd_planta">
                                                 <option value="">Planta onde o estoque será cadastrado</option>
                                                 {{#each plantas}}
                                                 <option value="{{cd_planta}}" data-nome="{{nm_planta}}" {{#if (eq
@@ -276,9 +275,9 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="fw-bold" for="inputCodigoPlanta">Código da Planta</label>
-                                            <input type="text" id="inputCodigoPlanta" class="form-control"
-                                                name="codigo_planta" value="{{estoque.cd_planta}}" readonly>
+                                            <label class="fw-bold" for="inputCapacidadeDisponivel">Volume Disponivel da Planta para Cadastro de Estoque</label>
+                                            <input type="text" id="inputCapacidadeDisponivel" class="form-control"
+                                                readonly>
                                         </div>
                                     </div>
                                     <div class="col-12">
@@ -288,14 +287,14 @@
                                         <div class="form-group">
                                             <label class="fw-bold" for="input">Nome do Estoque</label>
                                             <input type="text" class="form-control" name="nm_estoque"
-                                                placeholder="Informe o nome" required>
+                                                placeholder="Informe o nome">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="fw-bold" for="input">Capacidade Máxima de Volume</label>
+                                            <label class="fw-bold" for="input">Capacidade Máxima de Volume do Estoque</label>
                                             <input type="text" class="form-control" name="qt_volume_total"
-                                                placeholder="Insira a capacidade" required>
+                                                placeholder="Insira a capacidade">
                                         </div>
                                     </div>
                                 </div>
@@ -312,15 +311,68 @@
             <!-- Start Script -->
             <script>
                 const nomePlantaSelect = document.getElementById('selectNomePlanta');
-                const codigoPlantaInput = document.getElementById('inputCodigoPlanta');
+                const inputCapacidadeDisponivel = document.getElementById('inputCapacidadeDisponivel');
+                const inputVolumeEstoque = document.querySelector('input[name="qt_volume_total"]');
+                const formEstoque = document.querySelector('form[action="/estoque/cadastrar"]');
 
-                nomePlantaSelect.addEventListener('change', () => {
-                    codigoPlantaInput.value = nomePlantaSelect.value;
-                });
+                async function atualizarCapacidadeDisponivel() {
+                    const cd_planta = nomePlantaSelect.value;
+                    if (!cd_planta) {
+                        inputCapacidadeDisponivel.value = '';
+                        if (inputVolumeEstoque) inputVolumeEstoque.max = '';
+                        return;
+                    }
+                    try {
+                        const resp = await fetch(`/planta/capacidade/${cd_planta}`);
+                        const data = await resp.json();
+                        if (data.capacidade_disponivel !== undefined) {
+                            inputCapacidadeDisponivel.value = data.capacidade_disponivel.toFixed(8);
+                            if (inputVolumeEstoque) inputVolumeEstoque.max = data.capacidade_disponivel;
+                        } else {
+                            inputCapacidadeDisponivel.value = '';
+                            if (inputVolumeEstoque) inputVolumeEstoque.max = '';
+                        }
+                    } catch (e) {
+                        inputCapacidadeDisponivel.value = '';
+                        if (inputVolumeEstoque) inputVolumeEstoque.max = '';
+                    }
+                }
 
-                window.addEventListener('DOMContentLoaded', () => {
-                    codigoPlantaInput.value = nomePlantaSelect.value;
-                });
+                nomePlantaSelect.addEventListener('change', atualizarCapacidadeDisponivel);
+                window.addEventListener('DOMContentLoaded', atualizarCapacidadeDisponivel);
+
+                // Intercepta o submit do formulário para tratar o retorno do backend com SweetAlert
+                if (formEstoque) {
+                    formEstoque.addEventListener('submit', async function (e) {
+                        e.preventDefault();
+                        const formData = new FormData(formEstoque);
+
+                        // Converte FormData para URLSearchParams
+                        const params = new URLSearchParams();
+                        for (const [key, value] of formData.entries()) {
+                            params.append(key, value);
+                        }
+
+                        const resp = await fetch(formEstoque.action, {
+                            method: formEstoque.method,
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            body: params
+                        });
+                        const data = await resp.json();
+
+                        // Executa o script retornado pelo backend, se existir
+                        if (data && data.script) {
+                            const match = data.script.match(/<script>([\s\S]*)<\/script>/i);
+                            if (match && match[1]) {
+                                eval(match[1]);
+                            }
+                        } else if (data && data.erro) {
+                            alert(data.erro);
+                        }
+                    });
+                }
             </script>
             <!-- End Script -->
             <footer class="footer">
