@@ -32,6 +32,7 @@ function exibirAgendamento(req, res) {
                         pessoasJuridicas,
                         cidades,
                         bairros,
+                        usuario: req.session.usuario,
                         agendamentos: []
                     });
                 });

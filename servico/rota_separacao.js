@@ -2,7 +2,9 @@ const conectiondb = require('../bd/conexao_mysql.js');
 
 //Função para pagina home
 function exibirseparacao(req, res) {
-    res.render('separacao');
+    res.render('separacao', { 
+        usuario: req.session.usuario
+    });
 };
 
 function buscarAgendamentoSeparacao(req, res) {
