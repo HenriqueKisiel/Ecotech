@@ -702,5 +702,19 @@
             });
         </script>
 
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const qtPesoInput = document.getElementById('qt_peso');
+                const volumePrensadoInput = document.getElementById('volume_m3_prensado');
+                [qtPesoInput, volumePrensadoInput].forEach(function (input) {
+                    if (input) {
+                        input.addEventListener('input', function () {
+                            this.value = this.value.replace(',', '.');
+                        });
+                    }
+                });
+            });
+        </script>
+
     </body>
 </main>
