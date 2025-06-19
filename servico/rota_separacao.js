@@ -2,7 +2,7 @@ const conectiondb = require('../bd/conexao_mysql.js');
 
 //Função para pagina home
 function exibirseparacao(req, res) {
-    res.render('separacao', { 
+    res.render('separacao', {
         usuario: req.session.usuario
     });
 };
@@ -70,6 +70,7 @@ function adicionarItemEstoqueMaterial(req, res) {
     // Validação do volume
     if (volumePrensado > volume) {
         return res.render('separacao', {
+            usuario: req.session.usuario,
             script: `<script>
             swal("Erro!", "O volume prensado não pode ser maior que o volume calculado!", {
                 icon: "error",
@@ -89,6 +90,7 @@ function adicionarItemEstoqueMaterial(req, res) {
     // Validação dos campos obrigatórios
     if (!materia_prima || !estoque || !peso || !volume_m3_prensado) {
         return res.render('separacao', {
+            usuario: req.session.usuario,
             script: `<script>
                 swal("Erro!", "Todos os campos são obrigatórios.", {
                 icon: "error",
@@ -111,6 +113,7 @@ function adicionarItemEstoqueMaterial(req, res) {
     conectiondb().query(sqlPesoReal, [cd_agendamento], (erroPeso, resultadoPeso) => {
         if (erroPeso || resultadoPeso.length === 0) {
             return res.render('separacao', {
+                usuario: req.session.usuario,
                 script: `<script>
                     swal("Erro!", "Não foi possível validar o peso real do agendamento.", {
                         icon: "error",
@@ -132,6 +135,7 @@ function adicionarItemEstoqueMaterial(req, res) {
         conectiondb().query(sqlSomaPesos, [cd_agendamento], (erroSoma, resultadoSoma) => {
             if (erroSoma) {
                 return res.render('separacao', {
+                    usuario: req.session.usuario,
                     script: `<script>
                         swal("Erro!", "Não foi possível validar o peso dos itens já adicionados.", {
                             icon: "error",
@@ -147,6 +151,7 @@ function adicionarItemEstoqueMaterial(req, res) {
 
             if ((somaPesos + novoPeso) > pesoReal) {
                 return res.render('separacao', {
+                    usuario: req.session.usuario,
                     script: `<script>
                         swal("Erro!", "A soma dos pesos dos itens não pode ultrapassar o peso real do agendamento!", {
                             icon: "error",
@@ -245,6 +250,7 @@ function adicionarItemEstoqueMaterial(req, res) {
                                 ds_motivo: `Gerada pela separação do Agendamento ${cd_agendamento}`
                             });
                             return res.render('separacao', {
+                                usuario: req.session.usuario,
                                 script: `<script>
         swal("Sucesso!", "Item adicionado ao estoque!", {
             icon: "success",
@@ -281,6 +287,7 @@ function adicionarItemEstoqueMaterial(req, res) {
                                 ds_motivo: `Gerada pela separação do Agendamento ${cd_agendamento}`
                             });
                             return res.render('separacao', {
+                                usuario: req.session.usuario,
                                 script: `<script>
         swal("Sucesso!", "Item adicionado ao estoque!", {
             icon: "success",

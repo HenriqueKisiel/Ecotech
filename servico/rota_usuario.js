@@ -7,7 +7,8 @@ function exibirUsuario(req, res) {
 
   //Executando a consulta no banco de dados
   conectiondb().query(sql, function (erro, retorno) {
-    res.render('usuario', { usuarios: retorno });
+    res.render('usuario', { 
+      usuarios: retorno });
   });
 };
 
