@@ -11,6 +11,7 @@ function exibirPlanta(req, res) {
         }
 
         res.render('planta', {
+            usuario: req.session.usuario,
             title: 'Cadastro de Planta de Reciclagem',
             cidades: resultados
         });

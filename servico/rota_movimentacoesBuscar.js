@@ -38,7 +38,11 @@ function exibirmovimentacoesBuscar(req, res) {
                 pad(data.getDate()) + '/' + pad(data.getMonth() + 1) + '/' + data.getFullYear();
             return mov;
         });
-        res.render('movimentacoesBuscar', { movimentacoes, message: '' });
+        res.render('movimentacoesBuscar', {
+            usuario: req.session.usuario,
+            movimentacoes, 
+            message: '' 
+        });
     });
 }
 

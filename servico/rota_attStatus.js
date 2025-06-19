@@ -30,6 +30,7 @@ function exibirAtualizarRotas(req, res) {
                 res.render('attStatus', {
                     rotas: resultado1[0],
                     pontos: resultado2,
+                    usuario: req.session.usuario,
                     dadosRota: resultado3[0]
 
                 });

@@ -14,11 +14,13 @@ function exibirRelatorioNovo(req, res) {
     if (cd_rel) {
         const sql = 'SELECT cd_rel, ds_relatorio, query_sql FROM Relatorios WHERE cd_rel = ?';
         conectiondb().query(sql, [cd_rel], (err, results) => {
-            if (err || results.length === 0) return res.render('relatoriosNovo', { erro: 'Relatório não encontrado' });
-            res.render('relatoriosNovo', { relatorio: results[0] });
+            if (err || results.length === 0) return res.render('relatoriosNovo', { usuario: req.session.usuario, erro: 'Relatório não encontrado' });
+            res.render('relatoriosNovo', { usuario: req.session.usuario, relatorio: results[0] });
         });
     } else {
-        res.render('relatoriosNovo');
+        res.render('relatoriosNovo', { 
+        usuario: req.session.usuario
+    });
     }
 }
 

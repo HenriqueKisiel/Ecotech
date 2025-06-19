@@ -1,7 +1,10 @@
 const conectiondb = require('../bd/conexao_mysql.js')();
 
 function exibirCadastros(req, res) {
-    res.render('cadastrosBuscar', { resultados: [] });
+    res.render('cadastrosBuscar', { 
+        resultados: [],
+        usuario: req.session.usuario
+     });
 }
 
 function formatarDataBR(data) {
@@ -170,7 +173,8 @@ function buscarCadastros(req, res) {
 
         res.render('cadastrosBuscar', {
             resultados: resultadoFormatado,
-            tipoCadastro: tipoCadastroCorrigido
+            tipoCadastro: tipoCadastroCorrigido,
+            usuario: req.session.usuario
         });
     });
 }

@@ -2,7 +2,9 @@ const conectiondb = require('../bd/conexao_mysql.js');
 
 // Página do formulário de pessoa jurídica
 function exibirFornecedor(req, res) {
-  res.render('juridica');
+  res.render('juridica', { 
+        usuario: req.session.usuario
+    });
 }
 
 function validarCNPJ(cnpj) {

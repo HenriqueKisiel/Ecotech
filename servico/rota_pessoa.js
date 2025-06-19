@@ -2,7 +2,9 @@ const conectiondb = require('../bd/conexao_mysql.js');
 
 // Exibe a página de cadastro
 function exibirPessoa(req, res) {
-  res.render('pessoa');
+  res.render('pessoa', { 
+        usuario: req.session.usuario
+    });
 }
 
 //Função para validar CPF

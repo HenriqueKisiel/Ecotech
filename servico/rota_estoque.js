@@ -12,7 +12,11 @@ function exibirestoque(req, res) {
         }
 
         // Exibe o formulário de cadastro de estoque com a lista de plantas
-        return res.render('estoque', { message: '', plantas: resultados });
+        return res.render('estoque', { 
+            message: '',
+            usuario: req.session.usuario,
+            plantas: resultados 
+        });
     });
 }
 

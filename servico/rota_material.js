@@ -36,7 +36,10 @@ function exibirMaterial(req, res) {
         if (err) {
             return res.status(500).send('Erro ao buscar materiais');
         }
-        res.render('material', { linhas });
+        res.render('material', { 
+            linhas,
+            usuario: req.session.usuario 
+        });
     });
 }
 

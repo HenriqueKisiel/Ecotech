@@ -11,6 +11,7 @@ function exibirmovimentacoes(req, res) {
             // Se der erro, exibe mensagem e retorna página vazia
             console.error('Erro ao buscar plantas:', err);
             return res.render('movimentacoes', {
+                usuario: req.session.usuario,
                 resultados: [],
                 message: 'Erro ao carregar plantas.',
                 plantas: []
@@ -19,6 +20,7 @@ function exibirmovimentacoes(req, res) {
 
         // Se sucesso, renderiza a página com as plantas carregadas
         return res.render('movimentacoes', {
+            usuario: req.session.usuario,
             resultados: [],
             message: '',
             plantas: results

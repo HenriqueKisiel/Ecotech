@@ -20,6 +20,7 @@ function exibirCaminhaoEditar(req, res) {
 
         res.render('caminhaoEditar', { 
             caminhao, 
+            usuario: req.session.usuario,
             sucesso: req.query.sucesso 
         });
     });

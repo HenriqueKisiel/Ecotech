@@ -2,7 +2,9 @@ const conectiondb = require('../bd/conexao_mysql.js');
 
 //Função para exibir a página de cadastro
 function exibirCaminhao(req, res) {
-    res.render('caminhao');
+    res.render('caminhao', { 
+        usuario: req.session.usuario
+    });
 }
 
 // Função para cadastrar caminhão
@@ -32,7 +34,7 @@ function cadastrarCaminhao(req, res) {
                 console.log('Erro ao cadastrar caminhão:', erro);
                 return res.status(500).send('Erro ao cadastrar caminhão');
             }
-            // Redireciona ou renderiza conforme sua lógica
+            // Redireciona ou renderiza 
             res.redirect('/cadastros?sucesso=1');
         }
     );

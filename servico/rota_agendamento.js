@@ -132,6 +132,7 @@ function buscarAgendamentos(req, res) {
                             pessoasJuridicas,
                             cidades,
                             bairros,
+                            usuario: req.session.usuario,
                             agendamentos: resultados  // Passa os resultados da busca
                         });
                     });

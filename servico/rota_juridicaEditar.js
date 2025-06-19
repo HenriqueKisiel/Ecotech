@@ -31,6 +31,7 @@ function exibirJuridicaEditar(req, res) {
 
         res.render('juridicaEditar', { // Renderiza a página de edição com os dados encontrados
             pessoa_juridica: retorno[0], // Dados completos da pessoa jurídica
+            usuario: req.session.usuario,
             dadosForm: { // Dados usados para preencher o formulário
                 nomeFantasia: retorno[0].nm_fantasia,
                 razaoSocial: retorno[0].nm_razao_social,
@@ -190,6 +191,7 @@ function editarJuridica(req, res) {
 
             res.render('juridicaEditar', { // Reexibe a página com os dados atualizados
                 pessoa_juridica: pessoaAtualizada,
+                usuario: req.session.usuario,
                 dadosForm: {
                     nomeFantasia,
                     razaoSocial,
@@ -228,6 +230,7 @@ function editarJuridica(req, res) {
 function renderErro(res, body, mensagem) {
     return res.render('juridicaEditar', { // Reexibe o formulário com os dados já preenchidos
         pessoa_juridica: body,
+        usuario: req.session.usuario,
         dadosForm: {
             nomeFantasia: body.nomeFantasia,
             razaoSocial: body.razaoSocial,

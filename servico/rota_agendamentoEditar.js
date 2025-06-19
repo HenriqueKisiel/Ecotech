@@ -71,6 +71,7 @@ function exibirEditarAgendamento(req, res, itemEmEdicao = null) {
                                 itens,
                                 linhas,
                                 materiais,
+                                usuario: req.session.usuario,
                                 isPessoaFisica: agendamento.cd_pessoa_fisica !== null,
                                 isPessoaJuridica: agendamento.cd_pessoa_juridica !== null,
                                 nomePessoaFisica: agendamento.nm_pessoa_fisica,

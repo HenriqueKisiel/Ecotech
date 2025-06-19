@@ -14,7 +14,10 @@ function exibirPessoaEditar(req, res) {
         const pessoa = retorno[0]; // Obtém o primeiro (e único) resultado
         pessoa.dt_nascimento = formatarDataInput(pessoa.dt_nascimento); // Formata data de nascimento para o input date
 
-        res.render('pessoaEditar', { pessoa_fisica: pessoa }); // Renderiza a página com os dados da pessoa
+        res.render('pessoaEditar', { 
+           usuario: req.session.usuario,
+            pessoa_fisica: pessoa 
+        }); // Renderiza a página com os dados da pessoa
     });
 }
 
@@ -124,6 +127,7 @@ function editarPessoa(req, res) {
 
         // Sucesso
         res.render('pessoaEditar', {
+            usuario: req.session.usuario,
             pessoa_fisica: {
                 cd_pessoa_fisica: codigo,
                 nm_pessoa_fisica: nomeFisico,

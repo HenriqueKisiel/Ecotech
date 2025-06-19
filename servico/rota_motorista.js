@@ -18,7 +18,10 @@ function exibirMotorista(req, res) {
             console.log('Erro ao buscar pessoas físicas:', erro);
             return res.status(500).send('Erro no servidor');
         }
-        res.render('motorista', { pessoasFisicas });
+        res.render('motorista', {
+            usuario: req.session.usuario,
+            pessoasFisicas 
+        });
     });
 }
 
@@ -53,6 +56,7 @@ function inserirMotorista(req, res) {
             const queryPessoas = 'SELECT cd_pessoa_fisica, nm_pessoa_fisica FROM pessoa_fisica';
             connection.query(queryPessoas, (erro2, pessoasFisicas) => {
                 res.render('motorista', {
+                    usuario: req.session.usuario,
                     pessoasFisicas: pessoasFisicas || [],
                     mensagem: '<div class="alert alert-success">Motorista cadastrado com sucesso!</div>'
                 });
