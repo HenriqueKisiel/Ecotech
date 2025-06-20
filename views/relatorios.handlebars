@@ -80,7 +80,7 @@
                                     </ul>
                                 </div>
                             </li>
-                            <li class="nav-item active">
+                            <li class="nav-item">
                                 <a data-bs-toggle="collapse" href="#estoque">
                                     <i class="fas fa-th-list"></i>
                                     <p>Estoque</p>
@@ -134,26 +134,17 @@
                                                 <span class="sub-item">Rotas Programadas</span>
                                             </a>
                                         </li>
-                                        <li>
-                                            <a href="/attStatus">
-                                                <span class="sub-item">Atualizar Status da Coleta</span>
-                                            </a>
-                                        </li>
+                                       
                                     </ul>
                                 </div>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item active">
                                 <a href="/relatorios">
                                     <i class="fas fa-table"></i>
                                     <p>Relatórios</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="/processamento">
-                                    <i class="fas fa-thumbtack"></i>
-                                    <p>Processamento</p>
-                                </a>
-                            </li>
+                            
                         </ul>
                     </div>
                 </div>
@@ -286,14 +277,15 @@
                                                 <td>{{ds_relatorio}}</td>
                                                 <td class="text-end">
                                                     <a href="/exportarRelatorio/{{cd_rel}}"
-                                                        class="btn btn-success btn-sm">
+                                                        class="btn btn-success fs-6 text-white shadow-lg me-2">
                                                         <i class="fa fa-file-excel"></i> Exportar Excel
                                                     </a>
-                                                    <a href="/exportarRelatorioPDF/{{cd_rel}}" class="btn btn-danger btn-sm">
+                                                    <a href="/exportarRelatorioPDF/{{cd_rel}}"
+                                                        class="btn btn-danger fs-6 text-white shadow-lg me-2">
                                                         <i class="fa fa-file-pdf"></i> Exportar PDF
                                                     </a>
                                                     <a href="/relatoriosNovo?cd_rel={{cd_rel}}"
-                                                        class="btn text-white btn-warning btn-sm">
+                                                        class="btn btn-warning fs-6 text-white shadow-lg">
                                                         <i class="fa fa-edit text-white"></i> Editar
                                                     </a>
                                                 </td>
