@@ -142,7 +142,7 @@
                                                 <span class="sub-item">Rotas Programadas</span>
                                             </a>
                                         </li>
-                                       
+
                                     </ul>
                                 </div>
                             </li>
@@ -152,7 +152,7 @@
                                     <p>Relatórios</p>
                                 </a>
                             </li>
-                            
+
                         </ul>
                     </div>
                 </div>
@@ -347,13 +347,15 @@
                                             <div class="col-md-6"></div>
                                             <div class="col-md-6">
                                                 <div class="d-flex flex-row">
-                                                    <select id="selectAno"
+                                                    {{!-- Esses são os selects que devem funcionar de acordo com a data
+                                                    selecionada, onde ja deve estar selecionado o mês atual --}}
+                                                    <select id="selectAnoIndicador"
                                                         class="form-select form-control-sm opacity-50 pe-5">
                                                         <option value="2025" selected>2025</option>
                                                         <option value="2024">2024</option>
                                                         <option value="2023">2023</option>
                                                     </select>
-                                                    <select id="selectMes"
+                                                    <select id="selectMesIndicador"
                                                         class="form-select form-control-sm opacity-50 ms-2 pe-5">
                                                         <option value="1">Janeiro</option>
                                                         <option value="2">Fevereiro</option>
@@ -393,12 +395,13 @@
                                                 class="fas fa-chart-pie text-success me-2"></i>Movimentação de Material
                                         </div>
                                         <div class="card-toolbar d-flex flex-column">
-                                            <select class="form-select form-control-sm">
+                                            <select class="form-select form-control-sm" id="selectAnoGrafico3">
                                                 <option value="2025" selected>2025</option>
                                                 <option value="2024">2024</option>
                                                 <option value="2023">2023</option>
                                             </select>
-                                            <select class="form-select form-control-sm me-4 mt-2">
+                                            <select class="form-select form-control-sm me-4 mt-2"
+                                                id="selectMesGrafico3">
                                                 <option value="1">Janeiro</option>
                                                 <option value="2">Fevereiro</option>
                                                 <option value="3">Março</option>
@@ -480,17 +483,53 @@
                         </script>
                         {{!-- Atualiza o indicador de coletas realizadas por planta ao selecionar --}}
                         <script>
-                            function atualizarIndicadorColetasPlanta(plantaId) {
+                            function atualizarIndicadorColetasPlanta(plantaId, ano, mes) {
                                 if (!plantaId) return;
-                                fetch(`/home/totalColetas/${plantaId}`)
+                                let url = `/home/totalColetas/${plantaId}`;
+                                if (ano && mes) {
+                                    url += `?ano=${ano}&mes=${mes}`;
+                                }
+                                fetch(url)
                                     .then(res => res.json())
                                     .then(data => {
                                         document.querySelector('.fa-truck').parentElement.nextElementSibling.querySelector('span').textContent = data.total;
                                     });
                             }
+
+                            function setSelectsIndicadorDefault() {
+                                const dataAtual = new Date();
+                                document.getElementById('selectAnoIndicador').value = '2025';
+                                document.getElementById('selectMesIndicador').value = (dataAtual.getMonth() + 1).toString();
+                            }
+
+                            function getAnoMesIndicador() {
+                                const ano = document.getElementById('selectAnoIndicador').value;
+                                const mes = document.getElementById('selectMesIndicador').value;
+                                return { ano, mes };
+                            }
+
                             document.getElementById('selectPlanta').addEventListener('change', function () {
                                 const plantaId = this.value;
-                                atualizarIndicadorColetasPlanta(plantaId);
+                                const { ano, mes } = getAnoMesIndicador();
+                                atualizarIndicadorColetasPlanta(plantaId, ano, mes);
+                            });
+                            document.getElementById('selectAnoIndicador').addEventListener('change', function () {
+                                const plantaId = document.getElementById('selectPlanta').value;
+                                const { ano, mes } = getAnoMesIndicador();
+                                atualizarIndicadorColetasPlanta(plantaId, ano, mes);
+                            });
+                            document.getElementById('selectMesIndicador').addEventListener('change', function () {
+                                const plantaId = document.getElementById('selectPlanta').value;
+                                const { ano, mes } = getAnoMesIndicador();
+                                atualizarIndicadorColetasPlanta(plantaId, ano, mes);
+                            });
+                            window.addEventListener('DOMContentLoaded', function () {
+                                setSelectsIndicadorDefault();
+                                const select = document.getElementById('selectPlanta');
+                                if (select && select.value) {
+                                    const { ano, mes } = getAnoMesIndicador();
+                                    atualizarIndicadorColetasPlanta(select.value, ano, mes);
+                                }
                             });
                         </script>
                         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -652,19 +691,28 @@
                         </script>
                         <script>
                             let grafico3;
-                            function atualizarGraficoProporcaoMovimentacoes(plantaId) {
+                            function getAnoMesGrafico3() {
+                                const ano = document.getElementById('selectAnoGrafico3').value;
+                                const mes = document.getElementById('selectMesGrafico3').value;
+                                return { ano, mes };
+                            }
+                            function setSelectsGrafico3Default() {
+                                const dataAtual = new Date();
+                                document.getElementById('selectAnoGrafico3').value = '2025';
+                                document.getElementById('selectMesGrafico3').value = (dataAtual.getMonth() + 1).toString();
+                            }
+                            function atualizarGraficoProporcaoMovimentacoes(plantaId, ano, mes) {
                                 if (!plantaId) return;
-                                fetch(`/home/proporcaoMovimentacoes/${plantaId}`)
+                                fetch(`/home/proporcaoMovimentacoes/${plantaId}?ano=${ano}&mes=${mes}`)
                                     .then(res => res.json())
                                     .then(data => {
                                         const labels = data.labels || [];
                                         const dados = data.dados || [];
                                         const backgroundColors = [
-                                            'rgb(46, 139, 87)',   // entrada - verde floresta
-                                            'rgba(227, 104, 98, 1)', // saída - verde pálido
-                                            'rgb(50, 205, 50)'    // venda - verde lima
+                                            'rgb(46, 139, 87)',
+                                            'rgba(227, 104, 98, 1)',
+                                            'rgb(50, 205, 50)'
                                         ];
-
                                         if (grafico3) {
                                             grafico3.data.labels = labels;
                                             grafico3.data.datasets[0].data = dados;
@@ -706,13 +754,25 @@
 
                             document.getElementById('selectPlanta').addEventListener('change', function () {
                                 const plantaId = this.value;
-                                atualizarGraficoProporcaoMovimentacoes(plantaId);
+                                const { ano, mes } = getAnoMesGrafico3();
+                                atualizarGraficoProporcaoMovimentacoes(plantaId, ano, mes);
                             });
-
+                            document.getElementById('selectAnoGrafico3').addEventListener('change', function () {
+                                const plantaId = document.getElementById('selectPlanta').value;
+                                const { ano, mes } = getAnoMesGrafico3();
+                                atualizarGraficoProporcaoMovimentacoes(plantaId, ano, mes);
+                            });
+                            document.getElementById('selectMesGrafico3').addEventListener('change', function () {
+                                const plantaId = document.getElementById('selectPlanta').value;
+                                const { ano, mes } = getAnoMesGrafico3();
+                                atualizarGraficoProporcaoMovimentacoes(plantaId, ano, mes);
+                            });
                             window.addEventListener('DOMContentLoaded', function () {
+                                setSelectsGrafico3Default();
                                 const select = document.getElementById('selectPlanta');
                                 if (select && select.value) {
-                                    atualizarGraficoProporcaoMovimentacoes(select.value);
+                                    const { ano, mes } = getAnoMesGrafico3();
+                                    atualizarGraficoProporcaoMovimentacoes(select.value, ano, mes);
                                 }
                             });
                         </script>
