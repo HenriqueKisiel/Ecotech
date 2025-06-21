@@ -27,6 +27,7 @@ function exibirEditarMotorista(req, res) {
         }
 
         res.render('motoristaEditar', { 
+            usuario: req.session.usuario,
             motorista, 
             sucesso: req.query.sucesso 
         });
@@ -81,6 +82,7 @@ function editarMotorista(req, res) {
                     }
 
                     res.render('motoristaEditar', {
+                        usuario: req.session.usuario,
                         motorista,
                         script: `<script>
                             swal("Editado com sucesso!", "", {

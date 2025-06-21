@@ -4,7 +4,9 @@ const upload = multer();
 
 //Função para pagina home
 function exibirpesagem(req, res) {
-    res.render('pesagem');
+    res.render('pesagem', { 
+        usuario: req.session.usuario
+    });
 };
 
 
@@ -148,7 +150,10 @@ function concluirPesagem(req, res) {
 
 function exibirseparacao(req, res) {
     const cd_agendamento = req.query.cd_agendamento; // ou req.params.cd_agendamento se for rota dinâmica
-    res.render('separacao', { cd_agendamento });
+    res.render('separacao', { 
+        usuario: req.session.usuario,
+        cd_agendamento 
+    });
 };
 
 //exportando a função 

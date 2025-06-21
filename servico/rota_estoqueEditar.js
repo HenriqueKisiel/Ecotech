@@ -56,6 +56,7 @@ function exibirEstoqueEditar(req, res) {
             res.render('estoqueEditar', {
                 message: '',
                 plantas: resultadosPlantas,
+                usuario: req.session.usuario,
                 estoque
             });
         });

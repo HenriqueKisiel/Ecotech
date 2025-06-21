@@ -10,10 +10,10 @@ function exibirHome(req, res) {
             return res.status(500).send('Erro ao carregar plantas');
         }
         console.log('Plantas carregadas:', result); // Debug
-        res.render('home', { 
+        res.render('home', {
             plantas: result,
             usuario: req.session.usuario
-         });
+        });
     });
 }
 
@@ -54,18 +54,22 @@ function dadosDashboard(req, res) {
 // Função para retornar o total de coletas realizadas por planta
 function totalColetasPlanta(req, res) {
     const cd_planta = req.params.cd_planta;
+    const ano = req.query.ano ? parseInt(req.query.ano) : 2025;
+    const mes = req.query.mes ? parseInt(req.query.mes) : (new Date().getMonth() + 1);
     // Se não informar planta, retorna 0
     if (!cd_planta || cd_planta === '0') {
         return res.json({ total: 0 });
     }
-    // Consulta baseada no novo select fornecido
+    // Consulta filtrando por ano e mês
     const sql = `SELECT 
-    COUNT(DISTINCT pca.cd_agendamento) AS total_coletas
-FROM vw_pontos_coleta pca
-INNER JOIN rota_coleta rc ON pca.cd_rota = rc.cd_rota
-WHERE pca.dt_coleta IS NOT NULL 
-AND pca.cd_planta = ?;`;
-    con.query(sql, [cd_planta], (err, result) => {
+        COUNT(DISTINCT pca.cd_agendamento) AS total_coletas
+        FROM vw_pontos_coleta pca
+        INNER JOIN rota_coleta rc ON pca.cd_rota = rc.cd_rota
+        WHERE pca.dt_coleta IS NOT NULL
+          AND pca.cd_planta = ?
+          AND YEAR(STR_TO_DATE(pca.dt_coleta, '%d%m%y')) = ?
+          AND MONTH(STR_TO_DATE(pca.dt_coleta, '%d%m%y')) = ?`;
+    con.query(sql, [cd_planta, ano, mes], (err, result) => {
         if (err) return res.status(500).json({ erro: err });
         res.json({ total: result[0]?.total_coletas || 0 });
     });
@@ -130,6 +134,9 @@ function pesoColetadoMensalPlanta(req, res) {
 //Função para proporção de movimentações (entrada, saída, venda) por planta
 function proporcaoMovimentacoesPlanta(req, res) {
     const cd_planta = req.params.cd_planta;
+    // Novo: aceita ano e mês por query, padrão 2025 e mês atual
+    const ano = req.query.ano ? parseInt(req.query.ano) : 2025;
+    const mes = req.query.mes ? parseInt(req.query.mes) : (new Date().getMonth() + 1);
     const sql = `
         SELECT 
             m.tipo_movimentacao,
@@ -137,10 +144,12 @@ function proporcaoMovimentacoesPlanta(req, res) {
         FROM movimentacoes m
         JOIN estoque e ON m.cd_estoque = e.cd_estoque
         WHERE e.cd_planta = ?
+          AND YEAR(m.dt_movimentacao) = ?
+          AND MONTH(m.dt_movimentacao) = ?
         GROUP BY m.tipo_movimentacao
         ORDER BY m.tipo_movimentacao
     `;
-    con.query(sql, [cd_planta], (err, result) => {
+    con.query(sql, [cd_planta, ano, mes], (err, result) => {
         if (err) return res.status(500).json({ erro: err });
         const labels = result.map(row => row.tipo_movimentacao);
         const dados = result.map(row => parseInt(row.total_movimentacoes) || 0);

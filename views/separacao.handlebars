@@ -134,11 +134,7 @@
                                                 <span class="sub-item">Rotas Programadas</span>
                                             </a>
                                         </li>
-                                        <li>
-                                            <a href="/attStatus">
-                                                <span class="sub-item">Atualizar Status da Coleta</span>
-                                            </a>
-                                        </li>
+
                                     </ul>
                                 </div>
                             </li>
@@ -148,12 +144,7 @@
                                     <p>Relatórios</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="/processamento">
-                                    <i class="fas fa-thumbtack"></i>
-                                    <p>Processamento</p>
-                                </a>
-                            </li>
+
                         </ul>
                     </div>
                 </div>
@@ -211,22 +202,16 @@
                                             <li>
                                                 <div class="user-box">
                                                     <div class="u-text">
-                                                        <h4>Henrique</h4>
-                                                        <p class="text-muted">henrique@gmail.com</p>
-                                                        <a href="#" class="btn btn-xs btn-secondary btn-sm">
-                                                            Ver
-                                                            Perfil
-                                                        </a>
+                                                        <h4 class="fw-bold">{{usuario.nm_usuario}}</h4>
+                                                        <p class="text-muted">{{usuario.ds_email}}</p>
                                                     </div>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#">Minha conta</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#">Configurações</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="/login">Sair</a>
+                                                <a class="dropdown-item" href="/logout"><i
+                                                        class="fas fa-sign-out-alt pe-2"></i>
+                                                    Sair</a>
                                             </li>
                                         </div>
                                     </ul>
@@ -266,24 +251,24 @@
                                                 class="form-control" placeholder="___" readonly>
                                         </div>
                                     </div>
-
-                                    <div class="row mb-5">
-                                        <div class="col-md-6 ">
+                                    <div class="col-md-6 ">
+                                        <div class="form-group">
                                             <label class="fw-bold">Rota</label>
                                             <input type="text" class="form-control" id="nm_rota" name="rota" readonly>
                                         </div>
-                                        <div class="col-md-6 ">
+                                    </div>
+                                    <div class="col-md-6 ">
+                                        <div class="form-group">
                                             <label class="fw-bold">Planta</label>
                                             <input type="text" class="form-control" id="nm_planta" name="Planta"
                                                 readonly>
                                         </div>
                                     </div>
-                                    <div class="d-flex justify-content-end gap-2 mt-3">
-                                        <div class="card-footer d-flex justify-content-end">
-                                            <button id="btnConcluirSeparacao" class="btn btn-primary"> Concluir
-                                                separação</button>
-                                        </div>
-                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <button id="btnConcluirSeparacao"
+                                        class="btn btn-success btn-border fw-bold shadow-lg"> Concluir
+                                        separação</button>
                                 </div>
                             </div>
                         </div>
@@ -333,7 +318,7 @@
                                                             required>
                                                     </div>
                                                 </div>
-                                                <div>
+                                                <div class="mt-3">
                                                     <div class="col-md-6">
                                                         <label class="fw-bold">Estoque</label>
                                                         <select name="estoque" id="cd_estoque" class="form-control">
@@ -343,7 +328,7 @@
                                                 </div>
                                                 <div class="d-flex justify-content-end gap-2 mt-3">
                                                     <a href="/separacao?id_agendamento={{agendamento.cd_agendamento}}"
-                                                        class="btn btn-secondary text-white fw-bold shadow-lg">
+                                                        class="btn btn-danger text-white fw-bold shadow-lg">
                                                         Cancelar
                                                     </a>
 
@@ -361,13 +346,19 @@
                                     <div class="card shadow-lg mb-5">
                                         <div class="card-header">
                                             <div class="card-title">Itens movimentado</div>
-                                            <div class="col-md-2">
-                                                <label class="fw-bold">Peso já separado (KG)</label>
-                                                <input type="text" id="pesoSeparado" class="form-control" value="0"
-                                                    readonly>
-                                            </div>
+
                                         </div>
                                         <div class="card-body p-0">
+                                            <div class="row p-3">
+                                                <div class="col-md-12">
+                                                    <label class="fw-bold">Peso já separado (KG)</label>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <input type="text" id="pesoSeparado" class="form-control" value="0"
+                                                        readonly>
+                                                </div>
+                                            </div>
+
                                             <table class="table table-head-bg-success">
                                                 <thead>
                                                     <tr>
@@ -698,6 +689,20 @@
                             window.location.href = `/separacao?cd_agendamento=${cd_agendamento}`;
                         }
                     });
+                });
+            });
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const qtPesoInput = document.getElementById('qt_peso');
+                const volumePrensadoInput = document.getElementById('volume_m3_prensado');
+                [qtPesoInput, volumePrensadoInput].forEach(function (input) {
+                    if (input) {
+                        input.addEventListener('input', function () {
+                            this.value = this.value.replace(',', '.');
+                        });
+                    }
                 });
             });
         </script>

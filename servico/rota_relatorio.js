@@ -9,7 +9,10 @@ function exibirRelatorios(req, res) {
     const sql = 'SELECT cd_rel, ds_relatorio FROM Relatorios';
     conectiondb().query(sql, (err, relatorios) => {
         if (err) return res.status(500).send('Erro ao buscar relatórios');
-        res.render('relatorios', { relatorios });
+        res.render('relatorios', { 
+            usuario: req.session.usuario,
+            relatorios 
+        });
     });
 };
 
@@ -54,7 +57,11 @@ function filtrarRelatorios(req, res) {
     const param = `%${filtro}%`;
     conectiondb().query(sql, [param, param], (err, relatorios) => {
         if (err) return res.status(500).send('Erro ao buscar relatórios');
-        res.render('relatorios', { relatorios, filtro });
+        res.render('relatorios', { 
+            usuario: req.session.usuario,
+            relatorios, 
+            filtro 
+        });
     });
 }
 

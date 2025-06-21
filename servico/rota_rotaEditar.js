@@ -21,6 +21,7 @@ function exibirrotaeditar(req, res) {
             const rotaBloqueada = resultado2.some(p => p.dt_r_iniciada);
 
             res.render('rotaEditar', {
+                usuario: req.session.usuario,
                 rotas: resultado1[0],
                 pontos: resultado2,
                 rotaBloqueada // true ou false
@@ -55,6 +56,7 @@ function editarRota(req, res) {
         if (resultado.length > 0) {
             // Já iniciada, bloqueia edição
             return res.render('rotaEditar', {
+                usuario: req.session.usuario,
                 rota: { cd_rota, nm_rota, dt_agendada, cd_motorista, cd_caminhao },
                 script: `<script>
                     swal("Não é possível editar!", "Esta rota já foi iniciada e não pode ser editada.", {
@@ -81,6 +83,7 @@ function editarRota(req, res) {
                 if (errorota) {
                     console.error('Erro ao atualizar Rota:', errorota);
                     return res.render('rotaEditar', {
+                        usuario: req.session.usuario,
                         rota: { cd_rota, nm_rota, dt_agendada, cd_motorista, cd_caminhao },
                         script:
                             `<script>
@@ -99,6 +102,7 @@ function editarRota(req, res) {
 
                 // Sucesso: exibe o modal e depois redireciona
                 res.render('rotaEditar', {
+                    usuario: req.session.usuario,
                     rota: { cd_rota, nm_rota, dt_agendada },
                     script:
                         `<script>
@@ -127,6 +131,7 @@ function editarRota(req, res) {
                 if (erroVerifica) {
                     console.error('Erro ao verificar pontos vinculados:', erroVerifica);
                     return res.render('rotaEditar/', {
+                        usuario: req.session.usuario,
                         rota: { cd_rota, nm_rota, dt_agendada },
                         script:
                             `<script>
@@ -179,6 +184,7 @@ function editarRota(req, res) {
                     if (errorota) {
                         console.error('Erro ao excluir Rota:', errorota);
                         return res.render('rotaEditar', {
+                            usuario: req.session.usuario,
                             rota: { cd_rota, nm_rota, dt_agendada },
                             script:
                                 `<script>
@@ -197,6 +203,7 @@ function editarRota(req, res) {
 
                     // Sucesso na exclusão
                     res.render('rotaEditar', {
+                        usuario: req.session.usuario,
                         rota: { cd_rota, nm_rota, dt_agendada, cd_motorista },
                         script:
                             ` <script>

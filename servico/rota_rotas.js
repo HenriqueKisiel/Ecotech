@@ -7,7 +7,9 @@ function exibirRotas(req, res) {
     //Executando a consulta no banco de dados
     conectiondb().query(sql, function (erro, retorno) {
       // Guarda o retorno dos dados em rotas
-        res.render('rotas', { rotas: retorno });
+        res.render('rotas', { 
+          usuario: req.session.usuario,
+          rotas: retorno });
         if (erro) {
           console.error('Erro ao buscar as rotas:', erro);
           return res.status(500).send('Erro ao buscar rotas');
@@ -19,12 +21,16 @@ function exibirRotas(req, res) {
 
 //Função para exibir  pagina atualizar Rotas
 function exibirAtualizarRotas(req, res) {
-    res.render('rotasAtualizar');
+    res.render('rotasAtualizar', { 
+        usuario: req.session.usuario
+    });
 };
 
 //Função para exibir pagina de cadastrar rotas
 function exibirCadastrarRotas(req, res) {
-    res.render('rotasCadastrar');
+    res.render('rotasCadastrar', { 
+        usuario: req.session.usuario
+    });
 };
 
 // Busca uma planta para vincular a rota
@@ -69,6 +75,7 @@ function insertRota(req, res){
         if (error) {
             console.error('Erro ao cadastrar Rota:', error);
             res.render('cadastroRota', {
+              usuario: req.session.usuario,
                 script: ` <script>
           swal("Erro ao cadastrar!", "Verifique os dados e tente novamente.", {
             icon: "error",
@@ -83,6 +90,7 @@ function insertRota(req, res){
             });
         } else {
             res.render('cadastroRota', {
+              usuario: req.session.usuario,
                 script: `
                   <script>
                     swal({
@@ -147,7 +155,9 @@ function buscarRota(req, res) {
       return res.status(500).send("Erro ao buscar rotas");
     }
 
-    res.render('rotas', { rotas: results });
+    res.render('rotas', { 
+      usuario: req.session.usuario,
+      rotas: results });
   });
 }
 

@@ -28,6 +28,7 @@ function exibirAgendamento(req, res, mensagem = '') {
             pessoasFisicas,
             pessoasJuridicas,
             cidades,
+            usuario: req.session.usuario,
             bairros
           });
         });

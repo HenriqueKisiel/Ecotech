@@ -47,6 +47,7 @@ function exibirMaterialEditar(req, res) {
             res.render('materialEditar', {
                 message: '',
                 linhas,
+                usuario: req.session.usuario,
                 material
             });
         });
@@ -146,6 +147,7 @@ function editarMaterial(req, res) {
                 return res.render('materialEditar', {
                     message: 'Erro ao atualizar material.',
                     linhas,
+                    usuario: req.session.usuario,
                     material: {
                         ...req.body,
                         ie_linha: String(req.body.linha)
@@ -155,6 +157,7 @@ function editarMaterial(req, res) {
             res.render('materialEditar', {
                 message: 'Material atualizado com sucesso!',
                 linhas,
+                usuario: req.session.usuario,
                 material: {
                     cd_material,
                     descricao,

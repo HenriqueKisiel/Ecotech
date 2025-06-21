@@ -134,11 +134,7 @@
                                                 <span class="sub-item">Rotas Programadas</span>
                                             </a>
                                         </li>
-                                        <li>
-                                            <a href="/attStatus">
-                                                <span class="sub-item">Atualizar Status da Coleta</span>
-                                            </a>
-                                        </li>
+                                     
                                     </ul>
                                 </div>
                             </li>
@@ -148,12 +144,7 @@
                                     <p>Relatórios</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="/processamento">
-                                    <i class="fas fa-thumbtack"></i>
-                                    <p>Processamento</p>
-                                </a>
-                            </li>
+                           
                         </ul>
                     </div>
                 </div>
@@ -211,22 +202,16 @@
                                             <li>
                                                 <div class="user-box">
                                                     <div class="u-text">
-                                                        <h4>Henrique</h4>
-                                                        <p class="text-muted">henrique@gmail.com</p>
-                                                        <a href="#" class="btn btn-xs btn-secondary btn-sm">
-                                                            Ver
-                                                            Perfil
-                                                        </a>
+                                                        <h4 class="fw-bold">{{usuario.nm_usuario}}</h4>
+                                                        <p class="text-muted">{{usuario.ds_email}}</p>
                                                     </div>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#">Minha conta</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#">Configurações</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="/login">Sair</a>
+                                                <a class="dropdown-item" href="/logout"><i
+                                                        class="fas fa-sign-out-alt pe-2"></i>
+                                                    Sair</a>
                                             </li>
                                         </div>
                                     </ul>

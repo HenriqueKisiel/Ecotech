@@ -17,7 +17,10 @@ function exibirPlantaEditar(req, res) {
 
         const planta = retornoPlanta[0];
 
-        res.render('plantaEditar', { planta });
+        res.render('plantaEditar', {
+            usuario: req.session.usuario,
+            planta 
+        });
     });
 }
 
