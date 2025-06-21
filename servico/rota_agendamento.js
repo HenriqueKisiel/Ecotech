@@ -11,6 +11,20 @@ function exibirAgendamento(req, res) {
     const queryPessoasJuridicas = 'SELECT cd_pessoa_juridica, nm_fantasia FROM pessoa_juridica';
     const queryCidades = 'SELECT DISTINCT nm_cidade FROM agendamento WHERE nm_cidade IS NOT NULL AND nm_cidade <> ""';
     const queryBairros = 'SELECT DISTINCT nm_bairro FROM agendamento WHERE nm_bairro IS NOT NULL AND nm_bairro <> ""';
+    const queryInicial = `
+        SELECT 
+            a.cd_agendamento, 
+            a.ds_endereco AS endereco, 
+            a.nm_cidade AS cidade, 
+            a.nm_bairro AS bairro, 
+            a.dt_solicitada,
+            COALESCE(pf.nm_pessoa_fisica, pj.nm_fantasia) AS nome
+        FROM agendamento a
+        LEFT JOIN pessoa_fisica pf ON a.cd_pessoa_fisica = pf.cd_pessoa_fisica
+        LEFT JOIN pessoa_juridica pj ON a.cd_pessoa_juridica = pj.cd_pessoa_juridica
+        WHERE a.dt_cancelado IS NULL AND a.dt_coleta IS NULL
+    `;
+
 
 
     conexao.query(queryPessoasFisicas, (err1, pessoasFisicas) => {
@@ -25,15 +39,24 @@ function exibirAgendamento(req, res) {
                 conexao.query(queryBairros, (err4, bairros) => {
                     if (err4) return res.status(500).send('Erro ao buscar bairros');
 
-                    // Renderiza a tela agendamento.handlebars passando os dados dos filtros
-                    res.render('agendamento', {
-                        mensagem: '',
-                        pessoasFisicas,
-                        pessoasJuridicas,
-                        cidades,
-                        bairros,
-                        usuario: req.session.usuario,
-                        agendamentos: []
+                    // NOVO: Busca os agendamentos iniciais para exibir na tabela
+                    conexao.query(queryInicial, (err5, agendamentos) => {
+                        if (err5) return res.status(500).send('Erro ao buscar agendamentos iniciais');
+                        
+                        // Ajusta a data ANTES de renderizar
+                        agendamentos.forEach(agendamento => {
+                            agendamento.dt_solicitada = formatarDataBR(agendamento.dt_solicitada);
+                        });
+                        // Renderiza a tela agendamento.handlebars passando os dados dos filtros e os agendamentos iniciais
+                        res.render('agendamento', {
+                            mensagem: '',
+                            pessoasFisicas,
+                            pessoasJuridicas,
+                            cidades,
+                            bairros,
+                            usuario: req.session.usuario,
+                            agendamentos // agora a tabela inicial será preenchida!
+                        });
                     });
                 });
             });
