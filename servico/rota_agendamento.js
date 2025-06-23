@@ -1,5 +1,4 @@
-const conectiondb = require('../bd/conexao_mysql.js');  // Importa a função de conexão com o banco de dados
-const conexao = conectiondb();
+const pool = require('../bd/conexao_mysql.js')();
 
 /**
  * Função para exibir a tela inicial de agendamento de coleta.
@@ -27,20 +26,20 @@ function exibirAgendamento(req, res) {
 
 
 
-    conexao.query(queryPessoasFisicas, (err1, pessoasFisicas) => {
+    pool.query(queryPessoasFisicas, (err1, pessoasFisicas) => {
         if (err1) return res.status(500).send('Erro ao buscar pessoas físicas');
 
-        conexao.query(queryPessoasJuridicas, (err2, pessoasJuridicas) => {
+        pool.query(queryPessoasJuridicas, (err2, pessoasJuridicas) => {
             if (err2) return res.status(500).send('Erro ao buscar pessoas jurídicas');
 
-            conexao.query(queryCidades, (err3, cidades) => {
+            pool.query(queryCidades, (err3, cidades) => {
                 if (err3) return res.status(500).send('Erro ao buscar cidades');
 
-                conexao.query(queryBairros, (err4, bairros) => {
+                pool.query(queryBairros, (err4, bairros) => {
                     if (err4) return res.status(500).send('Erro ao buscar bairros');
 
                     // NOVO: Busca os agendamentos iniciais para exibir na tabela
-                    conexao.query(queryInicial, (err5, agendamentos) => {
+                    pool.query(queryInicial, (err5, agendamentos) => {
                         if (err5) return res.status(500).send('Erro ao buscar agendamentos iniciais');
                         
                         // Ajusta a data ANTES de renderizar
@@ -123,7 +122,7 @@ function buscarAgendamentos(req, res) {
     const queryBairros = 'SELECT DISTINCT nm_bairro FROM agendamento WHERE nm_bairro IS NOT NULL AND nm_bairro <> ""';
 
     // Executa a query principal com os filtros
-    conexao.query(query, valores, (erro, resultados) => {
+    pool.query(query, valores, (erro, resultados) => {
         if (erro) {
             console.error("Erro na consulta de agendamentos:", erro);
             return res.status(500).send('Erro ao buscar agendamentos');
@@ -136,16 +135,16 @@ function buscarAgendamentos(req, res) {
 
 
         // Recarrega os dados dos filtros
-        conexao.query(queryPessoasFisicas, (err1, pessoasFisicas) => {
+        pool.query(queryPessoasFisicas, (err1, pessoasFisicas) => {
             if (err1) return res.status(500).send('Erro ao buscar pessoas físicas');
 
-            conexao.query(queryPessoasJuridicas, (err2, pessoasJuridicas) => {
+            pool.query(queryPessoasJuridicas, (err2, pessoasJuridicas) => {
                 if (err2) return res.status(500).send('Erro ao buscar pessoas jurídicas');
 
-                conexao.query(queryCidades, (err3, cidades) => {
+                pool.query(queryCidades, (err3, cidades) => {
                     if (err3) return res.status(500).send('Erro ao buscar cidades');
 
-                    conexao.query(queryBairros, (err4, bairros) => {
+                    pool.query(queryBairros, (err4, bairros) => {
                         if (err4) return res.status(500).send('Erro ao buscar bairros');
 
                         // Renderiza a tela com os resultados da busca
@@ -200,7 +199,7 @@ function buscarBairrosPorNomeCidade(req, res) {
         params = [nm_cidade];
     }
 
-    conexao.query(query, params, (err, results) => {
+    pool.query(query, params, (err, results) => {
         if (err) {
             console.error('Erro ao buscar bairros:', err);
             return res.status(500).json([]);

@@ -1,5 +1,5 @@
 //importar o módulo de conexão com o banco de dados
-const conectiondb = require('../bd/conexao_mysql.js');
+const pool = require('../bd/conexao_mysql.js')();
 const nodemailer = require('nodemailer');
 
 //Função para exibir a padrao
@@ -12,7 +12,6 @@ function exibirPadrao(req, res) {
 function fazerLogin(req, res) {
     var usuario = req.body.login;
     var Senha = req.body.Senha;
-    var conexao = conectiondb();
 
     console.log('Tentando login para usuário:', usuario);
 
@@ -21,7 +20,7 @@ function fazerLogin(req, res) {
         AND nm_usuario like ? 
         AND ie_situacao = 'A' `;
 
-    conexao.query(query, [Senha, usuario], function (err, results) {
+    pool.query(query, [Senha, usuario], function (err, results) {
         if (err) {
             console.error('Erro ao executar a query:', err);
             res.status(500).send('Erro ao executar a query');
@@ -52,7 +51,7 @@ function recuperarSenha(req, res) {
     const conexao = conectiondb();
 
     // Buscar senha no banco
-    conexao.query('SELECT senha FROM usuario WHERE email = ?', [email], (err, results) => {
+    pool.query('SELECT senha FROM usuario WHERE email = ?', [email], (err, results) => {
         if (err) {
             console.error('Erro ao buscar a senha:', err);
             return res.render('recuperar', { message: 'Erro ao recuperar senha.' });

@@ -1,10 +1,9 @@
-const getCon = require('../bd/conexao_mysql.js');
-const con = getCon(); // pega o objeto de conexão
+const pool = require('../bd/conexao_mysql.js')();
 
 // Função para carregar o select e exibir a home
 function exibirHome(req, res) {
     const sql = 'SELECT cd_planta, nm_planta FROM planta WHERE ie_situacao = "A" ';
-    con.query(sql, (err, result) => {
+    pool.query(sql, (err, result) => {
         if (err) {
             console.error('Erro ao carregar plantas:', err);
             return res.status(500).send('Erro ao carregar plantas');
@@ -27,7 +26,7 @@ function dadosDashboard(req, res) {
     const sqlPlanta = 'SELECT qt_capacidade_total_volume, qt_capacidade_atual_volume FROM planta WHERE cd_planta = ?'; // Query para buscar capacidade total e atual da planta
     const sqlEstoque = 'SELECT nm_estoque, CAST(COALESCE(qt_volume_total, 0) AS DECIMAL(18,4)) AS qt_volume_total, CAST(COALESCE(qt_volume_atual, 0) AS DECIMAL(18,4)) AS qt_volume_atual, CAST(COALESCE(qt_capacidade_atual, 0) AS DECIMAL(18,4)) AS qt_capacidade_atual FROM estoque WHERE cd_planta = ?'; // Query para buscar dados dos estoques da planta
 
-    con.query(sqlPlanta, [cd_planta], (err1, resultPlanta) => { // Executa a consulta para buscar dados da planta
+    pool.query(sqlPlanta, [cd_planta], (err1, resultPlanta) => { // Executa a consulta para buscar dados da planta
         if (err1) { // Se ocorrer erro na consulta da planta
             console.error('Erro consulta planta:', err1); // Exibe o erro no console
             return res.status(500).json({ erro: err1 }); // Retorna erro 500 para o cliente
@@ -37,7 +36,7 @@ function dadosDashboard(req, res) {
             return res.status(404).json({ erro: 'Planta não encontrada' }); // Retorna erro 404 para o cliente
         }
 
-        con.query(sqlEstoque, [cd_planta], (err2, resultEstoque) => { // Executa a consulta para buscar dados dos estoques da planta
+        pool.query(sqlEstoque, [cd_planta], (err2, resultEstoque) => { // Executa a consulta para buscar dados dos estoques da planta
             if (err2) { // Se ocorrer erro na consulta dos estoques
                 console.error('Erro consulta estoque:', err2); // Exibe o erro no console
                 return res.status(500).json({ erro: err2 }); // Retorna erro 500 para o cliente
@@ -69,7 +68,7 @@ function totalColetasPlanta(req, res) {
           AND pca.cd_planta = ?
           AND YEAR(STR_TO_DATE(pca.dt_coleta, '%d%m%y')) = ?
           AND MONTH(STR_TO_DATE(pca.dt_coleta, '%d%m%y')) = ?`;
-    con.query(sql, [cd_planta, ano, mes], (err, result) => {
+    pool.query(sql, [cd_planta, ano, mes], (err, result) => {
         if (err) return res.status(500).json({ erro: err });
         res.json({ total: result[0]?.total_coletas || 0 });
     });
@@ -92,7 +91,7 @@ function faturamentoMensalPlanta(req, res) {
         GROUP BY mes
         ORDER BY mes;
     `;
-    con.query(sql, [cd_planta, ano], (err, result) => {
+    pool.query(sql, [cd_planta, ano], (err, result) => {
         if (err) return res.status(500).json({ erro: err });
         // Monta array de 12 meses, preenchendo 0 onde não houver faturamento
         const faturamento = Array(12).fill(0);
@@ -121,7 +120,7 @@ function pesoColetadoMensalPlanta(req, res) {
         GROUP BY mes
         ORDER BY mes
     `;
-    con.query(sql, [cd_planta, ano], (err, result) => {
+    pool.query(sql, [cd_planta, ano], (err, result) => {
         if (err) return res.status(500).json({ erro: err });
         const pesos = Array(12).fill(0);
         result.forEach(row => {
@@ -149,7 +148,7 @@ function proporcaoMovimentacoesPlanta(req, res) {
         GROUP BY m.tipo_movimentacao
         ORDER BY m.tipo_movimentacao
     `;
-    con.query(sql, [cd_planta, ano, mes], (err, result) => {
+    pool.query(sql, [cd_planta, ano, mes], (err, result) => {
         if (err) return res.status(500).json({ erro: err });
         const labels = result.map(row => row.tipo_movimentacao);
         const dados = result.map(row => parseInt(row.total_movimentacoes) || 0);

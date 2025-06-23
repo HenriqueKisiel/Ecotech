@@ -1,5 +1,4 @@
-const conectiondb = require('../bd/conexao_mysql.js'); // Importa o módulo de conexão com o banco de dados MySQL
-const conexao = conectiondb(); // Inicializa a conexão para executar consultas SQL
+const pool = require('../bd/conexao_mysql.js')();
 
 // Consultas SQL centralizadas para evitar redundância
 const queryPessoasFisicas = 'SELECT cd_pessoa_fisica, nm_pessoa_fisica FROM pessoa_fisica';
@@ -11,16 +10,16 @@ const queryBairros = 'SELECT cd_bairro, nm_bairro FROM bairro';
  * Exibe a tela de agendamento com dados dinâmicos para os selects.
  */
 function exibirAgendamento(req, res, mensagem = '') {
-  conexao.query(queryPessoasFisicas, (err1, pessoasFisicas) => {
+  pool.query(queryPessoasFisicas, (err1, pessoasFisicas) => {
     if (err1) return res.status(500).send('Erro ao buscar pessoas físicas');
 
-    conexao.query(queryPessoasJuridicas, (err2, pessoasJuridicas) => {
+    pool.query(queryPessoasJuridicas, (err2, pessoasJuridicas) => {
       if (err2) return res.status(500).send('Erro ao buscar pessoas jurídicas');
 
-      conexao.query(queryCidades, (err3, cidades) => {
+      pool.query(queryCidades, (err3, cidades) => {
         if (err3) return res.status(500).send('Erro ao buscar cidades');
 
-        conexao.query(queryBairros, (err4, bairros) => {
+        pool.query(queryBairros, (err4, bairros) => {
           if (err4) return res.status(500).send('Erro ao buscar bairros');
 
           res.render('agendamentoAdd', {
@@ -178,7 +177,7 @@ function registrarAgendamento(req, res) {
     'ativo'
   ];
 
-  conexao.query(query, valores, (erro, resultado) => {
+  pool.query(query, valores, (erro, resultado) => {
     if (erro) {
       console.error("Erro ao registrar agendamento:", erro);
       return exibirAgendamento(req, res, `
@@ -212,7 +211,7 @@ function buscarBairrosPorCidade(req, res) {
   const cd_cidade = req.params.cd_cidade;
   const query = 'SELECT cd_bairro, nm_bairro FROM bairro WHERE cd_cidade = ?';
 
-  conexao.query(query, [cd_cidade], (erro, bairros) => {
+  pool.query(query, [cd_cidade], (erro, bairros) => {
     if (erro) return res.status(500).send('Erro ao buscar bairros');
     return res.json(bairros);
   });
@@ -226,7 +225,7 @@ function buscarPessoaFisica(req, res) {
   if (!termo) return res.json([]);
   const sql = 'SELECT cd_pessoa_fisica, nm_pessoa_fisica FROM pessoa_fisica WHERE nm_pessoa_fisica LIKE ? LIMIT 10';
   const filtro = `%${termo}%`;
-  conexao.query(sql, [filtro], (err, resultados) => {
+  pool.query(sql, [filtro], (err, resultados) => {
     if (err) return res.status(500).send('Erro ao buscar pessoas físicas');
     res.json(resultados);
   });
@@ -240,7 +239,7 @@ function buscarPessoaJuridica(req, res) {
   if (!termo) return res.json([]);
   const sql = 'SELECT cd_pessoa_juridica, nm_fantasia FROM pessoa_juridica WHERE nm_fantasia LIKE ? LIMIT 10';
   const filtro = `%${termo}%`;
-  conexao.query(sql, [filtro], (err, resultados) => {
+  pool.query(sql, [filtro], (err, resultados) => {
     if (err) {
       console.error('Erro ao buscar pessoas jurídicas:', err);
       return res.status(500).send('Erro ao buscar pessoas jurídicas');
