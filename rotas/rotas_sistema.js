@@ -653,13 +653,15 @@ router.get('/feedback/:cd_agendamento', (req, res) => {
 });
 
 // Salvar feedback no banco
+
 router.post('/feedback/:cd_agendamento', (req, res) => {
     const { ds_feedback, nr_nota } = req.body;
     servico34.salvarFeedback(req.params.cd_agendamento, ds_feedback, nr_nota, (err, msg) => {
         if (err) return res.status(400).send(err);
-        res.send(msg);
+        res.render('feedback_sucesso'); // Renderiza a página personalizada
     });
 });
+// ...existing code...
 
 // Enviar feedback e-mail
 router.get('/enviarFeedback/:cd_agendamento', (req, res) => {
