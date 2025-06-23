@@ -250,13 +250,17 @@ function buscarAgendamento(req, res) {
 // funcão de buscar o motorista
 function buscarMotoristas(req, res) {
     const sql = `
-        SELECT m.*, 
-    pf.nm_pessoa_fisica AS nm_motorista 
-    FROM motorista m 
-    JOIN pessoa_fisica pf 
-    ON m.ie_pessoa = pf.cd_pessoa_fisica
-    WHERE 
-    m.vencimento_cnh >= CURDATE() AND situacao = 'A'
+         SELECT m.*
+FROM motorista m
+WHERE m.situacao = 'A'
+AND NOT EXISTS (
+    SELECT 1
+    FROM rota_coleta r
+    WHERE r.ie_motorista = m.id_motorista
+      AND r.ie_situacao = 'A'
+      AND r.dt_fim IS NULL
+);
+
     `;
 
     conectiondb().query(sql, (erro, resultados) => {
@@ -270,9 +274,18 @@ function buscarMotoristas(req, res) {
 
 // Função buscar o caminhão
 function buscarCaminhao(req, res) {
-    
+
     const sql = `
-        SELECT * FROM caminhao
+               SELECT c.*
+FROM caminhao c
+WHERE c.situacao = 'A'
+AND NOT EXISTS (
+    SELECT 1
+    FROM rota_coleta r
+    WHERE r.ie_caminhao = c.id_caminhao
+      AND r.ie_situacao = 'A'
+      AND r.dt_fim IS NULL
+)
     `;
 
     conectiondb().query(sql, (erro, resultados) => {
