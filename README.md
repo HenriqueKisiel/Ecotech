@@ -1,4 +1,5 @@
 Ecotech - Sistema de gestão para uma empresa de Resíduos Eletrônicos.
+
 Principais Funcionalidades:
 - Agendamento de Coleta
 - Criação de Rotas
@@ -17,3 +18,5 @@ CRUDS:
 - Agendamento
 - Rota
   
+Vídeo apresentando o sistema: 
+https://drive.google.com/file/d/12fQfL7a3Xa1ni10FuXoiYtPj8zEWqY0e/view?usp=sharing
