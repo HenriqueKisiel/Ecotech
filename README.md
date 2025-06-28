@@ -4,6 +4,7 @@ Principais Funcionalidades:
 - Agendamento de Coleta
 - Criação de Rotas
 - Pesagem do material
+- Separação
 - Movimentação
 - Suporte a gestão (Relatórios e Dashboard)
 
